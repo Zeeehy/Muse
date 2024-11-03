@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	
+	<!-- configs -->
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
+	<!-- fileupload configs -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="10455040"></property><!-- 10mb -->
+	</bean>
+
+
+
+	<!-- daos -->
+	<bean id="adminDao" class="com.muse.admin.model.AdminDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<!-- add dao here -->
+	
+	
+	<!-- example -->
+<!--  
+	<bean id="empDao" class="com.yong.emp.model.EmpDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="bbsDao" class="com.yong.bbs.model.BbsDAOImple">
+		<property name="sqlMap" ref="sqlSessionTemplate"></property>
+	 </bean>
+ -->
+
+
+
+
+	<!-- mybatis datasource-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="scott"></property>
+		<property name="password" value="1234"></property>
+	</bean>
+	<!-- mybatis 트랜잭션-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<!-- mybatis-->
+	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
+	</bean>
+
+</beans>
