@@ -97,3 +97,4 @@ replay_pid*
 src/main/resources/META-INF/MANIFEST.MF
 
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
+/muse/
