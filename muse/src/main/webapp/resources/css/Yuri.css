@@ -1,42 +1,6 @@
 @charset "UTF-8";
 
-/* Main */
-@font-face {
-    font-family: 'MV Boli';
-    src: url('/path-to-fonts/MV-Boli.woff2') format('woff2'),
-         url('/path-to-fonts/MV-Boli.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    overflow-x: hidden;
-    font-family: 'Pretendard';
-}
-
-p, span, li, label, input, button, textarea, select, option, h1, h2, h3, tr, th, td {
-    font-family: 'Pretendard';
-}
-
-button {
-    cursor: pointer;
-    border: none;
-}
-
-li::marker {
-    content: none;
-}
-
-a {
-    text-decoration: none;
-    color: unset;
-}
-
+/* index */
 .wrap {
     width: 100%;
     height: 100%;
@@ -126,7 +90,7 @@ a {
     text-indent: -9999px;
     overflow: hidden;
     display: inline-block;
-    background: url(img/main/search.png) center no-repeat;
+    background: url(../img/main/search.png) center no-repeat;
 }
 
 .hide, caption, legend, .hidden {
@@ -140,18 +104,45 @@ a {
     line-height: 0;
     overflow: hidden;
 }
-
-article {
-    width: 100%;
+.content {
+	width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    text-align: center;
+    
 }
 
 article h2 {
     font-size: 50px;
     padding: 100px 0 50px;
+    text-align: center;
 }
+
+article.whatsOn {
+	position: relative;
+    
+}
+
+
+article.whatsOn a.calender {
+    width: 250px;
+    display: flex;
+    position: absolute;
+    right: 45px;
+    color: #fff;
+    background: #000;
+    height: 60px;
+    border-radius: 0 0 25px 25px;
+    line-height: 60px;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+article.whatsOn a.calender img {
+	width:20px;
+}
+
 
 .screening-container {
     display: flex;
@@ -167,7 +158,6 @@ article h2 {
     margin: 0 10px; /* Slide gap */
 }
 
-/* Remove right margin for the last slide */
 .slick-slide:last-child {
     margin-right: 0;
 }
@@ -199,8 +189,36 @@ article h2 {
     padding: 10px 5px;
     text-align: center;
     background: #f9f9f9;
-    border-top: 1px solid;
+    border-top: 1px solid #000;
 }
+
+.screening-item.open .meta {
+    font-size: 12px;
+}
+.screening-item.open .meta.red {
+    color: #FF3D32;
+}
+.screening-item.open .meta.gray {
+    color: #959595;
+}
+
+article .bt a{
+	width: 240px;
+    height: 60px;
+    font-size: 18px;
+    color: #FF3D32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #FF3D32;
+    margin: 50px auto;
+}
+
+article .bt a:hover {
+    color: #fff;
+    background:#FF3D32;
+}
+
 
 .slick-prev, .slick-next {
     background: #FF3D32;
@@ -221,7 +239,7 @@ article h2 {
     color: #FFFFFF;
     font-size: 20px;
     content: "";
-    background: url('img/main/slide_arrow.png') center no-repeat #FF3D32;
+	background: url(../img/main/slide_arrow.png) center no-repeat #FF3D32;
     width: 100%;
     height: 100%;
     display: inline-block;
@@ -246,3 +264,46 @@ article h2 {
     right: -15px;
     z-index: 10;
 }
+
+/* footer */
+footer {background: #212121;}
+.area  {
+    max-width: 1500px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 40px 0;
+}
+.area .ft_img {
+	display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 20px;
+    color: #fff;
+    font-weight: 500;
+}
+.area ul li {    
+	margin-bottom: 10px;
+}
+.area ul li span {    
+	color: #fff;
+    opacity: 0.7;
+    font-weight: 200;
+    font-size: 13px;
+}
+.bottom {
+	background: #000;
+}
+.bottom p {        
+	width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    padding: 20px 0;
+    opacity: 0.6;
+    letter-spacing: 2px;
+    font-size: 13px;
+    font-weight: 400;
+    }
