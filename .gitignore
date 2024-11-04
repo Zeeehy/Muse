@@ -96,5 +96,7 @@ replay_pid*
 # Ignore MANIFEST.MF file
 src/main/resources/META-INF/MANIFEST.MF
 
+# Ignore the specific pom.properties file causing conflicts
+muse/target/m2e-wtp/web-resources/META-INF/maven/muse/muse/pom.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
-/muse/
