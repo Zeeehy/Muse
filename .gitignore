@@ -93,4 +93,7 @@ local.properties
 hs_err_pid*
 replay_pid*
 
+# Ignore MANIFEST.MF file
+src/main/resources/META-INF/MANIFEST.MF
+
 # End of https://www.toptal.com/developers/gitignore/api/eclipse,java
