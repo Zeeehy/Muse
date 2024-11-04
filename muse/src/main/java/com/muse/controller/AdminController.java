@@ -29,9 +29,30 @@ public class AdminController {
 		mav.setViewName("/hello");
 		//view 페이지 저장
 		
-		AdminDTO dto = adminDao.practice();
-		mav.addObject("dto",dto);
-		
 		return mav;
 	}
+	
+	
+	@RequestMapping("/adminIndex.do")
+	public ModelAndView adminIndex() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/index");
+		return mav;
+	}
+	
+	
+	@RequestMapping("/adminLogin.do")
+	public ModelAndView goAdminLogin() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/login");
+		return mav;
+	}
+	
+	@RequestMapping("/bannerList.do")
+	public ModelAndView bannerList() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/bannerList");
+		return mav;
+	}
+
 }
