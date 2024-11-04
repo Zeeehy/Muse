@@ -1,1 +1,75 @@
 @charset "UTF-8";
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.login_flex1{
+   display: flex;
+}
+
+.login_child1{
+   display: flex;
+   width: 75%;
+   
+}
+
+.login_img{   
+   width: 1370px;
+   height: 1050px;
+}
+
+.login_logoimg{   
+   width: 120px;
+   height: 50px;
+}
+
+.login_child2{
+   display: flex;
+   justify-content:center;
+   align-items:center;
+   width: 43%;
+   height: 980px;
+}
+
+.login_btn {
+   width:300px;
+   height: 50px;
+    font-family: 'TTLaundryGothicB', sans-serif;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgb(52, 61, 70);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+    margin-top: 15px;
+}
+
+.login_btn:hover {
+    background-color: black;
+}
+
+.pwdforget{
+   padding-left: 55px;
+}
+
+.login_logodiv1{
+   display: flex;
+   justify-content: center;
+   padding-bottom: 50px;
+}
+
+.login_logodiv2{
+   
+}
+
+.join{
+   padding-left: 85px;
+   margin-top: 50px;
+}

@@ -10,6 +10,7 @@
 
 <ul>
 	<li><a href="hello.do">spring mvc</a></li>
+	<li><a href="memberLogin.do">로그인</a></li>
 </ul>
 
 </body>
