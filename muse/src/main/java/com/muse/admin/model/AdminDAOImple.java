@@ -11,10 +11,6 @@ public class AdminDAOImple implements AdminDAO {
 		this.sqlMap = sqlMap;
 	}
 
-	public AdminDTO practice() {
-		AdminDTO dto = sqlMap.selectOne("practice");
-		return dto;
-	}
 	
 	
 }

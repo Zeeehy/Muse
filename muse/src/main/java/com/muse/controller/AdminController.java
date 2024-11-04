@@ -11,27 +11,49 @@ import com.muse.admin.model.AdminDTO;
 @Controller
 public class AdminController {
 
-   @Autowired
-   private AdminDAO adminDao;
-   
-   @RequestMapping("/index.do")
-   public String index() {
-      return "/index";
-   }
-   
-   //ModelAndViewëŠ” requestì™€ ë¹„ìŠ·í•¨
-   @RequestMapping("/hello.do") //ëª…ë ¹ì–´ì— ì˜í•´ ì§„ì…í•˜ëŠ” ë©”ì†Œë“œ. ì¦‰ hello.doê°€ ë¶ˆëŸ¬ì§€ë©´ ì‹¤í–‰
-   public ModelAndView hello() {
-      
-      String result="spring MVC Framework!";
-      ModelAndView mav = new ModelAndView();
-      mav.addObject("msg", result);
-      mav.setViewName("/hello");
-      //view í˜ì´ì§€ ì €ì¥
-      
-      AdminDTO dto = adminDao.practice();
-      mav.addObject("dto",dto);
-      
-      return mav;
-   }
+
+	@Autowired
+	private AdminDAO adminDao;
+	
+	@RequestMapping("/index.do")
+	public String index() {
+		return "/index";
+	}
+	
+	//ModelAndView´Â request¿Í ºñ½ÁÇÔ
+	@RequestMapping("/hello.do") //¸í·É¾î¿¡ ÀÇÇØ ÁøÀÔÇÏ´Â ¸Ş¼Òµå. Áï hello.do°¡ ºÒ·¯Áö¸é ½ÇÇà
+	public ModelAndView hello() {
+		
+		String result="spring MVC Framework!";
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg", result);
+		mav.setViewName("/hello");
+		//view ÆäÀÌÁö ÀúÀå
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping("/adminIndex.do")
+	public ModelAndView adminIndex() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/index");
+		return mav;
+	}
+	
+	
+	@RequestMapping("/adminLogin.do")
+	public ModelAndView goAdminLogin() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/login");
+		return mav;
+	}
+	
+	@RequestMapping("/bannerList.do")
+	public ModelAndView bannerList() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/bannerList");
+		return mav;
+	}
+
 }
