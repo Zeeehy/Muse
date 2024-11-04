@@ -1,0 +1,248 @@
+@charset "UTF-8";
+
+/* Main */
+@font-face {
+    font-family: 'MV Boli';
+    src: url('/path-to-fonts/MV-Boli.woff2') format('woff2'),
+         url('/path-to-fonts/MV-Boli.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow-x: hidden;
+    font-family: 'Pretendard';
+}
+
+p, span, li, label, input, button, textarea, select, option, h1, h2, h3, tr, th, td {
+    font-family: 'Pretendard';
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+li::marker {
+    content: none;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+.wrap {
+    width: 100%;
+    height: 100%;
+}
+
+.top {
+    height: 50px;
+    background: #000;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 0 210px;
+    align-items: center;
+    gap: 100px;
+}
+
+.top a {
+    color: #fff;
+    font-size: 15px;
+}
+
+.top .topmusepass {
+    width: 195px;
+    font-family: 'MV Boli', sans-serif;
+    background-color: #ff3d32;
+    color: #fff;
+    line-height: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-right: 20px;
+}
+
+.top .topmusepass img {
+    width: 20px;
+}
+
+.header {
+    position: relative;
+    background: #fff;
+    height: 90px;
+    display: flex;
+    padding: 0 210px;
+    align-items: center;
+    border-bottom: 1px solid #000;
+}
+
+.header a {
+    display: block;
+    margin-right: 150px;
+}
+
+.header ul {
+    display: flex;
+    gap: 20px;
+}
+
+.header ul li {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.search {
+    position: absolute;
+    right: 120px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 440px;
+    width: 20%;
+    border-left: 1px solid #7f7f7f;
+    height: 70px;
+    background-color: #fff;
+    z-index: 1001;
+}
+
+.search input {
+    width: 275px;
+    height: 100%;
+    border: none;
+    padding: 0 30px;
+}
+
+.search button {
+    width: 40px;
+    height: 100%;
+    text-indent: -9999px;
+    overflow: hidden;
+    display: inline-block;
+    background: url(img/main/search.png) center no-repeat;
+}
+
+.hide, caption, legend, .hidden {
+    position: absolute;
+    left: -300px;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    background: none;
+    line-height: 0;
+    overflow: hidden;
+}
+
+article {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+article h2 {
+    font-size: 50px;
+    padding: 100px 0 50px;
+}
+
+.screening-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.screening-item {
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    margin: 0 10px; /* Slide gap */
+}
+
+/* Remove right margin for the last slide */
+.slick-slide:last-child {
+    margin-right: 0;
+}
+
+.screening-item .thumbnail {
+    width: 100%;
+    height: 0;
+    padding-top: 125%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s;
+}
+
+.screening-item .thumbnail:hover {
+    transform: scale(1.1);
+}
+
+.screening-item .title {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #000;
+}
+
+.screening-item .meta {
+    font-size: 14px;
+    color: #000;
+    padding: 10px 5px;
+    text-align: center;
+    background: #f9f9f9;
+    border-top: 1px solid;
+}
+
+.slick-prev, .slick-next {
+    background: #FF3D32;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0.8;
+    visibility: visible !important;
+    transition: none !important;
+    pointer-events: auto !important;
+}
+
+.slick-prev:before, .slick-next:before {
+    color: #FFFFFF;
+    font-size: 20px;
+    content: "";
+    background: url('img/main/slide_arrow.png') center no-repeat #FF3D32;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    visibility: visible !important;
+    border-radius: 50%;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    opacity: 1 !important;
+}
+
+.slick-prev:before {
+    transform: rotate(180deg);
+}
+
+.slick-prev {
+    left: -15px;
+    z-index: 10;
+}
+
+.slick-next {
+    right: -15px;
+    z-index: 10;
+}
