@@ -53,9 +53,6 @@
     background-color: black;
 }
 
-.pwdforget{
-   padding-left: 55px;
-}
 
 .login_logodiv1{
    display: flex;
@@ -63,12 +60,8 @@
    padding-bottom: 40px;
 }
 
-.login_logodiv2{
-   
-}
-
 .join{
-   padding-left: 85px;
+   padding-left: 35px;
    margin-top: 50px;
 }
 
@@ -85,6 +78,7 @@
    display: flex;
    align-items: center;  
    border-radius: 10px; 
+   margin-bottom: 0px;
 }
 
 .input-container img {
@@ -93,3 +87,21 @@
    object-fit: cover; 
    margin-right: 10px; 
 }
+
+.social_login {
+	margin-top:10px;
+	padding:20px;
+	display: flex;
+	justify-content: center;
+}
+
+.social_login img {
+   width: 50px;  
+   height: 50px; 
+   object-fit: cover; 
+}
+
+.kakao {
+   margin-right: 20px; 
+}
+

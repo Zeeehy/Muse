@@ -22,6 +22,7 @@ ul {
         display: flex;             
 	    flex-direction: column;    
 	    align-items: center;      
+	    margin-bottom: 11px;
 }
 
 ul li {
@@ -39,7 +40,7 @@ ul li {
    height:50px;
    flex-grow: 1;
    font-family: 'Pretendard-Regular', sans-serif;
-   font-size: 23px;
+   font-size: 16px;
    padding: 7px;
    border: none; 
    border-radius:10px;
@@ -52,7 +53,7 @@ ul li {
    max-width: 300px;
    height:50px;
    flex-grow: 1;
-   font-size: 23px;
+   font-size: 16px;
    padding: 7px;
    border: none; 
    border-radius:10px;
@@ -62,7 +63,6 @@ ul li {
 
  ul li input[type="text"]:focus, 
  ul li input[type="password"]:focus{
-
    outline: none; 
 }
 
@@ -87,33 +87,36 @@ ul li input[type="password"]::placeholder {
                         <a href="index.do"><img class="login_logoimg" alt=""  src="/muse/resources/img/member/logo.png"></a>
                   </div>        
                 </div>         
-            <div>
-               <form>      
-                  <article>
-                     <ul>
-                     <li class="input-container">
-                     	<img src="/muse/resources/img/member/id.png">
-                        <input type="text" placeholder="아이디">
-                     </li>
-                      <li class="input-container">
-                        <img src="/muse/resources/img/member/pwd.png">
-                        <input type="password" placeholder="비밀번호">
-                      </li>         
-                      <li class="input-container-btn">  
-                     	<input class="login_btn" type="submit" value="로그인">         
-                     </li>
-                     </ul>
-                  </article>
-               </form>
-            </div>
-            <div class="pwdforget">
-                <a href="#" style="color:rgb(142, 150, 157); font-size:14px;">아이디/비밀번호를 잊으셨나요?</a>
-            </div>
-            <div class="join">
-                <span style="color:rgb(142, 150, 157); font-size:14px;">회원이 아니신가요?지금 가입하세요!</span>
-                <a href="#" style="color:rgb(142, 150, 157); font-size:14px;"> 지금 가입하세요.</a>
-            </div>
-                 
+	            <div>
+	               <form>      
+	                  <article>
+	                     <ul>
+	                     <li class="input-container">
+	                     	<img src="/muse/resources/img/member/id.png">
+	                        <input type="text" placeholder="아이디">
+	                     </li>
+	                      <li class="input-container">
+	                        <img src="/muse/resources/img/member/pwd.png">
+	                        <input type="password" placeholder="비밀번호">
+	                      </li>         
+	                      <li class="input-container-btn">  
+	                     	<input class="login_btn" type="submit" value="로그인">         
+	                     </li>
+	                     </ul>
+	                  </article>
+	               </form>
+	            </div>
+	            <div class="pwdforget">
+	                <a href="#" style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
+	            </div>
+	            <div class="join">
+	                <span style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">회원이 아니신가요?</span>
+	                <a href="#" style="font-size:14px; text-decoration: none;"><span style="font-weight:bold; color:#656262; ">지금 가입하세요!</span></a>
+	            </div>
+                <div class="social_login">
+                	<div><a href="#"><img class="kakao" src="/muse/resources/img/member/KakaoTalk.png"></a></div>
+                	<div><a href="#"><img src="/muse/resources/img/member/naver.png"></a></div>
+                </div> 
             </div>
             
             <!-- AOS 스크립트 시작 -->
