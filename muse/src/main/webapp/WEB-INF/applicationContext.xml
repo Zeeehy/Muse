@@ -17,6 +17,9 @@
 	<bean id="adminDao" class="com.muse.admin.model.AdminDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="museCalendarDao" class="com.muse.myPage.model.MuseCalendarDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<bean id="memberDao" class="com.muse.member.model.MemberDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
