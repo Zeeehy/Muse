@@ -198,8 +198,12 @@ article.whatsOn a.calender img {
 .screening-item.open .meta.red {
     color: #FF3D32;
 }
-.screening-item.open .meta.gray {
+.screening-item .meta.gray {
     color: #959595;
+}
+
+article .bt {
+	padding: 50px 0;
 }
 
 article .bt a{
@@ -211,7 +215,7 @@ article .bt a{
     align-items: center;
     justify-content: center;
     border: 1px solid #FF3D32;
-    margin: 50px auto;
+    margin: 0 auto;
 }
 
 article .bt a:hover {
@@ -264,7 +268,98 @@ article .bt a:hover {
     right: -15px;
     z-index: 10;
 }
+.mainBanner {
+	position: relative;
+	padding: 100px 0 50px;
+}
+.mainBanner a {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+.mainBanner a .txt {
+	position: absolute;
+	padding: 50px 0 0 500px;
+    color:#fff;
+    text-align: center;
+}
+.mainBanner a .txt01 {
+	font-size:19px;
+	font-weight: 300;
+	opacity: 0.6;
+}
+.mainBanner a .txt02 {
+	font-size:22px;
+	margin-top: 5px;
+}
+.mainBanner a .txt span {
+    color:#fff;
+}
 
+article .reviewcont ul.cont {
+	display:flex;
+	gap: 70px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+article .reviewcont ul li {
+	margin-right: 30px;
+}
+
+article .reviewcont ul.cont li a {
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 30px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+article .reviewcont ul.cont li .reviewposter{
+	width: 300px;
+    height: 350px;
+    background: #000;
+}
+article .reviewcont ul.cont li .reviewtxt ul {
+	display: flex;
+    width: 310px;
+    height: 310px;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid;
+    padding: 20px;
+}
+article .reviewcont ul.cont li .reviewtxt .name{
+	font-size: 15px;
+	color: 000;
+	opacity: 0.6;
+}
+article .reviewcont ul.cont li .reviewtxt .title{
+	font-size: 22px;
+}
+article .reviewcont ul.cont li .reviewtxt .content{
+	font-size: 15px;
+	color: #757575;
+	line-height: 1.5;
+}
+article .reviewcont ul.cont li .reviewtxt .inf{
+	font-size: 15px;
+}
+
+.screening-container.all {
+    display: flex;
+    gap: 25px;
+    padding: 50px 0;
+}
+
+.screening-item.all {
+	width: 280px;
+}
+
+article.alltheMusical {padding-bottom:100px;}
 /* footer */
 footer {background: #212121;}
 .area  {
