@@ -11,7 +11,7 @@ body {
     height: 60px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     font-size: 24px;
     color: #333;
     position: fixed;
@@ -23,8 +23,15 @@ body {
 .header-image {
     width: 100px;  /* 원하는 너비 */
     height: 50px; /* 원하는 높이 */
-    margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조정 */
+    margin-right: 40px; /* 이미지와 텍스트 사이의 간격 조정 */
 }
+.header select{
+	border: none; /* 테두리 제거 */
+    background-color: #f3f0f0; /* 배경색 변경 (예: 연한 하늘색) */
+    padding: 5px 10px;
+    border-radius: 5px; /* 모서리를 둥글게 */
+}
+
 /* Sidebar */
 .sidebar {
     width: 250px;
@@ -138,3 +145,61 @@ input[type="text"]:focus {
 .dropdown-btn:hover {
     background-color: #BFD9E0; /* Recommended dropdown hover color */
 }
+.sidebartop {
+    display: flex;
+    gap: 10px; /* 링크들 사이에 간격 추가 */
+    align-items: center;
+  }
+
+/*
+요청현황 정보팝업
+*/
+.popup-container {
+    position: relative;
+    display: inline-block;
+  }
+    .popup {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute; /* 요청 현황 링크 바로 아래에 나타나도록 조정 */
+    top: 0px; /* 요청 현황 아래로 조정 */
+    left: 100%; /* 요청 현황의 오른쪽 위치 */
+    margin-left: 10px; /* 요청 현황과의 간격 */
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.2);
+    z-index: 100; /* 다른 요소보다 위에 표시 */
+    flex-direction: column;
+  }
+
+  .popupWrap {
+  	display: flex;
+   /* font-size: 1.4rem;*/
+    white-space: nowrap;
+    position: relative;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+.popupWrap table{
+	border: 1px solid #ccc;
+	border-collapse: collapse; /* 테이블 셀 간의 경계 중복 제거 */
+    margin: 10px;
+    background-color: #ececec;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+}
+.popupWrap th, td {
+    padding: 10px; /* 셀 내부 여백 */
+}
+
+  /* 닫기 버튼 */
+  .close-btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width:30px;
+  }
