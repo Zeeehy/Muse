@@ -7,5 +7,6 @@
   	<mappers>
   		<mapper resource="com/muse/sqlMap/adminSql.xml"/>
   		<!-- add sql.xml here -->
+  		<mapper resource="com/muse/sqlMap/memberSql.xml"/>
   	</mappers>
   </configuration>
