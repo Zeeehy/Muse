@@ -7,7 +7,6 @@ import javax.sql.*;
 public class MuseDB {
 	static DataSource ds;
 	
-	//메모리에 그냥 올려놓으려고
 	static{
 		Context initContext;
 		try {
