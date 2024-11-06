@@ -16,7 +16,6 @@
     <div class="main-content">
     	<div class="main-contenttop">
         	<h1>파트너 등록</h1>
-        	
         	<hr>
         </div>
         
@@ -52,11 +51,11 @@
                     <td><input type="text" required></td>
                 </tr>
                 <tr>
-                    <th>사업자 명</th>
+                    <th>연락처</th>
                     <td><input type="text" required></td>
                 </tr>
                 <tr>
-                    <th>대표자 이름</th>
+                    <th>이메일</th>
                     <td><input type="text" required></td>
                 </tr>
             </table>
@@ -67,21 +66,5 @@
         </div>
     </div>
     </form>
-<script>
-// 드롭다운 버튼을 클릭하여 하위 메뉴를 표시/숨김
-var dropdown = document.getElementsByClassName("dropdown-btn");
-for (var i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-
-</script>
 </body>
 </html>
