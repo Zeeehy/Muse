@@ -23,6 +23,12 @@
 	<bean id="memberDao" class="com.muse.member.model.MemberDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="partnerDao" class="com.muse.partner.model.PartnerDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="myPageUser" class="com.muse.myPage.model.MyPageUserDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

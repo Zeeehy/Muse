@@ -4,6 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.muse.myPage.mapper.myPageSQL">
   
+  <!-- 마이페이지 -->
+  <!--  회원정보수정 -->
+    <select id="userInfo" resultType="com.muse.myPage.model.MyPageUserDTO">
+        SELECT * FROM users WHERE u_id = #{u_id}
+    </select>
+    <update id="updateUserInfo" parameterType="com.muse.myPage.model.MyPageUserDTO">
+        update users set u_email=#{u_email},u_pnum=#{u_pnum}  where u_id=#{u_id}
+    </update>
+    <update id="updateUserPwd" parameterType="com.muse.myPage.model.MyPageUserDTO">
+        update users set u_pwd=#{u_pwd} where u_id=#{u_id}
+    </update>
+    
+  <!-- 뮤즈캘린더 -->
   <select id="calendarList"  resultType="com.muse.myPage.model.MuseCalendarDTO">
   	select * from calendar 
   </select>
