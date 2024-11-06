@@ -112,7 +112,7 @@
 }
 
 article h2 {
-    font-size: 50px;
+    font-size: 45px;
     padding: 100px 0 50px;
     text-align: center;
 }
@@ -389,6 +389,7 @@ article.musepass div.bene_bk {
     align-items: center;
     justify-content: center;
 }
+
 article.musepass div ul {
 	display: flex; 
 	align-items: center; 
@@ -416,10 +417,15 @@ article.musepass div ul li .bene_p01 {
 }
 article.musepass div ul li .bene_p02 {
 	margin-top:20px;
-	font-size:17px;
+	font-size:15px;
 	color: #fff;
 	opacity: 0.8;
 	line-height: 1.5;
+}
+article.musepass .bene_res .bene_list {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0;
 }
 article.musepass .bene_res .bene_res_inf {
 	display:flex;
@@ -431,14 +437,42 @@ article.musepass .bene_res .bene_res_inf .ref_inf_img {
 	background: #000;
 }
 article.musepass .bene_res .pos_inf .ref_inf_txt {
-	height: 410px;
+	height: auto;
     display: flex;
     flex-direction: column;
+    padding: 30px 30px 0 30px;
+    width: 300px;
+    border: 1px solid #959595;
+    min-height: 380px;
     justify-content: space-between;
 }
+article.musepass .bene_res .pos_inf .ref_inf_txt img {
+	width: 50px;
+	margin-bottom: 20px;
+}
 article.musepass .bene_res .pos_inf .ref_inf_txt .name{
+	font-size: 23px;
+    font-weight: 600;
+    margin-bottom: 60px;
+}
+article.musepass .bene_res .pos_inf .ref_inf_txt .musename{
 	font-size: 20px;
-	font-weight: 700;
+    font-weight: 700;
+    color: #FF3D32;
+    margin-bottom: 20px;
+}
+article.musepass .bene_res .pos_inf .ref_inf_txt .muse_day{
+	font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 70px;
+}
+article.musepass .bene_res .pos_inf .ref_inf_txt .origin {
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
+	font-size: 20px;
+	margin-bottom: 30px;
 }
 
 /* footer */
