@@ -111,7 +111,7 @@
     
 }
 
-article h2 {
+.content article h2 {
     font-size: 45px;
     padding: 100px 0 50px;
     text-align: center;
@@ -473,6 +473,143 @@ article.musepass .bene_res .pos_inf .ref_inf_txt .origin {
 article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
 	font-size: 20px;
 	margin-bottom: 30px;
+}
+/* reservMain */
+.reservWrap {
+	position: relative;
+    width: 1200px;
+    background: #444444;
+    height: 750px;
+}
+.reservWrap .contWrap {
+	display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+.reservWrap .step {
+	position: relative;
+    height: 50px;
+    background: blue;
+    display: flex;
+    align-items: center;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+.reservWrap .step h2 {
+	width: 100px;
+    height: 100%;
+    background: #FF3D32;
+    color: #fff;
+    font-size: 12px;
+    line-height: 50px;
+    text-align: center;
+}
+.reservWrap .step h3 {
+	font-size: 15px;
+    font-weight: 500;
+}
+.reservWrap .step h3 span {
+	font-size: 10px;
+    font-weight: 400;
+    color: #b2b2b2;
+}
+.reservWrap .step .select {
+	margin-left: 140px;
+}
+.reservWrap .step .select em, span {
+	font-size: 12px;
+}
+.reservWrap .step .select span {
+	font-size: 12px;
+	margin-left: 15px;
+}
+.reservWrap .allSeat {
+	display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    height: calc(100% - 50px);
+}
+.reservWrap .allSeat .seatL {
+	width: calc(100% - 250px);
+}
+.reservWrap .allSeat .seatR {
+	display: flex;
+    flex-direction: column;
+    gap: 15px;
+	width: 250px;
+    height: 100%;
+    background: yellow;
+}
+.reservWrap .allSeat .s.Floor {
+	width: 250px;
+    background: yellow;
+}
+.reservWrap .allSeat .s h2 {
+	width: 100%;
+    padding: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+}
+.reservWrap .allSeat .s.Floor h2 {
+	background: #F66904;
+    color: #fff;
+}
+.reservWrap .allSeat .s ul {
+    padding: 15px;
+    background: #fff;
+    margin: 5px 0;
+}
+.reservWrap .allSeat .s.Floor ul {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+.reservWrap .allSeat .s.Floor ul li {
+	font-size: 13px;
+	display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.reservWrap .allSeat .s.Rating ul, .s.Choice div {
+	display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #fff;
+    padding: 20px;
+}
+.reservWrap .allSeat .s.Rating ul li {
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+.reservWrap .allSeat .s.Rating h2, .s.Choice h2 {
+	background: #F0F0F0;
+    color: #1E1E1E;
+}
+.nextBt {
+	width: 100%;
+    padding: 15px;
+    background: #FF3D32;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+}
+.subBtList{
+	width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 5px;
+}
+
+.subBt{
+	width: 49%;
+	padding: 10px;
 }
 
 /* footer */
