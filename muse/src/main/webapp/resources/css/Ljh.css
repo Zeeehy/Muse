@@ -1,1 +1,263 @@
 @charset "UTF-8";
+
+styles.css
+
+
+/* 공통 */
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Medium.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-SemiBold.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-Bold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'MV Boli';
+    src: url('/path-to-fonts/MV-Boli.woff2') format('woff2'),
+         url('/path-to-fonts/MV-Boli.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
+    overflow-x: hidden;
+}
+
+p, span, li, label, input, button, textarea, select, option, h1, h2, h3, tr, th, td {
+    font-family: 'Pretendard';
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+li::marker {
+    content: none;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+
+/* Body */
+body {
+    margin: 0;
+    padding:0;
+}
+/* Header */
+.header {
+    background-color: #D9D9D9;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 24px;
+    color: #333;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+    padding: 10px 20px;
+}
+.header-image {
+    width: 100px;  /* �썝�븯�뒗 �꼫鍮� */
+    height: 50px; /* �썝�븯�뒗 �넂�씠 */
+    margin-right: 10px; /* �씠誘몄��� �뀓�뒪�듃 �궗�씠�쓽 媛꾧꺽 議곗젙 */
+}
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #DFF0FF;
+    color: #000;
+    position: fixed;
+    top: 60px; /* Below header */
+    left: 0;
+    height: calc(100% - 60px);
+    padding-top: 20px;
+}
+
+.sidebar .dropdown-btn {
+    border: none;
+    background: none;
+    width: 100%;
+    outline: none;
+    
+    
+      transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.sidebar a,.dropdown-btn {
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #000;
+    display: block;
+    text-align: center;
+}
+
+.sidebar a:hover,.dropdown-btn:hover {
+    background-color: #BFD9E0; /* Recommended dropdown hover color */
+}
+
+/* Main Content */
+
+
+
+/* �궗�씠�뱶諛� 硫붾돱 諛� �뱶濡��떎�슫 踰꾪듉 �뒪���씪 */
+.sidebar h3, .sidebar .dropdown-btn {
+    display: block;
+    color: #000000;
+    padding: 15px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+
+.sidebar .dropdown-btn:hover {
+    background-color: #B0DFFF;
+}
+
+/* �뱶濡��떎�슫 硫붾돱 而⑦뀒�씠�꼫 */
+.dropdown-container {
+    display: none;
+    background-color: #add9ff;
+    padding-left: 10px;
+    
+    
+      opacity: 0; /* 초기 투명도 설정 */
+  transition: opacity 0.3s ease; /* 부드러운 전환 효과 */
+  max-height: 0; /* 초기 높이 설정 */
+  overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+}
+
+.dropdown-container a {
+    color: #000000;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    text-align: right;
+}
+
+.dropdown-container a:hover {
+    background-color: #575757;
+}
+
+/* 硫붿씤 而⑦뀗痢� �뒪���씪 */
+
+
+input[type="text"] {
+    border: none; /* �뀒�몢由� �젣嫄� */
+    background-color: #f3f0f0; /* 諛곌꼍�깋 蹂�寃� (�삁: �뿰�븳 �븯�뒛�깋) */
+    padding: 10px; /* �뙣�뵫 異붽� */
+    border-radius: 5px; /* 紐⑥꽌由щ�� �뫁湲�寃� */
+    width: 100%; /* �꼫鍮� 議곗젙 (�샃�뀡) */
+    font-size: 16px; /* 湲��옄 �겕湲� 議곗젙 (�샃�뀡) */
+}
+
+input[type="text"]:focus {
+    outline: none; /* �룷而ㅼ뒪 �떆 �뀒�몢由� �젣嫄� */
+    background-color: #dadada; /* �룷而ㅼ뒪 �떆 諛곌꼍�깋 蹂�寃� (�삁: �뿰�븳 �뙆���깋) */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #DFF0FF;
+    color: #000;
+    position: fixed;
+    top: 80px; /* Below header */
+    left: 0;
+    height: calc(100% - 80px);
+    padding-top: 20px;
+}
+
+.sidebar a,
+.dropdown-btn {
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #000;
+    display: block;
+    text-align: center;
+}
+.sidebar a:hover,
+.dropdown-btn:hover {
+    background-color: #BFD9E0; /* Recommended dropdown hover color */
+}
+
+
+.dropdown-container.show {
+  display: block; /* 블록으로 표시 */
+  opacity: 1; /* 완전한 불투명도 */
+  max-height: 300px; /* 최대 높이 설정 (필요에 따라 조정) */
+}
+
+.dropdown-btn.active {
+  background-color: red; /* 활성화된 버튼 색상 */
+  color: white; /* 텍스트 색상 변경 */
+}
+
+
+/*header , side bar end*/
+
+
+
+
+
+
+/*관리자 박스*/
+.main-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    align-items: center;
+}
+.main-content hr {
+    height: 1px;
+    width: 90%;
+    background-color: #2196f3;
+    border: none;
+    margin: 20px auto;
+}
+

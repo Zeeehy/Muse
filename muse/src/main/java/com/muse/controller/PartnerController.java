@@ -11,4 +11,11 @@ public class PartnerController {
 		
 		return "/partner/partnerAddForm";
 	}
+	
+	@RequestMapping("/castAddForm.do")
+	public String castAddForm() {
+		
+		return "/partner/castAddForm";
+	}
+	
 }

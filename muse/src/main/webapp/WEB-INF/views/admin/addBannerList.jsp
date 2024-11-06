@@ -5,9 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <link rel="stylesheet" href="/muse/resources/css/Ljh.css" type="text/css">
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <style>
 
 /* 특정 테이블 스타일 */
@@ -77,16 +79,12 @@
 </style>
 
 
+
 </head>
 <body>
 
-<%@include file="header.jsp" %>
-<%@include file="sidebar.jsp" %>
-
-
-	<div class="main-content">
-	
-		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 배너 등록 / 삭제</h1>
+<div style="margin-left:20px;margin-right:20px;">
+		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 배너 등록</h1>
 		<hr>
 		<table id="bannerListTable" border="1" cellspacing="0">
 			<tr >
@@ -94,8 +92,7 @@
 				<th>포스터</th>
 				<th>공연 이름</th>
 				<th>제작사 이름</th>
-				<th>배너 등록일</th>
-				<th>등록 / 삭제</th>
+				<th>등록</th>
 			</tr>
 			
 			<c:forEach var="dto" items="${lists}" varStatus="status">
@@ -104,42 +101,17 @@
 			        <td><img src="/muse/resources/img/musical/${dto.m_poster}" class="bannerImg"></td>
 			        <td>${dto.m_title}</td> 
 			        <td>${dto.pr_name}</td>
-			        <td>${dto.b_date}</td>
-			        <td>
-			            <input type="button" value="삭제" class="redButton" onclick="window.location.href='deleteBanner.do?m_code=${dto.m_code}'">
-			        </td>
+			        <td><input type="button" value="등록" class="blueButton" onclick="window.location.href='addBanner.do?m_code=${dto.m_code}'"></td>
 			    </tr>
 			</c:forEach>
 			
-			<!-- 빈 행을 추가하여 총 8행을 맞춤 -->
-			<c:forEach begin="${fn:length(lists) + 1}" end="8" var="i">
-			    <tr>
-			        <td>${i}</td> <!-- 빈 행의 순서 -->
-			        <td></td>
-			        <td></td>
-			        <td></td>
-			        <td></td>
-			        <td><input type="button" value="등록" class="blueButton" onclick="openAddBanner()"></td>
-			    </tr>
-			</c:forEach>
-
-
 		
-			
 		</table>
-	</div>
-	
-
-
-
+</div>
 
 </body>
 
-<script>
-function openAddBanner(){
-    window.open("addBannerList.do","배너 등록", "width=1000,height=600" );
-}
-</script>
+
 
 
 </html>
