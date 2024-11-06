@@ -2,22 +2,6 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-.left-section {
-            display: flex; /* 왼쪽 요소들 수평 정렬 */
-            align-items: center; /* 세로 중앙 정렬 */
-        }
-.right-section {
-			padding-right:60px;
-			margin:10px;
-            display: flex; /* 오른쪽 요소들 수평 정렬 */
-            align-items: center; /* 세로 중앙 정렬 */
-        }                
-</style>
-</head>
 <body>
 	<div class="header">
 	<div class="left-section">

@@ -1,10 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Layer Popup Below Request Status</title>
-</head>
 <body>
    <div class="sidebar">
     <div class="sidebartop">
@@ -56,7 +52,7 @@
 
     <!-- 드롭다운 버튼과 하위 메뉴들 -->
     <button class="dropdown-btn">
-      신규 등록 <i class="fa fa-caret-down"></i>
+      신규 등록
     </button>
     <div class="dropdown-container">
       <a href="#">파트너 신청</a>
@@ -64,7 +60,7 @@
     </div>
 
     <button class="dropdown-btn">
-      뮤지컬 관리 <i class="fa fa-caret-down"></i>
+      뮤지컬 관리
     </button>
     <div class="dropdown-container">
       <a href="#">공연 등록</a>
@@ -72,7 +68,7 @@
     </div>
 
     <button class="dropdown-btn">
-      수정 요청 <i class="fa fa-caret-down"></i>
+      수정 요청
     </button>
     <div class="dropdown-container">
       <a href="#">회원 정보 수정</a>
@@ -80,7 +76,7 @@
     </div>
 
     <button class="dropdown-btn">
-      판매 현황 <i class="fa fa-caret-down"></i>
+      판매 현황
     </button>
     <div class="dropdown-container">
       <a href="#">티켓 판매</a>
@@ -96,5 +92,19 @@
   function closePopup() {
     document.getElementById("popup").style.display = "none"; // 팝업 숨기기
   }
+//드롭다운 버튼을 클릭하여 하위 메뉴를 표시/숨김
+  var dropdown = document.getElementsByClassName("dropdown-btn");
+  for (var i = 0; i < dropdown.length; i++) {
+    dropdown[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var dropdownContent = this.nextElementSibling;
+      if (dropdownContent.style.display === "block") {
+        dropdownContent.style.display = "none";
+      } else {
+        dropdownContent.style.display = "block";
+      }
+    });
+  }
+
 </script>
 </html>
