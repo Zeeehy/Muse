@@ -198,8 +198,12 @@ article.whatsOn a.calender img {
 .screening-item.open .meta.red {
     color: #FF3D32;
 }
-.screening-item.open .meta.gray {
+.screening-item .meta.gray {
     color: #959595;
+}
+
+article .bt {
+	padding: 50px 0;
 }
 
 article .bt a{
@@ -211,7 +215,7 @@ article .bt a{
     align-items: center;
     justify-content: center;
     border: 1px solid #FF3D32;
-    margin: 50px auto;
+    margin: 0 auto;
 }
 
 article .bt a:hover {
@@ -263,6 +267,178 @@ article .bt a:hover {
 .slick-next {
     right: -15px;
     z-index: 10;
+}
+.mainBanner {
+	position: relative;
+	padding: 100px 0 50px;
+}
+.mainBanner a {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+.mainBanner a .txt {
+	position: absolute;
+	padding: 50px 0 0 500px;
+    color:#fff;
+    text-align: center;
+}
+.mainBanner a .txt01 {
+	font-size:19px;
+	font-weight: 300;
+	opacity: 0.6;
+}
+.mainBanner a .txt02 {
+	font-size:22px;
+	margin-top: 5px;
+}
+.mainBanner a .txt span {
+    color:#fff;
+}
+
+article .reviewcont ul.cont {
+	display:flex;
+	gap: 70px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+article .reviewcont ul li {
+	margin-right: 30px;
+}
+
+article .reviewcont ul.cont li a {
+    width: 100%;
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 30px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+article .reviewcont ul.cont li .reviewposter{
+	width: 300px;
+    height: 350px;
+    background: #000;
+}
+article .reviewcont ul.cont li .reviewtxt ul {
+	display: flex;
+    width: 310px;
+    height: 310px;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid;
+    padding: 20px;
+}
+article .reviewcont ul.cont li .reviewtxt .name{
+	font-size: 15px;
+	color: 000;
+	opacity: 0.6;
+}
+article .reviewcont ul.cont li .reviewtxt .title{
+	font-size: 22px;
+}
+article .reviewcont ul.cont li .reviewtxt .content{
+	font-size: 15px;
+	color: #757575;
+	line-height: 1.5;
+}
+article .reviewcont ul.cont li .reviewtxt .inf{
+	font-size: 15px;
+}
+
+.screening-container.all {
+    display: flex;
+    gap: 25px;
+    padding: 50px 0;
+}
+
+.screening-item.all {
+	width: 280px;
+}
+
+article.alltheMusical {
+	padding-bottom:100px;
+}
+
+/* MusePass */
+article.musepass {
+	padding-bottom: 110px;
+}
+article.musepass h2 {
+	display: flex; 
+	flex-direction: column; 
+	color: #FF3D32;
+}
+article.musepass h2 span {
+	font-size:22px; 
+	font-weight:400; 
+	color:#000; 
+	opacity: 0.6; 
+	margin-top:10px;
+}
+article.musepass div.bene_bk {
+	display: flex;
+    width: 100%;
+    height: 415px;
+    background: url(../img/main/musebene_bk.png) no-repeat #000;
+    padding: 50px 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+article.musepass div ul {
+	display: flex; 
+	align-items: center; 
+	justify-content: center; 
+	gap: 135px;
+}
+article.musepass div ul li .imgbox {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	width: 180px; 
+	height: 180px; 
+	background: #fff; 
+	border-radius: 50%;
+	border: 1px solid #ff3d32;
+}
+article.musepass div ul li .imgbox img{
+	width: 100px; 
+}
+article.musepass div ul li .bene_p01 {
+	margin-top:35px;
+	font-size:23px;
+	color: #fff;
+	font-weight: 700;
+}
+article.musepass div ul li .bene_p02 {
+	margin-top:20px;
+	font-size:17px;
+	color: #fff;
+	opacity: 0.8;
+	line-height: 1.5;
+}
+article.musepass .bene_res .bene_res_inf {
+	display:flex;
+	gap: 30px;
+}
+article.musepass .bene_res .bene_res_inf .ref_inf_img {
+	width: 300px;
+	height: 410px;
+	background: #000;
+}
+article.musepass .bene_res .pos_inf .ref_inf_txt {
+	height: 410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+article.musepass .bene_res .pos_inf .ref_inf_txt .name{
+	font-size: 20px;
+	font-weight: 700;
 }
 
 /* footer */

@@ -121,8 +121,238 @@
             </div> 
         </article>
         <div class="mainBanner">
-        	<a href="#"><img src="resources/img/main/mainbanner.png"></a>
+        	<a href="musepass.do">
+	        	<div class="txt">
+	        		<p class="txt01">
+		        	공연 선예매와 선 지급 포인트 15000P, 리뷰 적립 포인트 2배 등의
+		        	</p>
+		        	<p class="txt02">
+		        	특별한 <b style="color:#FCBA10;">혜택</b>이 가득, <b style="color:#FF3D32;">뮤즈패스</b>에 가입해보세요!
+		        	</p>
+		        </div>
+	        	<img src="resources/img/main/banner.png">
+	        </a>
         </div>
+        <article class="bestReview">
+        	<h2>Best Review</h2>
+        	<div class="reviewcont">
+        		<ul class="cont">
+        			<li>
+        				<a href="#">
+        					<div class="reviewposter">
+        						<img src="">
+        					</div>
+        					<div class="reviewtxt">
+        						<ul>
+        							<li class="name">뮤지컬 [킹키부츠]</li>
+        							<li class="title"><b>미쳤다 킹키부츠 !</b></li>
+        							<li class="content">
+        							(((내가 드디어 킹키부츠를 킹키를 보고오다니....
+        							몹시 감동이 심해 이 감동이 잊혀지기전에 후기를 씁니다.)))
+        							쥐롤라덕분,,,?에 원래도 인기인데 더 인기가 많아져 버린 킹키의 
+        							예매를 겨우 성공했습니다.아니 그만 유명해져....
+        							저의 경우 가장 사랑하는 넘버는 ''Everybody say yeah'' 
+        							와 ''Raise you up'' 이었는데요. 이걸 실제로 들으니 
+        							저도모르게 노래를 따라부르며 소리지르고 싶었어요...
+        							</li>
+        							<li class="inf">
+        								<span>aaa1234</span>
+        								<span>별</span>
+        								<span>(5.0)</span>
+        							</li>
+        						</ul>
+        					</div>
+        				</a>
+        			</li>
+        			<li>
+        				<a href="#">
+        					<div class="reviewposter">
+        						<img src="">
+        					</div>
+        					<div class="reviewtxt">
+        						<ul>
+        							<li class="name">뮤지컬 [킹키부츠]</li>
+        							<li class="title"><b>미쳤다 킹키부츠 !</b></li>
+        							<li class="content">
+        							(((내가 드디어 킹키부츠를 킹키를 보고오다니....
+        							몹시 감동이 심해 이 감동이 잊혀지기전에 후기를 씁니다.)))
+        							쥐롤라덕분,,,?에 원래도 인기인데 더 인기가 많아져 버린 킹키의 
+        							예매를 겨우 성공했습니다.아니 그만 유명해져....
+        							저의 경우 가장 사랑하는 넘버는 ''Everybody say yeah'' 
+        							와 ''Raise you up'' 이었는데요. 이걸 실제로 들으니 
+        							저도모르게 노래를 따라부르며 소리지르고 싶었어요...
+        							</li>
+        							<li class="inf">
+        								<span>aaa1234</span>
+        								<span>별</span>
+        								<span>(5.0)</span>
+        							</li>
+        						</ul>
+        					</div>
+        				</a>
+        			</li>
+        			<li>
+        				<a href="#">
+        					<div class="reviewposter">
+        						<img src="">
+        					</div>
+        					<div class="reviewtxt">
+        						<ul>
+        							<li class="name">뮤지컬 [킹키부츠]</li>
+        							<li class="title"><b>미쳤다 킹키부츠 !</b></li>
+        							<li class="content">
+        							(((내가 드디어 킹키부츠를 킹키를 보고오다니....
+        							몹시 감동이 심해 이 감동이 잊혀지기전에 후기를 씁니다.)))
+        							쥐롤라덕분,,,?에 원래도 인기인데 더 인기가 많아져 버린 킹키의 
+        							예매를 겨우 성공했습니다.아니 그만 유명해져....
+        							저의 경우 가장 사랑하는 넘버는 ''Everybody say yeah'' 
+        							와 ''Raise you up'' 이었는데요. 이걸 실제로 들으니 
+        							저도모르게 노래를 따라부르며 소리지르고 싶었어요...
+        							</li>
+        							<li class="inf">
+        								<span>aaa1234</span>
+        								<span>별</span>
+        								<span>(5.0)</span>
+        							</li>
+        						</ul>
+        					</div>
+        				</a>
+        			</li>
+        			<li>
+        				<a href="#">
+        					<div class="reviewposter">
+        						<img src="">
+        					</div>
+        					<div class="reviewtxt">
+        						<ul>
+        							<li class="name">뮤지컬 [킹키부츠]</li>
+        							<li class="title"><b>미쳤다 킹키부츠 !</b></li>
+        							<li class="content">
+        							(((내가 드디어 킹키부츠를 킹키를 보고오다니....
+        							몹시 감동이 심해 이 감동이 잊혀지기전에 후기를 씁니다.)))
+        							쥐롤라덕분,,,?에 원래도 인기인데 더 인기가 많아져 버린 킹키의 
+        							예매를 겨우 성공했습니다.아니 그만 유명해져....
+        							저의 경우 가장 사랑하는 넘버는 ''Everybody say yeah'' 
+        							와 ''Raise you up'' 이었는데요. 이걸 실제로 들으니 
+        							저도모르게 노래를 따라부르며 소리지르고 싶었어요...
+        							</li>
+        							<li class="inf">
+        								<span>aaa1234</span>
+        								<span>별</span>
+        								<span>(5.0)</span>
+        							</li>
+        						</ul>
+        					</div>
+        				</a>
+        			</li>
+        		</ul>
+        	</div>
+        	 <div class="bt bestReview">
+            	<a href="#">리뷰 전체보기 <i class="fa-solid fa-angle-right"></i></a>
+            </div> 
+        </article>
+        <article class="alltheMusical">
+        	<h2>All the musicals</h2>
+        	<div class="screening-container all">
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                 <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+            </div> 
+            <div class="screening-container all">
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                 <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+            </div> 
+            <div class="screening-container all">
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+                 <div class="screening-item all">
+                    <div class="thumbnail"></div>
+                    <div class="title">뮤지컬 [시라노]</div>
+                    <div class="meta red">10월 31일(목) 14:00</div>
+                    <div class="meta gray">4차 티켓오픈</div>
+                </div>
+            </div> 
+            <div class="bt ticketOpen">
+            	<a href="#">티켓 오픈 전체보기 <i class="fa-solid fa-angle-right"></i></a>
+            </div> 
+        </article>
     </div>
 <%@include file="footer.jsp" %>
 </body>
@@ -135,7 +365,7 @@
 <script>
 $(document).ready(function() {
     // 첫 번째 슬라이더 (What's on 섹션)
-    $('.screening-container:not(.open)').slick({
+    $('.screening-container:not(.open):not(.all)').slick({
         slidesToShow: 4,       // 한 번에 보이는 슬라이드 개수
         slidesToScroll: 1,     // 한 번에 스크롤되는 슬라이드 개수
         arrows: true,          // 좌우 탐색 버튼 활성화
@@ -153,5 +383,4 @@ $(document).ready(function() {
     });
 });
 </script>
-
 </html>
