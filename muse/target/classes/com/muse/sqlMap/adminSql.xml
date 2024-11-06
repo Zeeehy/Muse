@@ -4,17 +4,29 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.muse.admin.mapper.adminSQL">
   
-  <select id="practice"  resultType="com.muse.admin.model.AdminDTO">
-  select *
-	from
-	(
-	select * from employee
-	order by idx desc
-	)
-	where rownum=1
+  <select id="bannerList"  resultType="com.muse.admin.model.BannerDTO">
+	select b.b_code, b.m_code, b.b_date, m.m_title, m.m_poster, pr.pr_name
+	from banner b, musical m, partner pr
+	where b.m_code = m.m_code and m.pr_code = pr.pr_code
+	order by b.b_date 
+  </select>
+
+
+  <select id="addBannerList"  resultType="com.muse.admin.model.BannerDTO">
+	SELECT m.m_code, m.m_title, m.m_poster, pr.pr_name
+	FROM musical m
+	JOIN partner pr ON m.pr_code = pr.pr_code
+	LEFT JOIN banner b ON m.m_code = b.m_code
+	WHERE m.m_viewstate = 1 AND b.m_code IS NULL
   </select>
   
+  <insert id="addBanner" parameterType="String">
+  	insert into banner(b_code,m_code,b_date) values('b_'||BANNER_B_CODE.nextval,#{m_code},sysdate)
+  </insert>
   
+  <delete id="deleteBanner" parameterType="String">
+  	delete from banner where m_code=#{m_code}
+  </delete>
   
   
   </mapper>
