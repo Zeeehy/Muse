@@ -7,70 +7,6 @@
 <title>파트너 등록</title>
 <link rel="stylesheet" href="/muse/resources/css/Phj.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
-<style>
-/* 개인 레이아웃 */
-.main-content {
-    flex-direction: column;
-    margin-left: 250px;
-    margin-top: 60px;
-    padding: 20px;
-    align-items: center;
-}
-.main-content hr {
-    height: 1.3px;
-    /*width: 90%;*/
-    background-color: green;
-    border: none;
-    margin-left: 20px auto;
-}
-.table-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.table-content table {
-    border-collapse: collapse;
-    width: 100%;
-    max-width: 600px;
-    margin: 10px 0;
-    border:none;
-}
-.table-content th, .table-content td {
-    padding: 20px;
-    text-align: left;
-}
-.table-content th {
-    font-weight: bold;
-}
-.table-content td input {
-    width: 95%;
-    padding: 5px;
-}
-.table-content div {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-}
-.table-content input[type="submit"], .table-content input[type="reset"] {
-	border-radius: 10px;
-    padding: 8px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-.table-content input[type="reset"] {
-	border-radius: 10px;
-    background-color: #f44336;
-}
-.table-content input[type="submit"]:hover, .table-content input[type="reset"]:hover {
-    opacity: 0.8;
-}
-.main-contenttop{
-	margin-top: 35px;
-    padding-left: 20px;
-}
-</style>
 </head>
 <body>
 	<%@include file="header.jsp" %>
@@ -80,9 +16,11 @@
     <div class="main-content">
     	<div class="main-contenttop">
         	<h1>파트너 등록</h1>
+        	<hr>
         </div>
-        <hr>
+        
         <div class="table-content">
+        	
             <h2>뮤즈 정보</h2>
             <table>
                 <tr>
@@ -113,11 +51,11 @@
                     <td><input type="text" required></td>
                 </tr>
                 <tr>
-                    <th>사업자 명</th>
+                    <th>연락처</th>
                     <td><input type="text" required></td>
                 </tr>
                 <tr>
-                    <th>대표자 이름</th>
+                    <th>이메일</th>
                     <td><input type="text" required></td>
                 </tr>
             </table>
@@ -128,22 +66,5 @@
         </div>
     </div>
     </form>
-
-<script>
-// 드롭다운 버튼을 클릭하여 하위 메뉴를 표시/숨김
-var dropdown = document.getElementsByClassName("dropdown-btn");
-for (var i = 0; i < dropdown.length; i++) {
-  dropdown[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var dropdownContent = this.nextElementSibling;
-    if (dropdownContent.style.display === "block") {
-      dropdownContent.style.display = "none";
-    } else {
-      dropdownContent.style.display = "block";
-    }
-  });
-}
-
-</script>
 </body>
 </html>
