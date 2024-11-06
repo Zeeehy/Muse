@@ -88,16 +88,16 @@ ul li input[type="password"]::placeholder {
                   </div>        
                 </div>         
 	            <div>
-	               <form>      
+	               <form action="memberLogin.do" method="post">      
 	                  <article>
 	                     <ul>
 	                     <li class="input-container">
 	                     	<img src="/muse/resources/img/member/id.png">
-	                        <input type="text" placeholder="아이디">
+	                        <input type="text" name="u_id" placeholder="아이디">
 	                     </li>
 	                      <li class="input-container">
 	                        <img src="/muse/resources/img/member/pwd.png">
-	                        <input type="password" placeholder="비밀번호">
+	                        <input type="password" name="u_pwd" placeholder="비밀번호">	                       
 	                      </li>         
 	                      <li class="input-container-btn">  
 	                     	<input class="login_btn" type="submit" value="로그인">         
