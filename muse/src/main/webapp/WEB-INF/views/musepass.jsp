@@ -48,19 +48,37 @@
 			</div>
 			<div class="bene_res">
 				<h2 style="color: #000;">MUSEPASS 선예매</h2>
-				<div class="bene_res_inf">
-					<a href="#" class="ref_inf_img"><img src=""></a>
-					<div class="pos_inf">
-						<a href="" class="ref_inf_txt">
-							<p class="name">뮤지컬 지킬앤하이드</p>
-							<img src="">
-							<p>뮤즈</p>
-							<p class="muse_day">2024.11.10 13:00 OPEN</p>
-							<p>일반</p>
-							<p class="origin_day">2024.11.10 14:00 OPEN</p>
-						</a>
+				<div class="bene_list">
+					<div class="bene_res_inf">
+						<a href="#" class="ref_inf_img"><img src=""></a>
+						<div class="pos_inf">
+							<a href="" class="ref_inf_txt">
+								<p class="name">뮤지컬 [지킬앤하이드]</p>
+								<img src="resources/img/main/muselogo.png">
+								<p class="musename">뮤즈패스</p>
+								<p class="muse_day">2024.11.10 13:00 OPEN</p>
+								<p class="origin">일반</p>
+								<p class="origin_day">2024.11.10 14:00 OPEN</p>
+							</a>
+						</div>
+					</div>
+					<div class="bene_res_inf">
+						<a href="#" class="ref_inf_img"><img src=""></a>
+						<div class="pos_inf">
+							<a href="" class="ref_inf_txt">
+								<p class="name">뮤지컬 [지킬앤하이드]</p>
+								<img src="resources/img/main/muselogo.png">
+								<p class="musename">뮤즈패스</p>
+								<p class="muse_day">2024.11.10 13:00 OPEN</p>
+								<p class="origin">일반</p>
+								<p class="origin_day">2024.11.10 14:00 OPEN</p>
+							</a>
+						</div>
 					</div>
 				</div>
+				 <div class="bt musepass">
+		            <a href="#">뮤즈패스 가입하기 <i class="fa-solid fa-angle-right"></i></a>
+		         </div> 
 			</div>
 		</article>
 	</div>
