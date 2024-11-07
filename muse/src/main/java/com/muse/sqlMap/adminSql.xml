@@ -29,4 +29,39 @@
   </delete>
   
   
+
+
+
+<!-- 페이징...귀찮음	
+	
+		select *
+	from
+	(
+		select rownum as rnum, a.*
+		from
+		(
+			select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
+			from partner p, users u
+			where rs_code=0 and p.u_id = u.u_id
+		)a
+	)b
+	where rnum <![CDATA[>]]> =#{start} and rnum <![CDATA[<]]>=#{end}
+	 -->
+
+   <select id="partnerRequestList"  resultType="com.muse.admin.model.PartnerDTO">
+	select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
+	from partner p, users u
+	where rs_code=0 and p.u_id = u.u_id
+  </select>
+  
+  <select id="partnerRequest"  resultType="com.muse.admin.model.PartnerDTO">
+	select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
+	from partner p, users u
+	where p.u_id = u.u_id and pr_code=#{pr_code}
+  </select>
+  
+  <update id="partnerRequestEnd" parameterType="map" >
+  	update partner set rs_code=#{rs_code} where pr_code=#{pr_code}
+  </update>
+  
   </mapper>

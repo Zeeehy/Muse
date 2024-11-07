@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.muse.admin.model.AdminDAO;
 import com.muse.admin.model.AdminDTO;
 import com.muse.admin.model.BannerDTO;
+import com.muse.admin.model.PartnerDTO;
 
 @Controller
 public class AdminController {
@@ -28,15 +29,15 @@ public class AdminController {
 		return "/index";
 	}
 	
-	//ModelAndView´Â request¿Í ºñ½ÁÇÔ
-	@RequestMapping("/hello.do") //¸í·É¾î¿¡ ÀÇÇØ ÁøÀÔÇÏ´Â ¸Ş¼Òµå. Áï hello.do°¡ ºÒ·¯Áö¸é ½ÇÇà
+	//ModelAndViewëŠ” requestì™€ ë¹„ìŠ·í•¨
+	@RequestMapping("/hello.do") //ëª…ë ¹ì–´ì— ì˜í•´ ì§„ì…í•˜ëŠ” ë©”ì†Œë“œ. ì¦‰ hello.doê°€ ë¶ˆëŸ¬ì§€ë©´ ì‹¤í–‰
 	public ModelAndView hello() {
 		
 		String result="spring MVC Framework!";
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("msg", result);
 		mav.setViewName("/hello");
-		//view ÆäÀÌÁö ÀúÀå
+		//view í˜ì´ì§€ ì €ì¥
 		
 		return mav;
 	}
@@ -58,13 +59,14 @@ public class AdminController {
 	}
 	
 	
-	//¹è³Ê ¸®½ºÆ® °¡Á®¿À±â
+	/*ë°°ë„ˆ ë“±ë¡ ì‚­ì œ ì‹œì‘*/
+	//ë°°ë„ˆ ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
 	@RequestMapping("/bannerList.do")
 	public ModelAndView bannerList() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/bannerList");
 		
-		//±âÁ¸ ¹è³Ê ÀÖÀ¸¸é µé°í¿À±â
+		//ê¸°ì¡´ ë°°ë„ˆ ìˆìœ¼ë©´ ë“¤ê³ ì˜¤ê¸°
 		List<BannerDTO> lists = adminDao.bannerList();
 		mav.addObject("lists",lists);
 		
@@ -72,52 +74,112 @@ public class AdminController {
 		return mav;
 	}
 	
-	//Ãß°¡ÇÒ ¹è³Ê¸®½ºÆ® °¡Á®¿À±â
+	//ì¶”ê°€í•  ë°°ë„ˆë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
 	@RequestMapping("/addBannerList.do")
 	public ModelAndView addBannerList() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/addBannerList");
 		
-		//¹è³ÊÃß°¡´Â viewstate È®ÀÎ
+		//ë°°ë„ˆì¶”ê°€ëŠ” viewstate í™•ì¸
 		List<BannerDTO> lists = adminDao.addBannerList();
 		mav.addObject("lists",lists);
 		
 		return mav;
 	}
 	
-	//¹è³Ê Ãß°¡ÇÏ±â
+	//ë°°ë„ˆ ì¶”ê°€í•˜ê¸°
 	@RequestMapping("/addBanner.do")
 	public ModelAndView addBanner(@RequestParam("m_code") String m_code) {
 		ModelAndView mav = new ModelAndView();
 		
-		//bannerÅ×ÀÌºí¿¡ Ãß°¡ÇÏ±â
+		//bannerí…Œì´ë¸”ì— ì¶”ê°€í•˜ê¸°
 		int result = adminDao.addBanner(m_code);
 		
 		if(result>=1){
 			mav.setViewName("/admin/adminPopup");
-			mav.addObject("msg", "¹è³Ê Ãß°¡ ¿Ï·á!");
+			mav.addObject("msg", "ë°°ë„ˆ ì¶”ê°€ ì™„ë£Œ!");
 		}
 		return mav;
 	}
 	
 	
 	
-	//¹è³Ê»èÁ¦
+	//ë°°ë„ˆì‚­ì œ
 	@RequestMapping("/deleteBanner.do")
 	public ModelAndView deleteBanner(@RequestParam("m_code") String m_code) {
 		ModelAndView mav = new ModelAndView();
 		
-		//¹è³Ê»èÁ¦
+		//ë°°ë„ˆì‚­ì œ
 		int result = adminDao.deleteBanner(m_code);
 		
 		if(result>=1){
 			mav.setViewName("/admin/adminMsg");
-			mav.addObject("msg", "¹è³Ê »èÁ¦ ¿Ï·á");
+			mav.addObject("msg", "ë°°ë„ˆ ì‚­ì œ ì™„ë£Œ");
 			mav.addObject("goUrl", "bannerList.do");
 		}
 		
 		return mav;
 	}
+	/*ë°°ë„ˆ ë“±ë¡ ì‚­ì œ ë*/
+	
+	
+	
+	/*ì œì‘ì‚¬íšŒì› ë¦¬ìŠ¤íŠ¸ ì‹œì‘*/
+	//ì œì‘ì‚¬íšŒì› ë¦¬ìŠ¤íŠ¸ ê°€ì ¸ì˜¤ê¸°
+	@RequestMapping("/partnerRequestList.do")
+	public ModelAndView partnerRequestList() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/partnerRequestList");
+		
+		//ê¸°ì¡´ ë°°ë„ˆ ìˆìœ¼ë©´ ë“¤ê³ ì˜¤ê¸°
+		List<PartnerDTO> lists = adminDao.partnerRequestList();
+		mav.addObject("lists",lists);
+		
+		
+		return mav;
+	}
+	
+	//ì œì‘ì‚¬íšŒì› ìƒì„¸
+	@RequestMapping("/partnerRequest.do")
+	public ModelAndView partnerRequest(@RequestParam("pr_code") String pr_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		//ê¸°ì¡´ ë°°ë„ˆ ìˆìœ¼ë©´ ë“¤ê³ ì˜¤ê¸°
+		PartnerDTO dto = adminDao.partnerRequest(pr_code);
+		mav.addObject("dto",dto);
+		
+		mav.setViewName("/admin/partnerRequest");
+		return mav;
+	}
+	
+	
+	//ì œì‘ì‚¬íšŒì› ìƒíƒœê°’ ë°”ê¾¸ê¸°
+	@RequestMapping("/partnerRequestEnd.do")
+	public ModelAndView partnerRequestEnd(@RequestParam("rs_code") int rs_code,
+											@RequestParam("pr_code") String pr_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		int result = adminDao.partnerRequestEnd(rs_code,pr_code);
+		if(rs_code==1){
+			
+			mav.addObject("msg", "íŒŒíŠ¸ë„ˆ ìš”ì²­ ìŠ¹ì¸");
+			mav.setViewName("/admin/adminMsg");
+			mav.addObject("goUrl", "partnerRequestList.do");
+			
+		}
+		else if(rs_code==2) {
+			mav.addObject("msg", "íŒŒíŠ¸ë„ˆ ìš”ì²­ ê±°ë¶€");
+			mav.setViewName("/admin/adminMsg");
+			mav.addObject("goUrl", "partnerRequestList.do");
+		}
+		
+		
+		return mav;
+	}
+	
+	/*ì œì‘ì‚¬íšŒì› ë¦¬ìŠ¤íŠ¸ ë*/
+	
+	
 }
 
 
