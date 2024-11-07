@@ -29,6 +29,9 @@
 	<bean id="myPageUser" class="com.muse.myPage.model.MyPageUserDAOImpl">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="ReviewDao" class="com.muse.review.model.ReviewDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

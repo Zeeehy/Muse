@@ -5,6 +5,82 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #DFF0FF;
+    color: #000;
+    position: fixed;
+    top: 60px; /* Below header */
+    left: 0;
+    height: calc(100% - 60px);
+    padding-top: 20px;
+}
+
+/* 공통 스타일 */
+.sidebar a, .dropdown-btn {
+    padding: 10px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #000;
+    display: block;
+    text-align: center;
+}
+
+.sidebar a:hover, .dropdown-btn:hover {
+    background-color: #BFD9E0; /* Recommended dropdown hover color */
+}
+
+.sidebar .dropdown-btn:hover {
+    background-color: #B0DFFF;
+}
+
+/* 드롭다운 버튼 */
+.sidebar .dropdown-btn {
+    border: none;
+    background: none;
+    width: 100%;
+    outline: none;
+    transition: background-color 0.3s; /* 배경색 전환 효과 */
+}
+
+.dropdown-container.show {
+  display: block; /* 블록으로 표시 */
+  opacity: 1; /* 완전한 불투명도 */
+  max-height: 300px; /* 최대 높이 설정 (필요에 따라 조정) */
+}
+
+.dropdown-btn.active {
+  color: white; /* 텍스트 색상 변경 */
+}
+
+/* 드롭다운 메뉴 컨테이너 */
+.dropdown-container {
+    display: none;
+    background-color: #add9ff;
+    padding-left: 10px;
+    opacity: 0; /* 초기 투명도 설정 */
+    transition: opacity 0.3s ease; /* 부드러운 전환 효과 */
+    max-height: 0; /* 초기 높이 설정 */
+    overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+}
+
+.dropdown-container a {
+    color: #000000;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.dropdown-container a:hover {
+    background-color: #575757;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -54,7 +130,7 @@
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="#">제작사 회원 승인</a>
+            <a href="partnerRequestList.do">제작사 회원 승인</a>
         </div>
     </div>
 </body>
