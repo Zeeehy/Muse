@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.muse.myPage.model.MPassDAO;
+import com.muse.myPage.model.MPassDTO;
 import com.muse.myPage.model.MuseCalendarDAO;
 import com.muse.myPage.model.MuseCalendarDTO;
+import com.muse.myPage.model.MyBookingListDAO;
+import com.muse.myPage.model.MyBookingListDTO;
 import com.muse.myPage.model.MyPageUserDAO;
 import com.muse.myPage.model.MyPageUserDTO;
 
@@ -18,14 +22,26 @@ public class MyPageController {
 	
 	@Autowired
 	private MyPageUserDAO myPageUserDao;
-	
 	@Autowired
 	private MuseCalendarDAO museCalendarDao;
+	@Autowired
+	private MyBookingListDAO myBookingListDao;
+	@Autowired
+	private MPassDAO mPassDao;
 	
 	/**마이페이지 메인*/
 	@RequestMapping("/myPageMain.do")
-	public String myPageMainForm() {
-		return "/myPage/myPageMain";
+	public ModelAndView myPageMainForm() {
+		ModelAndView mav=new ModelAndView();
+		
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList("test");	// 수정예정
+		MPassDTO myMPass = mPassDao.getMPass("test");
+		int mpRemainDays= mPassDao.getMPassRemainDays("test");
+		mav.addObject("mpRemainDays",mpRemainDays);
+		mav.addObject("bookingList",bookingList);
+		mav.addObject("myMPass",myMPass);
+		mav.setViewName("/myPage/myPageMain");
+		return mav;
 	}
 	
 	/**마이페이지 회원정보수정*/
@@ -66,6 +82,18 @@ public class MyPageController {
 		String msg=result>0?"비밀번호수정 성공":"비밀번호수정 실패";
 		System.out.println(msg);
 		mav.setViewName("/myPage/myPageMain");
+		return mav;
+	}
+	
+	/**마이페이지 예매내역*/
+	@RequestMapping("/myPageBooking.do")
+	public ModelAndView myPageBookingForm() {
+		ModelAndView mav=new ModelAndView();
+		
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList("test");	// 수정예정
+		mav.addObject("bookingList",bookingList);
+		
+		mav.setViewName("/myPage/myPageBooking");
 		return mav;
 	}
 	
