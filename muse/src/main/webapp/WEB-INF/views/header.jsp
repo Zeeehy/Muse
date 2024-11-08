@@ -11,7 +11,7 @@
 <body>
     <div class="wrap"> <!-- wrapper 시작 -->
         <div class="top">
-            <a href="#">JOIN</a>
+            <a href="memberJoin.do">JOIN</a>
             <a href="memberLogin.do">LOGIN</a>
             <a href="#" class="topmusepass">My MUSEPASS <img src="resources/img/main/topicon.png"></a>
         </div>

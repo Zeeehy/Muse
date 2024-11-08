@@ -32,6 +32,16 @@
 	<bean id="ReviewDao" class="com.muse.review.model.ReviewDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="myBookingList" class="com.muse.myPage.model.MyBookingListDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="myPass" class="com.muse.myPage.model.MPassDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="seatLayoutDao" class="com.muse.seat.model.SeatLayoutDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	
 	<!-- add dao here -->
 	
 	

@@ -48,6 +48,65 @@ footer {
 	bottom: 0;
 	width: 100%;
 }
+
+
+
+
+
+form ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+form ul li {
+    margin-bottom: 15px;
+}
+
+form ul li label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+form ul li input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+form .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+input[type="submit"], input[type="reset"] {
+    width: 48%;
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"] {
+    background-color: #d9534f;
+    color: white;
+}
+
+input[type="reset"] {
+    background-color: #ddd;
+    color: #333;
+}
+
+input[type="submit"]:hover, input[type="reset"]:hover {
+    opacity: 0.9;
+}
 </style>
 <script>
 function pwdCheck(){
@@ -82,18 +141,19 @@ function pwdCheck(){
         </aside>
 
         <section class="content">
-            <h1>비밀번호변경</h1>
-		<form name="myPagePwdUpdate" action="myPagePwdUpdate.do" method="post" onsubmit="return pwdCheck()">
-			<input type="hidden" name="u_id" value="test">	<!-- 세션에서 받아올 예정 -->
-			<ul>
-				<li><label>비밀번호</label><input type="text" name="u_pwd" id="u_pwd"></li>
-				<li><label>비밀번호 확인</label><input type="text" name="u_pwd2" id="u_pwd2"></li>
-			</ul>
-			<div>
-				<input type="submit" value="변경">
-				<input type="reset" value="취소">
-			</div>
-		</form>
+            <h1>비밀번호 변경</h1>
+        <p>주기적인 <span style="color: #d9534f; font-weight: bold;">비밀번호 변경</span>을 통해 개인정보를 안전하게 보호하세요.</p>
+        <form name="myPagePwdUpdate" action="myPagePwdUpdate.do" method="post" onsubmit="return pwdCheck()">
+            <input type="hidden" name="u_id" value="test"> <!-- 세션에서 받아올 예정 -->
+            <ul>
+                <li><label>비밀번호</label><input type="password" name="u_pwd" id="u_pwd"></li>
+                <li><label>비밀번호 확인</label><input type="password" name="u_pwd2" id="u_pwd2"></li>
+            </ul>
+            <div class="buttons">
+                <input type="submit" value="변경">
+                <input type="reset" value="취소">
+            </div>
+        </form>
         </section>
     </main>
     

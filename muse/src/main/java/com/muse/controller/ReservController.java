@@ -10,4 +10,19 @@ public class ReservController {
 	public String RerservMainForm() {
 		return "reservation/reservMain";
 	}
+	
+	@RequestMapping("/reservSale.do")
+	public String ReservSaleForm() {
+		return "reservation/reservSale";
+	}
+	
+	@RequestMapping("/reservCheck.do")
+	public String ReservCheckForm() {
+		return "reservation/reservCheck";
+	}
+	
+	@RequestMapping("/reservCancle.do")
+	public String ReservCancleForm() {
+		return "reservation/reservCancle";
+	}
 }
