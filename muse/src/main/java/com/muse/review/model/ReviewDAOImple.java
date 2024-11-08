@@ -1,5 +1,9 @@
 package com.muse.review.model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
 public class ReviewDAOImple implements ReviewDAO {
@@ -9,6 +13,20 @@ public class ReviewDAOImple implements ReviewDAO {
 	public ReviewDAOImple(SqlSessionTemplate sqlMap) {
 		super();
 		this.sqlMap = sqlMap;
+	}
+	
+	public List<SeatReviewDTO> srSearchResult(String searchTag,String searchWord){	
+
+		List<SeatReviewDTO> list =null;
+		if(searchTag.equals("m_title")) {
+			list = sqlMap.selectList("srSearchResultM","%"+searchWord+"%");
+		}
+		else if(searchTag.equals("mh_name")) {
+			list = sqlMap.selectList("srSearchResultMH","%"+searchWord+"%");
+		}
+		
+		
+		return list;
 	}
 
 	
