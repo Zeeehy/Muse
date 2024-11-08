@@ -30,5 +30,13 @@ public class PartnerDAOImple implements PartnerDAO {
 		List<MusicalDTO> list = sqlMap.selectList("selectMusicalList",Map.of("mh_code", mh_code, "seachMusical", seachMusical));
 		return list;
 	}
+	
+	@Override
+	public MusicalDTO getMusicalDateSelect(String m_code) {
+		MusicalDTO dto = sqlMap.selectOne("selectStartEndDate",m_code);
+		System.out.println(dto);
+		
+		return dto;
+	}
 
 }

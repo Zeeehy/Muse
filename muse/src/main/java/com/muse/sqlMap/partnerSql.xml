@@ -15,5 +15,10 @@
     AND m_title LIKE '%' || #{seachMusical} || '%'
 	</if>
 </select>
+<select id="selectStartEndDate"  resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
+  	<!-- select m_startDate, m_endDate from musical where m_code = #{m_code} -->
+  	select #{m_code}+'1'
+  	from dual
+  </select>
 
   </mapper>
