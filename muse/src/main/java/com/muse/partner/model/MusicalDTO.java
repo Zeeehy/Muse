@@ -23,7 +23,9 @@ public class MusicalDTO {
 	private int m_single;
 	private int m_viewState;
 	private int m_ref;
-
+	public MusicalDTO() {
+		// TODO Auto-generated constructor stub
+	}
 	public MusicalDTO(String m_code, String mh_code, String pr_code, String m_title, DATE m_startDate, DATE m_endDate,
 			int m_time, int m_inTime, int m_maxTicet, String m_age, DATE m_openDate, int m_openTime, String m_notice,
 			String m_poster, String m_detailImg, int m_calender, int m_single, int m_viewState, int m_ref) {
@@ -200,9 +202,16 @@ public class MusicalDTO {
 	public void setM_ref(int m_ref) {
 		this.m_ref = m_ref;
 	}
-
-	public MusicalDTO() {
-		// TODO Auto-generated constructor stub
+	@Override
+	public String toString() {
+		return "MusicalDTO [m_code=" + m_code + ", mh_code=" + mh_code + ", pr_code=" + pr_code + ", m_title=" + m_title
+				+ ", m_startDate=" + m_startDate + ", m_endDate=" + m_endDate + ", m_time=" + m_time + ", m_inTime="
+				+ m_inTime + ", m_maxTicet=" + m_maxTicet + ", m_age=" + m_age + ", m_openDate=" + m_openDate
+				+ ", m_openTime=" + m_openTime + ", m_notice=" + m_notice + ", m_poster=" + m_poster + ", m_detailImg="
+				+ m_detailImg + ", m_calender=" + m_calender + ", m_single=" + m_single + ", m_viewState=" + m_viewState
+				+ ", m_ref=" + m_ref + "]";
 	}
 
+
+	
 }

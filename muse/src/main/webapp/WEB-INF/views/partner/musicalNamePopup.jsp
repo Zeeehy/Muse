@@ -109,13 +109,11 @@ function ResultSeachMusicalName(){
 
 		            // 새 행 생성
 		            var row = document.createElement('tr');
-		            row.innerHTML = '<td style="text-align: center;"><a onclick="inputMusicalName(this)">' + MusicalName + '</a></td>';
-
+		            row.innerHTML = '<td style="text-align: center;"><a onclick="inputMusicalName(this)" id = '+dto.m_code +'>' + MusicalName + '</a></td>';
+					
 		            function inputMusicalName(MusicalName){
 		                document.getElementById('m_title').value = MusicalName;
 		            }
-
-
 		            tableBody.appendChild(row);
 		        }
 		    }
@@ -123,11 +121,26 @@ function ResultSeachMusicalName(){
 
 	}
 }
+//캐스트 보드에서만 필요함.
 function inputMusicalName(element) {
     var MusicalName = element.textContent || element.innerText;  // 클릭된 항목의 텍스트 가져오기
     document.getElementsByName('m_title')[0].value = MusicalName;
     closeMusicalNamePopup();
+ 	var MusicalM_code= element.id;
+    var param = 'm_code=' + MusicalM_code;
+    sendRequest('MusicalDateSelect.do',param, MusicalDateSelectResult,'GET')
 }
+
+function MusicalDateSelectResult(){
+	if(XHR.readyState==4){
+		if (XHR.status == 200) {
+			var data = XHR.responseText;
+			console.log(data);
+			alert(data.m_startDate);
+		}
+	}
+}
+
 function showMusicalNamePopup(button) {
 	SeachMusicalName();
     var popup = document.getElementById('musicalNamePopup');
@@ -145,7 +158,6 @@ function showMusicalNamePopup(button) {
     
 }
 
-// 팝업을 닫는 함수
 function closeMusicalNamePopup() {
     const popup = document.getElementById('musicalNamePopup');
     popup.style.display = 'none'; 

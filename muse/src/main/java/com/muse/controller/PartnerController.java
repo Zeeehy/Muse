@@ -50,8 +50,22 @@ public class PartnerController {
 			@RequestParam(defaultValue="")String seachMusical) {
 			List<MusicalDTO> list = partnerDao.SeachMusicalList(mh_code, seachMusical);
 			ModelAndView mav = new ModelAndView();
+			
 	    	mav.addObject("list",list);
 		    mav.setViewName("parkJson");
 		    return mav;
 	}
+	
+	@RequestMapping("/MusicalDateSelect.do")
+	public ModelAndView getDateSelect(@RequestParam String m_code) {
+			System.out.println(m_code);
+			MusicalDTO dto = partnerDao.getMusicalDateSelect(m_code);
+			System.out.println(dto+"@@@@");
+			ModelAndView mav = new ModelAndView();
+			
+			mav.addObject("Datedto",dto);
+			
+		    return mav;
+	}
+	
 }
