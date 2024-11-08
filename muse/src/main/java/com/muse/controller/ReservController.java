@@ -25,4 +25,9 @@ public class ReservController {
 	public String ReservCancleForm() {
 		return "reservation/reservCancle";
 	}
+	
+	@RequestMapping("/reservSuccess.do")
+	public String ReservSuccesForm() {
+		return "reservation/reservSuccess";
+	}
 }
