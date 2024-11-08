@@ -133,6 +133,35 @@ footer {
 }
 </style>
 <script>
+function getBookingDay(param){
+	
+	var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'myPageBookingDayList.do?booking_day=' + param, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('booking_table').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+
+   
+
+}
+
+function getBookingMonth(param){
+	
+	var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'myPageBookingMonthList.do?booking_month=' + param, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('booking_table').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+
+   
+
+}
 
 function getBookingDate(){
 	var year = document.getElementById('booking_year').value;
@@ -142,27 +171,19 @@ function getBookingDate(){
     	month=0+month;
     }
 	var booking_date=year+'-'+month;
-    if(booking_type==0){
-    	 var xhr = new XMLHttpRequest();
-    	    xhr.open('GET', 'myPageBookingReserveList.do?booking_date=' + booking_date, true);
-    	    
-    	    xhr.onreadystatechange = function() {
-    	        if (xhr.readyState == 4 && xhr.status == 200) {
-    	            document.getElementById('booking_table').innerHTML = xhr.responseText;
-    	        } else{
-    	        }
-    	    };
-    	    xhr.send();
+	
+	var xhr = new XMLHttpRequest();
+    if(booking_type==0){    	 
+    	xhr.open('GET', 'myPageBookingReserveList.do?booking_date=' + booking_date, true);   	       	    
     } else {
-    	var xhr = new XMLHttpRequest();
-	    xhr.open('GET', 'myPageBookingReserveList.do?booking_date=' + booking_date, true);
-	    xhr.onreadystatechange = function() {
-	        if (xhr.readyState == 4 && xhr.status == 200) {
-	            document.getElementById('booking_table').innerHTML = xhr.responseText;
-	        }
-	    };
-	    xhr.send();
+	    xhr.open('GET', 'myPageBookingPerformList.do?booking_date=' + booking_date, true);
     }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('booking_table').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
 
    
 
@@ -192,11 +213,11 @@ function getBookingDate(){
         <div class="filter-box">
         	<label>조회기간 선택</label>|
             <label>기간별</label>			
-            <button>7일</button>
-            <button>15일</button>
-            <button>1개월</button>
-            <button>2개월</button>
-            <button>3개월</button>
+            <button onclick="getBookingDay(7)">7일</button>
+            <button onclick="getBookingDay(15)">15일</button>
+            <button onclick="getBookingMonth(1)">1개월</button>
+            <button onclick="getBookingMonth(2)">2개월</button>
+            <button onclick="getBookingMonth(3)">3개월</button>
             :
             <label>주문일자별</label>
             <select id="booking_type">
