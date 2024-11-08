@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,25 +83,48 @@ footer {
         <section class="content">
             <h1>MY MUSEPASS</h1>
             <div class="mypass-info">
-                <p>카테고리: Original | 남은 관람 횟수: 3회 | 유효기간: 2025-07-25</p>
+                <p>카테고리: Original | 남은 잔여 일수: ${mpRemainDays}일 | 유효기간: ${myMPass.mp_enddate}</p>
             </div>
 
             <div class="recent-history">
                 <h2>최근 예매 내역</h2>
                 <table>
+                <thead>
                     <tr>
-                        <th>예매일</th>
-                        <th>작품명</th>
-                        <th>공연일</th>
+                        <th>예약일</th>
+                        <th>예약번호</th>
+                        <th>공연명</th>
                         <th>관람일</th>
-                        <th>좌석</th>
-                        <th>취소가능여부</th>
+                        <th>매수</th>
+                        <th>취소가능일</th>
                         <th>상태</th>
                     </tr>
-                    <tr>
-                        <td colspan="7">모든 리스트를 통합한 검색 결과가 없습니다.</td>
-                    </tr>
-                </table>
+                </thead>
+                <tbody>
+	           		<c:if test="${empty bookingList }">
+						<tr>
+							<td colspan="7" align="center">
+								모든 리스트를 통합한 검색결과가 없습니다
+							</td>
+						</tr>
+					</c:if>
+                	<c:forEach var="blist" items="${bookingList}">
+	                	<tr>
+	                        <td>${blist.b_date}</td>
+	                        <td>${blist.b_code}</td>
+	                        <td>${blist.m_title}</td>
+	                        <td>${blist.mo_date} | ${blist.mo_time}</td>
+	                        <td>${blist.b_count}</td>
+	                        <td>${blist.b_date}</td>
+	                        <td>
+	                        	<c:if test="${blist.b_state eq 0}">취소</c:if>
+	                        	<c:if test="${blist.b_state eq 1}">예매</c:if>
+	                        </td>
+	                    </tr>
+                	</c:forEach>
+                    <!-- 반복행 -->
+                </tbody>
+            </table>
             </div>
         </section>
     </main>
