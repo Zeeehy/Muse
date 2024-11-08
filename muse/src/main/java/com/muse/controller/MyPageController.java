@@ -75,6 +75,87 @@ public class MyPageController {
 	    return responseHtml.toString();
 	}
 	
+	/**마이페이지 관람일자별*/
+	@RequestMapping("/myPageBookingPerformList.do")
+	@ResponseBody
+	public String myPageBookingPerformList(@RequestParam("booking_date") String bookingDate) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", "test");
+		params.put("bookingDate", bookingDate);
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingPerform(params);
+	    
+	    // 응답 HTML 형식 생성
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+	    for (MyBookingListDTO booking : bookingList) {
+	        responseHtml.append("<tr>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_code()).append("</td>")
+	                    .append("<td>").append(booking.getM_title()).append("</td>")
+	                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
+	                    .append("<td>").append(booking.getB_count()).append("</td>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_state()).append("</td>")
+	                    .append("</tr>");
+	    }
+	    System.out.println(responseHtml.toString());
+	    return responseHtml.toString();
+	}
+	
+	/**마이페이지 검색(일)*/
+	@RequestMapping("/myPageBookingDayList.do")
+	@ResponseBody
+	public String myPageBookingDayList(@RequestParam("booking_day") String bookingDay) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", "test");
+		params.put("bookingDay", bookingDay);
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingDay(params);
+	    
+	    // 응답 HTML 형식 생성
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+	    for (MyBookingListDTO booking : bookingList) {
+	        responseHtml.append("<tr>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_code()).append("</td>")
+	                    .append("<td>").append(booking.getM_title()).append("</td>")
+	                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
+	                    .append("<td>").append(booking.getB_count()).append("</td>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_state()).append("</td>")
+	                    .append("</tr>");
+	    }
+	    System.out.println(responseHtml.toString());
+	    return responseHtml.toString();
+	}
+	
+	/**마이페이지 검색(월)*/
+	@RequestMapping("/myPageBookingMonthList.do")
+	@ResponseBody
+	public String myPageBookingMonthList(@RequestParam("booking_month") String bookingMonth) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", "test");
+		params.put("bookingMonth", bookingMonth);
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingMonth(params);
+	    
+	    // 응답 HTML 형식 생성
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+	    for (MyBookingListDTO booking : bookingList) {
+	        responseHtml.append("<tr>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_code()).append("</td>")
+	                    .append("<td>").append(booking.getM_title()).append("</td>")
+	                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
+	                    .append("<td>").append(booking.getB_count()).append("</td>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_state()).append("</td>")
+	                    .append("</tr>");
+	    }
+	    System.out.println(responseHtml.toString());
+	    return responseHtml.toString();
+	}
+	
 	/**마이페이지 회원정보수정*/
 	@RequestMapping("/myPageInfoUpdate.do")
 	public ModelAndView myPageInfoUpdateForm() {
