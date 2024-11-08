@@ -1,11 +1,15 @@
 package com.muse.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.myPage.model.MPassDAO;
@@ -42,6 +46,33 @@ public class MyPageController {
 		mav.addObject("myMPass",myMPass);
 		mav.setViewName("/myPage/myPageMain");
 		return mav;
+	}
+	
+	/**마이페이지 주문일자별*/
+	@RequestMapping("/myPageBookingReserveList.do")
+	@ResponseBody
+	public String myPageBookingReserveList(@RequestParam("booking_date") String bookingDate) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", "test");
+		params.put("bookingDate", bookingDate);
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingReserve(params);
+	    
+	    // 응답 HTML 형식 생성
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+	    for (MyBookingListDTO booking : bookingList) {
+	        responseHtml.append("<tr>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_code()).append("</td>")
+	                    .append("<td>").append(booking.getM_title()).append("</td>")
+	                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
+	                    .append("<td>").append(booking.getB_count()).append("</td>")
+	                    .append("<td>").append(booking.getB_date()).append("</td>")
+	                    .append("<td>").append(booking.getB_state()).append("</td>")
+	                    .append("</tr>");
+	    }
+	    System.out.println(responseHtml.toString());
+	    return responseHtml.toString();
 	}
 	
 	/**마이페이지 회원정보수정*/

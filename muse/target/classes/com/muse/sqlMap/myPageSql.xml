@@ -21,6 +21,15 @@
     </update>
   
   <!-- 예매 내역 -->
+  <select id="selectBookingReserveList" parameterType="map" resultType="com.muse.myPage.model.MyBookingListDTO">
+	select b.b_date, b.b_code, m.m_title, mo.mo_date, mo.mo_time, b.b_count, b.b_state
+	from booking b
+	join musical_option mo on mo.mo_code = b.mo_code 
+	join musical m on mo.m_code = m.m_code
+	where b.u_id=#{u_id}
+	and to_char(mo.mo_date,'yyyy-mm') = #{bookingDate}
+  </select>
+  
   <select id="selectBookingList" resultType="com.muse.myPage.model.MyBookingListDTO">
 		select b.b_date, b.b_code, m.m_title, mo.mo_date, mo.mo_time, b.b_count, b.b_state
 		from booking b
