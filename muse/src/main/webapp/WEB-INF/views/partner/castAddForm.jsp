@@ -308,7 +308,7 @@ function openActorPopup(event) {
     popup.style.top = (buttonRect.top + window.scrollY) + "px"; // 버튼의 세로 위치를 그대로 사용
     popup.style.left = (buttonRect.right + window.scrollX + 200) + "px"; // 버튼의 오른쪽에 배치 (5px 간격)
 	
-
+ 
     var tr_id = event.target.closest('tr').id;
     
  	document.querySelector("#countNum").value = tr_id;
