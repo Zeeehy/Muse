@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="/muse/resources/js/httpRequest.js"></script>
 <title>Insert title here</title>
 <link rel="stylesheet" href="/muse/resources/css/Phj.css"
 	type="text/css">
@@ -17,8 +19,12 @@
 	width: 100%;
 }
 
-
-
+.table-content input[type="image"], input[name="ma_img"] {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
+}
 </style>
 </head>
 <body>
@@ -26,8 +32,8 @@
 	<%@include file="header.jsp"%>
 	<%@include file="sidebar.jsp"%>
 	<%@include file="actorPopup.jsp"%>
+	<%@include file="musicalNamePopup.jsp"%>
 	<div class="main-content">
-
 		<div class="main-contenttop">
 			<h1>캐스트 보드</h1>
 
@@ -37,22 +43,23 @@
 			<table>
 				<tr>
 					<th colspan="3">뮤지컬명</th>
-					<td colspan="3"><input type="text"></td>
-					<td colspan="2"><input type="button" value="찾기"></td>
+					<td colspan="3"><input type="text" name="m_title" placeholder="뮤지컬을 선택하세요" readonly></td>
+					<td colspan="2" class="button-container">
+						<input type="button" value="찾기" onclick="showMusicalNamePopup(event)">
+					</td>
 				</tr>
+
 				<tr>
 					<th colspan="3">접수번호 / 상태</th>
 					<td colspan="3"><input type="text"></td>
 					<td colspan="2"><input type="button" value="찾기"></td>
 				</tr>
-
 			</table>
-			<table border="1" id="roleTable" style="margin-top:0px;">
+			<table id="roleTable" style="margin-top: 0px;">
 				<tr>
-					<th colspan="4" style="text-align: center;">역할 선택</th>
+					<th colspan="4" style="text-align: center; width: 65%">역할 선택</th>
 					<td colspan="2"><input type="text" id="roleInput"></td>
-					<td colspan="1"><input type="button" value="추가"
-						onclick="addRow()"></td>
+					<td colspan="1"><input type="button" value="추가" onclick="addRow()"></td>
 
 				</tr>
 				<tr>
@@ -62,10 +69,9 @@
 					<td></td>
 				</tr>
 			</table>
-			<input type="submit" value="저장">
+			
 			<!-- ajax처리 -->
 			<table border="1" id="dateTable">
-
 				<tr>
 					<th colspan="3">일자별 배우 등록</th>
 					<td><input type="date" id="startDate"></td>
@@ -115,16 +121,148 @@
 					value="취소">
 			</div>
 		</div>
-
 	</div>
-
-
-
 </body>
 <script>
 var roleArray = [];
+var count = 0;
+var actorListName = []; //생성된 배우 역할 배열
+
+
+function show(){
+	var actorName = document.getElementsByName('ma_name')[0].value;
+	var param = 'ma_name=' + actorName
+	if(actorName==''){
+	alert('값입력');
+	}else{
+	sendRequest('seachActor.do',param,showResult,'GET');
+	}
+}
+
+function showResult() {
+    if (XHR.readyState === 4) {
+        if (XHR.status === 200) {
+            var actorlist = XHR.responseText;
+            var data = JSON.parse(actorlist); 
+            var tableBody = document.getElementById('actorTableBody');
+            tableBody.innerHTML = '';
+
+            if (data.list.length == 0) {  // 'data' 변수에서 'list' 참조
+                var row = document.createElement('tr');
+                var noResultCell = document.createElement('td');
+                noResultCell.colSpan = 2;
+                noResultCell.textContent = '검색된 결과가 없습니다.';
+                row.appendChild(noResultCell);
+                tableBody.appendChild(row);
+            } else {
+                for (var i = 0; i < data.list.length; i++) {
+                    var dto = data.list[i];
+                    var birthDate = new Date(dto.ma_birth); // Date 객체로 변환
+                    var formattedBirthDate = formatDate(birthDate); // 형식화된 생일
+                    var row = document.createElement('tr');  // 새로운 행 생성
+                    var ma_code = dto.ma_code;
+                    var ma_name = dto.ma_name;
+                    var ma_img = dto.ma_img;
+ 					row.innerHTML = 
+                    	    '<td style="text-align: center;">' +
+                    	        '<a onclick="inputActorName()">' + ma_name + '</a>' +
+                    	        '<input type="hidden" name="ma_code_popup" value="' + ma_code + '">' +
+                    	        '<input type="hidden" name="ma_img_popup" value="' + ma_img + '">' +
+                    	        '<input type="hidden" name="ma_name_popup" value="' + ma_name + '">' +
+                    	    '</td>' +
+                    	    '<td style="text-align: center;">' + formattedBirthDate + '</td>';
+ 					tableBody.appendChild(row);
+                }
+            }
+        }
+    }
+    
+}
+
+//입력된 행들 inert함수
+/* function show(){
+	var actorIdx;
+	var actor
+	for(var i =0; i<actorListName.length;i++){
+		
+	} 
+	
+	var actorName = document.getElementsByName('ma_name')[0].value;
+	var param = 'ma_name=' + actorName
+	if(actorName==''){
+	alert('값입력');
+	}else{
+	sendRequest('seachActor.do',param,showResult,'GET');
+	}
+}
+*/
+function seachMusicalOpenDate(){
+	var actorName = document.getElementsByName('ma_name')[0].value;
+	
+	var startDate = document.getElementById('startDate').value;
+	var endDate = document.getElementById('endDate').value;
+	var musicalIdx = 'm_1';
+	var param = 'm_code'+musicalIdx+'&startDate=' + startDate + '&endDate='+endDate; 
+	alert(param);
+	
+	if(startDate==''||endDate==''){
+		alert('값입력');
+		}else{
+		sendRequest('seachMusicalDate.do',param,showResult,'GET');
+		}
+	
+	/* if(actorName==''){
+	alert('값입력');
+	}else{
+	sendRequest('seachActor.do',param,showResult,'GET');
+	} */
+}
+
+
+
+function inputActorName() {
+    // 클릭된 요소의 부모 행(tr) 찾기
+    var clickId = document.querySelector('#countNum').value;
+    
+    var row = document.querySelector('#'+clickId);  
+
+    //tr 내에서 ma_code, ma_name, ma_img input 요소(팝업창 hidden값임)
+    var ma_code = document.querySelector('input[name="ma_code_popup"]').value;
+    var ma_name = document.querySelector('input[name="ma_name_popup"]').value;
+    var ma_img = document.querySelector('input[name="ma_img_popup"]').value;
+    
+    
+    
+	var ma_code2 =row.querySelector('input[name="ma_code"]');
+    var ma_name2 =row.querySelector('input[name="ma_name"]');
+    var ma_img2 =row.querySelector('input[name="ma_img"]');
+	ma_code2.value=ma_code;
+	ma_name2.value=ma_name;
+	ma_img2.src=ma_img;
+    closeActorPopup();
+}
+
+//타입 변환 함수 0000--00--00 00:00:00 를 년월일만 나오게
+function formatDate(date) {
+    var day = date.getDate();
+    var month = date.getMonth() + 1; 
+    var year = date.getFullYear();
+
+    if (day < 10) {
+        day = '0' + day;
+    }
+    if (month < 10) {
+        month = '0' + month;
+    }
+
+    return year + '-' + month + '-' + day; // "yyyy-MM-dd" 형식으로 반환
+}
+
+
+
 
 function addRow() {
+	count++;
     const table = document.getElementById("roleTable");
     const roleInput = document.getElementById("roleInput").value
     
@@ -132,29 +270,46 @@ function addRow() {
     
     const newRow = table.insertRow();
     
-    var end = `
-        <td colspan="2"><input type="image" /></td>
-        <td colspan="1" style="text-align: center; padding: 0px;margin-top: 0px">
-        <div style="position: relative; width: 100%; max-width: 300px;">
-        <input type="text" id="searchInputActor" placeholder="배우 이름">
-        <td><input type="button" value="검색" onclick="openActorPopup(event)"></td>
-    </div>
-        
-        <td colspan="2" style="text-align: center;">` + roleInput + `</td>
-        <td><input type="button" value="삭제" onclick="deleteRow(this)"></td>`;
-        
-    newRow.innerHTML = end;
+    newRow.id="actor"+count;
     
-        document.getElementById("roleInput").value = "";
+    actorListName.push(newRow.id);
+    
+    var end = `
+	        <td colspan="2"><input type="image" name="ma_img" src="/muse/resources/img/actor/no_img.jpg" /></td>
+	        <td style="text-align: center;">
+	            <input type="text" name="ma_name" placeholder="배우 이름">
+	        </td>
+	        <td>
+	            <input type="button" value="검색" onclick="openActorPopup(event)">
+	            <input type="hidden" name="ma_code">
+	        </td>
+	        <td colspan="2" style="text-align: center;">` + roleInput + `</td>
+	        <td><input type="button" value="삭제" onclick="deleteRow(this)"></td>`;
+
+        
+    	newRow.innerHTML = end;
+    
+         document.getElementById("roleInput").value = ""; 
 }
 
-// 행 삭제 함수
+// 행 삭제 함수(그 뭐야 행id이름도 같이 지움.)
 function deleteRow(button) {
     const row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
+    
+    deleteRowId= row.id;
+   
+    for(var i=0;i<actorListName.length;i++){
+
+    	if(actorListName[i]==row.id){
+    		actorListName.splice(i, 1);
+            break;
+    	}
+    }
 }
 
 function addDateRows() {
+	seachMusicalOpenDate();
     const table = document.getElementById("dateTable"); // 행을 추가할 테이블
     const startDateInput = document.getElementById("startDate").value; // 시작 날짜 입력
     const endDateInput = document.getElementById("endDate").value;     // 종료 날짜 입력
@@ -169,7 +324,6 @@ function addDateRows() {
 
         // 날짜 포맷 (yyyy-mm-dd 형식으로)
         const formattedDate = currentDate.toISOString().split("T")[0];
-		alert(formattedDate);
 
         // 행 내용 추가
         	const formattedDateData=`
@@ -194,6 +348,10 @@ function addDateRows() {
         currentDate.setDate(currentDate.getDate() + 1);
     }
 }
+
+
+
+
 function openActorPopup(event) {
     // 클릭된 버튼의 위치 정보를 가져옵니다.
     var button = event.target;
@@ -203,10 +361,16 @@ function openActorPopup(event) {
     var popup = document.getElementById("ActorPopup");
     popup.style.display = "block";
     popup.style.position = "absolute";
-    popup.style.top = (buttonRect.bottom + window.scrollY) + "px"; // 버튼 바로 아래에 위치
-    popup.style.left = (buttonRect.right + window.scrollX) + "px"; // 버튼 오른쪽에 위치
+    
+    // 버튼 우측에만 위치하도록 설정
+    popup.style.top = (buttonRect.top + window.scrollY) + "px"; // 버튼의 세로 위치를 그대로 사용
+    popup.style.left = (buttonRect.right + window.scrollX + 200) + "px"; // 버튼의 오른쪽에 배치 (5px 간격)
+	
+ 
+    var tr_id = event.target.closest('tr').id;
+    
+ 	document.querySelector("#countNum").value = tr_id;
 }
-
 // 팝업 닫기
 function closeActorPopup() {
     document.getElementById('ActorPopup').style.display = 'none';

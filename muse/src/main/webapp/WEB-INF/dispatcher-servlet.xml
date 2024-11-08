@@ -18,7 +18,7 @@
    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
       <property name="order" value="0"></property>
    </bean>
-   
+   <bean id="parkJson" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"></bean>
    
 	   
 
