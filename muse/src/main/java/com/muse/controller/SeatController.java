@@ -39,7 +39,10 @@ public class SeatController {
 		Map<Integer,Integer> max_rowMap= seatLayoutDAO.max_rowSelect(); 
 		List<SeatDTO> seatList = seatLayoutDAO.getRealSeat();
 		
-		
+		System.out.println(section);
+		System.out.println(floor);
+		System.out.println(max_rowMap);
+		System.out.println(seatList);
 		
 		String jsonLayout = new Gson().toJson(layout);
 		String jsonSection =  new Gson().toJson(section); 
@@ -53,6 +56,7 @@ public class SeatController {
 		mav.addObject("max_rowMap",jsonMax_rowMap);
 		mav.addObject("seatList",jseatList);
 		
+		System.out.println(jsonLayout);
 		
 		mav.setViewName("seat/printSeat");
 		

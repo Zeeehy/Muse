@@ -142,6 +142,7 @@ var seatList = ${seatList};
 console.log(seatList);
 
 // 한 층의 최대 행을 가져와 뿌리기 위함 ex)12 => 1~12
+// 몰라도 됨
 var obj = JSON.parse('${max_rowMap}');
 var jmax_rowMap = new Map(Object.entries(obj));
 
@@ -235,9 +236,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     // 맵 객체로 좌석 출력하는 코드
     
     // 층별
+    // 2,3 	
  	jfloor.forEach(function(floor){
- 		
  		// 구역별
+ 		// A,B,C
  		jsection.forEach((section)=>{
  			// 해당하는 layout과 div를 가져옴
             let sectionLayout = floorGroupMap.get(floor).get(section);
@@ -262,6 +264,11 @@ document.addEventListener("DOMContentLoaded",()=>{
  		
  	});
 
+console.log('here');
+console.log(floorGroupMap);
+ console.log(floorGroupDiv);
+ console.log(floorSeatMap);
+    
 });
 
 // 좌석 설정하는 함수
@@ -320,7 +327,7 @@ function setSeats(section_div,rowLayout){
  			// map을 활용한 특정 좌석에 접근하기
  			// ex) 예매된 좌석 처리, 등급별 색상 처리
 			const floorMap = floorSeatMap.get(rowLayout.sl_floor);
-			console.log(floorMap);
+			//console.log(floorMap);
 
 			// 층별 접근
 			if (floorMap) {
@@ -335,11 +342,13 @@ function setSeats(section_div,rowLayout){
 			            if (positionSeats) {
 			                // seat Table 데이터 처리
 			                positionSeats.forEach((real_seat,index) => {
-			                	alert(index);
 			                    // 행, 열 확인
 			                        // class 부여 => 색 표시
 			                        alert(seatNum + ' : ' + real_seat.s_position);
+			                        
+			                        
 			                        seat_div.classList.add('VIP');
+			                        
 			                    
 			                });
 			            }
