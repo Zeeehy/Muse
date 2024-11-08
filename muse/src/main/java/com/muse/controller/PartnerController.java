@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.partner.model.ActorDTO;
+import com.muse.partner.model.MusicalDTO;
 import com.muse.partner.model.PartnerDAO;
 
 @Controller
@@ -42,5 +43,15 @@ public class PartnerController {
 		    mav.setViewName("parkJson");
 	    
 	    return mav;
+	}
+	
+	@RequestMapping("/getMusicalList.do")
+	public ModelAndView getMusicalList(@RequestParam String mh_code, 
+			@RequestParam(defaultValue="")String seachMusical) {
+			List<MusicalDTO> list = partnerDao.SeachMusicalList(mh_code, seachMusical);
+			ModelAndView mav = new ModelAndView();
+	    	mav.addObject("list",list);
+		    mav.setViewName("parkJson");
+		    return mav;
 	}
 }

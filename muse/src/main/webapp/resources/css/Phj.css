@@ -263,7 +263,7 @@ input[type="text"]:focus {
 }
 .table-content div {
     margin-top: 20px;
-    display: flex;
+    /* display: flex; */
     gap: 10px;
 }
 .table-content input[type="submit"], .table-content input[type="reset"] {
