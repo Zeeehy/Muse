@@ -22,7 +22,7 @@
         }
         .priceList td input {
             width: 100%;
-            padding: 8px;
+            padding: 5px;
             box-sizing: border-box;
             border: none;
             color: #333;
@@ -87,7 +87,7 @@
                     	<div class="pointB" style="padding: 15px 36px;">
                     		<p class="stit"><span>티켓 수령 방법</span></p>
                     		<div style="padding: 25px; background: #fff;">
-                    			<p style="color: #FF3D32;"><b style="font-size: 20px; margin-right: 25px;">현장수령</b> 예매시 부여되는 "예약번호"로 관람일 당일 티켓을 수령하여 입장합니다.</p>
+                    			<p style="color: #FF3D32; text-align:center;" ><b style="font-size: 20px; margin-right: 25px;">현장수령</b> 예매시 부여되는 "예약번호"로 관람일 당일 티켓을 수령하여 입장합니다.</p>
                     		</div>
                     	</div>
                     </aside>
