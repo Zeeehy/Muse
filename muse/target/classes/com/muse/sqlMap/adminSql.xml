@@ -4,17 +4,64 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.muse.admin.mapper.adminSQL">
   
-  <select id="practice"  resultType="com.muse.admin.model.AdminDTO">
-  select *
-	from
-	(
-	select * from employee
-	order by idx desc
-	)
-	where rownum=1
+  <select id="bannerList"  resultType="com.muse.admin.model.BannerDTO">
+	select b.b_code, b.m_code, b.b_date, m.m_title, m.m_poster, pr.pr_name
+	from banner b, musical m, partner pr
+	where b.m_code = m.m_code and m.pr_code = pr.pr_code
+	order by b.b_date 
+  </select>
+
+
+  <select id="addBannerList"  resultType="com.muse.admin.model.BannerDTO">
+	SELECT m.m_code, m.m_title, m.m_poster, pr.pr_name
+	FROM musical m
+	JOIN partner pr ON m.pr_code = pr.pr_code
+	LEFT JOIN banner b ON m.m_code = b.m_code
+	WHERE m.m_viewstate = 1 AND b.m_code IS NULL
   </select>
   
+  <insert id="addBanner" parameterType="String">
+  	insert into banner(b_code,m_code,b_date) values('b_'||BANNER_B_CODE.nextval,#{m_code},sysdate)
+  </insert>
+  
+  <delete id="deleteBanner" parameterType="String">
+  	delete from banner where m_code=#{m_code}
+  </delete>
   
   
+
+
+
+<!-- 페이징...귀찮음	
+	
+		select *
+	from
+	(
+		select rownum as rnum, a.*
+		from
+		(
+			select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
+			from partner p, users u
+			where rs_code=0 and p.u_id = u.u_id
+		)a
+	)b
+	where rnum <![CDATA[>]]> =#{start} and rnum <![CDATA[<]]>=#{end}
+	 -->
+
+   <select id="partnerRequestList"  resultType="com.muse.admin.model.PartnerDTO">
+	select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
+	from partner p, users u
+	where rs_code=0 and p.u_id = u.u_id
+  </select>
+  
+  <select id="partnerRequest"  resultType="com.muse.admin.model.PartnerDTO">
+	select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
+	from partner p, users u
+	where p.u_id = u.u_id and pr_code=#{pr_code}
+  </select>
+  
+  <update id="partnerRequestEnd" parameterType="map" >
+  	update partner set rs_code=#{rs_code} where pr_code=#{pr_code}
+  </update>
   
   </mapper>

@@ -12,11 +12,5 @@
 	<h3>메세지:${msg}</h3>
 	
 
-	<h5 >${dto.idx}</h5>
-	<h5 >${dto.name}</h5>
-	<h5 >${dto.email}</h5>
-	<h5 >${dto.dept}</h5>
-		
-	
 </body>
 </html>

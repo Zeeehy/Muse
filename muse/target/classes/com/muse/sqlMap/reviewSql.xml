@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.revew.mapper.reviewSQL">
+  
+  <select id="srSearchResultM" parameterType="map" resultType="com.muse.review.model.SeatReviewDTO">
+	select m_title, m_startdate,m_enddate, mh_name,m_poster,m_code
+	from musical m, musical_hall mh
+	where m.m_title like #{searchWord} and m.mh_code = mh.mh_code
+  
+  </select>
+  
+  <select id="srSearchResultMH" parameterType="String" resultType="com.muse.review.model.SeatReviewDTO">
+	select mh_name,mh_code
+	from musical_hall
+	where mh_name like #{searchWord}
+  </select>
+  
+  
+  <select id="getWriterId" parameterType="String" resultType="String">
+  select u_id
+  from booking
+  where b_code = #{b_code}
+  </select>
+  
+  <select id="mrWrite" parameterType="String" resultType="com.muse.review.model.MusicalReviewDTO">
+	select to_char( mo_date,'yyyy-mm-dd') ||' '|| mo_time as mo_date, m_title,b_code
+	from musical_option mo, booking b, musical m
+	where b_code =#{b_code} and b.mo_code = mo.mo_code and m.m_code = mo.m_code
+  </select>
+  
+  <insert id="mrWriteEnd" parameterType="com.muse.review.model.MusicalReviewDTO">
+  insert into Musical_review (mr_code,b_code,mr_score,mr_title,mr_content,mr_date,mr_state) values('mr_' || MUSICAL_REVIEW_MR_CODE.nextval,#{b_code},#{mr_score},
+   #{mr_title},#{mr_content},sysdate,0)
+  
+  </insert>
+  </mapper>

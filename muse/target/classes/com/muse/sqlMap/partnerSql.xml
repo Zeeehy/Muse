@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.partner.mapper.partnerSql">
+  
+  <select id="selectActorName"  resultType="com.muse.partner.model.ActorDTO" parameterType="String">
+  	select * from musical_actor where ma_name = #{ma_name}
+  </select>
+
+	<select id="selectMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
+    SELECT * FROM musical
+    WHERE mh_code = #{mh_code}
+    <if test="seachMusical != null and seachMusical != ''">
+    AND m_title LIKE '%' || #{seachMusical} || '%'
+	</if>
+</select>
+
+  </mapper>

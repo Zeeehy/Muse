@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.myPage.mapper.myPageSQL">
+  
+  <!-- 마이페이지 메인-->
+  <select id="selectMPassRemainDays" resultType="Integer">
+        select mp_enddate-sysdate from mpass where u_id=#{u_id}
+  </select>  
+  
+  <!--  회원정보수정 -->
+    <select id="userInfo" resultType="com.muse.myPage.model.MyPageUserDTO">
+        select * from users where u_id = #{u_id}
+    </select>
+    <update id="updateUserInfo" parameterType="com.muse.myPage.model.MyPageUserDTO">
+        update users set u_email=#{u_email},u_pnum=#{u_pnum}  where u_id=#{u_id}
+    </update>
+    <update id="updateUserPwd" parameterType="com.muse.myPage.model.MyPageUserDTO">
+        update users set u_pwd=#{u_pwd} where u_id=#{u_id}
+    </update>
+  
+  <!-- 예매 내역 -->
+  <select id="selectBookingReserveList" parameterType="map" resultType="com.muse.myPage.model.MyBookingListDTO">
+	select b.b_date, b.b_code, m.m_title, mo.mo_date, mo.mo_time, b.b_count, b.b_state
+	from booking b
+	join musical_option mo on mo.mo_code = b.mo_code 
+	join musical m on mo.m_code = m.m_code
+	where b.u_id=#{u_id}
+	and to_char(mo.mo_date,'yyyy-mm') = #{bookingDate}
+  </select>
+  
+  <select id="selectBookingList" resultType="com.muse.myPage.model.MyBookingListDTO">
+		select b.b_date, b.b_code, m.m_title, mo.mo_date, mo.mo_time, b.b_count, b.b_state
+		from booking b
+		join musical_option mo on mo.mo_code = b.mo_code 
+		join musical m on mo.m_code = m.m_code
+		where b.u_id=#{u_id}
+  </select>
+  
+  <!-- 뮤즈패스 -->
+  <select id="selectMPass" resultType="com.muse.myPage.model.MPassDTO">
+        select * from mpass where u_id = #{u_id}
+  </select>  
+  
+  <!-- 뮤즈캘린더 -->
+  <select id="calendarList"  resultType="com.muse.myPage.model.MuseCalendarDTO">
+  	select * from calendar 
+  </select>
+
+  </mapper>

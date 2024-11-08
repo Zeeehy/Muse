@@ -1,1 +1,172 @@
 @charset "UTF-8";
+
+styles.css
+
+
+/* 공통 */
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Medium.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-Medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-SemiBold.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-SemiBold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-style: normal;
+    src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2') format('woff2'),
+         url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/woff/Pretendard-Bold.woff') format('woff');
+}
+
+
+@font-face {
+    font-family: 'MV Boli';
+    src: url('/path-to-fonts/MV-Boli.woff2') format('woff2'),
+         url('/path-to-fonts/MV-Boli.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
+    overflow-x: hidden;
+}
+
+p, span, li, label, input, button, textarea, select, option, h1, h2, h3, tr, th, td {
+    font-family: 'Pretendard';
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+li::marker {
+    content: none;
+}
+
+a {
+    text-decoration: none;
+    color: unset;
+}
+
+
+/* Body */
+body {
+    margin: 0;
+    padding:0;
+}
+
+
+
+
+
+
+
+
+/* 메인 컨텐츠 스타일 */
+
+input[type="text"] {
+    border: none; /* 테두리 제거 */
+    background-color: #f3f0f0; /* 배경색 변경 (예: 연한 하늘색) */
+    padding: 10px; /* 패딩 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+    width: 100%; /* 너비 조정 (옵션) */
+    font-size: 16px; /* 글자 크기 조정 (옵션) */
+}
+
+input[type="text"]:focus {
+    outline: none; /* 포커스 시 테두리 제거 */
+    background-color: #dadada; /* 포커스 시 배경색 변경 (예: 연한 파란색) */
+}
+
+
+
+/* 버튼 스타일 삭제 */
+.redButton  {
+    background-color: #ff6666;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 버튼 호버 효과 삭제 */
+.redButton:hover {
+    background-color: #ff3333;
+}
+
+/* 버튼 스타일 삭제 */
+.blueButton  {
+    background-color: #66b7ff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 버튼 호버 효과 삭제 */
+.blueButton:hover {
+    background-color: #335dff;
+}
+
+/* 버튼 스타일 삭제 */
+.grayButton  {
+    background-color: #a5a5a5;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 버튼 호버 효과 삭제 */
+.grayButton:hover {
+    background-color: #6d6c6c;
+}
+
+
+/*관리자 박스*/
+.main-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    margin-top: 60px;
+    padding: 20px;
+    align-items: center;
+}
+#hrLine , .hrLine{
+    height: 1px;
+    width: 90%;
+    background-color: #2196f3;
+    border: none;
+    margin: 20px auto;
+}
+

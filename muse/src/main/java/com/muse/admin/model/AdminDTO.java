@@ -2,10 +2,9 @@ package com.muse.admin.model;
 
 public class AdminDTO {
 
-	private String idx;
-	private String name;
-	private String email;
-	private String dept;
+	private String a_id;
+	private String a_pwd;
+	
 	
 	
 	public AdminDTO() {
@@ -13,30 +12,20 @@ public class AdminDTO {
 	}
 	
 	
-	public String getIdx() {
-		return idx;
+	public String getA_id() {
+		return a_id;
 	}
-	public void setIdx(String idx) {
-		this.idx = idx;
+	public void setA_id(String a_id) {
+		this.a_id = a_id;
 	}
-	public String getName() {
-		return name;
+	public String getA_pwd() {
+		return a_pwd;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setA_pwd(String a_pwd) {
+		this.a_pwd = a_pwd;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getDept() {
-		return dept;
-	}
-	public void setDept(String dept) {
-		this.dept = dept;
-	}
+	
+	
 	
 	
 }

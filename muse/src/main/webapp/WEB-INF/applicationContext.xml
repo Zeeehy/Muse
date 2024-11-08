@@ -17,6 +17,31 @@
 	<bean id="adminDao" class="com.muse.admin.model.AdminDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="museCalendarDao" class="com.muse.myPage.model.MuseCalendarDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="memberDao" class="com.muse.member.model.MemberDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="partnerDao" class="com.muse.partner.model.PartnerDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="myPageUser" class="com.muse.myPage.model.MyPageUserDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="ReviewDao" class="com.muse.review.model.ReviewDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="myBookingList" class="com.muse.myPage.model.MyBookingListDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="myPass" class="com.muse.myPage.model.MPassDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="seatLayoutDao" class="com.muse.seat.model.SeatLayoutDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	
 	<!-- add dao here -->
 	
 	
@@ -37,7 +62,7 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
-		<property name="username" value="scott"></property>
+		<property name="username" value="muse"></property>
 		<property name="password" value="1234"></property>
 	</bean>
 	<!-- mybatis 트랜잭션-->
@@ -52,5 +77,6 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
 	</bean>
+
 
 </beans>
