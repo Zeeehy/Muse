@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.seat.mapper.seatSQL">
+  <select id="seatLayoutSelect" resultType="com.muse.seat.model.SeatLayoutDTO">
+		SELECT *
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=2 AND MHL_CODE = 2
+	</select>
+	
+	<select id="sectionSelect" resultType="java.lang.String">
+		SELECT distinct sl_section
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=2 AND MHL_CODE = 2
+		
+	</select>
+	
+	<select id="bindByallFloorSelect" resultType="Integer">
+		SELECT distinct sl_floor
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=2 AND MHL_CODE = 2
+	</select>
+	
+	<resultMap id="MaxRowResultMap" type="java.util.HashMap">
+	    <result property="sl_floor_key" column="sl_floor_key"/>
+	    <result property="max_row" column="max_row"/>
+	</resultMap>
+	
+	<!-- select 태그에서 resultMap 사용 -->
+	<select id="max_rowSelect" resultMap="MaxRowResultMap">
+	      SELECT sl_floor AS sl_floor_key, MAX(sl_row) AS max_row
+	    FROM seat_layout sl, MUSICAL_HALL_LAYOUT mhl
+	    WHERE 
+            sl.lt_code = mhl.mhl_code and
+        MHL_CODE = 2
+	    GROUP BY sl_floor
+	    ORDER BY sl_floor
+	</select>
+	
+	<select id="getRealSeat" resultType="com.muse.seat.model.SeatDTO">
+		select *
+		from seat
+		where m_code = 'M_2'
+	</select>
+  </mapper>
