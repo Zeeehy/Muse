@@ -9,5 +9,5 @@ public interface ReservDAO {
 	
 	Map<String,Object> getMusicalInfo();
 	List<String> getMusicalDate();
-    List<String> getMusicalTimeByDate(String selectedDate); // 모든 시간을 가져오는 메서드
+    List<String> getMusicalTimeByDate(String selectedDate); 
 }

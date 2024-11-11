@@ -23,8 +23,8 @@
 		WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD')
 		ORDER BY mo_time ASC
 	</select> -->
-	<select id="getAllMusicalTimes" resultType="java.lang.String">
-	    SELECT DISTINCT mo_time
+	<select id="getMusicalTimeByDate" resultType="java.lang.String">
+	    SELECT DISTINCT mo_time as Time
 	    FROM musical_option
 	    WHERE mo_date = #{selectedDate}
 	    ORDER BY mo_time ASC
