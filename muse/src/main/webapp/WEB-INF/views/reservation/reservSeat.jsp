@@ -1,19 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>예매 페이지</title>
+<title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
-<link rel="stylesheet" type="text/css" href="resources/css/Yuri.css">
-<script src="/muse/resources/js/httpRequest.js"></script>
 <style>
+
+
 .floorSection {
     display: flex;
     justify-content: center;
-    gap : 15px;
+    gap : 30px;
 }
+/* .A1A1{
+	display: flex;
+} */
+
+
 .seating_table_container{
 	display: flex;
     justify-content: center;
@@ -21,6 +27,15 @@
     margin: 40px;
     font-weight: bolder;
 }
+
+/* .seattable_zone_container{
+    height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+} */
+
 .first, .second{
 	display: flex;
     justify-content: center;
@@ -28,7 +43,10 @@
     margin: 40px;
     font-weight: bolder;
 }
+
+
 .seat {
+    height: 25px;
     float: left;
     display: flex;
     justify-content: center;
@@ -37,49 +55,58 @@
     border-radius: 10%;
     margin: 2.5px;
 }
+
 .row{
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 }
 .row .row_zone p{
-	width:5px;
-	height:5px;
+	width:25px;
+	height:25px;
 	margin:0;
 	display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    margin: 2.5px;
     
 }
 .seats{
-	margin: 2px;
-    background: #fff;
-    border: 0.5px solid #666;
-    cursor: pointer;
+	margin : 5px;
+	background: yellow;
 }
 .seat {
-    width: 5px;
-    height: 5px;
+    width: 25px;
 }
-.seat p {	
-    display: none;
+p {
+    display: block;
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     unicode-bidi: isolate;
 }
+
+/* .section_A,.section_B,.section_C{
+	display: flex;
+} */
+
 .section_A .row{
 	  justify-content: flex-end;
+	      height: 40px;
+	
 }
+
 .section_B .row{
 	  justify-content: center;
 	
 }
+
 .section_C .row{
 	  justify-content: flex-start;
+	      height: 40px;
 }
+
 #seattable_zone{
 	text-align: center;
 }
@@ -97,6 +124,7 @@
 }
 
 </style>
+
 <script type="text/javascript">
 
 // 존재하는 모든 섹션 ver json
@@ -429,130 +457,13 @@ function makeSeatListToMap() {
 </script>
 </head>
 <body>
-<h1>예매페이지</h1>
-<form>
-    <section class="reservWrap">
-        <article class="contWrap">
-            <header class="step">
-                <h2>01 좌석 선택</h2>
-                <h3>[ ${musicalInfo.M_TITLE} ] <span> | ${musicalInfo.MH_NAME}</span></h3>
-                <div class="select">
-                    <em>다른 관람일자 선택 : </em>
-                    <span>일자</span>
-                    <select id="playDate" onchange="updateTimes(event)">
-                        <option>선택하세요!</option>
-                        <c:forEach var="date" items="${playDate}">
-                            <option value="${date}">${date}</option>
-                        </c:forEach>
-                    </select>
-                    <span>시간</span>
-                    <select id="playTime">
-                        <option name="time" value="">선택하세요!</option>
-                    </select>
-                </div>
-            </header>
-            <section class="allSeat">
-                <aside class="seatL">
-                	<div id="floor">
-						<div class="floor_container">
-						</div>
-					</div>
-					<div class="seatReview" style="display: none;">
-						<p>선택하신 좌석 <b>[R석] 1층-C블록 5열 6</b>의 평균 평점은 (5.0) 입니다.</p>
-						<span>좌석 상세 리뷰  보기 ></span>
-					</div>
-                </aside>
-                <aside class="seatR">
-                    <div class="s Floor">
-                        <h2>원하시는 좌석 위치를 선택해주세요.</h2>
-                        <div>
-                            <ul>
-                                <li>1F <input type="checkbox"></li>
-                                <li>2F <input type="checkbox"></li>
-                                <li>3F <input type="checkbox"></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="s Rating">
-                        <h2>좌석등급 / 잔여석</h2>
-                        <div>
-                            <ul>
-                                <li>
-                                    <div>
-                                        <img src="#">VIP석
-                                        <span>0석</span>
-                                    </div>
-                                    <span>170,000원</span>
-                                </li>
-                                <li>
-                                    <div>
-                                        <img src="#">R석
-                                        <span>0석</span>
-                                    </div>
-                                    <span>140,000원</span>
-                                </li>
-                                <li>
-                                    <div>
-                                        <img src="#">S석
-                                        <span>0석</span>
-                                    </div>
-                                    <span>110,000원</span>
-                                </li>
-                                <li>
-                                    <div>
-                                        <img src="#">A석
-                                        <span>0석</span>
-                                    </div>
-                                    <span>80,000원</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="s Choice">
-                        <h2>선택좌석</h2>
-                        <div>
-                        </div>
-                    </div>
-                    <div class="s Button">
-                        <button class="nextBt">좌석선택완료</button>
-                        <div class="subBtList">
-                            <button class="subBt">이전단계</button>
-                            <button class="subBt">좌석 다시 선택</button>
-                        </div>
-                    </div>
-                </aside>
-            </section>
-        </article>
-    </section>
-</form>
-<script>
-	//선택된 날짜의 시간 옵션을 가져오기
-	function updateTimes(event) {
-	    var selectedDate = event.target.value;
-	    var param = 'selectedDate=' + selectedDate;
-	    console.log(param);
-	    sendRequest('searchTime.do', param, updateTimesResult, 'GET');
-	}
-	
-	// 시간 옵션 처리 함수
-	function updateTimesResult() {
-	    if (XHR.readyState === 4 && XHR.status === 200) {
-	        var optionTimeList = XHR.responseText;
-	        var data = JSON.parse(optionTimeList); 
-	        var playTimeSelect = document.getElementById('playTime'); 
-	        playTimeSelect.innerHTML = "<option>선택하세요!</option>"; 
-			console.log(data);
-	        // 각 시간 옵션을 select 요소에 추가
-	        
-	        for (var i = 0; i < data.playTime.length; i++) {
-	            var time = data.playTime[i];
-	            var optionElement = document.createElement("option");
-	            optionElement.value = time;
-	            optionElement.textContent = time;
-	            playTimeSelect.appendChild(optionElement);
-	        }
-	    }
-	}
-</script>
+
+<div id="floor">
+
+	<div class="floor_container">
+		
+	</div>
+</div>
+
 </body>
 </html>
