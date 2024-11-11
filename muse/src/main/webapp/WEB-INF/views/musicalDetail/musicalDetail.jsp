@@ -183,16 +183,28 @@ prdCastBtn.addEventListener("click",function(){
 	
 	var params = 'm_code=${mddto.m_code}';
 	params +="&checkLikeMusical="+checkLikeMusical;
-	alert(params);
 	sendRequest('changeLikeMusical.do',params,showCheckLikeMusical,'GET');
 	
-	alert("endOfSend");
 });
 
 
 function showCheckLikeMusical() {
     if (XHR.readyState === 4) {
         if (XHR.status === 200) {
+        	
+        	var countLike = XHR.responseText;
+	        var data = JSON.parse(countLike);
+	        
+	        console.log(data);
+            var cast_icon = document.querySelector('.cast_icon');
+            var prdCastNum = document.querySelector('.prdCastNum');
+            
+            prdCastNum.innerHTML = data.countLike;            
+            if(cast_icon.src.includes('full')){
+            	cast_icon.src = 'resources/img/muse_cast/empty_heart.png';
+            } else{
+            	cast_icon.src = 'resources/img/muse_cast/full_heart.png';
+            }
             
         }
     }
