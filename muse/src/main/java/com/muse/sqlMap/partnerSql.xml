@@ -15,10 +15,35 @@
     AND m_title LIKE '%' || #{seachMusical} || '%'
 	</if>
 </select>
-<select id="selectStartEndDate"  resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
-  	<!-- select m_startDate, m_endDate from musical where m_code = #{m_code} -->
-  	select #{m_code}+'1'
-  	from dual
-  </select>
 
+<select id="selectStartEndDate"  resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
+  select m_startDate, m_endDate  from musical where m_code = #{m_code}
+  </select>
+  
+<insert id="insetMuscialDate" parameterType="map">
+insert into musical_option values('mo_'||MUSICAL_OPTION_MO_CODE.nextval,#{m_code},#{mo_date},#{mo_time})
+</insert>
+
+<select id="selectOptionList"  resultType="com.muse.partner.model.MusicalOptionDTO" parameterType="String">
+  select mo_date from musical_option where m_code = #{m_code}
+  </select>
+  
+<select id="selectTimeOptionList" resultType="com.muse.partner.model.MusicalOptionDTO" parameterType="map">
+	select mo_time from musical_option where m_code = #{m_code} and mo_date = #{mo_date}
+</select>
+
+<insert id="insertCasting" parameterType="map">
+insert into musical_casting values
+('mc_'||MUSICAL_CASTING_MC_CODE.nextval,
+#{ma_code},
+(select mo_code 
+from 
+musical_option 
+where mo_date = 
+#{mo_date} and 
+mo_time = #{mo_time} and 
+m_code = #{m_code}),
+#{mc_char})
+
+</insert>
   </mapper>
