@@ -537,6 +537,19 @@ article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
 }
 .reservWrap .allSeat .seatL {
 	width: calc(100% - 250px);
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 36px 36px;
+}
+.reservWrap .allSeat .seatL .seatReview{
+	background: #fff;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+.reservWrap .allSeat .seatL .seatReview p {
+	font-size: 14px;
 }
 .reservWrap .allSeat .seatR {
 	display: flex;
@@ -593,7 +606,11 @@ article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
 	background: #F0F0F0;
     color: #1E1E1E;
 }
-.reservWrap .allSeat .s.Rating h2, .s.Choice span {
+/* .reservWrap .allSeat .s.Rating h2, .s.Choice span {
+	text-align: center;
+    font-size: 20px;
+} */
+.reservWrap .allSeat .s.Choice span {
 	text-align: center;
     font-size: 20px;
 }
