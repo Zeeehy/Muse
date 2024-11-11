@@ -107,11 +107,11 @@ ul li input[type="password"]::placeholder {
 	               </form>
 	            </div>
 	            <div class="pwdforget">
-	                <a href="#" style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
+	                <a href="#" style="color:rgb(14    2, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
 	            </div>
 	            <div class="join">
 	                <span style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">회원이 아니신가요?</span>
-	                <a href="#" style="font-size:14px; text-decoration: none;"><span style="font-weight:bold; color:#656262; ">지금 가입하세요!</span></a>
+	                <a href="memberJoin.do" style="font-size:14px; text-decoration: none;"><span style="font-weight:bold; color:#656262; ">지금 가입하세요!</span></a>
 	            </div>
                 <div class="social_login">
                 	<div><a href="#"><img class="kakao" src="/muse/resources/img/member/KakaoTalk.png"></a></div>

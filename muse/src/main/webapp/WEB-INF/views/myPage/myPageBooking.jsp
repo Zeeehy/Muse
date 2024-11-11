@@ -132,7 +132,64 @@ footer {
 	width: 100%;
 }
 </style>
+<script>
+function getBookingDay(param){
+	
+	var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'myPageBookingDayList.do?booking_day=' + param, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('booking_table').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
 
+   
+
+}
+
+function getBookingMonth(param){
+	
+	var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'myPageBookingMonthList.do?booking_month=' + param, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('booking_table').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+
+   
+
+}
+
+function getBookingDate(){
+	var year = document.getElementById('booking_year').value;
+    var month = document.getElementById('booking_month').value;
+    var booking_type = document.getElementById('booking_type').value;
+    if (month<10){
+    	month=0+month;
+    }
+	var booking_date=year+'-'+month;
+	
+	var xhr = new XMLHttpRequest();
+    if(booking_type==0){    	 
+    	xhr.open('GET', 'myPageBookingReserveList.do?booking_date=' + booking_date, true);   	       	    
+    } else {
+	    xhr.open('GET', 'myPageBookingPerformList.do?booking_date=' + booking_date, true);
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('booking_table').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.send();
+
+   
+
+}
+
+</script>
 </head>
 <body>
 <%@include file="../header.jsp" %>
@@ -156,28 +213,29 @@ footer {
         <div class="filter-box">
         	<label>조회기간 선택</label>|
             <label>기간별</label>			
-            <button>7일</button>
-            <button>1개월</button>
-            <button>3개월</button>
-            <button>6개월</button>
+            <button onclick="getBookingDay(7)">7일</button>
+            <button onclick="getBookingDay(15)">15일</button>
+            <button onclick="getBookingMonth(1)">1개월</button>
+            <button onclick="getBookingMonth(2)">2개월</button>
+            <button onclick="getBookingMonth(3)">3개월</button>
+            :
             <label>주문일자별</label>
-            <select id="dtype">
-            	<option value="0">전체</option>
-                <option value="1">예매일</option>
-                <option value="2">공연일</option>
+            <select id="booking_type">
+                <option value="0">예매일</option>
+                <option value="1">공연일</option>
             </select>
-            <select id="year">
+            <select id="booking_year">
             </select>
             <label>년</label>
-            <select id="month">
+            <select id="booking_month">
             </select>
             <label>월</label>
-            <button>검색</button>
+            <button onclick="getBookingDate()">검색</button>
         </div>
         
         <!-- 예약 내역 테이블 -->
         <div class="table-container">
-            <table>
+            <table id="booking_table">
                 <thead>
                     <tr>
                         <th>예약일</th>
@@ -193,7 +251,7 @@ footer {
 	           		<c:if test="${empty bookingList }">
 						<tr>
 							<td colspan="7" align="center">
-								예매내역이 존재하지 않습니다
+								설정된 기간에 맞는 예매내역이 존재하지 않습니다
 							</td>
 						</tr>
 					</c:if>
@@ -220,7 +278,7 @@ footer {
 <%@include file="../footer.jsp" %>
 </body>
 <script>
-var yearSelect = document.getElementById("year");
+var yearSelect = document.getElementById("booking_year");
 var currentYear = new Date().getFullYear();
 
 for (let year = currentYear; year >= currentYear - 10; year--) {
@@ -230,7 +288,7 @@ for (let year = currentYear; year >= currentYear - 10; year--) {
     yearSelect.appendChild(option);
 }
 
-var monthSelect = document.getElementById("month");
+var monthSelect = document.getElementById("booking_month");
 for (let month = 1; month <= 12; month++) {
     var option = document.createElement("option");
     option.value = month;

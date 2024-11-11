@@ -1,15 +1,25 @@
 package com.muse.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.muse.partner.model.ActorDTO;
+import com.muse.partner.model.MusicalDTO;
 import com.muse.partner.model.PartnerDAO;
 
 @Controller
 public class PartnerController {
 
 	
-	private PartnerDAO partnerDAO;
+	@Autowired
+	private PartnerDAO partnerDao;
 	
 	@RequestMapping("/partnerAddForm.do")
 	public String partnerAddForm() {
@@ -21,6 +31,41 @@ public class PartnerController {
 	public String castAddForm() {
 		
 		return "/partner/castAddForm";
+	}
+	
+	
+	
+	@RequestMapping(value = "/seachActor.do", method = RequestMethod.GET)
+	public ModelAndView seachActorPopup(@RequestParam String ma_name) {
+		ModelAndView mav = new ModelAndView();
+	    List<ActorDTO> list = partnerDao.SeachActorList(ma_name);
+	    	mav.addObject("list",list);
+		    mav.setViewName("parkJson");
+	    
+	    return mav;
+	}
+	
+	@RequestMapping("/getMusicalList.do")
+	public ModelAndView getMusicalList(@RequestParam String mh_code, 
+			@RequestParam(defaultValue="")String seachMusical) {
+			List<MusicalDTO> list = partnerDao.SeachMusicalList(mh_code, seachMusical);
+			ModelAndView mav = new ModelAndView();
+			
+	    	mav.addObject("list",list);
+		    mav.setViewName("parkJson");
+		    return mav;
+	}
+	
+	@RequestMapping("/MusicalDateSelect.do")
+	public ModelAndView getDateSelect(@RequestParam String m_code) {
+			System.out.println(m_code);
+			MusicalDTO dto = partnerDao.getMusicalDateSelect(m_code);
+			System.out.println(dto+"@@@@");
+			ModelAndView mav = new ModelAndView();
+			
+			mav.addObject("Datedto",dto);
+			
+		    return mav;
 	}
 	
 }

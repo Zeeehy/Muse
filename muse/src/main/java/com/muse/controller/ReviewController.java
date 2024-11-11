@@ -1,5 +1,7 @@
 package com.muse.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.review.model.MusicalReviewDTO;
 import com.muse.review.model.ReviewDAO;
+import com.muse.review.model.SeatReviewDTO;
 
 @Controller
 public class ReviewController {
@@ -23,6 +26,24 @@ public class ReviewController {
 	public String index() {
 		return "/review/srIndex";
 	}
+	
+	@RequestMapping("/srsearchresult.do")
+	public ModelAndView srsearchresult(@RequestParam(value = "searchTag") String searchTag,
+			@RequestParam(value = "searchWord") String searchWord) {
+		ModelAndView mav= new ModelAndView();
+		
+		List<SeatReviewDTO> list = reviewDao.srSearchResult(searchTag,searchWord);
+		
+		mav.addObject("list", list);
+		mav.addObject("searchTag", searchTag);
+		mav.addObject("searchWord", searchWord);
+		mav.setViewName("review/srSearchResult");
+		return mav;
+	}
+	
+	
+	
+	// --------------------- 공연리뷰 작성 ----------------------//
 	
 	@RequestMapping("/mrWrite.do")
 	public ModelAndView mrWrite(@RequestParam(value = "b_code", required = false) String b_code, HttpSession session) {
