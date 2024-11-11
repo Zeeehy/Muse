@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.MusicalDTO;
+import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.partner.model.PartnerDAO;
 
 @Controller
@@ -32,7 +33,10 @@ public class PartnerController {
 		
 		return "/partner/castAddForm";
 	}
-	
+	@RequestMapping("/ticetOpenForm.do")
+	public String ticetOpenForm() {
+		return"/partner/ticetOpenNotice";
+	}
 	
 	
 	@RequestMapping(value = "/seachActor.do", method = RequestMethod.GET)
@@ -58,14 +62,53 @@ public class PartnerController {
 	
 	@RequestMapping("/MusicalDateSelect.do")
 	public ModelAndView getDateSelect(@RequestParam String m_code) {
-			System.out.println(m_code);
 			MusicalDTO dto = partnerDao.getMusicalDateSelect(m_code);
-			System.out.println(dto+"@@@@");
+			//List<MusicalOptionDTO> list = partnerDao.getMusicalDateSelcetOption(m_code);
 			ModelAndView mav = new ModelAndView();
-			
 			mav.addObject("Datedto",dto);
-			
+			//mav.addObject("Datelist",list);
+			mav.setViewName("parkJson");
 		    return mav;
 	}
+	
+	@RequestMapping("/dateList.do")
+	public ModelAndView getDateSelectList(@RequestParam String m_code) {
+		ModelAndView mav = new ModelAndView();
+		List<MusicalOptionDTO> list = partnerDao.getMusicalDateSelcetOption(m_code);
+		mav.addObject("Datelist",list);
+		mav.setViewName("parkJson");
+	    return mav;
+	}
+	
+	@RequestMapping("/insertMusicalDateList.do")
+	public ModelAndView insertMusicalDate(@RequestParam String m_code,
+			@RequestParam String mo_date,
+			@RequestParam String mo_time) {
+		int result = partnerDao.insertMusicalDate(m_code, mo_date, mo_time);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("result",result);
+		mav.setViewName("/partner/castAddForm");
+	    return mav;
+	}
+	
+	@RequestMapping("/searchTime.do")
+	public ModelAndView seachTime(String m_code, String mo_date ){
+		ModelAndView mav = new ModelAndView();
+		List<MusicalOptionDTO> list = partnerDao.getMusicalTimeSelcetOption(m_code, mo_date);
+		mav.addObject("Timelist",list);
+		System.out.println(list.size()+"################");
+	    mav.setViewName("parkJson");
+	    return mav;
+	}
+	
+	@RequestMapping("/insertCast.do")
+	public ModelAndView insertCast(String ma_code,String mc_char,String m_code,String mo_date, String mo_time) {
+		int result = partnerDao.insertCasting(ma_code, mc_char, m_code, mo_date, mo_time);
+		System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@@@");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/partner/castAddForm");
+	    return mav;
+	}
+	
 	
 }
