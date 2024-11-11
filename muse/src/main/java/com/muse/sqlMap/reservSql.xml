@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muse.reserv.mapper.ReservMapper">
+	<!-- 뮤지컬 이름 및 장소 가져오기 -->
+	<select id="getMusicalInfo" resultType="java.util.Map">
+		SELECT m.m_title AS m_title, mh.mh_name AS mh_name
+	    FROM musical m
+	    JOIN musical_hall mh ON m.mh_code = mh.mh_code
+	</select>
+	<!-- 날짜 가져오기 -->
+	<select id="getMusicalDate" resultType="java.lang.String">
+		SELECT DISTINCT TO_CHAR(mo.mo_date, 'YYYY-MM-DD') AS mo_date
+		FROM musical m
+		JOIN musical_option mo ON m.m_code = mo.m_code
+		ORDER BY TO_CHAR(mo.mo_date, 'YYYY-MM-DD')
+	</select>
+	<!-- 날짜에 해당되는 시간 가져오기 
+	<select id="getMusicalTimeByDate" resultType="java.lang.String">
+	    SELECT DISTINCT mo_time
+		FROM musical_option
+		WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD')
+		ORDER BY mo_time ASC
+	</select> -->
+	<select id="getAllMusicalTimes" resultType="java.lang.String">
+	    SELECT DISTINCT mo_time
+	    FROM musical_option
+	    WHERE mo_date = #{selectedDate}
+	    ORDER BY mo_time ASC
+	</select>
+</mapper>

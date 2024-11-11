@@ -12,5 +12,6 @@
   		<mapper resource="com/muse/sqlMap/partnerSql.xml"/>
   		<mapper resource="com/muse/sqlMap/reviewSql.xml"/>
   		<mapper resource="com/muse/sqlMap/seatSQL.xml"/>
+  		<mapper resource="com/muse/sqlMap/reservSql.xml"/>
   	</mappers>
   </configuration>
