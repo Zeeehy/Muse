@@ -11,68 +11,13 @@
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"> 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> 
 <style>
-body{
-   margin: 0px;
-}
-
-ul {
-        list-style-type: none;
-        padding: 0;
-        width: 100%;
-        display: flex;             
-	    flex-direction: column;    
-	    align-items: center;      
-	    margin-bottom: 11px;
-}
-
-ul li {
-   display: flex;
-   align-items: center; 
-   justify-content: center; 
-   font-family:'Pretendard-Regular', sans-serif;     
-   margin: 10px 0;
-   width: 330px;
-}
-
- ul li input[type="text"]{
-   width: 100%; 
-   max-width: 300px;
-   height:50px;
-   flex-grow: 1;
-   font-family: 'Pretendard-Regular', sans-serif;
-   font-size: 16px;
-   padding: 7px;
-   border: none; 
-   border-radius:10px;
-   box-sizing: border-box; 
-   background-color: rgb(52 83 112 / 0%);
-}
-   
- ul li input[type="password"]{
-    width: 100%; 
-   max-width: 300px;
-   height:50px;
-   flex-grow: 1;
-   font-size: 16px;
-   padding: 7px;
-   border: none; 
-   border-radius:10px;
-   box-sizing: border-box; 
-   background-color:rgb(52 83 112 / 0%);
-}
-
- ul li input[type="text"]:focus, 
- ul li input[type="password"]:focus{
-   outline: none; 
-}
-
-ul li input[type="text"]::placeholder,
-ul li input[type="password"]::placeholder {
-   font-size:15px;
-   font-family: 'Pretendard';
-   color: #a0a0a0; 
-   opacity: 1; 
-}
+body{margin: 0px;}
+ul {list-style-type: none; padding: 0; width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 11px;}
+ul li {display: flex; align-items: center; justify-content: center; font-family:'Pretendard-Regular', sans-serif; margin: 10px 0; width: 330px;}
+ul li input[type="text"]{width: 100%; max-width: 300px; height:50px; flex-grow: 1; font-family: 'Pretendard-Regular', sans-serif; font-size: 16px; padding: 7px; border: none; border-radius:10px; box-sizing: border-box; background-color: rgb(52 83 112 / 0%);}
+ul li input[type="password"]{width: 100%; max-width: 300px; height:50px; flex-grow: 1; font-size: 16px; padding: 7px; border: none; border-radius:10px; box-sizing: border-box; background-color:rgb(52 83 112 / 0%);}
+ul li input[type="text"]:focus, ul li input[type="password"]:focus{outline: none;}
+ul li input[type="text"]::placeholder, ul li input[type="password"]::placeholder {font-size:15px; font-family: 'Pretendard'; color: #a0a0a0; opacity: 1;}
 </style>
 </head>
 <body>
@@ -107,7 +52,7 @@ ul li input[type="password"]::placeholder {
 	               </form>
 	            </div>
 	            <div class="pwdforget">
-	                <a href="#" style="color:rgb(14    2, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
+	                <a href="#" style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
 	            </div>
 	            <div class="join">
 	                <span style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">회원이 아니신가요?</span>

@@ -12,4 +12,20 @@
     <select id="loginSession" resultType="com.muse.member.model.MemberDTO">
         SELECT u_id, u_name, u_mpass FROM users WHERE u_id = #{u_id}
     </select>
+    
+    <!-- 회원 가입 쿼리-->
+    <insert id="join" parameterType="com.muse.member.model.MemberDTO">
+        INSERT INTO users (u_id, u_pwd, u_name, u_email, u_pnum, u_age, u_mpass, u_date, u_out)
+        VALUES (#{u_id}, #{u_pwd}, #{u_name}, #{u_email}, #{u_pnum}, #{u_age}, 0, SYSDATE, 0)
+    </insert>
+    
+    <!--  회원가입 아이디 중복 체크 쿼리  -->
+	<select id="idCheck" resultType="int"> 
+		SELECT COUNT(*) FROM users WHERE u_id = #{u_id} 
+	</select>
+	
+	<!--  회원가입 비밀번호 중복 체크 쿼리  -->
+	<select id="pwdCheck" resultType="int"> 
+		SELECT COUNT(*) FROM users WHERE u_pwd = #{u_pwd} 
+	</select>
 </mapper>
