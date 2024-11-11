@@ -33,7 +33,10 @@ public class PartnerController {
 		
 		return "/partner/castAddForm";
 	}
-	
+	@RequestMapping("/ticetOpenForm.do")
+	public String ticetOpenForm() {
+		return"/partner/ticetOpenNotice";
+	}
 	
 	
 	@RequestMapping(value = "/seachActor.do", method = RequestMethod.GET)
@@ -70,7 +73,6 @@ public class PartnerController {
 	
 	@RequestMapping("/dateList.do")
 	public ModelAndView getDateSelectList(@RequestParam String m_code) {
-		System.out.println("11111111111");
 		ModelAndView mav = new ModelAndView();
 		List<MusicalOptionDTO> list = partnerDao.getMusicalDateSelcetOption(m_code);
 		mav.addObject("Datelist",list);
@@ -98,6 +100,7 @@ public class PartnerController {
 	    mav.setViewName("parkJson");
 	    return mav;
 	}
+	
 	@RequestMapping("/insertCast.do")
 	public ModelAndView insertCast(String ma_code,String mc_char,String m_code,String mo_date, String mo_time) {
 		int result = partnerDao.insertCasting(ma_code, mc_char, m_code, mo_date, mo_time);

@@ -25,6 +25,61 @@
 	border-radius: 50%;
 	object-fit: cover;
 }
+.partnerInfo{
+	width:100%; 
+}
+
+.table-content input[value="저장"]{
+	width: 80px;
+    height: 40px;
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.table-content input[value="추가"]{
+	width: 80px;
+    height: 40px;
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #2d92f5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.table-content input[value="찾기"]{
+	width: 80px;
+    height: 40px;
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #60c558;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.table-content input[value="삭제"] {
+    border-radius: 10px;
+    padding: 8px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.table-content input[value="스케줄 등록"]{
+	/* width: 80px;
+    height: 40px; */
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #2d92f5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+/* .table-content table{
+	margin:30px;
+} */
 </style>
 </head>
 <body>
@@ -40,13 +95,13 @@
 			<hr>
 		</div>
 		<div class="table-content">
-		<table>
+			<table>
 				<tr>
 					<th colspan="3">뮤지컬명</th>
-					<td colspan="3"><input type="text" name="m_title" placeholder="뮤지컬을 선택하세요" readonly></td>
-					<td colspan="2" class="button-container">
-						<input type="button" value="찾기" onclick="showMusicalNamePopup(event)">
-					</td>
+					<td colspan="3"><input type="text" name="m_title"
+						placeholder="뮤지컬을 선택하세요" readonly></td>
+					<td colspan="2" class="button-container"><input type="button"
+						value="찾기" onclick="showMusicalNamePopup(event)"></td>
 				</tr>
 
 				<tr>
@@ -55,9 +110,9 @@
 					<td colspan="2"><input type="button" value="찾기"></td>
 				</tr>
 			</table>
-			<table border="1" id="dateTable">
+			<table id="dateTable">
 				<tr>
-					<th colspan="3">공연 스케줄</th>
+					<th colspan="3" style="text-align: center;">공연 스케줄</th>
 					<td><input type="date" id="startDate"></td>
 					<td style="text-align: center;">~</td>
 					<td><input type="date" id="endDate"></td>
@@ -65,46 +120,54 @@
 						onclick="addDateRows()"></td>
 				</tr>
 				<tr>
-					<td colspan="2" style="text-align: center;">공연일</td>
+					<td colspan="4" style="text-align: center;">공연일</td>
 					<td colspan="3" style="text-align: center;">공연 시간</td>
-					<td></td>
+					<td colspan="2"></td>
 				</tr>
-				
+
 			</table>
-			<input type="button" value="스케줄 등록" onclick="insertMusicalDate()">
-			<table id="roleTable" style="margin-top: 0px;">
+			<div>
+				<input type="button" value="스케줄 등록" onclick="insertMusicalDate()">
+			</div>
+			<table id="roleTable" style="margin-top: 10px;">
 				<tr>
-					<th colspan="3" style="text-align: center; width: 40%">배우 정보</th>
-					<th colspan="2" style="text-align: center; width: 30%">출연일</th>
-					<th>역할</th>
-					<td colspan="2"><input type="text" id="roleInput"></td>
-					<td colspan="1"><input type="button" value="추가" onclick="addRow()"></td>
+					<th colspan="4" style="text-align: center; width: 50%">배우 정보</th>
+					<th style="text-align: center; width: 10%">출연일</th>
+					<th style="text-align: center; width: 10%">출연 시간</th>
+					<th style="width: 10%; text-align: right;">역할</th>
+					<td style="width: 10%; text-align: center"><input type="text"
+						id="roleInput"></td>
+					<td colspan="1"><input type="button" value="추가"
+						onclick="addRow()" ></td>
 
 				</tr>
 			</table>
 			<!-- ajax처리 -->
-			<h2>파트너 정보</h2>
-			<table>
-				<tr>
-					<th>파트너 명</th>
-					<td><input type="text" required></td>
-				</tr>
-				<tr>
-					<th>사업자 번호</th>
-					<td><input type="text" required></td>
-				</tr>
-				<tr>
-					<th>사업자 명</th>
-					<td><input type="text" required></td>
-				</tr>
-				<tr>
-					<th>대표자 이름</th>
-					<td><input type="text" required></td>
-				</tr>
-			</table>
+			<div class="partnerInfo">
+				<h2 style="text-align:center;">파트너 정보</h2>
+				<table>
+					<tr>
+						<th>파트너 명</th>
+						<td><input type="text" required></td>
+					</tr>
+					<tr>
+						<th>사업자 번호</th>
+						<td><input type="text" required></td>
+					</tr>
+					<tr>
+						<th>사업자 명</th>
+						<td><input type="text" required></td>
+					</tr>
+					<tr>
+						<th>대표자 이름</th>
+						<td><input type="text" required></td>
+					</tr>
+
+				</table>
+			</div>
 			<div class="buttondiv">
-				<input type="button" value="저장" onclick="insertCast()"> <input type="reset"
-					value="취소">
+				<input type="button" value="저장" onclick="insertCast()"> <input
+					type="reset" value="취소">
 			</div>
 		</div>
 	</div>
@@ -243,27 +306,21 @@ function insertCastResult(){
 				alert('성공');
 			}else{
 				alert('실패');
+				 document.getElementById('roleTable').innerHTML = `
+				    	<tr>
+						<th colspan="4" style="text-align: center; width: 50%">배우 정보</th>
+						<th style="text-align: center; width: 10%">출연일</th>
+						<th style="text-align: center; width: 10%">출연 시간</th>
+						<th style="width: 10%; text-align: right;">역할</th>
+						<td style="width: 10%; text-align: center"><input type="text" id="roleInput"></td>
+						<td colspan="1"><input type="button" value="추가" onclick="addRow()"></td>
+					</tr>
+				    `;
 			}
 		}
 	}
 	
 }
-/* function seachMusicalOpenDate(){
-	var actorName = document.getElementsByName('ma_name')[0].value;
-	
-	var startDate = document.getElementById('startDate').value;
-	var endDate = document.getElementById('endDate').value;
-	var musicalIdx = musical_code;
-	var param = 'm_code'+musicalIdx+'&startDate=' + startDate + '&endDate='+endDate; 
-	alert(param);
-	
-	if(startDate==''||endDate==''){
-		alert('값입력');
-		}else{
-		sendRequest('seachMusicalDate.do',param,showResult,'GET');
-		}
-} */
-
 
 
 function inputActorName() {
@@ -304,10 +361,15 @@ function formatDate(date) {
     return year + '-' + month + '-' + day; // "yyyy-MM-dd" 형식으로 반환
 }
 
-
-
-
 function addRow() {
+	if(document.getElementsByName("m_title")[0].value==null||document.getElementsByName("m_title")[0].value==''){
+		alert('뮤지컬을 선택해주세요');
+		return;
+	}
+	if(document.getElementById("roleInput").value == "" || document.getElementById("roleInput").value == null ){
+		alert('역할을 입력해주세요');
+		return;
+	}
 	count++;
     const table = document.getElementById("roleTable");
     const roleInput = document.getElementById("roleInput").value
@@ -323,23 +385,26 @@ function addRow() {
     var end = `
 	        <td colspan="2"><input type="image" name="ma_img" src="/muse/resources/img/actor/no_img.jpg" /></td>
 	        <td style="text-align: center;">
-	            <input type="text" name="ma_name" placeholder="배우 이름">
+	            <input type="text" name="ma_name" placeholder="배우 이름" required readonly>
 	        </td>
 	        
 	        <td>
-	            <input type="button" value="검색" onclick="openActorPopup(event)">
+	            <input type="button" value="찾기" onclick="openActorPopup(event)">
+	            
 	            <input type="hidden" name="ma_code">
 	        </td>
 	        <td>
         		<select value="날짜선택" id="ma_date" onchange="searchTime(event)">
+        		<option value="">날짜 선택</option>
         		</select>
         	</td>
         	<td>
     		<select value="시간선택" id="ma_time">
+    		<option value="">시간 선택</option>
     		</select>
     	</td>
 	        <td colspan="2" style="text-align: center;" id="ma_char">` + roleInput + `</td>
-	        <td><input type="button" value="삭제" onclick="deleteRow(this)"></td>`;
+	        <td colspan="3"><input type="button" value="삭제" onclick="deleteRow(this)"></td>`;
 
         
     	newRow.innerHTML = end;
@@ -363,8 +428,8 @@ for (var i = 0; i < actorListName.length; i++) {
     var trElement = document.getElementById(trId); 
     var ma_date = trElement.querySelector('#ma_date'); // #ma_date로 select 요소를 찾기
 
-    console.log(ma_date); // 제대로 된 select 요소가 출력될 것입니다
-
+    console.log(ma_date); //
+    ma_date.innerHTML = '';
     for (var j = 0; j < optionList.Datelist.length; j++) {
         var item = optionList.Datelist[j];
         var date = new Date(item.mo_date);
@@ -398,13 +463,45 @@ function addDateRows() {
 	
 	 if(document.getElementsByName("m_title")[0].value==null||document.getElementsByName("m_title")[0].value==''){
 		alert('뮤지컬을 선택해주세요');
-	}//else 추가해야됌
-	
+		return;
+	}
 	//seachMusicalOpenDate();
-    const table = document.getElementById("dateTable"); // 행을 추가할 테이블
-    const startDateInput = document.getElementById("startDate").value; // 시작 날짜 입력
-    const endDateInput = document.getElementById("endDate").value;     // 종료 날짜 입력
+	    const startDateInput = document.getElementById("startDate").value; // 시작 날짜 입력
+	    const endDateInput = document.getElementById("endDate").value;     // 종료 날짜 입력
+	    
+	 if (startDateInput ==''||startDateInput == null|| endDateInput==''||endDateInput==null) {
+	        alert('시작 날짜와 종료 날짜를 선택해주세요');
+	        return;
+	    }
 	
+	 
+		//입력했던 필드 초기화
+		const table = document.getElementById("dateTable");
+	
+		  document.getElementById('dateTable').innerHTML = `
+				<tr>
+					<th colspan="3" style="text-align: center;">공연 스케줄</th>
+					<td><input type="date" id="startDate"></td>
+					<td style="text-align: center;">~</td>
+					<td><input type="date" id="endDate"></td>
+					<td colspan="2"><input type="button" value="조회"
+						onclick="addDateRows()"></td>
+				</tr>
+				<tr>
+					<td colspan="4" style="text-align: center;">공연일</td>
+					<td colspan="3" style="text-align: center;">공연 시간</td>
+					<td colspan="2"></td>
+				</tr>
+				
+			</table>
+		    `;  
+		    
+		    
+		    //초기화끝
+		    
+		    
+	
+   
     // Date 객체로 변환
     let currentDate = new Date(startDateInput);
     const endDate = new Date(endDateInput);
@@ -420,12 +517,11 @@ function addDateRows() {
 
         // 행 내용 추가
         	const formattedDateData=`
-            <td colspan="2" style="text-align: center;" id="mo_date">` +formattedDate+ `</td>
+            <td colspan="4" style="text-align: center;" id="mo_date">` +formattedDate+ `</td>
             <td colspan="3" style="text-align: center;">
-                <input type="text" name="mo_time">
+                <input type="text" name="mo_time" value="14:00" required style="text-align: center;">
             </td>
-            
-            <td>
+            <td colspan="2">
                 <input type="button" value="삭제" onclick="deleteRow(this)">
             </td>
         `;
@@ -434,6 +530,7 @@ function addDateRows() {
         currentDate.setDate(currentDate.getDate() + 1);
     }
 }
+
 
 
 
@@ -485,6 +582,7 @@ function insertMusicalDateResult(){
             var result = parseInt(XHR.responseText);
             if(result>=1){
             	alert('날짜 저장 완료');
+            	
             }
         }
 	}
@@ -501,7 +599,6 @@ function searchTime(event){
 	    if (XHR.readyState === 4) {
 	        if (XHR.status === 200) {
 	            var optionTimeList = JSON.parse(XHR.responseText);
-	            
 	            var timelist = optionTimeList.Timelist;
 
 	            for (var i = 0; i < actorListName.length; i++) {
@@ -509,7 +606,11 @@ function searchTime(event){
 	                var trElement = document.getElementById(trId); 
 	                var ma_time = trElement.querySelector('#ma_time');
 	                
-	               
+	                ma_time.innerHTML = ''; //ma_time의 값 초기화.
+	                
+	                var defaultOption = document.createElement("option");
+	                defaultOption.value = "";
+	                
 	                for (var j = 0; j < timelist.length; j++) {
 	                    var item = timelist[j]; 
 	                    var optionElement = document.createElement("option");
@@ -529,29 +630,33 @@ function searchTime(event){
 
 	    // dateTable 초기화
 	    document.getElementById('dateTable').innerHTML = `
-	        <tr>
-	            <th colspan="3">공연 스케줄</th>
-	            <td><input type="date" id="startDate"></td>
-	            <td style="text-align: center;">~</td>
-	            <td><input type="date" id="endDate"></td>
-	            <td colspan="2"><input type="button" value="조회" onclick="addDateRows()"></td>
-	        </tr>
-	        <tr>
-	            <td colspan="2" style="text-align: center;">공연일</td>
-	            <td colspan="3" style="text-align: center;">공연 시간</td>
-	            <td></td>
-	        </tr>
+			<tr>
+				<th colspan="3" style="text-align: center;">공연 스케줄</th>
+				<td><input type="date" id="startDate"></td>
+				<td style="text-align: center;">~</td>
+				<td><input type="date" id="endDate"></td>
+				<td colspan="2"><input type="button" value="조회"
+					onclick="addDateRows()"></td>
+			</tr>
+			<tr>
+				<td colspan="4" style="text-align: center;">공연일</td>
+				<td colspan="3" style="text-align: center;">공연 시간</td>
+				<td colspan="2"></td>
+			</tr>
+			
+		</table>
 	    `;
 
 	    // roleTable 초기화
 	    document.getElementById('roleTable').innerHTML = `
-	        <tr>
-	            <th colspan="3" style="text-align: center; width: 40%">배우 정보</th>
-	            <th colspan="2" style="text-align: center; width: 30%">출연일</th>
-	            <th>역할</th>
-	            <td colspan="2"><input type="text" id="roleInput"></td>
-	            <td colspan="1"><input type="button" value="추가" onclick="addRow()"></td>
-	        </tr>
+	    	<tr>
+			<th colspan="4" style="text-align: center; width: 50%">배우 정보</th>
+			<th style="text-align: center; width: 10%">출연일</th>
+			<th style="text-align: center; width: 10%">출연 시간</th>
+			<th style="width: 10%; text-align: right;">역할</th>
+			<td style="width: 10%; text-align: center"><input type="text" id="roleInput"></td>
+			<td colspan="1"><input type="button" value="추가" onclick="addRow()"></td>
+		</tr>
 	    `;
 	}
 </script>
