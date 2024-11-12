@@ -133,7 +133,7 @@
 	        	<img src="resources/img/main/banner.png">
 	        </a>
         </div>
-        <article class="bestReview">
+        <article class="bestReview" style="padding-bottom: 50px;">
         	<h2>Best Review</h2>
         	<div class="reviewcont">
         		<ul class="cont">
@@ -247,9 +247,6 @@
         			</li>
         		</ul>
         	</div>
-        	 <div class="bt bestReview">
-            	<a href="#">리뷰 전체보기 <i class="fa-solid fa-angle-right"></i></a>
-            </div> 
         </article>
         <article class="alltheMusical">
         	<h2>All the musicals</h2>
