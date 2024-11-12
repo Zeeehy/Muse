@@ -554,5 +554,43 @@ function makeSeatListToMap() {
 	    }
 	}
 </script>
+<script>
+//현재 선택된 좌석을 추적하기 위한 변수
+let selectedSeat = null;
+
+	document.querySelector('.floor_container').addEventListener('click', function(e) {
+    const seatElement = e.target.closest('.seat');
+    
+    if (seatElement) {
+        //console.log("Seat clicked:", seatElement);
+        const seatReviewDiv = document.querySelector('.seatReview');
+        
+        if (seatReviewDiv) {
+            // 같은 좌석을 다시 클릭한 경우
+            if (selectedSeat === seatElement) {
+                seatReviewDiv.style.display = 'none';
+                selectedSeat = null; // 선택 해제
+            } 
+            // 다른 좌석을 클릭한 경우
+            else {
+                seatReviewDiv.style.display = 'block';
+                selectedSeat = seatElement; // 새로운 좌석 선택
+            }
+        } else {
+            console.error("seatReview element not found");
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const floorContainer = document.querySelector('.floor_container');
+    if (floorContainer) {
+        console.log("Floor container found");
+    } else {
+        console.error("Floor container not found");
+    }
+});
+</script>
+
 </body>
 </html>
