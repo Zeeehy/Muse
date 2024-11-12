@@ -44,7 +44,9 @@
 	<bean id="reservDao" class="com.muse.reserv.model.ReservDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
-	
+	<bean id="musicalDetailDao" class="com.muse.musicalDetail.model.MusicalDetailDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

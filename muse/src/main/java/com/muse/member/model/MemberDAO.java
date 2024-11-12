@@ -6,4 +6,9 @@ public interface MemberDAO {
 	public int loginCheck(String u_id, String u_pwd);
 	public MemberDTO getUserInfo(String u_id);
 
+	// 회원가입 메서드 
+	public int Join(MemberDTO memberDTO);
+	public int idCheck(String u_id);
+	public int pwdCheck(String u_pwd);
+	
 }

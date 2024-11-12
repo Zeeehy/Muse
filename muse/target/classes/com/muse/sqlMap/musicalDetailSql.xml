@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.seat.mapper.musicalDetailSql">
+  	
+  	<select id="getMusicalBasicInfo" parameterType="String" resultType="com.muse.musicalDetail.model.MusicalDetailDTO">
+  		select * from musical where m_code = #{m_code} and m_viewstate = 1 and m_ref=0
+  	</select>
+  	
+  	<select id="checkLikeMusical" parameterType="map" resultType="Integer">
+  		select count(*) from like_musical where m_code = #{m_code} and u_id = #{u_id}
+  	</select>
+  	
+  	<select id="countLikeMusical" parameterType="String" resultType="Integer">
+  		select count(*) from like_musical where m_code = #{m_code}
+  	</select>
+  	
+  	<insert id="insertLikeMusical" parameterType="map">
+  		insert into LIKE_MUSICAL values(LIKE_MUSICAL_lm_code.nextval, #{m_code}, #{u_id},sysdate)
+  	</insert>
+  	
+  	<insert id="deleteLikeMusical" parameterType="map">
+  		delete from LIKE_MUSICAL where m_code = #{m_code} AND u_id = #{u_id}
+  	</insert>
+  
+  </mapper>
