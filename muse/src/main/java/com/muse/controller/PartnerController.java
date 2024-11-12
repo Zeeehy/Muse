@@ -91,7 +91,7 @@ public class PartnerController {
 	    return mav;
 	}
 	
-	@RequestMapping("/searchTime.do")
+	@RequestMapping("/searchTime1.do")
 	public ModelAndView seachTime(String m_code, String mo_date ){
 		ModelAndView mav = new ModelAndView();
 		List<MusicalOptionDTO> list = partnerDao.getMusicalTimeSelcetOption(m_code, mo_date);
