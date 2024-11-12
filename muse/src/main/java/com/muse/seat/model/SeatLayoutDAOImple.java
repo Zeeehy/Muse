@@ -61,5 +61,6 @@ public class SeatLayoutDAOImple implements SeatLayoutDAO{
 		return sqlMap.selectList("getRealSeat");
 	}
 
+	
 
 }

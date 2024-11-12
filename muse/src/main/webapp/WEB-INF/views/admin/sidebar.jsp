@@ -111,7 +111,7 @@
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="#">불량 리뷰 관리</a>
+            <a href="adminReviewList.do">불량 리뷰 관리</a>
 		    <a href="#">파트너 리뷰 관리</a>
 		    <a href="#">파트너 QnA 관리</a>
         </div>

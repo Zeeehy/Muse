@@ -64,4 +64,17 @@
   	update partner set rs_code=#{rs_code} where pr_code=#{pr_code}
   </update>
   
+  
+  
+  <select id="adminReviewList" resultType="com.muse.review.model.MusicalReviewDTO">
+   select mr_code, mr_score, mr_title,mr_content, mr_date, m_title,u_id,mr_state
+	from musical_review mr, booking b, musical_option mo, musical m
+	where b.b_code = mr.b_code and b.mo_code = mo.mo_code and m.m_code = mo.m_code
+	order by mr_date desc
+  </select>
+  
+  <update id="adminDeleteReview" parameterType="map">
+   update musical_review set mr_state=#{mr_state} where mr_code=#{mr_code}
+  </update>
+  
   </mapper>

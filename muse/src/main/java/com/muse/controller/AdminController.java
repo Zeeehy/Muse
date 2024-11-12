@@ -16,6 +16,7 @@ import com.muse.admin.model.AdminDAO;
 import com.muse.admin.model.AdminDTO;
 import com.muse.admin.model.BannerDTO;
 import com.muse.admin.model.PartnerDTO;
+import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
 public class AdminController {
@@ -123,6 +124,35 @@ public class AdminController {
 	/*배너 등록 삭제 끝*/
 	
 	
+	/* 불량리뷰관리 */
+	//리뷰리스트
+	@RequestMapping("/adminReviewList.do")
+	public ModelAndView adminReviewList() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/adminReviewList");
+		
+		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
+		mav.addObject("lists",lists);
+		return mav;
+	}
+	
+	//삭제, 상태 바꾸기
+	@RequestMapping("adminDeleteReview.do")
+	public ModelAndView adminDeleteReview(@RequestParam("mr_code") String mr_code,@RequestParam("mr_state") int mr_state) {
+		ModelAndView mav =new ModelAndView();
+		
+		int result = adminDao.adminDeleteReview(mr_code,mr_state);
+		
+		mav.addObject("msg", "리뷰 상태 변경 완료!");
+		mav.setViewName("/admin/adminMsg");
+		mav.addObject("goUrl", "adminReviewList.do");
+		
+		return mav;
+	}
+	
+	
+	
+	
 	
 	/*제작사회원 리스트 시작*/
 	//제작사회원 리스트 가져오기
@@ -178,6 +208,9 @@ public class AdminController {
 	}
 	
 	/*제작사회원 리스트 끝*/
+	
+	
+	
 	
 	
 }
