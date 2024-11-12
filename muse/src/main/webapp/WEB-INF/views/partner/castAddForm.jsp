@@ -597,7 +597,7 @@ function insertMusicalDateResult(){
 function searchTime(event){
 	var selectDate = event.target.value;
 	var param = 'm_code=' + musical_code + '&mo_date=' + selectDate;
-	sendRequest('searchTime.do',param,searchTimeResult,'GET');
+	sendRequest('searchTime1.do',param,searchTimeResult,'GET');
 }
 
 	function searchTimeResult() {

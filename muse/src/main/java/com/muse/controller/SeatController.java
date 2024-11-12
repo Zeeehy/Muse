@@ -63,4 +63,41 @@ public class SeatController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("/dummySeatsForm.do")
+	public ModelAndView dummySeatsForm() {
+		ModelAndView mav = new ModelAndView();
+		
+		List<SeatLayoutDTO> layout = seatLayoutDAO.seatLayoutSelect();
+		List<String> section = seatLayoutDAO.sectionSelect();
+		List<Integer> floor = seatLayoutDAO.bindByallFloorSelect();
+		Map<Integer,Integer> max_rowMap= seatLayoutDAO.max_rowSelect(); 
+		List<SeatDTO> seatList = seatLayoutDAO.getRealSeat();
+		
+		System.out.println(section);
+		System.out.println(floor);
+		System.out.println(max_rowMap);
+		System.out.println(seatList);
+		
+		String jsonLayout = new Gson().toJson(layout);
+		String jsonSection =  new Gson().toJson(section); 
+		String jsonFloor = new Gson().toJson(floor);
+		String jsonMax_rowMap = new Gson().toJson(max_rowMap);
+		String jseatList =  new Gson().toJson(seatList);
+		
+		mav.addObject("layouts",jsonLayout);
+		mav.addObject("section",jsonSection);
+		mav.addObject("floor",jsonFloor);
+		mav.addObject("max_rowMap",jsonMax_rowMap);
+		mav.addObject("seatList",jseatList);
+		
+		
+		mav.setViewName("seat/dummySeatsForm");
+
+		System.out.println(jsonLayout);
+		
+		
+		
+		return mav;
+	}
 }
