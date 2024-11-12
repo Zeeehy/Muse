@@ -81,6 +81,58 @@
 							</ul>
 						</nav>
 						<div id="INFO" class="prdContents detail">
+							<div class="content casting">
+								<h3 class="contentTitle">캐스팅</h3>
+								<div class="expandalbeWrap">
+									<ul class="castingList">
+										<c:forEach items="${castings }" var="casting">
+											<li class="castingItem">
+												<div class="castingTop">
+													<div class="castingProfile"><img src="${casting.ma_img }" class="castingImage" alt="프로필 사진"></div>
+													<a class="castingHeartBtn">
+														<c:if test="${empty sessionScope.s_id}">
+    													<!-- 비로그인 상태: 빈 하트 표시 -->
+														    <img id="${casting.ma_code }" class="cast_icon" alt="빈 하트" src="resources/img/muse_cast/empty_heart.png" data-liked="${casting.is_liked }">
+														    
+														</c:if>
+														<c:if test="${!empty sessionScope.s_id}">
+														    <!-- 로그인 상태 -->
+														    	<c:choose>
+ 														       <c:when test="${casting.is_liked eq 'Y'}">
+														            <!-- 로그인 상태이고 좋아요인 경우: 채워진 하트 표시 -->
+														            <img id="${casting.ma_code }" class="cast_icon" alt="채워진 하트" src="resources/img/muse_cast/full_heart.png" data-liked="${casting.is_liked }">
+														        </c:when>
+														        <c:otherwise>
+														            <!-- 로그인 상태이지만 좋아요가 아닌 경우: 빈 하트 표시 -->
+														            <img id="${casting.ma_code }" class="cast_icon" alt="빈 하트" src="resources/img/muse_cast/empty_heart.png" data-liked="${casting.is_liked }">
+														        </c:otherwise>
+														    </c:choose>
+														</c:if>
+														
+													</a>
+												</div>
+												<div class="castingInfo">
+													<div class="castingActor">${casting.mc_char }</div>
+													<div class="castingName">${casting.ma_name }</div>
+												</div>
+											</li>
+										</c:forEach>
+									</ul>
+								</div>
+							</div>
+								
+							<div class="content">
+								<h3 class="contentTitle">공지사항</h3>
+								<p class="contentDetailText">${mddto.m_notice }</p>
+							</div>
+								
+							<div class="content description">
+								<h3 class="contentTitle">공연상세</h3>
+								<p> <img alt="" src="resources/img/musical/${mddto.m_detailimg}"> </p>
+							</div>
+						</div>
+						
+						<div id="CASTING" class="prdContents castingDetail" style="display:none;">
 							<div class="content casting"></div>
 								
 							<div class="content">
@@ -217,7 +269,54 @@ function showCheckLikeMusical() {
             
         }
     }
-    
 }
+
+var castingHeartBtns = document.querySelectorAll(".castingHeartBtn img");
+castingHeartBtns.forEach(function(castingHeart) {
+	castingHeart.addEventListener("click", function(event) {
+	    if (s_id) {
+	        // UI를 먼저 업데이트 (즉시 피드백)
+	        
+
+	        // 서버 요청 (서버에 실제 데이터 변경 요청)
+	        var params = 'ma_code=' + castingHeart.id;
+	        params += "&is_liked=" + castingHeart.dataset.liked;
+	        sendRequest('changeLikeActor.do', params, function() {
+	            // 요청 성공 시 추가 처리
+	            if (XHR.readyState === 4) {
+       				if (XHR.status === 200) {
+       					
+       					if (castingHeart.dataset.liked === 'Y') {
+       			            castingHeart.src = 'resources/img/muse_cast/empty_heart.png';
+       			            castingHeart.dataset.liked = 'N';
+       			        } else {
+       			            castingHeart.src = 'resources/img/muse_cast/full_heart.png';
+       			            castingHeart.dataset.liked = 'Y';
+       			        }
+            		
+        			}
+    			}
+	        }, 'GET');
+	    } else {
+	        if (confirm('로그인을 하신 후 서비스 이용이 가능합니다. 로그인하시겠습니까?')) {
+	            window.location.href = 'memberLogin.do';
+	        }
+	    }
+	});
+
+});
+
+function showCheckLikeActor(){
+	if (XHR.readyState === 4) {
+        if (XHR.status === 200) {
+        	
+            
+        }
+    }
+}
+
+
+
+
 </script>
 </html>

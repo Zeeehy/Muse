@@ -1,6 +1,7 @@
 package com.muse.musicalDetail.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -56,6 +57,33 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 		
 		return sqlMap.delete("deleteLikeMusical", params);
 	}
+	
+	@Override
+	public List<MusicalDetailCastDTO> getCastingWithLike(String m_code, String u_id) {
+		Map<String,Object> params = createParams(m_code,u_id);
+		
+		return sqlMap.selectList("getCastingWithLike", params);
+	}
+	
+	@Override
+	public int insertLikeActor(String ma_code, String u_id) {
+		 Map<String, Object> params = new HashMap<>();
+	        params.put("ma_code", ma_code);
+	        params.put("u_id", u_id); 
+	        
+		return sqlMap.insert("insertLikeActor",params);
+	}
+	
+	@Override
+	public int deleteLikeActor(String ma_code, String u_id) {
+		 Map<String, Object> params = new HashMap<>();
+	        params.put("ma_code", ma_code);
+	        params.put("u_id", u_id); 
+	        
+		return sqlMap.delete("deleteLikeActor",params);
+	}
+	
+
 	
 	
 

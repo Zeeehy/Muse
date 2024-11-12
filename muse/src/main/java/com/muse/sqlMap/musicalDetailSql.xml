@@ -24,4 +24,27 @@
   		delete from LIKE_MUSICAL where m_code = #{m_code} AND u_id = #{u_id}
   	</insert>
   
+  	<select id="getCastingWithLike" parameterType="map" resultType="com.muse.musicalDetail.model.MusicalDetailCastDTO">
+  		SELECT DISTINCT ma.ma_name, 
+                mc.mc_char,
+                ma.ma_code,
+                ma.ma_img,
+                CASE WHEN la.la_code IS NOT NULL THEN 'Y' ELSE 'N' END AS is_liked
+				FROM musical m
+				JOIN musical_option mo ON m.m_code = mo.m_code
+				JOIN musical_casting mc ON mo.mo_code = mc.mo_code
+				JOIN musical_actor ma ON mc.ma_code = ma.ma_code
+				LEFT JOIN like_actor la ON mc.ma_code = la.ma_code AND la.u_id = #{u_id}
+				WHERE m.m_code = #{m_code}
+				ORDER BY mc.mc_char
+  	</select>
+  	
+  	<insert id="insertLikeActor" parameterType="map">
+  		insert into LIKE_ACTOR values(LIKE_ACTOR_la_code.nextval, #{ma_code}, #{u_id},sysdate)
+  	</insert>
+  	
+  	<insert id="deleteLikeActor" parameterType="map">
+  		delete from LIKE_ACTOR where ma_code = #{ma_code} AND u_id = #{u_id}
+  	</insert>
+  	
   </mapper>
