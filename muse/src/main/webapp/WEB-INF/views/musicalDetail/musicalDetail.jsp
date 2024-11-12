@@ -172,18 +172,27 @@ navItems.forEach(function(item) {
 // 뮤즈캐스트
 var prdCastBtn = document.querySelector(".prdCastBtn");
 var checkLikeMusical = ${checkLikeMusical};
+var s_id = '${sessionScope.s_id}';
 
+// 뮤지컬 뮤즈캐스트 등록 및 취소
 prdCastBtn.addEventListener("click",function(){
 	
-	if(checkLikeMusical==1){
-		checkLikeMusical-=1;
+	if(s_id){
+		if(checkLikeMusical==1){
+			checkLikeMusical-=1;
+		} else {
+			checkLikeMusical +=1;
+		}
+		
+		var params = 'm_code=${mddto.m_code}';
+		params +="&checkLikeMusical="+checkLikeMusical;
+		sendRequest('changeLikeMusical.do',params,showCheckLikeMusical,'GET');
 	} else {
-		checkLikeMusical +=1;
+		if (confirm('로그인을 하신 후 서비스 이용이 가능합니다. 로그인하시겠습니까?')) {
+		    window.location.href = 'memberLogin.do';
+		}
 	}
 	
-	var params = 'm_code=${mddto.m_code}';
-	params +="&checkLikeMusical="+checkLikeMusical;
-	sendRequest('changeLikeMusical.do',params,showCheckLikeMusical,'GET');
 	
 });
 
