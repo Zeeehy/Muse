@@ -5,7 +5,7 @@
   <mapper namespace="com.muse.revew.mapper.reviewSQL">
   
   <select id="srSearchResultM" parameterType="map" resultType="com.muse.review.model.SeatReviewDTO">
-	select m_title, m_startdate,m_enddate, mh_name,m_poster,m_code
+	select m_title, m_startdate,m_enddate, mh_name,m_poster,m_code,mh.mh_code
 	from musical m, musical_hall mh
 	where m.m_title like #{searchWord} and m.mh_code = mh.mh_code
   
@@ -33,6 +33,34 @@
   <insert id="mrWriteEnd" parameterType="com.muse.review.model.MusicalReviewDTO">
   insert into Musical_review (mr_code,b_code,mr_score,mr_title,mr_content,mr_date,mr_state) values('mr_' || MUSICAL_REVIEW_MR_CODE.nextval,#{b_code},#{mr_score},
    #{mr_title},#{mr_content},sysdate,0)
-  
   </insert>
+  
+  <select id="getMr_code" resultType="Integer">
+  	SELECT MUSICAL_REVIEW_MR_CODE.currval FROM dual
+  </select>
+  
+  <insert id="addPoint" parameterType="map" >
+  insert into point(pt_code,u_id,pt_category,pt_categorycode,pt_point ) values(POINT_PT_CODE.nextval,#{u_id},0,#{mr_code},#{point})
+  </insert>
+  
+  <select id="getWriterIdByBdCode" parameterType="String" resultType="String">
+  select u_id
+  from booking_detail bd, booking b
+  where  bd_code = #{bd_code} and b.b_code=bd.b_code 
+  </select>
+  
+  <select id="srWrite" parameterType="String" resultType="com.muse.review.model.SeatReviewDTO">
+  select bd_code,mh_name,m_title,s_floor,s_section,s_row,s_position 
+  from booking_detail bd, seat s, musical m, musical_hall mh
+  where bd_code =#{bd_code} and bd.s_code = s.s_code and m.m_code =s.m_code and m.mh_code = mh.mh_code
+  </select>
+  
+  <insert id="srWriteEnd" parameterType="com.muse.review.model.SeatReviewDTO">
+  insert into SEAT_REVIEW (sr_code,bd_code,sr_score,sr_content,sr_date) values('sr_'||SEAT_REVIEW_SR_CODE.nextval,#{bd_code},#{sr_score},#{sr_content},sysdate)
+  </insert>
+  
+  <select id="getSr_code" resultType="Integer">
+  	SELECT SEAT_REVIEW_SR_CODE.currval FROM dual
+  </select>
+  
   </mapper>
