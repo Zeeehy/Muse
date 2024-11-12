@@ -7,6 +7,7 @@
 /* 팝업 스타일 */
 .musicalNamePopup {
         
+        
         top: 0; 
         left: 110%; 
         margin-left: 10px;
@@ -48,6 +49,7 @@
     #MusicalListTable {
     	width:100%;
     }
+
 </style>
 </head>
 
@@ -89,8 +91,6 @@ function ResultSeachMusicalName(){
 		    var data = XHR.responseText;
 		    var MusicalList = JSON.parse(data);
 		    
-		    alert(JSON.stringify(MusicalList, null, 2));
-		    
 		    var tableBody = document.getElementById('MusicalNameTableBody');
 		    tableBody.innerHTML = '';
 		    // 결과가 없을 때
@@ -120,7 +120,6 @@ function ResultSeachMusicalName(){
 		        }
 		    }
 		}
-
 	}
 }
 

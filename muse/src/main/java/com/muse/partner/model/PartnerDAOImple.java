@@ -81,4 +81,21 @@ public class PartnerDAOImple implements PartnerDAO {
 		int result = sqlMap.insert("insertCasting",params);
 		return result;
 	}
+	@Override
+	public int insertTicketNotice(String m_code, String rs_code, String on_type, String on_open, String on_muse_open,
+			String on_info, String on_sale, String on_content, String on_casting, String on_etc) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("m_code", m_code);
+		params.put("rs_code", rs_code);
+		params.put("on_type", on_type);
+		params.put("on_open", on_open);
+		params.put("on_muse_open", on_muse_open);
+		params.put("on_info",on_info);
+		params.put("on_sale",on_sale);
+		params.put("on_content", on_content);
+		params.put("on_casting", on_casting);
+		params.put("on_etc", on_etc);
+		int result = sqlMap.insert("insertTicketNotice",params);
+		return result;
+	}
 }

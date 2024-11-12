@@ -15,6 +15,10 @@
 <!-- 검색 아이콘 -->
 
 <style>
+.table-content td input {
+    width: 95%;
+    padding: 5px;
+}
 .main {
 	width: 100%;
 }
@@ -77,6 +81,7 @@
     border: none;
     cursor: pointer;
 }
+
 /* .table-content table{
 	margin:30px;
 } */

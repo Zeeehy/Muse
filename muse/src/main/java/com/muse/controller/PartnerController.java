@@ -37,7 +37,10 @@ public class PartnerController {
 	public String ticetOpenForm() {
 		return"/partner/ticetOpenNotice";
 	}
-	
+	@RequestMapping("/musicalOpenForm.do")
+	public String musicalAddForm() {
+		return "/partner/musicalAddForm";
+	}
 	
 	@RequestMapping(value = "/seachActor.do", method = RequestMethod.GET)
 	public ModelAndView seachActorPopup(@RequestParam String ma_name) {
@@ -107,6 +110,49 @@ public class PartnerController {
 		System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@@@");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/partner/castAddForm");
+	    return mav;
+	}
+	
+	@RequestMapping("/insertOpenNotice.do")
+	public ModelAndView insertOpenNotice(
+	        @RequestParam("m_code") String m_code,
+	        @RequestParam("rs_code") String rs_code,
+	        @RequestParam("on_type") String on_type,
+	        @RequestParam("on_openDate") String on_openDate,
+	        @RequestParam("on_openTime") String on_openTime,
+	        @RequestParam(value = "on_muse_openDate", required = false) String on_muse_openDate,
+	        @RequestParam(value = "on_muse_openTime", required = false) String on_muse_openTime,
+	        @RequestParam("on_info") String on_info,
+	        @RequestParam("on_sale") String on_sale,
+	        @RequestParam("on_content") String on_content,
+	        @RequestParam("on_casting") String on_casting,
+	        @RequestParam("on_etc") String on_etc) {
+
+	    // 전달된 값들을 출력 (디버깅 용도)
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	    System.out.println("뮤지컬 코드 (m_code): " + m_code);
+	    System.out.println("요청 상태 (rs_code): " + rs_code);
+	    System.out.println("티켓 타입 (on_type): " + on_type);
+	    System.out.println("티켓 오픈 시간 (on_openDate): " + on_openDate);
+	    System.out.println("티켓 오픈 시간 (on_openTime): " + on_openTime);
+	    System.out.println("뮤즈 패스 오픈 시간 (on_muse_open): " + on_muse_openDate);
+	    System.out.println("뮤즈 패스 오픈 시간 (on_muse_openTime): " + on_muse_openTime);
+	    System.out.println("공연 정보 (on_info): " + on_info);
+	    System.out.println("할인 정보 (on_sale): " + on_sale);
+	    System.out.println("공연 소개 (on_content): " + on_content);
+	    System.out.println("캐스팅 (on_casting): " + on_casting);
+	    System.out.println("기타 전달사항 (on_etc): " + on_etc);
+	    
+	    
+	    
+	    String open = on_openDate+" "+ on_openTime;
+	    String museOpen = on_muse_openDate+" " +on_muse_openTime;
+	    
+	    int result = partnerDao.insertTicketNotice(m_code, rs_code, on_type, on_openTime, on_muse_openTime, on_info, on_sale, on_content, on_casting, on_etc);
+	    System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@");
+	    // ModelAndView 객체 생성 후 반환
+	    ModelAndView mav = new ModelAndView();
+	    mav.setViewName("/partner/castAddForm");
 	    return mav;
 	}
 	
