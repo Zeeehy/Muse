@@ -10,4 +10,6 @@ public interface SeatLayoutDAO {
 	public List<Integer> bindByallFloorSelect();
 	public Map<Integer, Integer> max_rowSelect();
 	public List<SeatDTO> getRealSeat();
+	public void insertDummySeats(List<SeatDTO> seatList);
+	
 }

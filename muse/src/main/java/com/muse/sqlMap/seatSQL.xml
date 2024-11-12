@@ -46,4 +46,26 @@
 		from seat
 		where m_code = 'M_2'
 	</select>
+	
+	<!-- batch insert -->
+	<insert id="insertSeatList" parameterType="java.util.List">
+    INSERT ALL
+    <foreach collection="list" item="seat">
+        INTO SEAT (
+            S_CODE, SG_CODE, M_CODE, MHL_CODE, 
+            S_SECTION, S_POSITION, S_ROW, S_FLOOR
+        ) 
+        VALUES (
+            seat_s_code.nextval,
+            #{seat.sg_code},
+            #{seat.m_code},
+            #{seat.mhl_code},
+            #{seat.s_section},
+            #{seat.s_position},
+            #{seat.s_row},
+            #{seat.s_floor}
+        )
+    </foreach>
+    SELECT * FROM DUAL
+</insert>
   </mapper>

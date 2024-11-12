@@ -163,6 +163,7 @@ var floorSeatMap = new Map();
 
 var dummyFloorMap = new Map();
 
+var count = 0;
 
 document.addEventListener("DOMContentLoaded",()=>{
 	
@@ -296,7 +297,7 @@ function setSeats(section_div,rowLayout){
 			
 			// 좌석을 설정할 때마다 증가
 			seatNum++;
-			
+			count++;
 			
 			var seat_div = document.createElement('div');
 			seat_div.classList.add('seats');
@@ -305,7 +306,7 @@ function setSeats(section_div,rowLayout){
 			// 현재는 seat의 position만 활용하였기때문에, 중복되는 id 발생 
 			// => ex) 층 섹션 행 열 을 활용하여 id 설정하면 좋을 듯
 			//seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(index+1)+'</p></div>';
-			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(seatNum)+'</p></div>';
+			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(count)+'</p></div>';
 			//seat_div.innerHTML = '<div class="seat"><p>'+(rowLayout.sl_code)+'</p></div>';
 			
 			
@@ -506,25 +507,29 @@ function sendDummyFloorMapToController() {
         });
     });
 
-    // JSON 문자열로 변환
-    const dummyFloorJson = JSON.stringify(dummyFloorObject);
-    
- // 서버로 데이터 전송
-    fetch('insertDummySeats.do', {  // '/controller-endpoint'는 실제 컨트롤러의 엔드포인트로 변경 필요
+    console.log("전송할 데이터:", JSON.stringify(dummyFloorObject)); // 데이터 확인용
+    console.log(JSON.stringify(dummyFloorObject, null, 2));
+    // 서버로 데이터 전송
+    fetch('insertDummySeats.do', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json'
         },
-        body: dummyFloorJson, // 데이터 본문에 전달
+        body: JSON.stringify(dummyFloorObject)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('서버 응답:', data);
     })
     .catch(error => {
         console.error('오류 발생:', error);
     });
-
 }
 
 

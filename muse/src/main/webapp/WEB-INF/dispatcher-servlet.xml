@@ -11,6 +11,17 @@
    
     <!--  Spring MVC 어노테이션 기반 설정 활성화  -->
 	<mvc:annotation-driven/>
+	<mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 	<!--  컴포넌트 스캔 설정  -->
 	<context:component-scan base-package="com.muse"></context:component-scan>
 	

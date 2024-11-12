@@ -61,6 +61,11 @@ public class SeatLayoutDAOImple implements SeatLayoutDAO{
 		return sqlMap.selectList("getRealSeat");
 	}
 
+	@Override
+	public void insertDummySeats(List<SeatDTO> seatList) {
+		
+		sqlMap.insert("insertSeatList", seatList);
+	}
 	
 
 }
