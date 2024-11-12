@@ -53,8 +53,7 @@ public class MemberController {
 			// 세션에서 값 가져오기
 		    // String s_id = (String) session.getAttribute("s_id");
 		    // String s_name = (String) session.getAttribute("s_name");
-		    // int s_mpass =  (int) session.getAttribute("s_mpass");
-		    
+		    // int s_mpass =  (int) session.getAttribute("s_mpass");		    
 		    // 세션 값 확인을 위한 로그 출력
 		    // System.out.println("세션에 저장된 ID: " + s_id);
 		    // System.out.println("세션에 저장된 이름: " + s_name);
@@ -62,8 +61,7 @@ public class MemberController {
 		
 			mav.addObject("goUrl", "index.do");
 			mav.addObject("msg", s_info.getU_name()+"님 환영합니다.");
-			mav.setViewName("member/memberMsg");
-		
+			mav.setViewName("member/memberMsg");	
 		}
 		return mav;
     }
@@ -101,7 +99,7 @@ public class MemberController {
     
     	ModelAndView mav = new ModelAndView();
     	// System.out.println("회원가입 컨트롤러 시작");
-    	 // DTO 객체 생성
+    	// DTO 객체 생성
         MemberDTO memberDTO = new MemberDTO(u_id, u_pwd, u_name, u_email, u_pnum, u_age);
 
         // 회원가입 서비스 메서드 호출
