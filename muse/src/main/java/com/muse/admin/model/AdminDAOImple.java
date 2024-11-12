@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.muse.review.model.MusicalReviewDTO;
+
 public class AdminDAOImple implements AdminDAO {
 	
 	private SqlSessionTemplate sqlMap;
@@ -61,6 +63,31 @@ public class AdminDAOImple implements AdminDAO {
 		map.put("pr_code", pr_code);
 		
 		int result = sqlMap.update("partnerRequestEnd",map);
+		return result;
+	}
+
+
+	@Override
+	public List<MusicalReviewDTO> adminReviewList() {
+		List<MusicalReviewDTO> lists = sqlMap.selectList("adminReviewList");
+		return lists;
+	}
+
+
+	@Override
+	public int adminDeleteReview(String mr_code, int mr_state) {
+		Map<String,Object>map = new HashMap<String,Object>();
+		map.put("mr_code", mr_code);
+		
+		if(mr_state==2) {
+			map.put("mr_state", 0);//차단풀기
+		}
+		else {
+			map.put("mr_state",2); // 차단하기
+		}
+		
+		
+		int result = sqlMap.update("adminDeleteReview",map);
 		return result;
 	}
 

@@ -47,5 +47,50 @@ public class ReviewDAOImple implements ReviewDAO {
 		return result;
 	}
 	
+	@Override
+	public int getMr_code() {
+		int mr_code = sqlMap.selectOne("getMr_code");
+		return mr_code;
+	}
+
+	@Override
+	public int addPoint(String s_id,String mr_code,int point) {
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("u_id", s_id);
+		map.put("mr_code", mr_code);
+		map.put("point", point);
+		
+		
+		int point2 =sqlMap.insert("addPoint",map);
+		return point2;
+	}
+
+	@Override
+	public String getWriterIdByBdCode(String bd_code) {
+		String w_id = sqlMap.selectOne("getWriterIdByBdCode",bd_code);
+		return w_id;
+	}
+
+	@Override
+	public SeatReviewDTO srWrite(String bd_code) {
+		SeatReviewDTO dto = sqlMap.selectOne("srWrite",bd_code);
+		return dto;
+	}
+
+	@Override
+	public int srWriteEnd(SeatReviewDTO dto) {
+		int result = sqlMap.insert("srWriteEnd",dto);
+		return result;
+	}
+
+	@Override
+	public int getSr_code() {
+		int result = sqlMap.selectOne("getSr_code");
+		return result;
+	}
+
+
+	
 	
 }
