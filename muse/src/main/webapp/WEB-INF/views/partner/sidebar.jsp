@@ -55,7 +55,7 @@
       신규 등록
     </button>
     <div class="dropdown-container">
-      <a href="#">뮤지컬 등록 요청</a>
+      <a href="musicalOpenForm.do">뮤지컬 등록 요청</a>
       <a href="ticetOpenForm.do">티켓 오픈 공지 등록 요청</a>
     </div>
 

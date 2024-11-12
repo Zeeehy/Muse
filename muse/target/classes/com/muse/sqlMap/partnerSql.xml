@@ -46,4 +46,37 @@ m_code = #{m_code}),
 #{mc_char})
 
 </insert>
+<insert id="insertTicketNotice" parameterType="map">
+    insert into open_notice (
+        on_code,
+        m_code,
+        rs_code,
+        on_type,
+        on_open,
+        on_muse_open,
+        on_info,
+        on_sale,
+        on_content,
+        on_casting,
+        on_img,
+        on_etc,
+        on_readnum,
+        on_viewstate
+    ) values (
+        'on_' || OPEN_NOTICE_ON_CODE.nextval,
+        #{m_code},
+        #{rs_code},
+        #{on_type},
+        #{on_open},
+        #{on_muse_open},
+        #{on_info},
+        #{on_sale},
+        #{on_content},
+        #{on_casting},
+         (select m_detailimg from musical where m_code = #{m_code}),
+        #{on_etc},
+        0,
+        0
+    )
+</insert>
   </mapper>

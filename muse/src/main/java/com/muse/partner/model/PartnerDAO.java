@@ -17,4 +17,6 @@ public interface PartnerDAO {
 	public List<MusicalOptionDTO> getMusicalTimeSelcetOption(String m_code,String mo_date);
 	
 	public int insertCasting(String ma_code,String mc_char,String m_code, String mo_date,String mo_time);
+	
+	public int insertTicketNotice(String m_code,String rs_code,String on_type,String on_open,String on_muse_open,String on_info,String on_sale,String on_content,String on_casting,String on_etc);
 }
