@@ -173,6 +173,18 @@
    margin-right: 10px; 
 }
 
+.join_input-container-check{
+   display: flex;
+   align-items: left; 
+   border-radius: 10px;	
+}
+
+.join_input-container-check label{
+   font-family: 'Pretendard';
+   padding-left: 4px;
+   color: #858585;
+}
+
 .join_btn {
     width:420px;
     height: 50px;
@@ -185,20 +197,32 @@
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 15px;
+    margin-top: 22px;
 }
 
 .join_btn:hover {
     background-color: black;
 }
    
- .join_ajax { 
-    margin: 0px;
+ .join_ajax,
+ .join_ajax1,
+ .join_ajax2,
+ .join_ajax3,
+ .join_ajax4,
+ .join_ajax5,
+ .join_ajax6 { 
+    margin-left: 5px;
     display: block; 
     text-align: left;
  }
  
-.join_ajax label { 
+.join_ajax label,
+.join_ajax1 label,
+.join_ajax2 label,
+.join_ajax3 label,
+.join_ajax4 label,
+.join_ajax5 label,
+.join_ajax6 label { 
     font-family: 'Pretendard';
     font-size:14px;
     color: #6d6969;

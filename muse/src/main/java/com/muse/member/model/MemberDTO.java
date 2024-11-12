@@ -18,6 +18,16 @@ public class MemberDTO {
 	public MemberDTO() {
 		super();
 	}
+	
+	public MemberDTO(String u_id, String u_pwd, String u_name, String u_email, String u_pnum, int u_age) {
+		super();
+		this.u_id = u_id;
+		this.u_pwd = u_pwd;
+		this.u_name = u_name;
+		this.u_email = u_email;
+		this.u_pnum = u_pnum;
+		this.u_age = u_age;
+	}
 
 	public MemberDTO(String u_id, String u_pwd, String u_name, String u_email, String u_pnum, int u_age, int u_mpass,
 			Date u_date, int u_out) {
