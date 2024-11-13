@@ -41,6 +41,9 @@
 	<bean id="seatLayoutDao" class="com.muse.seat.model.SeatLayoutDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="museCastDao" class="com.muse.myPage.model.MuseCastDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	
 	<!-- add dao here -->
 	
