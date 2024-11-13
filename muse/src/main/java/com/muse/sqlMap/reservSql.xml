@@ -8,25 +8,37 @@
 		SELECT m.m_title AS m_title, mh.mh_name AS mh_name
 	    FROM musical m
 	    JOIN musical_hall mh ON m.mh_code = mh.mh_code
+	    WHERE m.mh_code = #{mh_code}
 	</select>
 	<!-- 날짜 가져오기 -->
 	<select id="getMusicalDate" resultType="java.lang.String">
-		SELECT DISTINCT TO_CHAR(mo.mo_date, 'YYYY-MM-DD') AS mo_date
-		FROM musical m
-		JOIN musical_option mo ON m.m_code = mo.m_code
-		ORDER BY TO_CHAR(mo.mo_date, 'YYYY-MM-DD')
+		SELECT mo_date_with_day
+		FROM (
+		    SELECT DISTINCT TO_CHAR(mo.mo_date, 'YYYY-MM-DD (DY)', 'NLS_DATE_LANGUAGE=KOREAN') AS mo_date_with_day
+		    FROM musical m
+		    JOIN musical_option mo ON m.m_code = mo.m_code
+		    WHERE m.mh_code = #{mh_code}
+		)
+		ORDER BY mo_date_with_day
 	</select>
-	<!-- 날짜에 해당되는 시간 가져오기 
-	<select id="getMusicalTimeByDate" resultType="java.lang.String">
-	    SELECT DISTINCT mo_time
-		FROM musical_option
-		WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD')
-		ORDER BY mo_time ASC
-	</select> -->
-	<select id="getMusicalTimeByDate" resultType="java.lang.String">
-	    SELECT DISTINCT mo_time as Time
+	<!-- 날짜에 해당되는 시간 가져오기 -->
+	<select id="getMusicalTimeByDate" parameterType="map" resultType="java.lang.String">
+	    SELECT DISTINCT mo_time AS Time
 	    FROM musical_option
-	    WHERE mo_date = #{selectedDate}
+	    WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD')
 	    ORDER BY mo_time ASC
+	</select>
+	<!-- 공연별 최대 매수 가져오기(파라미터) -->
+	<select id="getMusicalMaxTicket" parameterType="String" resultType="int">
+	    SELECT m_maxticket
+	    FROM musical
+	    WHERE mh_code = #{mh_code}
+	</select>
+	<!-- 좌석등급 가져오기 -->
+	<select id="getMusicalSeatList" resultType="map">
+	    SELECT s.*, sg.sg_name 
+	    FROM seat s 
+	    JOIN seat_grade sg ON s.sg_code = sg.sg_code 
+	    ORDER BY sg.sg_name DESC
 	</select>
 </mapper>
