@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.MusicalDTO;
+import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.partner.model.PartnerDAO;
 
@@ -38,8 +39,13 @@ public class PartnerController {
 		return"/partner/ticetOpenNotice";
 	}
 	@RequestMapping("/musicalOpenForm.do")
-	public String musicalAddForm() {
-		return "/partner/musicalAddForm";
+	public ModelAndView musicalAddForm() {
+		
+		ModelAndView mav = new ModelAndView();
+		List<MusicalHallDTO> list = partnerDao.getMusicalHallList();
+		mav.setViewName("/partner/musicalAddForm");
+		mav.addObject("HallList", list);
+		return mav;
 	}
 	
 	@RequestMapping(value = "/seachActor.do", method = RequestMethod.GET)
@@ -103,13 +109,14 @@ public class PartnerController {
 	    mav.setViewName("parkJson");
 	    return mav;
 	}
-	
+	//나중에 메인 생기면 반환값 int로 바꾸기
 	@RequestMapping("/insertCast.do")
 	public ModelAndView insertCast(String ma_code,String mc_char,String m_code,String mo_date, String mo_time) {
 		int result = partnerDao.insertCasting(ma_code, mc_char, m_code, mo_date, mo_time);
 		System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@@@");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/partner/castAddForm");
+		mav.addObject("result",result);
+		mav.setViewName("parkJson");
 	    return mav;
 	}
 	
@@ -148,7 +155,7 @@ public class PartnerController {
 	    String open = on_openDate+" "+ on_openTime;
 	    String museOpen = on_muse_openDate+" " +on_muse_openTime;
 	    
-	    int result = partnerDao.insertTicketNotice(m_code, rs_code, on_type, on_openTime, on_muse_openTime, on_info, on_sale, on_content, on_casting, on_etc);
+	    int result = partnerDao.insertTicketNotice(m_code, rs_code, on_type, open, museOpen, on_info, on_sale, on_content, on_casting, on_etc);
 	    System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@");
 	    // ModelAndView 객체 생성 후 반환
 	    ModelAndView mav = new ModelAndView();

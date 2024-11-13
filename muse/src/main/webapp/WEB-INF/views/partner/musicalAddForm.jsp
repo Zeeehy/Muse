@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,6 @@
 <%@include file="sidebar.jsp"%>
 <%@include file="musicalNamePopup.jsp"%>
 <style>
-
 </style>
 <body>
 	<div class="main-content">
@@ -42,14 +42,20 @@
 				<tr>
 					<th>공연장</th>
 					<td colspan="3"></td>
-					<td colspan="4"><input type="text" ></td>
+					<td colspan="4"><select>
+							<c:forEach var="dto" items="${HallList}">
+								<option value="${dto.mh_code}">${dto.mh_name}</option>
+							</c:forEach>
+					</select></td>
+
 				</tr>
 				<tr>
 					<th>공연 스케줄</th>
 					<td colspan="3"></td>
 					<td><input type="date" id="startDate" name="m_startdate"></td>
-					<td style="text-align:center">~</td>
-					<td colspan="3"><input type="date" id="endDate" name="m_enddate"></td>
+					<td style="text-align: center">~</td>
+					<td colspan="3"><input type="date" id="endDate"
+						name="m_enddate"></td>
 				</tr>
 				<tr>
 					<th>판매 오픈 시간</th>
@@ -70,7 +76,8 @@
 				<tr>
 					<th>매수 제한</th>
 					<td colspan="3" style="text-align: center;"></td>
-					<td colspan="3" style="text-align: center;"><label>최대 매수</label><select name="m_maxticket">
+					<td colspan="3" style="text-align: center;"><label>최대
+							매수</label><select name="m_maxticket">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -81,35 +88,25 @@
 				<tr>
 					<th>단독 판매 여부</th>
 					<td colspan="3"></td>
-						<td>
-							<label> 사용
-								<input type="radio" name="m_single">
-							</label>
-					</td>
-					<td colspan="3">
-						<label> 사용안함<input type="radio" name="m_single">
-						</label>
-					</td>
+					<td><label> 사용 <input type="radio" name="m_single">
+					</label></td>
+					<td colspan="3"><label> 사용안함<input type="radio"
+							name="m_single">
+					</label></td>
 				</tr>
 				<tr>
 					<th>캐스트 보드 사용 유무</th>
 					<td colspan="3"></td>
-					<td>
-						<label> 사용
-							<input type="radio" name="m_calender">
-						</label>
-					</td>
-					<td>
-						<label> 사용안함
-							<input type="radio" name="m_calender">
-						</label>
-					</td>
+					<td><label> 사용 <input type="radio" name="m_calender">
+					</label></td>
+					<td><label> 사용안함 <input type="radio" name="m_calender">
+					</label></td>
 				</tr>
 
 
 				<tr>
 					<th>포스터 정보</th>
-					<td colspan="5" style="width:60%"></td>
+					<td colspan="5" style="width: 60%"></td>
 					<td colspan="2"><input type="file"></td>
 				</tr>
 				<tr>
