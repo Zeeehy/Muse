@@ -1,6 +1,9 @@
 package com.muse.controller;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,15 +16,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.muse.review.model.MusicalReviewDTO;
 import com.muse.review.model.ReviewDAO;
 import com.muse.review.model.SeatReviewDTO;
+import com.muse.seat.model.SeatDTO;
+import com.muse.seat.model.SeatLayoutDAO;
+import com.muse.seat.model.SeatLayoutDTO;
 
 @Controller
 public class ReviewController {
 
 	@Autowired
 	private ReviewDAO reviewDao;
+	
 	
 	@RequestMapping("/srIndex.do")
 	public String index() {
@@ -44,17 +52,104 @@ public class ReviewController {
 	
 	@RequestMapping("/srShow.do")
 	public ModelAndView srShow(@RequestParam(value = "mh_code") String mh_code,
-								@RequestParam(value = "m_code", required = false) String m_code	) {
+								@RequestParam(value = "m_code", required = false) String m_code,
+								@RequestParam(value="sl_bind", required = false, defaultValue = "1") int sl_bind) {
+		
 		ModelAndView mav = new ModelAndView();
 		
 		// 공연장검색이면 그냥 공연명 null로
 	    if (m_code == null) {
 	        m_code = ""; 
 	    }
+	    
+	    int mhl_code = reviewDao.getMhl_code(mh_code);
+	    System.out.println("mhl_code ="+mhl_code +" sl_bind="+sl_bind);
 		
+	    //int sl_bind(바인드), int mhl_code(공연장) ,String m_code(뮤지컬)
+	    HashMap map = ReservSeatForm(sl_bind,mhl_code,m_code);
+		                           
+		Iterator ir = map.keySet().iterator();
+		
+		while (ir.hasNext()) {
+			String key = (String)ir.next();
+			mav.addObject(key, map.get(key));
+			
+		}
+		
+		
+		//mh_code
+		String mh_name = reviewDao.getMh_name(mh_code);
 		
 		mav.setViewName("review/srShow");
-		mav.addObject("", mav);
+		mav.addObject("mh_code", mh_code);
+		mav.addObject("m_code", m_code);
+		mav.addObject("mh_name", mh_name);
+		mav.addObject("sl_bind", sl_bind);
+		
+		if(!m_code.equals("")) {
+			String m_title = reviewDao.getM_name(m_code);
+			mav.addObject("m_title", m_title);
+		}
+		
+		return mav;
+	}
+	
+	
+	public HashMap<String, String> ReservSeatForm(int sl_bind, int mhl_code,String m_code) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		
+		List<SeatLayoutDTO> layout = reviewDao.seatLayoutSelect(sl_bind, mhl_code);
+		List<String> section = reviewDao.sectionSelect(sl_bind, mhl_code);
+		List<Integer> floor = reviewDao.bindByallFloorSelect(sl_bind, mhl_code);
+		Map<Integer,Integer> max_rowMap= reviewDao.max_rowSelect(mhl_code); 
+		List<SeatDTO> seatList = reviewDao.getRealSeat(m_code);
+		
+		System.out.println(section);
+		System.out.println(floor);
+		System.out.println(max_rowMap);
+		System.out.println(seatList);
+		
+		String jsonLayout = new Gson().toJson(layout);
+		String jsonSection =  new Gson().toJson(section); 
+		String jsonFloor = new Gson().toJson(floor);
+		String jsonMax_rowMap = new Gson().toJson(max_rowMap);
+		String jseatList =  new Gson().toJson(seatList);
+		
+		map.put("layouts",jsonLayout);
+		map.put("section",jsonSection);
+		map.put("floor",jsonFloor);
+		map.put("max_rowMap",jsonMax_rowMap);
+		map.put("seatList",jseatList);
+		
+		
+		System.out.println(jsonLayout);
+		System.out.println(jsonSection);
+		System.out.println(jsonFloor);
+		System.out.println(jsonMax_rowMap);
+		System.out.println(jseatList);
+				
+		
+		return map;
+	}
+	
+
+	// 리뷰 상세로 들어가기
+	@RequestMapping("/srShowList.do")
+	public ModelAndView srShowList(@RequestParam(value = "sl_code") int sl_code,
+			@RequestParam(value = "sl_section") String sl_section,
+			@RequestParam(value = "sl_row") int sl_row,
+			@RequestParam(value = "sl_floor") int sl_floor,
+			@RequestParam(value = "s_position") int s_position) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("sl_code", sl_code);
+		mav.addObject("sl_section", sl_section);
+		mav.addObject("sl_row", sl_row);
+		mav.addObject("sl_floor", sl_floor);
+		mav.addObject("s_position", s_position);
+		
+		mav.setViewName("review/srShowList");
 		return mav;
 	}
 	

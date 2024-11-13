@@ -1,6 +1,10 @@
 package com.muse.review.model;
 
 import java.util.List;
+import java.util.Map;
+
+import com.muse.seat.model.SeatDTO;
+import com.muse.seat.model.SeatLayoutDTO;
 
 public interface ReviewDAO {
 
@@ -17,4 +21,18 @@ public interface ReviewDAO {
 	
 	String getWriterIdByBdCode(String bd_code);
 	SeatReviewDTO srWrite(String bd_code);
+	
+	String getMh_name(String mh_code);
+	String getM_name(String m_code);
+	
+	
+	
+	//좌석
+	public List<SeatLayoutDTO> seatLayoutSelect(int sl_bind, int mhl_code);
+	public List<String> sectionSelect(int sl_bind, int mhl_code);
+	public List<Integer> bindByallFloorSelect(int sl_bind, int mhl_code);
+	public Map<Integer, Integer> max_rowSelect(int mhl_code);
+	public List<SeatDTO> getRealSeat(String m_code);
+	int getMhl_code(String mh_code);
 }
+
