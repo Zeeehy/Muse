@@ -316,6 +316,9 @@ function setSeats(section_div,rowLayout){
 			                        // class 부여 => 색 표시
 			                        alert(seatNum + ' : ' + real_seat.s_position);
 			                        
+			                        /* if(real_seat.sg_code=='sg_1'){
+			                        	
+			                        } */
 			                        
 			                        seat_div.classList.add('VIP');
 			                        
@@ -345,28 +348,69 @@ function setSeats(section_div,rowLayout){
 	
 }
 
-// 특정 좌석 정보를 출력하는 예시
+//특정 좌석 정보를 출력하는 예시
 function testClick(rowLayout, event) {
     // 클릭된 요소에서 가장 가까운 .seat 클래스를 가진 부모 요소 찾기
-    // 이벤트 버블링 때문에
-    const seatDiv = event.target.closest('.seat');
+    const seatElement = event.target.closest('.seat');
+    if (!seatElement) return; // seatElement가 유효하지 않으면 종료
+
+    const seatReviewDiv = document.querySelector('.seatReview');
+    const seatNumber = seatElement.id.slice(3); // 좌석 번호 추출
+
+    // rowLayout에서 필요한 값이 유효하지 않을 경우 기본값 설정
+    const grade = seatElement.getAttribute('data-grade');
+    const floor = rowLayout.sl_floor;
+    const section = rowLayout.sl_section;
+    const row = rowLayout.sl_row;
+
+    const seatInfo = {
+        id: seatElement.id,
+        grade: grade,
+        floor: floor,
+        section: section,
+        row: row,
+        number: seatNumber,
+        element: seatElement
+    };
     
-	var str = '';
-    // rowLayout 객체의 모든 키와 값을 출력
-    Object.entries(rowLayout).forEach(([key, value]) => {
-        console.log(`${key}: ${value}`);
-        
-        str+=key+':'+value+'\r\n';
-    });
-	
-    if (seatDiv && seatDiv.id) {
-        console.log('클릭된 요소 ID:', seatDiv.id);
-        alert(str+'클릭된 요소 ID: ' + seatDiv.id);
+    console.log("클릭이벤트");
+    console.log(seatInfo);
+
+    // 좌석 선택 상태 확인
+    const isSelected = Array.from(selectedSeats).find(seat => seat.element === seatElement);
+
+    if (isSelected) {
+        // 선택 해제
+        selectedSeats.delete(isSelected);
+        seatElement.classList.remove('selected');
+
+        if (currentReviewSeat === seatElement) {
+            seatReviewDiv.style.display = 'none';
+            currentReviewSeat = null;
+        }
     } else {
-        console.log('클릭된 요소에 ID가 없습니다.');
+        // 새로운 좌석 선택
+        if (selectedSeats.size >= MAX_SEATS) {
+            alert(`최대 ${MAX_SEATS}개의 좌석까지만 선택할 수 있습니다.`);
+            return;
+        }
+
+        selectedSeats.add(seatInfo);
+        seatElement.classList.add('selected');
+
+        // 리뷰 정보 업데이트
+        if (seatReviewDiv) {
+            seatReviewDiv.querySelector('p').innerHTML = 
+            	'선택하신 <b> ['+grade+'] 석 '+section+' 구역 '+row+' 열 '+seatNumber+' 좌석의 평균은 (5.0) 입니다.</b>';
+            seatReviewDiv.style.display = 'block';
+            currentReviewSeat = seatElement;
+        }
     }
 
+    // 선택 좌석 목록 업데이트
+    updateSelectedSeats();
 }
+
 
 
 // 구역과 구역 사이의 기다란 숫자 근데 신경안써도 됨

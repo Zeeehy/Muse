@@ -57,8 +57,7 @@
                         <div>
                             <ul>
                                 <li>1F <input type="checkbox"></li>
-                                <li>2F <input type="checkbox"></li>
-                                <li>3F <input type="checkbox"></li>
+                                <li>2 / 3F <input type="checkbox"></li>
                             </ul>
                         </div>
                     </div>
@@ -146,12 +145,12 @@
 <script>
 //선택된 좌석들을 저장할 Set
 const selectedSeats = new Set();
-// 현재 리뷰 중인 좌석을 추적
+//현재 리뷰 중인 좌석을 추적
 let currentReviewSeat = null;
-// 최대 선택 가능한 좌석 수 설정
-const MAX_SEATS = ${maxTickets}; // 템플릿 리터럴 제거
+//최대 선택 가능한 좌석 수 설정
+const MAX_SEATS = ${maxTickets}; // 컨트롤러에서 전달받은 값
 
-// CSS 스타일 추가
+//CSS 스타일 추가
 const style = document.createElement('style');
 style.textContent = `
     .seat.selected {
@@ -173,111 +172,46 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// setSeats 함수 수정
-function setSeats(section_div, rowLayout) {
-    var seatsData = rowLayout.sl_data.split('.');    
-    var seats_div = document.createElement('div');
-    seats_div.classList.add('row');
-    var seatNum = 0;
-    
-    seatsData.forEach((seat, index) => {
-        if(seat === 's') {
-            seatNum++;
-            var seat_div = document.createElement('div');
-            seat_div.classList.add('seats');
-            
-            const floorMap = floorSeatMap.get(rowLayout.sl_floor);
-            let seatGrade = 'R'; // 기본값
-
-            if (floorMap) {
-                const sectionMap = floorMap.get(rowLayout.sl_section);
-                if (sectionMap) {
-                    const rowMap = sectionMap.get(rowLayout.sl_row);
-                    if (rowMap) {
-                        const positionSeats = rowMap.get(seatNum);
-                        if (positionSeats && positionSeats[0]) {
-                            seatGrade = positionSeats[0].sg_name;
-                        }
-                    }
-                }
-            }
-
-            // rowLayout 정보를 좌석 div에 저장
-            seat_div.rowLayout = rowLayout;
-            seat_div.innerHTML = `<div class="seat" id="ps_${seatNum}" data-grade="${seatGrade}"><p>${seatNum}</p></div>`;
-            
-            seats_div.appendChild(seat_div);
-            
-            seat_div.addEventListener('click', function(event) {
-                const seatElement = event.target.closest('.seat');
-                if (!seatElement) return;
-                
-                const seatReviewDiv = document.querySelector('.seatReview');
-                const isSelected = Array.from(selectedSeats).find(seat => seat.element === seatElement);
-
-                if (isSelected) {
-                    // 선택 해제
-                    selectedSeats.delete(isSelected);
-                    seatElement.classList.remove('selected');
-                    
-                    if (currentReviewSeat === seatElement) {
-                        seatReviewDiv.style.display = 'none';
-                        currentReviewSeat = null;
-                    }
-                } else {
-                	if (selectedSeats.size >= MAX_SEATS) {
-                	    const message = "최대 " + MAX_SEATS + "개의 좌석까지만 선택할 수 있습니다.";
-
-                	    alert(message);
-                	    return;
-                	}
-
-                    const seatInfo = {
-                        id: seatElement.id,
-                        grade: seatElement.getAttribute('data-grade'),
-                        floor: rowLayout.sl_floor,
-                        section: rowLayout.sl_section,
-                        row: rowLayout.sl_row,
-                        number: seatNum,
-                        element: seatElement
-                    };
-
-                    selectedSeats.add(seatInfo);
-                    seatElement.classList.add('selected');
-
-                    // 리뷰 정보 업데이트
-                    if (seatReviewDiv) {
-                        seatReviewDiv.querySelector('p').innerHTML = 
-                            `선택하신 좌석 <b>[${seatInfo.grade}석] ${seatInfo.floor}층-${seatInfo.section}블록 ${seatInfo.row}열 ${seatInfo.number}번</b>의 평균 평점은 (5.0) 입니다.`;
-                        seatReviewDiv.style.display = 'block';
-                        currentReviewSeat = seatElement;
-                    }
-                }
-                
-                // 선택 좌석 목록 업데이트
-                updateSelectedSeats();
-            });
-        } else if (seat === 'e') {
-            var empty_seat_div = document.createElement('div');
-            empty_seat_div.classList.add('seat');
-            seats_div.appendChild(empty_seat_div);
-        }
-    });
-    
-    section_div.appendChild(seats_div);
+//선택된 날짜의 시간 옵션을 가져오기
+function updateTimes(event) {
+  var selectedDate = event.target.value;
+  var param = 'selectedDate=' + selectedDate;
+  console.log(param);
+  sendRequest('searchTime.do', param, updateTimesResult, 'GET');
 }
 
-// 선택된 좌석 목록을 업데이트하는 함수
+//시간 옵션 처리 함수
+function updateTimesResult() {
+  if (XHR.readyState === 4 && XHR.status === 200) {
+      var optionTimeList = XHR.responseText;
+      var data = JSON.parse(optionTimeList); 
+      var playTimeSelect = document.getElementById('playTime'); 
+      playTimeSelect.innerHTML = "<option>선택하세요!</option>"; 
+      console.log(data);
+      // 각 시간 옵션을 select 요소에 추가
+      
+      for (var i = 0; i < data.playTime.length; i++) {
+          var time = data.playTime[i];
+          var optionElement = document.createElement("option");
+          optionElement.value = time;
+          optionElement.textContent = time;
+          playTimeSelect.appendChild(optionElement);
+      }
+  }
+}
+
+//updateSelectedSeats 함수 추가
 function updateSelectedSeats() {
     const selectedSeatsDiv = document.querySelector('.s.Choice > div');
     selectedSeatsDiv.innerHTML = '';
-    
-    selectedSeats.forEach(seatInfo => {
+
+    selectedSeats.forEach(function(seatInfo) {
         const p = document.createElement('p');
-        p.textContent = `[${seatInfo.grade}석] ${seatInfo.floor}층-${seatInfo.section}블록 ${seatInfo.row}열 ${seatInfo.number}번`;
+        p.textContent = '[' + seatInfo.grade + '석] ' + seatInfo.floor + '층-' + seatInfo.section + '블록 ' + seatInfo.row + '열 ' + seatInfo.number + '번';
         selectedSeatsDiv.appendChild(p);
     });
 }
+
 </script>
 
 </body>

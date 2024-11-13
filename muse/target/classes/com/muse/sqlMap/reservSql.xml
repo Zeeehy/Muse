@@ -17,7 +17,7 @@
 		    SELECT DISTINCT TO_CHAR(mo.mo_date, 'YYYY-MM-DD (DY)', 'NLS_DATE_LANGUAGE=KOREAN') AS mo_date_with_day
 		    FROM musical m
 		    JOIN musical_option mo ON m.m_code = mo.m_code
-		    WHERE m.mh_code = #{mh_code}
+		    WHERE m.m_code = #{m_code}
 		)
 		ORDER BY mo_date_with_day
 	</select>
@@ -32,7 +32,7 @@
 	<select id="getMusicalMaxTicket" parameterType="String" resultType="int">
 	    SELECT m_maxticket
 	    FROM musical
-	    WHERE mh_code = #{mh_code}
+	    WHERE m_code = #{m_code}
 	</select>
 	<!-- 좌석등급 가져오기 -->
 	<select id="getMusicalSeatList" resultType="map">
@@ -41,4 +41,56 @@
 	    JOIN seat_grade sg ON s.sg_code = sg.sg_code 
 	    ORDER BY sg.sg_name DESC
 	</select>
+	
+	<!-- 좌석 -->
+	<select id="seatLayoutSelectReserv" resultType="com.muse.seat.model.SeatLayoutDTO" parameterType="map">
+		SELECT *
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=#{sl_bind} AND MHL_CODE = #{mhl_code}
+		order by sl_code
+	</select>
+	
+	<select id="sectionSelectReserv" resultType="java.lang.String" parameterType="map">
+		SELECT distinct sl_section
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=#{sl_bind} AND MHL_CODE = #{mhl_code}
+		
+	</select>
+	
+	<select id="bindByallFloorSelectReserv" resultType="Integer" parameterType="map">
+		SELECT distinct sl_floor
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=#{sl_bind} AND MHL_CODE = #{mhl_code}
+	</select>
+	
+	<resultMap id="MaxRowResultMap" type="java.util.HashMap">
+	    <result property="sl_floor_key" column="sl_floor_key"/>
+	    <result property="max_row" column="max_row"/>
+	</resultMap>
+	
+	<!-- select 태그에서 resultMap 사용 -->
+	<select id="max_rowSelectReserv" resultMap="MaxRowResultMap" parameterType="Integer">
+	      SELECT sl_floor AS sl_floor_key, MAX(sl_row) AS max_row
+	    FROM seat_layout sl, MUSICAL_HALL_LAYOUT mhl
+	    WHERE 
+            sl.lt_code = mhl.mhl_code and
+        MHL_CODE = #{mhl_code}
+	    GROUP BY sl_floor
+	    ORDER BY sl_floor
+	</select>
+	
+	<select id="getRealSeatReserv" resultType="com.muse.seat.model.SeatDTO" parameterType="String">
+		select *
+		from seat
+		where m_code = #{m_code}
+	</select>
+	
+	<select id="getMhl_codeReserv" resultType="Integer" parameterType="String">
+		select mhl_code
+		from musical_hall_layout
+		where mh_code=#{mh_code}
+	</select>	
 </mapper>
