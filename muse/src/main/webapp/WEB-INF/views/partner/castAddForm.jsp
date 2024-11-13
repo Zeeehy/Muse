@@ -184,6 +184,8 @@ var countDate = 0;
 var actorListName = []; //생성된 배우 역할 배열
 var musical_code = '';
 var dateList = []; //생성된 일자별 배우 등록 구분 배열
+var selectValue ='';
+var selectValueDate ='';
 
 function show(){
 	var actorName = document.getElementsByName('ma_name')[0].value;
@@ -303,11 +305,14 @@ function insertCast(){
 	    	}
 	}
 }
+//저장 isert문
 function insertCastResult(){
 	if(XHR.readyState==4){
 		if (XHR.status == 200) {
 			var data = XHR.responseText;
-			if(data>=1){
+			var Jdata = JSON.parse(data);
+			console.log(Jdata.result+"@@@@@@@@@@@@@@@@@@@@@@");
+			if(Jdata.result>=1){
 				alert('성공');
 			}else{
 				alert('실패');
@@ -384,7 +389,7 @@ function addRow() {
     const newRow = table.insertRow();
     
     newRow.id="actor"+count;
-    
+    selectValueDate = newRow.id;
     actorListName.push(newRow.id);
     
     var end = `
@@ -410,8 +415,6 @@ function addRow() {
     	</td>
 	        <td colspan="2" style="text-align: center;" id="ma_char">` + roleInput + `</td>
 	        <td colspan="3"><input type="button" value="삭제" onclick="deleteRow(this)"></td>`;
-
-        
     	newRow.innerHTML = end;
     
         document.getElementById("roleInput").value = ""; 
@@ -427,12 +430,13 @@ function dateListResult(){
 	var data = XHR.responseText;
 var optionList = JSON.parse(data); 
 var optionMa_date = optionList.Datelist.mo_date;
-
-for (var i = 0; i < actorListName.length; i++) {
-    var trId = actorListName[i]; 
-    var trElement = document.getElementById(trId); 
+//for (var i = 0; i < actorListName.length; i++) {
+   // var trId = actorListName[i]; 
+   
+   var trElement = document.getElementById(selectValueDate); 
     var ma_date = trElement.querySelector('#ma_date'); // #ma_date로 select 요소를 찾기
-
+	//var ma_date = document.getElementById('ma_date');
+  
     console.log(ma_date); //
     ma_date.innerHTML = '';
     for (var j = 0; j < optionList.Datelist.length; j++) {
@@ -445,11 +449,10 @@ for (var i = 0; i < actorListName.length; i++) {
 
         ma_date.appendChild(option); // ma_date에 옵션을 추가
     }
+//}
 }
 }
 }
-}
-
 
 function deleteRow(button) {
     const row = button.closest('tr');  // 'button'의 부모 요소인 tr을 찾아냄
@@ -596,6 +599,10 @@ function insertMusicalDateResult(){
 //날짜의 시간값 구하기(optiontime값)
 function searchTime(event){
 	var selectDate = event.target.value;
+
+	selectValue = event.target.closest('tr').id;
+
+	console.log(selectValue+"@@@@@@@@@@@@@@");
 	var param = 'm_code=' + musical_code + '&mo_date=' + selectDate;
 	sendRequest('searchTime1.do',param,searchTimeResult,'GET');
 }
@@ -606,11 +613,9 @@ function searchTime(event){
 	            var optionTimeList = JSON.parse(XHR.responseText);
 	            var timelist = optionTimeList.Timelist;
 
-	            for (var i = 0; i < actorListName.length; i++) {
-	            	var trId = actorListName[i]; 
-	                var trElement = document.getElementById(trId); 
+	         
+	                var trElement = document.getElementById(selectValue);
 	                var ma_time = trElement.querySelector('#ma_time');
-	                
 	                ma_time.innerHTML = ''; //ma_time의 값 초기화.
 	                
 	                var defaultOption = document.createElement("option");
@@ -623,7 +628,7 @@ function searchTime(event){
 	                    optionElement.textContent = item.mo_time;
 	                    ma_time.appendChild(optionElement);
 	                }
-	            }
+	         
 	        }
 	    }
 	}

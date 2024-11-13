@@ -25,11 +25,11 @@ insert into musical_option values('mo_'||MUSICAL_OPTION_MO_CODE.nextval,#{m_code
 </insert>
 
 <select id="selectOptionList"  resultType="com.muse.partner.model.MusicalOptionDTO" parameterType="String">
-  select distinct mo_date from musical_option where m_code = #{m_code}
+  select distinct mo_date from musical_option where m_code = #{m_code} order by mo_date
   </select>
   
 <select id="selectTimeOptionList" resultType="com.muse.partner.model.MusicalOptionDTO" parameterType="map">
-	select mo_time from musical_option where m_code = #{m_code} and mo_date = #{mo_date}
+	select mo_time from musical_option where m_code = #{m_code} and mo_date = #{mo_date} 
 </select>
 
 <insert id="insertCasting" parameterType="map">
@@ -79,4 +79,7 @@ m_code = #{m_code}),
         0
     )
 </insert>
+<select id="selectMusicalHallList"  resultType="com.muse.partner.model.MusicalHallDTO">
+	select * from musical_Hall
+</select>
   </mapper>

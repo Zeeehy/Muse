@@ -238,7 +238,6 @@ function inputMusicalName(element) {
 
     var MusicalM_code= element.id;
     musical_code = MusicalM_code; //선택한 뮤지컬 idx값
-    alert(musical_code);
 } 
 
  function insertTicketOpen(){
