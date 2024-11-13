@@ -211,8 +211,8 @@
 										<div class="filterContent">
 											<c:if test="${!empty dow_screen }">
 												<c:forEach items="${ dow_screen}" var="dow">
-													<a class="filterLabel" data-toggle="self"
-														aria-checked="false" role="checkbox" href="#" class="dow">${dow }</a>
+													<a class="filterLabel dow" data-toggle="self"
+														aria-checked="false" role="checkbox" href="#">${dow }</a>
 												</c:forEach>
 											</c:if>
 										</div>
@@ -221,8 +221,8 @@
 										<strong class="filterTitle">공연 시간</strong>
 										<div class="filterContent">
 											<c:forEach items="${startTimes }" var="stime">
-												<a class="filterLabel" data-toggle="self"
-													aria-checked="false" role="checkbox" href="#" class="startTime">${stime }</a>
+												<a class="filterLabel startTime" data-toggle="self"
+													aria-checked="false" role="checkbox" href="#" >${stime }</a>
 											</c:forEach>
 										</div>
 									</div>
@@ -230,8 +230,8 @@
 										<strong class="filterTitle">캐스팅</strong>
 										<div class="filterContent">
 											<c:forEach items="${castings }" var="casting">
-												<a class="filterLabel" data-toggle="self"
-													aria-checked="true" role="checkbox" href="#" class="castingName" id="${casting.ma_code }">${casting.ma_name }</a>
+												<a class="filterLabel castingName" data-toggle="self"
+													aria-checked="true" role="checkbox" href="#"  id="${casting.ma_code }">${casting.ma_name }</a>
 											</c:forEach>
 										</div>
 									</div>
@@ -263,7 +263,10 @@
 											 		</tr>
 											 	</c:if>
 											 	
-											 	<tr><td>${ casting.mo_date}</td><td>${ casting.mo_time}</td><td>${casting.ma_name }</td>
+											 	<tr data-dow="${casting.mo_date}" data-time="${casting.mo_time}" data-cast="${casting.ma_name}">
+											 		<td>${ casting.mo_date}</td>
+											 		<td>${ casting.mo_time}</td>
+											 		<td>${casting.ma_name }</td>
 											 	   
 											 </c:if>
 											 <c:if test="${previousDate == casting.mo_date && previousTime == casting.mo_time}">
@@ -619,8 +622,10 @@
 	
 	
 	//
+
 	var filterSearch = document.querySelector('#filterSearch');
 	var dows = document.querySelectorAll(".dow");
+	
 	var startTimes = document.querySelectorAll(".startTime");
 	var castingNames = document.querySelectorAll(".castingName");
 	var castingDetailTable = document.querySelector(".castingDetailTable");
@@ -639,8 +644,66 @@
 		}
 		}, 'GET');
 		
-		
 	});
+	
+	addFilterListeners(dows);
+    addFilterListeners(startTimes);
+    addFilterListeners(castingNames);
+
+    function addFilterListeners(elements) {
+        elements.forEach(function(element) {
+            element.addEventListener("click", function(event) {
+                event.preventDefault(); // 기본 동작 방지
+                filteringEvent(event);
+            });
+        });
+    }
+	
+	
+    function filteringEvent(event) {
+        event.preventDefault();
+        const target = event.target;
+        target.classList.toggle('is-toggled');
+
+        // 현재 선택된 모든 필터 가져오기
+        const selectedDows = Array.from(document.querySelectorAll('.dow.is-toggled')).map(el => el.textContent);
+        const selectedTimes = Array.from(document.querySelectorAll('.startTime.is-toggled')).map(el => el.textContent);
+        const selectedCasts = Array.from(document.querySelectorAll('.castingName.is-toggled')).map(el => el.textContent);
+
+        // 데이터가 있는 행만 선택 (헤더 제외)
+        const rows = document.querySelectorAll('.castingDetailTable tbody tr[data-dow]');
+        
+        rows.forEach(row => {
+        	
+            const castCells = Array.from(row.cells).slice(2);
+            
+            castCells.forEach(function(cell){
+            	console.log(cell);
+            });
+            
+            // data 속성에서 값을 가져옴
+            const dow = row.dataset.dow;  // data-dow 값
+            const time = row.dataset.time;  // data-time 값
+            
+            // 모든 배우 이름을 가져옴 (3번째 셀부터 끝까지)
+            const casts = Array.from(row.cells).slice(2).map(cell => cell.textContent.trim());
+
+            // 필터 조건 확인
+            const dowMatch = selectedDows.length === 0 || selectedDows.includes(dow);
+            const timeMatch = selectedTimes.length === 0 || selectedTimes.includes(time);
+            const castMatch = selectedCasts.length === 0 ||casts.some(cast => selectedCasts.includes(cast));
+			
+
+            
+            // 모든 조건을 만족하는 경우에만 표시
+            if (dowMatch && timeMatch && castMatch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+	
 	
 </script>
 </html>

@@ -232,18 +232,25 @@ img.castingImage{
     cursor: pointer;
 }
 
-.filterLabel[aria-checked="true"] {
-    /* 선택된 필터 스타일 */
+/* .filterLabel[aria-checked="true"] {
+    선택된 필터 스타일
     background-color: #selected-color;
     color: #text-color;
 }
 
 .filterLabel[aria-checked="false"] {
-    /* 선택되지 않은 필터 스타일 */
+    선택되지 않은 필터 스타일
     background-color: #unselected-color;
     color: #text-color;
 }
+ */
 
+.productWrapper .castingDetail .castingDetailFilter .filterLabel.is-toggled {
+    font-weight: bold;
+    color: #fff;
+    border-color: #333;
+    background-color: #333;
+}
 
 
 
