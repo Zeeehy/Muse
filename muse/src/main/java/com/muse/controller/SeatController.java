@@ -145,6 +145,7 @@ public class SeatController {
                                 
 
                                 seatList.add(seatDTO);  // List에 DTO 추가
+                                System.out.println(seatDTO);
 
                             }
                         }
@@ -152,7 +153,6 @@ public class SeatController {
                 }
             }
             System.out.println(i);
-            
             seatLayoutDAO.insertDummySeats(seatList);
             
             response.put("status", "success");

@@ -44,28 +44,24 @@
 	<select id="getRealSeat" resultType="com.muse.seat.model.SeatDTO">
 		select *
 		from seat
-		where m_code = 'M_2'
+		where m_code = 'm_2'
 	</select>
 	
 	<!-- batch insert -->
-	<insert id="insertSeatList" parameterType="java.util.List">
-    INSERT ALL
-    <foreach collection="list" item="seat">
-        INTO SEAT (
+	<insert id="insertSeatList" parameterType="com.muse.seat.model.SeatDTO">
+    INSERT INTO SEAT (
             S_CODE, SG_CODE, M_CODE, MHL_CODE, 
             S_SECTION, S_POSITION, S_ROW, S_FLOOR
         ) 
         VALUES (
             seat_s_code.nextval,
-            #{seat.sg_code},
-            #{seat.m_code},
-            #{seat.mhl_code},
-            #{seat.s_section},
-            #{seat.s_position},
-            #{seat.s_row},
-            #{seat.s_floor}
+            #{sg_code},
+            #{m_code},
+            #{mhl_code},
+            #{s_section},
+            #{s_position},
+            #{s_row},
+            #{s_floor}
         )
-    </foreach>
-    SELECT * FROM DUAL
-</insert>
+	</insert>
   </mapper>

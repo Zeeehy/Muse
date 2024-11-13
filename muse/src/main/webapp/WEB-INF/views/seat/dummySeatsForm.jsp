@@ -351,7 +351,7 @@ function setSeats(section_div,rowLayout){
 			                positionSeats.forEach((real_seat,index) => {
 			                    // 행, 열 확인
 			                        // class 부여 => 색 표시
-			                        alert(seatNum + ' : ' + real_seat.s_position);
+			                        //alert(seatNum + ' : ' + real_seat.s_position);
 			                        
 			                        
 			                        seat_div.classList.add('VIP');
