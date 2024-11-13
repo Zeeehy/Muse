@@ -32,46 +32,51 @@ public class ReservController {
 	private SeatLayoutDAO seatLayoutDAO;
 	
 	@RequestMapping("/reservMain.do")
-	public ModelAndView RerservMainForm() {
-		// 뮤지컬 기본정보 조회
-		Map<String,Object> musicalInfo = reservDAO.getMusicalInfo();
-		
-		// 뮤지컬 날짜 조회
-		List<String> playDate = reservDAO.getMusicalDate();
-		
-		// 뮤지컬 시간 조회
-	    //List<String> allTimes = reservDAO.getAllMusicalTimes();
-		
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("reservation/reservMain");
-		
-		mav.addObject("musicalInfo",musicalInfo);
-		mav.addObject("playDate",playDate);
-	    //mav.addObject("allTimes", allTimes);
-		
-		HashMap map = ReservSeatForm();
-		
-		Iterator ir = map.keySet().iterator();
-		
-		while (ir.hasNext()) {
-			String key = (String)ir.next();
-			mav.addObject(key, map.get(key));
-			
-		}
-		
-		return mav;
+	public ModelAndView RerservMainForm(@RequestParam("mh_code") String mh_code) {
+	    ModelAndView mav = new ModelAndView();
+	    
+	    // 뮤지컬 기본정보 조회
+	    Map<String,Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	    
+	    // 뮤지컬 날짜 조회
+	    List<String> playDate = reservDAO.getMusicalDate(mh_code);
+	    
+	    // 뮤지컬 최대 매수 조회
+	    int maxTickets = reservDAO.getMusicalMaxTicket(mh_code);
+	    
+	    mav.setViewName("reservation/reservMain");
+	    mav.addObject("musicalInfo", musicalInfo);
+	    mav.addObject("playDate", playDate);
+	    mav.addObject("maxTickets", maxTickets);
+	    
+	    // 뮤지컬 좌석 조회
+	    HashMap map = ReservSeatForm();
+	    Iterator ir = map.keySet().iterator();
+	    while (ir.hasNext()) {
+	        String key = (String)ir.next();
+	        mav.addObject(key, map.get(key));
+	    }
+	    
+	    return mav;
 	}
 	
 	@RequestMapping("/searchTime.do")
-	public ModelAndView searchTime(@RequestParam String selectedDate) {
-	    List<String> playTime = reservDAO.getMusicalTimeByDate(selectedDate);
+	public ModelAndView searchTime(@RequestParam String selectedDate, String mh_code) {
+	    String formattedDate = selectedDate.split(" ")[0];
+	    String dayOfWeek = selectedDate.split(" ")[1].replace("(", "").replace(")", ""); // 요일 추출
+
+	    List<String> playTime = reservDAO.getMusicalTimeByDate(formattedDate,mh_code);
+
 	    ModelAndView mav = new ModelAndView();
 	    mav.setViewName("goJson");
+	    mav.addObject("formattedDate", formattedDate);
+	    mav.addObject("dayOfWeek", dayOfWeek); // 요일 전달
 	    mav.addObject("playTime", playTime);
-//	    System.out.println(playTime.size() + "개의 시간");
-//	    System.out.println(playTime.toString());
+
 	    return mav;
 	}
+
+
 	
 
 	@RequestMapping("/reservSale.do")

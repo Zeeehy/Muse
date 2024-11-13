@@ -8,18 +8,11 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <style>
-
-
 .floorSection {
     display: flex;
     justify-content: center;
-    gap : 30px;
+    gap : 15px;
 }
-/* .A1A1{
-	display: flex;
-} */
-
-
 .seating_table_container{
 	display: flex;
     justify-content: center;
@@ -27,15 +20,6 @@
     margin: 40px;
     font-weight: bolder;
 }
-
-/* .seattable_zone_container{
-    height: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-} */
-
 .first, .second{
 	display: flex;
     justify-content: center;
@@ -43,86 +27,72 @@
     margin: 40px;
     font-weight: bolder;
 }
-
-
 .seat {
-    height: 25px;
     float: left;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
     border-radius: 10%;
-    margin: 2.5px;
 }
-
 .row{
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 }
 .row .row_zone p{
-	width:25px;
-	height:25px;
+	width:10px;
+	height:10px;
 	margin:0;
 	display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2.5px;
+    font-size: 10px;
     
 }
 .seats{
-	margin : 5px;
-	background: yellow;
+	margin: 2px;
+    background: #fff;
+    border: 0.5px solid #666;
+    cursor: pointer;
 }
 .seat {
-    width: 25px;
+    width: 10px;
+    height: 10px;
 }
-p {
-    display: block;
+.seat p {	
+    display: none;
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     unicode-bidi: isolate;
 }
-
-/* .section_A,.section_B,.section_C{
-	display: flex;
-} */
-
 .section_A .row{
 	  justify-content: flex-end;
-	      height: 40px;
-	
 }
-
 .section_B .row{
 	  justify-content: center;
 	
 }
-
 .section_C .row{
 	  justify-content: flex-start;
-	      height: 40px;
 }
-
 #seattable_zone{
 	text-align: center;
 }
 
 .rowNum{
-	margin-top: 21.3px;
+	margin-top: 20px;
 	display: flex;
     flex-direction: column;
 }
 .row_zone {
-	margin:5px;}
+	margin:3px;}
 
 .VIP{
 	background-color: red;
 }
-
 </style>
 
 <script type="text/javascript">

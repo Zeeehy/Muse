@@ -8,425 +8,6 @@
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Yuri.css">
 <script src="/muse/resources/js/httpRequest.js"></script>
-<style>
-.floorSection {
-    display: flex;
-    justify-content: center;
-    gap : 15px;
-}
-.seating_table_container{
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 40px;
-    font-weight: bolder;
-}
-.first, .second{
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 40px;
-    font-weight: bolder;
-}
-.seat {
-    float: left;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 10%;
-    margin: 2.5px;
-}
-.row{
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-}
-.row .row_zone p{
-	width:5px;
-	height:5px;
-	margin:0;
-	display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    
-}
-.seats{
-	margin: 2px;
-    background: #fff;
-    border: 0.5px solid #666;
-    cursor: pointer;
-}
-.seat {
-    width: 5px;
-    height: 5px;
-}
-.seat p {	
-    display: none;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    unicode-bidi: isolate;
-}
-.section_A .row{
-	  justify-content: flex-end;
-}
-.section_B .row{
-	  justify-content: center;
-	
-}
-.section_C .row{
-	  justify-content: flex-start;
-}
-#seattable_zone{
-	text-align: center;
-}
-
-.rowNum{
-	margin-top: 21.3px;
-	display: flex;
-    flex-direction: column;
-}
-.row_zone {
-	margin:5px;}
-
-.VIP{
-	background-color: red;
-}
-
-</style>
-<script type="text/javascript">
-
-// 존재하는 모든 섹션 ver json
-var jsection = ${section};
-
-// 모든 좌석레이아웃 ver json
-var layoutData = ${layouts};
-
-// 모든 층수 ver json
-var jfloor = ${floor};
-
-// 모든 좌석 ver json
-var seatList = ${seatList};
-
-console.log(seatList);
-
-// 한 층의 최대 행을 가져와 뿌리기 위함 ex)12 => 1~12
-// 몰라도 됨
-var obj = JSON.parse('${max_rowMap}');
-var jmax_rowMap = new Map(Object.entries(obj));
-
-// 층별 map (좌석레이아웃)
-// ex) key = 1,2
-// value = groupLayout =>sectionLayout => line => 좌석
-var floorGroupMap = new Map();
-
-// 층별 섹션별 출력할 div map
-var floorGroupDiv = new Map();
-
-// seatList를 층별 섹션별로 관리하기 위함
-var floorSeatMap = new Map();
-
-
-document.addEventListener("DOMContentLoaded",()=>{
-	
-	const floorContainer = document.querySelector('.floor_container');
-
-
- // 층별로 그룹레이아웃을 관리하는 Map 객체 생성
-    // `layoutData` 배열을 순회하면서 층별로 그룹화된 섹션 데이터를 저장
-    layoutData.forEach(function(line,index) {
-    	
-    	//seatLayout의 구역과 층
-        var section = line.sl_section;
-        var floor = line.sl_floor;
-
-        // 층이 처음 등장하면 `floorGroupMap`에 빈 Map을 초기화
-        // floorGroupMap => 층/섹션/seat_layout
-        // floorGroupDiv => 층/섹션/div (좌석들이 출력될 div)
-        if (!floorGroupMap.has(floor)) {
-        	
-            floorGroupMap.set(floor, new Map());
-            floorGroupDiv.set(floor, new Map());
-            
-            const floorDiv = document.createElement('div');
-            floorDiv.className = 'floor';
-            floorDiv.id = 'floor_'+floor;
-            floorDiv.innerHTML = '<div class="seating_table_container"><div id="sittable_floor">'+floor+'층</div></div>'; // 예: "1층", "2층" 등
-            
-            const floorSectionDiv = document.createElement('div');
-            floorSectionDiv.className = 'floorSection';
-            floorSectionDiv.id = 'floorSection'+floor;
-            
-
-            floorContainer.appendChild(floorDiv);
-            floorDiv.appendChild(floorSectionDiv);
-            
-            
-        }
-
-        // 해당 층의 섹션별 그룹화된 데이터를 관리하는 Map 가져오기
-        var groupLayout = floorGroupMap.get(floor);
-        var groupDiv = floorGroupDiv.get(floor);
-        
-        // 섹션이 처음 등장하면 `groupLayout`에 빈 배열을 초기화
-        if (!groupLayout.has(section)) {
-            groupLayout.set(section, []);
-            
-         // 해당 섹션에 대한 `<div>` 동적 생성 및 추가
-            const sectionDiv = document.createElement('div');
-            sectionDiv.className = 'section_'+section;
-            sectionDiv.textContent = '섹션: '+section;
-
-            // 생성한 층 `<div>`에 섹션 `<div>` 추가
-            const floorSectionDiv = document.getElementById('floorSection'+floor);
-            floorSectionDiv.appendChild(sectionDiv);
-            
-            
-            if(section!='C'){
-                makeRowNum(floorSectionDiv,floor);
-            }
-            
-            //section을 키값으로 해당 div를 추가
-            // ex) key = 'A', value = div 
-            groupDiv.set(section, sectionDiv);
-
-            
-        }
-
-        // 현재 좌석 정보를 해당 섹션 배열에 추가
-        groupLayout.get(section).push(line);
-    });
-    
-    
-    // seatList를 map으로 변환하는 코드
-    makeSeatListToMap();
-
-    
-    // 맵 객체로 좌석 출력하는 코드
-    
-    // 층별
-    // 2,3 	
- 	jfloor.forEach(function(floor){
- 		// 구역별
- 		// A,B,C
- 		jsection.forEach((section)=>{
- 			// 해당하는 layout과 div를 가져옴
-            let sectionLayout = floorGroupMap.get(floor).get(section);
-            let section_div = floorGroupDiv.get(floor).get(section);
-            section_div.innerHTML = '<div class="seattable_zone_container"><div id="seattable_zone">'+section+'</div></div>';
-
-            
-            if (sectionLayout) {
-            	sectionLayout.forEach((rowLayout) => {
-            		//console.log("좌석 코드: " + seat.sl_code);
-            		
-					// 해당하는 좌석레이아웃으로 좌석을 설정하는 함수
-            		setSeats(section_div,rowLayout);  
-                    
-
-                });
-            } else {
-                console.log("해당 섹션에 데이터가 없습니다: " + section);
-            }
-
- 		});
- 		
- 	});
-
-console.log('here');
-console.log(floorGroupMap);
- console.log(floorGroupDiv);
- console.log(floorSeatMap);
-    
-});
-
-// 좌석 설정하는 함수
-function setSeats(section_div,rowLayout){
-	
-	// n.n.s.s.s.s.s.s.n.n
-	var seatsData = rowLayout.sl_data.split('.');	
-	
-	// 좌석을 담을 div 생성
-	var seats_div = document.createElement('div');
-	seats_div.classList.add('row');
-	
-	// seat table의 position 값과 비교하는데 사용되는 변수
-	var seatNum = 0;
-	
-	seatsData.forEach((seat,index)=>{
-
-		if(seat === 's'){
-			
-			// 좌석을 설정할 때마다 증가
-			seatNum++;
-			
-			
-			var seat_div = document.createElement('div');
-			seat_div.classList.add('seats');
-			
-			// id 설정하는 부분은 바꾸어 활용할 것
-			// 현재는 seat의 position만 활용하였기때문에, 중복되는 id 발생 
-			// => ex) 층 섹션 행 열 을 활용하여 id 설정하면 좋을 듯
-			//seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(index+1)+'</p></div>';
-			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(seatNum)+'</p></div>';
-			//seat_div.innerHTML = '<div class="seat"><p>'+(rowLayout.sl_code)+'</p></div>';
-			
-			
-			seats_div.appendChild(seat_div);
-			
-			// 모든 좌석에 click 이벤트 활용하는 예시
-			seat_div.addEventListener("click",function(event){
-				testClick(rowLayout,event);
-			});
-			
-			
-	 		
-/* 			
-  			배열을 활용한 특정 좌석에 접근하는 법 (성능 낮음)
- 			seatList.forEach(function(real_seat){
-				console.log(real_seat);
-				if(rowLayout.sl_row==real_seat.s_row && seatNum == real_seat.s_position && rowLayout.sl_floor == real_seat.s_floor &&
-						rowLayout.sl_section == real_seat.s_section){
-					
-					seat_div.classList.add('VIP');
-				}
-			});
- */			
- 			
- 			// map을 활용한 특정 좌석에 접근하기
- 			// ex) 예매된 좌석 처리, 등급별 색상 처리
-			const floorMap = floorSeatMap.get(rowLayout.sl_floor);
-			//console.log(floorMap);
-
-			// 층별 접근
-			if (floorMap) {
-			    const sectionMap = floorMap.get(rowLayout.sl_section);
-			    // 섹션별 접근
-			    if (sectionMap) {
-			        const rowMap = sectionMap.get(rowLayout.sl_row);
-			        // 행별 접근
-			        if (rowMap) {
-			            const positionSeats = rowMap.get(seatNum);
-			            // 열별 접근 (좌석 정보가 존재할 경우)
-			            if (positionSeats) {
-			                // seat Table 데이터 처리
-			                positionSeats.forEach((real_seat,index) => {
-			                    // 행, 열 확인
-			                        // class 부여 => 색 표시
-			                        alert(seatNum + ' : ' + real_seat.s_position);
-			                        
-			                        
-			                        seat_div.classList.add('VIP');
-			                        
-			                    
-			                });
-			            }
-			        }
-			    }
-			}
-
-			
-			
-
-				 
-			
-		} else if (seat ==='e') {
-			var empty_seat_div = document.createElement('div');
-			empty_seat_div.classList.add('seat');
-			
-			seats_div.appendChild(empty_seat_div);
-		}
-		
-		
-	});
-	
-	section_div.appendChild(seats_div);
-	
-}
-
-// 특정 좌석 정보를 출력하는 예시
-function testClick(rowLayout, event) {
-    // 클릭된 요소에서 가장 가까운 .seat 클래스를 가진 부모 요소 찾기
-    // 이벤트 버블링 때문에
-    const seatDiv = event.target.closest('.seat');
-    
-	var str = '';
-    // rowLayout 객체의 모든 키와 값을 출력
-    Object.entries(rowLayout).forEach(([key, value]) => {
-        console.log(`${key}: ${value}`);
-        
-        str+=key+':'+value+'\r\n';
-    });
-	
-    if (seatDiv && seatDiv.id) {
-        console.log('클릭된 요소 ID:', seatDiv.id);
-        alert(str+'클릭된 요소 ID: ' + seatDiv.id);
-    } else {
-        console.log('클릭된 요소에 ID가 없습니다.');
-    }
-
-}
-
-
-// 구역과 구역 사이의 기다란 숫자 근데 신경안써도 됨
-function makeRowNum(floorSectionDiv,floor){
-	
-	var rowNumDiv = document.createElement('div');
-	rowNumDiv.classList.add('rowNum');
-
-	for(var i=1; i<=jmax_rowMap.get(""+floor); i++){
-
-		rowNumDiv.innerHTML += '<div class="row"><div class="row_zone"><p class="seat_num">'+i+'</p></div></div>';
-
-	}
-	
-	floorSectionDiv.appendChild(rowNumDiv);
-
-}
-
-
-function makeSeatListToMap() {
-    // 층별 섹션별로 데이터를 그룹화하기 위한 맵
-    seatList.forEach((seat) => {
-        const floor = seat.s_floor;
-        const section = seat.s_section;
-        const row = seat.s_row;
-        const position = seat.s_position;
-
-        // 층이 처음 등장하면 층에 대한 새로운 Map을 초기화
-        if (!floorSeatMap.has(floor)) {
-            floorSeatMap.set(floor, new Map());
-        }
-
-        // 섹션이 처음 등장하면 섹션에 대한 새로운 Map을 초기화
-        const sectionMap = floorSeatMap.get(floor);
-        if (!sectionMap.has(section)) {
-            sectionMap.set(section, new Map());
-        }
-
-        // 행이 처음 등장하면 행에 대한 새로운 Map을 초기화
-        const rowMap = sectionMap.get(section);
-        if (!rowMap.has(row)) {
-            rowMap.set(row, new Map());
-        }
-
-        // 열이 처음 등장하면 새로운 배열을 초기화
-        const positionMap = rowMap.get(row);
-        if (!positionMap.has(position)) {
-            positionMap.set(position, []);
-        }
-
-        // 최하위 배열에 좌석 추가
-        positionMap.get(position).push(seat);
-    });
-}
-
-
-
-</script>
 </head>
 <body>
 <h1>예매페이지</h1>
@@ -434,29 +15,37 @@ function makeSeatListToMap() {
     <section class="reservWrap">
         <article class="contWrap">
             <header class="step">
-                <h2>01 좌석 선택</h2>
-                <h3>[ ${musicalInfo.M_TITLE} ] <span> | ${musicalInfo.MH_NAME}</span></h3>
-                <div class="select">
-                    <em>다른 관람일자 선택 : </em>
-                    <span>일자</span>
-                    <select id="playDate" onchange="updateTimes(event)">
-                        <option>선택하세요!</option>
-                        <c:forEach var="date" items="${playDate}">
-                            <option value="${date}">${date}</option>
-                        </c:forEach>
-                    </select>
-                    <span>시간</span>
-                    <select id="playTime">
-                        <option name="time" value="">선택하세요!</option>
-                    </select>
-                </div>
-            </header>
+			    <h2>01 좌석 선택</h2>
+			    <h3>[ ${musicalInfo.M_TITLE} ] <span> | ${musicalInfo.MH_NAME}</span></h3>
+			    <div class="select">
+			        <em>다른 관람일자 선택 : </em>
+			        <span>일자</span>
+			        <select id="playDate" onchange="updateTimes(event)">
+			            <option>선택하세요!</option>
+			            <c:forEach var="date" items="${playDate}">
+			                <c:set var="dayOfWeek" value="${date.split(' ')[1]}" />
+			                <c:choose>
+			                    <c:when test="${dayOfWeek == '(토)'}">
+			                        <option value="${date}" style="color: blue;">${date}</option>
+			                    </c:when>
+			                    <c:when test="${dayOfWeek == '(일)'}">
+			                        <option value="${date}" style="color: red;">${date}</option>
+			                    </c:when>
+			                    <c:otherwise>
+			                        <option value="${date}">${date}</option>
+			                    </c:otherwise>
+			                </c:choose>
+			            </c:forEach>
+			        </select>
+			        <span>시간</span>
+			        <select id="playTime">
+			            <option name="time" value="">선택하세요!</option>
+			        </select>
+			    </div>
+			</header>
             <section class="allSeat">
                 <aside class="seatL">
-                	<div id="floor">
-						<div class="floor_container">
-						</div>
-					</div>
+					<%@ include file="/WEB-INF/views/reservation/reservSeat.jsp" %>
 					<div class="seatReview" style="display: none;">
 						<p>선택하신 좌석 <b>[R석] 1층-C블록 5열 6</b>의 평균 평점은 (5.0) 입니다.</p>
 						<span>좌석 상세 리뷰  보기 ></span>
@@ -555,41 +144,140 @@ function makeSeatListToMap() {
 	}
 </script>
 <script>
-//현재 선택된 좌석을 추적하기 위한 변수
-let selectedSeat = null;
+//선택된 좌석들을 저장할 Set
+const selectedSeats = new Set();
+// 현재 리뷰 중인 좌석을 추적
+let currentReviewSeat = null;
+// 최대 선택 가능한 좌석 수 설정
+const MAX_SEATS = ${maxTickets}; // 템플릿 리터럴 제거
 
-	document.querySelector('.floor_container').addEventListener('click', function(e) {
-    const seatElement = e.target.closest('.seat');
+// CSS 스타일 추가
+const style = document.createElement('style');
+style.textContent = `
+    .seat.selected {
+        background-color: #FF9999;
+        transition: background-color 0.3s ease;
+    }
+    .seat[data-grade="VIP"] {
+        background-color: #FFD700 !important;
+    }
+    .seat[data-grade="R"] {
+        background-color: #87CEEB !important;
+    }
+    .seat[data-grade="S"] {
+        background-color: #98FB98 !important;
+    }
+    .seat[data-grade="A"] {
+        background-color: #DDA0DD !important;
+    }
+`;
+document.head.appendChild(style);
+
+// setSeats 함수 수정
+function setSeats(section_div, rowLayout) {
+    var seatsData = rowLayout.sl_data.split('.');    
+    var seats_div = document.createElement('div');
+    seats_div.classList.add('row');
+    var seatNum = 0;
     
-    if (seatElement) {
-        //console.log("Seat clicked:", seatElement);
-        const seatReviewDiv = document.querySelector('.seatReview');
-        
-        if (seatReviewDiv) {
-            // 같은 좌석을 다시 클릭한 경우
-            if (selectedSeat === seatElement) {
-                seatReviewDiv.style.display = 'none';
-                selectedSeat = null; // 선택 해제
-            } 
-            // 다른 좌석을 클릭한 경우
-            else {
-                seatReviewDiv.style.display = 'block';
-                selectedSeat = seatElement; // 새로운 좌석 선택
-            }
-        } else {
-            console.error("seatReview element not found");
-        }
-    }
-});
+    seatsData.forEach((seat, index) => {
+        if(seat === 's') {
+            seatNum++;
+            var seat_div = document.createElement('div');
+            seat_div.classList.add('seats');
+            
+            const floorMap = floorSeatMap.get(rowLayout.sl_floor);
+            let seatGrade = 'R'; // 기본값
 
-document.addEventListener('DOMContentLoaded', function() {
-    const floorContainer = document.querySelector('.floor_container');
-    if (floorContainer) {
-        console.log("Floor container found");
-    } else {
-        console.error("Floor container not found");
-    }
-});
+            if (floorMap) {
+                const sectionMap = floorMap.get(rowLayout.sl_section);
+                if (sectionMap) {
+                    const rowMap = sectionMap.get(rowLayout.sl_row);
+                    if (rowMap) {
+                        const positionSeats = rowMap.get(seatNum);
+                        if (positionSeats && positionSeats[0]) {
+                            seatGrade = positionSeats[0].sg_name;
+                        }
+                    }
+                }
+            }
+
+            // rowLayout 정보를 좌석 div에 저장
+            seat_div.rowLayout = rowLayout;
+            seat_div.innerHTML = `<div class="seat" id="ps_${seatNum}" data-grade="${seatGrade}"><p>${seatNum}</p></div>`;
+            
+            seats_div.appendChild(seat_div);
+            
+            seat_div.addEventListener('click', function(event) {
+                const seatElement = event.target.closest('.seat');
+                if (!seatElement) return;
+                
+                const seatReviewDiv = document.querySelector('.seatReview');
+                const isSelected = Array.from(selectedSeats).find(seat => seat.element === seatElement);
+
+                if (isSelected) {
+                    // 선택 해제
+                    selectedSeats.delete(isSelected);
+                    seatElement.classList.remove('selected');
+                    
+                    if (currentReviewSeat === seatElement) {
+                        seatReviewDiv.style.display = 'none';
+                        currentReviewSeat = null;
+                    }
+                } else {
+                	if (selectedSeats.size >= MAX_SEATS) {
+                	    const message = "최대 " + MAX_SEATS + "개의 좌석까지만 선택할 수 있습니다.";
+
+                	    alert(message);
+                	    return;
+                	}
+
+                    const seatInfo = {
+                        id: seatElement.id,
+                        grade: seatElement.getAttribute('data-grade'),
+                        floor: rowLayout.sl_floor,
+                        section: rowLayout.sl_section,
+                        row: rowLayout.sl_row,
+                        number: seatNum,
+                        element: seatElement
+                    };
+
+                    selectedSeats.add(seatInfo);
+                    seatElement.classList.add('selected');
+
+                    // 리뷰 정보 업데이트
+                    if (seatReviewDiv) {
+                        seatReviewDiv.querySelector('p').innerHTML = 
+                            `선택하신 좌석 <b>[${seatInfo.grade}석] ${seatInfo.floor}층-${seatInfo.section}블록 ${seatInfo.row}열 ${seatInfo.number}번</b>의 평균 평점은 (5.0) 입니다.`;
+                        seatReviewDiv.style.display = 'block';
+                        currentReviewSeat = seatElement;
+                    }
+                }
+                
+                // 선택 좌석 목록 업데이트
+                updateSelectedSeats();
+            });
+        } else if (seat === 'e') {
+            var empty_seat_div = document.createElement('div');
+            empty_seat_div.classList.add('seat');
+            seats_div.appendChild(empty_seat_div);
+        }
+    });
+    
+    section_div.appendChild(seats_div);
+}
+
+// 선택된 좌석 목록을 업데이트하는 함수
+function updateSelectedSeats() {
+    const selectedSeatsDiv = document.querySelector('.s.Choice > div');
+    selectedSeatsDiv.innerHTML = '';
+    
+    selectedSeats.forEach(seatInfo => {
+        const p = document.createElement('p');
+        p.textContent = `[${seatInfo.grade}석] ${seatInfo.floor}층-${seatInfo.section}블록 ${seatInfo.row}열 ${seatInfo.number}번`;
+        selectedSeatsDiv.appendChild(p);
+    });
+}
 </script>
 
 </body>
