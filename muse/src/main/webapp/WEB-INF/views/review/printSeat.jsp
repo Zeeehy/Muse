@@ -7,6 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 
 
@@ -137,6 +139,10 @@ p {
 
 .score5{
 	background-color: green;
+}
+
+.score0{
+	background-color:pink;
 }
 
 </style>
@@ -345,32 +351,52 @@ function setSeats(section_div,rowLayout){
 			const floorMap = floorSeatMap.get(rowLayout.sl_floor);
 			//console.log(floorMap);
 
+			
 			// 층별 접근
-			if (floorMap) {
-			    const sectionMap = floorMap.get(rowLayout.sl_section);
-			    // 섹션별 접근
-			    if (sectionMap) {
-			        const rowMap = sectionMap.get(rowLayout.sl_row);
-			        // 행별 접근
-			        if (rowMap) {
-			            const positionSeats = rowMap.get(seatNum);
-			            // 열별 접근 (좌석 정보가 존재할 경우)
-			            if (positionSeats) {
-			                // seat Table 데이터 처리
-			                positionSeats.forEach((real_seat,index) => {
-			                    // 행, 열 확인
-			                        // class 부여 => 색 표시
-			                        alert(seatNum + ' : ' + real_seat.s_position);
-			                        
-			                        
-			                        seat_div.classList.add('VIP');
-			                        
-			                    
-			                });
-			            }
-			        }
-			    }
-			}
+	         if (floorMap) {
+	             const sectionMap = floorMap.get(rowLayout.sl_section);
+	             // 섹션별 접근
+	             if (sectionMap) {
+	                 const rowMap = sectionMap.get(rowLayout.sl_row);
+	                 // 행별 접근
+	                 if (rowMap) {
+	                     const positionSeats = rowMap.get(seatNum);
+	                     // 열별 접근 (좌석 정보가 존재할 경우)
+	                     if (positionSeats) {
+	                         // seat Table 데이터 처리
+	                         // 좌석 등급별 처리
+	                     positionSeats.forEach((real_seat, index) => {
+	                         // 기존 등급 클래스들 제거
+	                         seat_div.classList.remove('score1', 'score2', 'score3', 'score4','score5','score0');
+	                         
+	                         console.log("aaa : "+real_seat.avg_score);
+	                         
+	                         // 좌석별 평점 가져오기
+	                         switch(Math.round(real_seat.avg_score)  ) {
+	                             case 1:
+	                                 seat_div.classList.add('score1');
+	                                 break;
+	                             case 2:
+	                                 seat_div.classList.add('score2');
+	                                 break;
+	                             case 3:
+	                                 seat_div.classList.add('score3');
+	                                 break;
+	                             case 4:
+	                                 seat_div.classList.add('score4');
+	                                 break;
+	                             case 5:
+	                                 seat_div.classList.add('score5');
+	                                 break;    
+	                             default:
+	                                 // 기본 스타일
+	                                 seat_div.classList.add('score0');
+	                         }
+	                         });
+	                     }
+	                 }
+	             }
+	         }
 
 			
 			
@@ -425,7 +451,11 @@ function testClick(rowLayout, event) {
         if (params) {
             // 템플릿 리터럴을 사용하여 params가 제대로 URL에 반영되도록 함
             //window.location.href = `srShowList.do?${params}`;
-            window.location.href = "srShowList.do?"+params+"&s_position="+s_position;
+            var mh_code ='${mh_code}';
+            var m_code ='${m_code}';
+            
+            window.location.href = "srShowList.do?"+params+"&s_position="+s_position+"&mh_code="+mh_code+"&m_code="+m_code;
+            
         } else {
             alert('전송할 파라미터가 없습니다.');
         }
@@ -462,6 +492,7 @@ function makeSeatListToMap() {
         const section = seat.s_section;
         const row = seat.s_row;
         const position = seat.s_position;
+        //const avg_score = seat.avg_score;
 
         // 층이 처음 등장하면 층에 대한 새로운 Map을 초기화
         if (!floorSeatMap.has(floor)) {

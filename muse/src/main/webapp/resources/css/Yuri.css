@@ -164,8 +164,7 @@ article.whatsOn a.calender img {
 
 .screening-item .thumbnail {
     width: 100%;
-    height: 0;
-    padding-top: 125%;
+    height: 440px;
     background-size: cover;
     background-position: center;
     transition: transform 0.3s;
@@ -353,10 +352,11 @@ article .reviewcont ul.cont li .reviewtxt .inf{
     display: flex;
     gap: 25px;
     padding: 50px 0;
+    flex-wrap: wrap;
 }
 
 .screening-item.all {
-	width: 280px;
+	width: 250px;
 }
 
 article.alltheMusical {
