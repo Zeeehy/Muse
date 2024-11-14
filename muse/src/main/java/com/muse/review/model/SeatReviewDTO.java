@@ -18,7 +18,6 @@ public class SeatReviewDTO {
 	private String mh_code;
 	
 	   
-	   
 	//insert 용
 	private String sr_code; //좌석리뷰코드
 	private String bd_code; //예매상세코드
