@@ -34,5 +34,13 @@ public interface ReviewDAO {
 	public Map<Integer, Integer> max_rowSelect(int mhl_code);
 	public List<SeatDTO> getRealSeat(String m_code);
 	int getMhl_code(String mh_code);
+	
+	List<SeatReviewDTO> srShowListByHall(String s_section,int s_row,int s_floor, int s_position, String mh_code);
+	List<SeatReviewDTO> srShowListByM( String s_section,int s_row,int s_floor, int s_position, String mh_code,String m_code);
+	double srShowAvgByHall(String s_section,int s_row,int s_floor, int s_position, String mh_code);
+	double srShowAvgByM(String s_section,int s_row,int s_floor, int s_position, String mh_code,String m_code);
+	
+	public List<SeatDTO> getRealSeatByHall(String mh_code);
+	public List<SeatDTO> getRealSeatByM(String m_code);
 }
 

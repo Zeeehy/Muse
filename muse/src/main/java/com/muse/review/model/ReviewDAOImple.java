@@ -169,6 +169,70 @@ public class ReviewDAOImple implements ReviewDAO {
 		return sqlMap.selectOne("getMhl_code",mh_code);
 	}
 
+	@Override
+	public List<SeatReviewDTO> srShowListByHall(String s_section, int s_row, int s_floor, int s_position, String mh_code) {
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("s_section", s_section);
+		map.put("s_row", s_row);
+		map.put("s_floor", s_floor);
+		map.put("s_position", s_position);
+		map.put("mh_code", mh_code);
+		
+		return sqlMap.selectList("srShowListByHall",map);
+	}
+	
+	@Override
+	public List<SeatReviewDTO> srShowListByM(String s_section, int s_row, int s_floor, int s_position, String mh_code,String m_code) {
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("s_section", s_section);
+		map.put("s_row", s_row);
+		map.put("s_floor", s_floor);
+		map.put("s_position", s_position);
+		map.put("mh_code", mh_code);
+		map.put("m_code", m_code);
+		
+		return sqlMap.selectList("srShowListByM",map);
+	}
+
+	@Override
+	public double srShowAvgByHall(String s_section, int s_row, int s_floor, int s_position, String mh_code) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("s_section", s_section);
+		map.put("s_row", s_row);
+		map.put("s_floor", s_floor);
+		map.put("s_position", s_position);
+		map.put("mh_code", mh_code);
+		
+		return sqlMap.selectOne("srShowAvgByHall",map);
+	}
+
+	@Override
+	public double srShowAvgByM(String s_section, int s_row, int s_floor, int s_position, String mh_code,
+			String m_code) {
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("s_section", s_section);
+		map.put("s_row", s_row);
+		map.put("s_floor", s_floor);
+		map.put("s_position", s_position);
+		map.put("mh_code", mh_code);
+		map.put("m_code", m_code);
+		
+		return sqlMap.selectOne("srShowAvgByM",map);
+	}
+
+	@Override
+	public List<SeatDTO> getRealSeatByHall(String mh_code) {
+		return sqlMap.selectList("getRealSeatByHall",mh_code);
+	}
+
+	@Override
+	public List<SeatDTO> getRealSeatByM(String m_code) {
+		return sqlMap.selectList("getRealSeatByM",m_code);
+	}
+
 	// ----------------------- 좌석 ------------------------------
 	
 }

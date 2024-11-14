@@ -131,5 +131,138 @@
 	where mh_code=#{mh_code}
 	</select>	
 	
+	
+	
+	<select id="srShowListByHall" resultType="com.muse.review.model.SeatReviewDTO" parameterType="map">
+	select sr_code,bd.bd_code, sr_score, sr_content, sr_date, m_title
+	from seat_review sr, booking_detail bd, seat s, musical m 
+	where bd.bd_code in (
+	    select bd_code
+	    from booking_detail
+	    where s_code in
+	    (
+	        select s_code
+	        from seat s
+	        where s_section=#{s_section} and s_row=#{s_row} and s_floor=#{s_floor} and s_position=#{s_position} and mhl_code = (select mhl_code from musical_hall_layout where mh_code=#{mh_code})
+	        
+	    ) 
+	    
+	) and sr.bd_code = bd.bd_code and bd.s_code = s.s_code and s.m_code = m.m_code
+	order by sr_date desc
+	</select>
+	
+	<select id="srShowListByM" resultType="com.muse.review.model.SeatReviewDTO" parameterType="map">
+	select sr_code,bd.bd_code ,sr_score, sr_content, sr_date, m_title
+	from seat_review sr, booking_detail bd, seat s, musical m 
+	where bd.bd_code in (
+	    select bd_code
+	    from booking_detail
+	    where s_code in
+	    (
+	        select s_code
+	        from seat s
+	        where s_section=#{s_section} and s_row=#{s_row} and s_floor=#{s_floor} and s_position=#{s_position} and mhl_code = (select mhl_code from musical_hall_layout where mh_code=#{mh_code})
+	        
+	    ) 
+	    
+	) and sr.bd_code = bd.bd_code and bd.s_code = s.s_code and s.m_code = m.m_code and m.m_code = #{m_code}
+	order by sr_date desc
+	</select>
+	
+	
+	<select id="srShowAvgByHall" resultType="double" parameterType="map">
+	select ROUND(AVG(sr_score), 1) as avg_score
+	from seat_review 
+	where bd_code in (
+	    select bd_code
+	    from booking_detail
+	    where s_code in
+	    (
+	        select s_code
+	        from seat s
+	        where s_section=#{s_section} and s_row=#{s_row} and s_floor=#{s_floor} and s_position=#{s_position} and mhl_code = (select mhl_code from musical_hall_layout where mh_code=#{mh_code})
+	        
+	    ) 
+	) 
+	</select>
+	
+	<select id="srShowAvgByM" resultType="double" parameterType="map">
+	 select ROUND(AVG(sr_score), 1) as avg_score
+	from seat_review sr, booking_detail bd, seat s, musical m 
+	where bd.bd_code in (
+	    select bd_code
+	    from booking_detail
+	    where s_code in
+	    (
+	        select s_code
+	        from seat s
+	        where s_section=#{s_section} and s_row=#{s_row} and s_floor=#{s_floor} and s_position=#{s_position} and mhl_code = (select mhl_code from musical_hall_layout where mh_code=#{mh_code})
+	        
+	    ) 
+	    
+	) and sr.bd_code = bd.bd_code and bd.s_code = s.s_code and s.m_code = m.m_code and m.m_code = #{m_code}
+	</select>
+	
+	
+	
+	
+	<select id="getRealSeatByHall" resultType="com.muse.seat.model.SeatDTO" parameterType="String">
+	SELECT 
+	    s.s_section,
+	    s.s_row,
+	    s.s_floor,
+	    s.s_position,
+	    ROUND(AVG(sr.sr_score), 1) as avg_score
+	FROM 
+	    musical_hall mh
+	    JOIN musical_hall_layout mhl ON mh.mh_code = mhl.mh_code
+	    JOIN seat s ON mhl.mhl_code = s.mhl_code
+	    LEFT JOIN booking_detail bd ON s.s_code = bd.s_code
+	    LEFT JOIN seat_review sr ON bd.bd_code = sr.bd_code
+	WHERE 
+	    mh.mh_code = #{mh_code}
+	GROUP BY 
+	    s.s_section,
+	    s.s_row,
+	    s.s_floor,
+	    s.s_position
+	ORDER BY 
+	    s.s_floor,
+	    s.s_section,
+	    s.s_row,
+	    s.s_position
+	</select>
+	
+	
+	<select id="getRealSeatByM" resultType="com.muse.seat.model.SeatDTO" parameterType="String">
+	SELECT
+	    s.s_code, 
+	    s.sg_code,
+	    s.m_code,
+	    s.mhl_code,
+	    s.s_section,
+	    s.s_position, 
+	    s.s_row, 
+	    s.s_floor, 
+	    ROUND(AVG(sr.sr_score), 1) as avg_score
+	FROM 
+	    seat s
+	LEFT JOIN booking_detail bd ON s.s_code = bd.s_code
+	LEFT JOIN seat_review sr ON bd.bd_code = sr.bd_code
+	WHERE 
+	    s.m_code = #{m_code}
+	GROUP BY 
+	    s.s_code, 
+	    s.sg_code,
+	    s.m_code,
+	    s.mhl_code,
+	    s.s_section,
+	    s.s_position, 
+	    s.s_row, 
+	    s.s_floor
+	ORDER BY 
+	    s.s_code
+	</select>
+	
   
   </mapper>
