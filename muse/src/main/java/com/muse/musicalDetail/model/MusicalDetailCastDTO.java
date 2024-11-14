@@ -14,6 +14,7 @@ public class MusicalDetailCastDTO {
 	private Date mo_date;
 	private String mo_time;
 	private String mc_code;
+	private String dow;
 	
 	
 	public MusicalDetailCastDTO() {
@@ -31,8 +32,10 @@ public class MusicalDetailCastDTO {
 	
 	
 	
+	
+	
 	public MusicalDetailCastDTO(String ma_name, String mc_char, String ma_code, String is_liked, String ma_img,
-			String mo_code, String m_code, Date mo_date, String mo_time, String mc_code) {
+			String mo_code, String m_code, Date mo_date, String mo_time, String mc_code, String dow) {
 		super();
 		this.ma_name = ma_name;
 		this.mc_char = mc_char;
@@ -44,9 +47,17 @@ public class MusicalDetailCastDTO {
 		this.mo_date = mo_date;
 		this.mo_time = mo_time;
 		this.mc_code = mc_code;
+		this.dow = dow;
 	}
+
 	
 	
+	public String getDow() {
+		return dow;
+	}
+	public void setDow(String dow) {
+		this.dow = dow;
+	}
 	public String getMo_code() {
 		return mo_code;
 	}

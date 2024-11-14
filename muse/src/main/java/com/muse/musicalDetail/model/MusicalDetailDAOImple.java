@@ -108,5 +108,11 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 		return sqlMap.selectList("getRoundActor",paramMap);
 	}
 	
+	@Override
+	public List<Date> getRoundDOW(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getRoundDOW",paramMap);
+	}
+	
 
 }

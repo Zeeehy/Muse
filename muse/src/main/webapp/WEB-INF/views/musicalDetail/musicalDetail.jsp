@@ -263,8 +263,8 @@
 											 		</tr>
 											 	</c:if>
 											 	
-											 	<tr data-dow="${casting.mo_date}" data-time="${casting.mo_time}" data-cast="${casting.ma_name}">
-											 		<td>${ casting.mo_date}</td>
+											 	<tr data-dow="${casting.dow}" data-time="${casting.mo_time}" data-cast="${casting.ma_name}">
+											 		<td>${ casting.mo_date}(${casting.dow })</td>
 											 		<td>${ casting.mo_time}</td>
 											 		<td>${casting.ma_name }</td>
 											 	   
@@ -286,7 +286,6 @@
 						</div>
 
 
-					</div>
 
 					<div id="ADDITIONAL" class="prdContents prdMoreInfo"
 						style="display: none;">
@@ -464,8 +463,76 @@
 
 						<div class="moreInfoContainer">유의사항 등등</div>
 					</div>
+					
+					<div id="REVIEW" class="prdContents prdMoreInfo" style="display:none;">
+						<div class="prdBbs">
+							<div class="bbsNotice">
+								<div class="bbsNoticeHead">꼭 읽어주세요.</div>
+								<p class="bbsNoticeText">
+									게시판 운영 규정에 어긋난다고 판단되는 게시글은 사전 통보없이 블라인드 처리될 수 있습니다.<br>
+									특히 티켓 매매 및 양도의 글은 발견 즉시 임의 삭제되며 전화번호, 이메일 등 개인정보는 악용될 우려가 있으므로 게시를 삼가 주시기 바랍니다.<br>
+									사전 경고에도 불구하고 불량 게시물을 계속적으로 게재한 게시자의 경우 뮤즈 게시판 작성 권한이 제한됩니다.
+								</p>
+							</div>
+							
+							<div class="bbsInfo">
+								<div class="reviewStarTotal">
+									<strong class="reviewStarTitle">관람 평점</strong>
+									<div class="prdStar type-total">
+										<div class="prdStarBack">
+											<div class="prdStarIcon" data-star="5">
+											</div>
+										</div>
+									<div class="prdStarScore">
+										<!-- <span class="blind">평점: </span>9.9</div> -->
+									</div>
+								</div>
+							</div>
+							<div class="bbsListWrap reviewAll">
+								<div class="bbsListHead">
+									<div class="leftSide">
+										<strong class="bbsTotal">총 <span class="num">185</span>개의 관람후기가 등록되었습니다.</strong>
+									</div>
+									<div class="rightSide">
+    									<a class="bbsWriteBtn" role="button" href="#">관람후기 작성</a>
+									</div>
+								</div>
+								<ul class="bbsList reviewList">
+									<li class="bbsItem">
+									    <div class="bbsContent">
+									        <div class="bbsItemHead">
+									            <div class="leftSide">
+									                <div>별별별별별</div>
+									            </div>
+									            <div class="rightSide">
+									                <div>이름|2024.11.14|공감 하트</div>
+									            </div>
+									        </div>
+									        <div class="bbsItemBody">
+									            <div class="bbsBodyMain">
+									                <div class="bbsTitle">
+									                    <strong class="bbsTitleText">안본분 앙대요~~~</strong>
+									                </div>
+									                <p class="bbsText">
+									                    극의 구성도 치밀하고 배우분들 모두 짱~~~<br>
+									                    알차고 알차요~~~<br>
+									                    딸램과 감동 엄청나게 받고 왔네요~~^^<br>
+									                    애기귀신 맡으신 여자분 4월은...봄이다...에서 감동 받고 또 감동~~~건승하세요~^^<br>
+									                </p>
+									            </div>
+									        </div>
+									    </div>
+									</li>
+																		
+								</ul>
+							</div>
+						</div>
+					
+					</div>
 
 				</div>
+								</div>
+					
 			</div>
 			<div class="productSide">
 				<div class="stickyWrap">
@@ -473,7 +540,8 @@
 						<img alt="크아악" src="resources/img/musical/matahariDetail.PNG">
 					</div>
 				</div>
-			</div>
+		</div>
+			
 		</div>
 	</div>
 	</div>
@@ -485,40 +553,35 @@
 	var navItems = document.querySelectorAll(".nav .navList .navItem");
 	var activeItem = document.querySelector(".nav .navList .navItem.is-active"); // 처음부터 활성화된 항목이 있을 수 있음
 	var activeDiv = document.querySelector("#INFO");
-
+	
 	// 카테고리 활성화
-	navItems.forEach(function(item) {
-		item.addEventListener('click', function() {
-			console.log("forEach");
-
-			var linkElement = item.querySelector('.navLink');
-			var targetDiv = linkElement.dataset.target;
-
-			// 이전 활성화된 항목이 있으면 비활성화
-			if (activeItem) {
-				activeItem.classList.remove('is-active');
-			}
-
-			// 현재 클릭된 항목을 활성화하고, activeItem으로 저장
-			item.classList.add('is-active');
-			activeItem = item;
-
-			if (targetDiv == "INFO") {
-				activeDiv.style.display = 'none';
-				activeDiv = document.getElementById(targetDiv);
-				activeDiv.style.display = 'block';
-			} else if (targetDiv == "ADDITIONAL") {
-				activeDiv.style.display = 'none';
-				activeDiv = document.getElementById(targetDiv);
-				activeDiv.style.display = 'block';
-
-			} else if (targetDiv == "CASTING") {
-				activeDiv.style.display = 'none';
-				activeDiv = document.getElementById(targetDiv);
-				activeDiv.style.display = 'block';
-			}
-		});
-	});
+	navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const linkElement = item.querySelector('.navLink');
+        const targetDiv = linkElement.dataset.target;
+        
+        // 이전 활성화된 항목 비활성화
+        if (activeItem) {
+            activeItem.classList.remove('is-active');
+        }
+        
+        // 현재 항목 활성화
+        item.classList.add('is-active');
+        activeItem = item; // activeItem 업데이트 추가
+        
+        // 현재 활성화된 div 숨기기
+        if (activeDiv) {
+            activeDiv.style.display = 'none';
+        }
+        
+        // 새로운 div 표시
+        const newDiv = document.getElementById(targetDiv);
+        if (newDiv) {
+            newDiv.style.display = 'block';
+            activeDiv = newDiv;
+        }
+    });
+});
 
 	// 뮤즈캐스트
 	var prdCastBtn = document.querySelector(".prdCastBtn");
@@ -622,6 +685,14 @@
 	
 	
 	//
+	
+	function formatDate(timestamp) {
+   const date = new Date(timestamp);
+   const year = date.getFullYear();
+   const month = String(date.getMonth() + 1).padStart(2, '0');
+   const day = String(date.getDate()).padStart(2, '0');
+   return year+'-'+month+'-'+day;
+}
 
 	var filterSearch = document.querySelector('#filterSearch');
 	var dows = document.querySelectorAll(".dow");
@@ -629,21 +700,71 @@
 	var startTimes = document.querySelectorAll(".startTime");
 	var castingNames = document.querySelectorAll(".castingName");
 	var castingDetailTable = document.querySelector(".castingDetailTable");
-	
-	filterSearch.addEventListener("click", function(){
-		var params = 'm_code=${m_code}&range_start='+range_start.value+'&range_end='+range_end.value;
-		sendRequest('getCastingByRange.do',params,function() {
-				// 요청 성공 시 추가 처리
-		if (XHR.readyState === 4) {
-			if (XHR.status === 200) {
-				
-				alert(1);
-				
 
-			}
-		}
-		}, 'GET');
-		
+	filterSearch.addEventListener("click", function(){
+	    var params = 'm_code=${mddto.m_code}&range_start='+range_start.value+'&range_end='+range_end.value;
+	    sendRequest('getCastingByRange.do', params, function() {
+	        if (XHR.readyState === 4 && XHR.status === 200) {
+	        	
+	        	alert(1);
+	            const response = JSON.parse(XHR.responseText);
+	            const castings = response.actorByRound;
+	            const allChars = response.allChar;
+	            
+	            // 테이블 body 초기화
+	            const tbody = document.querySelector('tbody');
+	            tbody.innerHTML = '';
+	            
+	            // 헤더 행 생성
+	            let headerRow = '<tr>' +
+	                          '<th><span>관람일</span></th>' +
+	                          '<th><span>시간</span></th>';
+	            allChars.forEach(function(char) {
+	                headerRow += '<th><span>' + char + '</span></th>';
+	            });
+	            headerRow += '</tr>';
+	            tbody.innerHTML = headerRow;
+	            
+	            // 캐스팅 정보 행 생성
+	            let previousDate = '';
+	            let previousTime = '';
+	            let currentRow = null;
+	            
+	            castings.forEach(function(casting, index) {
+	                if (previousDate !== casting.mo_date || previousTime !== casting.mo_time) {
+	                    // 첫 행이 아니면 이전 행 닫기
+	                    if (index !== 0) {
+	                        tbody.appendChild(currentRow);
+	                    }
+	                    
+	                    // 새로운 행 시작
+	                    currentRow = document.createElement('tr');
+	                    currentRow.setAttribute('data-dow', casting.dow);
+	                    currentRow.setAttribute('data-time', casting.mo_time);
+	                    currentRow.setAttribute('data-cast', casting.ma_name);
+	                    
+	                    // 날짜와 시간 셀 추가
+	                    currentRow.innerHTML = 
+	                        '<td>' + formatDate(casting.mo_date) + '(' + casting.dow + ')</td>' +
+	                        '<td>' + casting.mo_time + '</td>' +
+	                        '<td>' + casting.ma_name + '</td>';
+	                } else {
+	                    // 같은 날짜/시간이면 배우 이름만 추가
+	                    const td = document.createElement('td');
+	                    td.textContent = casting.ma_name;
+	                    currentRow.appendChild(td);
+	                }
+	                
+	                previousDate = casting.mo_date;
+	                previousTime = casting.mo_time;
+	            });
+	            
+	            // 마지막 행 추가
+	            if (currentRow) {
+	                tbody.appendChild(currentRow);
+	            }
+	        }
+	    }, 'GET');
 	});
 	
 	addFilterListeners(dows);
@@ -677,8 +798,11 @@
         	
             const castCells = Array.from(row.cells).slice(2);
             
-            castCells.forEach(function(cell){
-            	console.log(cell);
+            castCells.forEach(cell => {
+                cell.style.fontWeight = 'normal';  // 스타일 초기화
+                if(selectedCasts.includes(cell.textContent.trim())) {
+                    cell.style.fontWeight = 'bold';  // 선택된 배우 bold 처리
+                }
             });
             
             // data 속성에서 값을 가져옴
@@ -693,6 +817,7 @@
             const timeMatch = selectedTimes.length === 0 || selectedTimes.includes(time);
             const castMatch = selectedCasts.length === 0 ||casts.some(cast => selectedCasts.includes(cast));
 			
+            
 
             
             // 모든 조건을 만족하는 경우에만 표시
@@ -701,6 +826,9 @@
             } else {
                 row.style.display = 'none';
             }
+            
+
+            
         });
     }
 	

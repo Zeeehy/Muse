@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
@@ -62,7 +64,13 @@ public class MusicalDetailController {
 		Map paramMap = new HashMap<String,String>();
 		paramMap.put("m_code", m_code);
 		List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
-
+		List<Date> getRoundDOW = musicalDetaildao.getRoundDOW(paramMap); 
+		
+		List<String> dows = getDayOfWeeks(getRoundDOW);
+		
+		for(int i=0; i<dows.size(); i++) {
+			actorByRound.get(i).setDow(dows.get(i));
+		}
 		
 		
 		mav.addObject("mddto",mddto);
@@ -80,7 +88,7 @@ public class MusicalDetailController {
 	}
 	
 
-	public List<String> getDayOfWeeks(List<Date> screenDays) {
+	public List<String> getUniqueDayOfWeeks(List<Date> screenDays) {
         // LinkedHashSet을 사용하여 중복 제거와 입력 순서 유지
         Set<String> uniqueDays = new LinkedHashSet<>();
         
@@ -96,8 +104,23 @@ public class MusicalDetailController {
         return new ArrayList<>(uniqueDays);
     }
 	
+	public List<String> getDayOfWeeks(List<Date> screenDays) {
+	    List<String> days = new ArrayList<>();
+	    
+	    for (Date sqlDate : screenDays) {
+	        Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(sqlDate);
+	        
+	        // Calendar.DAY_OF_WEEK는 일요일이 1부터 시작하므로 1을 빼줍니다
+	        int dayIndex = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+	        days.add(DAY_NAMES[dayIndex]);
+	    }
+	    
+	    return days;
+	}
+	
 	public List<String> getSortedDayOfWeeks(List<Date> screenDays, boolean startWithSunday) {
-        List<String> days = getDayOfWeeks(screenDays);
+        List<String> days = getUniqueDayOfWeeks(screenDays);
         
         // 요일 정렬을 위한 비교자
         Comparator<String> comparator = (day1, day2) -> {
@@ -174,39 +197,59 @@ public class MusicalDetailController {
 	}
 	
 	@RequestMapping("/getCastingByRange.do")
-	public ModelAndView getCastingByRange(@RequestParam String range_start, @RequestParam String range_end, @RequestParam String m_code) {
-		
-		ModelAndView mav = new ModelAndView();
-		
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // 전달받는 날짜 형식에 맞게 수정하세요 (예: "yyyy-MM-dd")
-
+	@ResponseBody  // JSON 응답을 위해 추가
+	public Map<String, Object> getCastingByRange(@RequestParam String range_start, 
+	                                           @RequestParam String range_end, 
+	                                           @RequestParam String m_code) {
+	    Map<String, Object> result = new HashMap<>();
+	    
 	    try {
-	        Date startDate = (Date) dateFormat.parse(range_start);
-	        Date endDate = (Date) dateFormat.parse(range_end);
-	        Map<String, Object> paramMap = new HashMap<String, Object>();
-			
-			paramMap.put("range_start", startDate);
-			paramMap.put("range_end", endDate);
-			paramMap.put("m_code", m_code);
-			
-			List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
-			
-			for(MusicalDetailCastDTO dto: actorByRound) {
-				
-				System.out.println(dto.toString());
-			}
-			
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        java.sql.Date startDate = new java.sql.Date(dateFormat.parse(range_start).getTime());
+	        java.sql.Date endDate = new java.sql.Date(dateFormat.parse(range_end).getTime());
+	        
+	        
+	        Map<String, Object> paramMap = new HashMap<>();
+	        paramMap.put("range_start", startDate);
+	        paramMap.put("range_end", endDate);
+	        paramMap.put("m_code", m_code);
+	        
 
+	        
+	        // 캐스팅 정보 조회
+	        List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
+	        
+
+	        
+	        List<Date> getRoundDOW = musicalDetaildao.getRoundDOW(paramMap); 
+
+	        // 요일 정보 설정
+	        List<String> dows = getDayOfWeeks(getRoundDOW);
+	        
+	        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	        for(int i=0; i<dows.size(); i++) {
+	            actorByRound.get(i).setDow(dows.get(i));
+	            
+	            Date currentDate = actorByRound.get(i).getMo_date();
+	            java.sql.Date sqlDate = new java.sql.Date(currentDate.getTime());
+	            
+	            actorByRound.get(i).setMo_date(sqlDate);
+	        }
+	        
+	        // 역할 목록 조회 (추가 필요)
+	        List<String> allChar = musicalDetaildao.getAllChar(m_code); // 이 메서드는 구현 필요
+	        
+	        // 결과 맵에 데이터 추가
+	        result.put("actorByRound", actorByRound);
+	        result.put("allChar", allChar);
+	        
 	    } catch (Exception e) {
-			// TODO: handle exception
-		}
-		
-		
-		
-		
-		mav.setViewName("parkJson");
-		return mav;
-
+	        e.printStackTrace();
+	        result.put("error", "데이터 조회 중 오류가 발생했습니다.");
+	    }
+	    
+	    return result;
 	}
 	
 	

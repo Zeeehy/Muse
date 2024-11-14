@@ -62,8 +62,8 @@
 	  	select *
 		from musical_option mo, musical_casting mc, musical_actor ma
 		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
-		and mo.m_code ='m_1'
-		<if test="start_date != null">
+		and mo.m_code =#{m_code}
+		<if test="range_start != null">
 			        and mo.mo_date between #{range_start} and #{range_end}
 		</if>
 		order by mo_date asc,mo_time asc, mc_char asc
@@ -76,6 +76,17 @@
 		where mo.mo_code = mc.mo_code 
 		and mo.m_code =#{m_code}
         order by mc_char asc
+  	</select>
+  	
+  	<select id="getRoundDOW" parameterType="map" resultType="java.sql.Date">
+  		select mo.mo_date
+		from musical_option mo, musical_casting mc, musical_actor ma
+		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
+		and mo.m_code =#{m_code}
+		<if test="range_start != null">
+			        and mo.mo_date between #{range_start} and #{range_end}
+		</if>
+		order by mo_date asc,mo_time asc, mc_char asc
   	</select>
   	
   </mapper>

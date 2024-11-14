@@ -20,4 +20,5 @@ public interface MusicalDetailDAO {
 	public List<String> getStartTime(String m_code);
 	public List<MusicalDetailCastDTO> getRoundActor(Map paramMap);
 	public List<String> getAllChar(String m_code);
+	public List<Date> getRoundDOW (Map paramMap);
 }
