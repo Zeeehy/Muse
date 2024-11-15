@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.muse.admin.model.AdminDAO;
 import com.muse.admin.model.AdminDTO;
 import com.muse.admin.model.BannerDTO;
+import com.muse.admin.model.OpenNoticeDTO;
 import com.muse.admin.model.PartnerDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
@@ -25,10 +26,60 @@ public class AdminController {
 	@Autowired
 	private AdminDAO adminDao;
 	
-	@RequestMapping("/index.do")
-	public String index() {
-		return "/index";
+	
+	/*오픈공지 승인 시작*/
+	//오픈공지 리스트
+	@RequestMapping("openRequestList.do")
+	public ModelAndView openRequestList() {
+		ModelAndView mav = new ModelAndView();
+		
+		
+		List<OpenNoticeDTO> lists = adminDao.openRequestList();
+		
+		mav.addObject("lists",lists);
+		mav.setViewName("/admin/openRequestList");
+		return mav;
 	}
+	
+	//오픈공지 상세
+	@RequestMapping("openRequest.do")
+	public ModelAndView openRequest(@RequestParam("on_code") String on_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		OpenNoticeDTO dto = adminDao.openRequest(on_code);
+		mav.addObject("dto",dto);
+		mav.setViewName("/admin/openRequest");
+		return mav;
+	}
+	
+	//오픈공지 승인, 거절
+	@RequestMapping("openRequestEnd.do")
+	public ModelAndView openRequestEnd(@RequestParam("rs_code") int rs_code,
+			@RequestParam("on_code") String on_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		int result = adminDao.openRequestEnd(on_code,rs_code);
+		
+		if(result>=1){
+			mav.setViewName("/admin/adminMsg");
+			
+			if(rs_code==2) {
+				mav.addObject("msg", "오픈공지 거절 완료");
+			}
+			else {
+				//여기에 이제 뷰사이트도 변경해야함.
+				
+				mav.addObject("msg", "오픈공지 승인 완료");
+			}
+			mav.addObject("goUrl", "openRequestList.do");
+			
+		}
+	
+		return mav;
+	}
+	
+	/*오픈공지 승인 끝*/
+	
 	
 	//ModelAndView는 request와 비슷함
 	@RequestMapping("/hello.do") //명령어에 의해 진입하는 메소드. 즉 hello.do가 불러지면 실행
@@ -59,6 +110,55 @@ public class AdminController {
 		return mav;
 	}
 	
+	
+	/*오픈공지 반영 시작*/
+	//오픈공지 반영 리스트
+	@RequestMapping("openApplyList.do")
+	public ModelAndView openApplyList() {
+		ModelAndView mav = new ModelAndView();
+		
+		List<OpenNoticeDTO> lists = adminDao.openApplyList();
+		
+		mav.addObject("lists",lists);
+		
+		
+		mav.setViewName("/admin/openApplyList");
+		return mav;
+	}
+	
+	//오픈공지 반영 홈페이지
+	//오픈공지 상세
+	@RequestMapping("openApply.do")
+	public ModelAndView openApply(@RequestParam("on_code") String on_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		OpenNoticeDTO dto = adminDao.openApply(on_code);
+		mav.addObject("dto",dto);
+		mav.setViewName("/admin/openApply");
+		return mav;
+	}
+	
+	//오픈공지 반영
+	@RequestMapping("openApplyEnd.do")
+	public ModelAndView openApplyEnd(@RequestParam("on_code") String on_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		int result = adminDao.openApplyEnd(on_code);
+		
+		if(result>=1){
+			mav.setViewName("/admin/adminMsg");
+		
+			mav.addObject("msg", "오픈공지 반영 완료!");
+			
+			mav.addObject("goUrl", "openApplyList.do");
+			
+		}
+	
+		return mav;
+	}
+	
+	
+	/*오픈공지 반영 끝*/
 	
 	/*배너 등록 삭제 시작*/
 	//배너 리스트 가져오기
@@ -210,6 +310,17 @@ public class AdminController {
 	/*제작사회원 리스트 끝*/
 	
 	
+	
+	
+	//통계
+	@RequestMapping("/musePassStats.do")
+	public ModelAndView musePassStats() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/musePassStats");
+		
+		
+		return mav;
+	}
 	
 	
 	

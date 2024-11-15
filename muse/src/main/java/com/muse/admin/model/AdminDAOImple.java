@@ -17,6 +17,61 @@ public class AdminDAOImple implements AdminDAO {
 		this.sqlMap = sqlMap;
 	}
 
+
+	@Override
+	public List<OpenNoticeDTO> openRequestList() {
+		List<OpenNoticeDTO> lists = sqlMap.selectList("openRequestList");
+		return lists;
+	}
+	
+	@Override
+	public OpenNoticeDTO openRequest(String on_code) {
+		OpenNoticeDTO dto = sqlMap.selectOne("openRequest",on_code);
+		return dto;
+	}
+	
+	
+
+	@Override
+	public int openRequestEnd(String on_code, int rs_code) {
+		
+		Map<String,Object>map = new HashMap<String,Object>();
+		map.put("on_code", on_code);
+		map.put("rs_code", rs_code);
+		
+		int result;
+		
+		result = sqlMap.update("openRequestEnd",map);
+		
+		
+		return result;
+	}
+
+	
+	
+	@Override
+	public List<OpenNoticeDTO> openApplyList() {
+		List<OpenNoticeDTO> lists = sqlMap.selectList("openApplyList");
+		return lists;
+	}
+
+
+	@Override
+	public OpenNoticeDTO openApply(String on_code) {
+		OpenNoticeDTO dto = sqlMap.selectOne("openApply",on_code);
+		return dto;
+	}
+
+
+	@Override
+	public int openApplyEnd(String on_code) {
+		
+		return sqlMap.update("openApplyEnd",on_code);
+	}
+
+	
+	
+	
 	
 	public List<BannerDTO> bannerList() {
 		List<BannerDTO> lists = sqlMap.selectList("bannerList");
@@ -90,6 +145,14 @@ public class AdminDAOImple implements AdminDAO {
 		int result = sqlMap.update("adminDeleteReview",map);
 		return result;
 	}
+
+
+
+
+
+
+
+
 
 	
 	

@@ -4,6 +4,47 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.muse.admin.mapper.adminSQL">
   
+  <select id="openRequestList" resultType="com.muse.admin.model.OpenNoticeDTO">
+ 	select on_code,o.m_code,o.rs_code,on_type,on_open,on_muse_open,on_info,on_sale,on_content,on_casting,on_img,on_etc,on_viewstate, m_title, pr_name,pr_num,pr_pnum,pr_email
+	from 
+	open_notice o, musical m, partner pr
+	where o.rs_code=0 and o.m_code = m.m_code and m.pr_code=pr.pr_code
+  </select>
+  
+  
+  <select id="openRequest" resultType="com.muse.admin.model.OpenNoticeDTO" parameterType="String" >
+	select on_code,o.m_code,o.rs_code,on_type,on_open,on_muse_open,on_info,on_sale,on_content,on_casting,on_etc,on_viewstate, m_title, pr_name,pr_num,pr_pnum,pr_email
+	from 
+	open_notice o, musical m, partner pr
+	where o.rs_code=0 and o.on_code=#{on_code} and o.m_code = m.m_code and m.pr_code=pr.pr_code
+  </select>
+  
+  <update id="openRequestEnd" parameterType="map" >
+  	update open_notice set rs_code=#{rs_code} where on_code=#{on_code}
+  </update>
+
+  
+  
+   <select id="openApplyList" resultType="com.muse.admin.model.OpenNoticeDTO">
+ 	select on_code,o.m_code,o.rs_code,on_type,on_open,on_muse_open,on_info,on_sale,on_content,on_casting,on_img,on_etc,on_viewstate, m_title, pr_name,pr_num,pr_pnum,pr_email
+	from 
+	open_notice o, musical m, partner p
+	where o.rs_code=1 and o.on_viewstate=0  and o.m_code = m.m_code and m.pr_code=p.pr_code and <![CDATA[TO_DATE(o.on_open, 'YYYY-MM-DD HH24:MI:SS') <=  SYSDATE +7]]>
+  </select>
+  
+  <select id="openApply" resultType="com.muse.admin.model.OpenNoticeDTO" parameterType="String" >
+	select on_code,o.m_code,o.rs_code,on_type,on_open,on_muse_open,on_info,on_sale,on_content,on_casting,on_etc,on_viewstate, m_title, pr_name,pr_num,pr_pnum,pr_email
+	from 
+	open_notice o, musical m, partner pr
+	where o.rs_code=1 and o.on_code=#{on_code} and o.m_code = m.m_code and m.pr_code=pr.pr_code
+  </select>
+
+  <update id="openApplyEnd" parameterType="String" >
+  	update open_notice set on_viewstate=1 where on_code=#{on_code}
+  </update>
+  
+  
+  
   <select id="bannerList"  resultType="com.muse.admin.model.BannerDTO">
 	select b.b_code, b.m_code, b.b_date, m.m_title, m.m_poster, pr.pr_name
 	from banner b, musical m, partner pr
