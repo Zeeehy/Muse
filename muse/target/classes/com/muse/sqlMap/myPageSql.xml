@@ -134,28 +134,37 @@
   </select>
   
   <!-- 예매상세 -->
-  <select id="selectMyBookingDetail" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
+  <select id="selectMyBookingDetailList" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
 	select 
 	b.b_code,
 	b.b_date,
 	b.b_type,
+	b.b_state,
 	mo.mo_date,
 	m.m_poster,		
 	m.m_title,
 	mh.mh_name,
 	mh.mh_addr,
+	bd.bd_code,			
 	bd.bd_price,
+	d.d_num,				
+	d.d_name,				
 	s.s_section,
 	s.s_position,
 	s.s_row,
 	s.s_floor,
+	sg.sg_name,			
+	sp.sp_price,				
 	u.u_name
 	from booking b
 	left join musical_option mo on mo.mo_code=b.mo_code
 	left join musical m on m.m_code=mo.m_code
 	left join musical_hall mh on mh.mh_code=m.mh_code
 	left join booking_detail bd on bd.b_code=b.b_code
+	left join discount d on d.d_code=bd.d_code		
 	left join seat s on s.s_code=bd.s_code
+	left join seat_grade sg on sg.sg_code=s.sg_code
+	left join seat_price sp on sp.sg_code=s.sg_code
 	left join users u on u.u_id=b.u_id
 	where b.b_code=#{b_code}
   </select>

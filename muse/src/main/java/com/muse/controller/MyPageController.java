@@ -237,9 +237,9 @@ public class MyPageController {
 	public ModelAndView myPageBookingDetailForm() {
 		ModelAndView mav=new ModelAndView();
 		
-		MyBookingDetailDTO bookingDetail=mybookingDetailDao.getLikeBookingDetail("b_1");	//test와 마찬가지로 바꿔야함
+		List<MyBookingDetailDTO> bookingDetailList=mybookingDetailDao.getLikeBookingDetailList("b_1");	//test와 마찬가지로 바꿔야함
 		
-		mav.addObject("bookingDetail",bookingDetail);
+		mav.addObject("bookingDetailList",bookingDetailList);
 		mav.setViewName("/myPage/myPageBookingDetail");
 		return mav;
 	}		
