@@ -1,5 +1,7 @@
 package com.muse.myPage.model;
 
+import java.util.List;
+
 public interface MyBookingDetailDAO {
-	MyBookingDetailDTO getLikeBookingDetail(String b_code);
+	List<MyBookingDetailDTO> getLikeBookingDetailList(String b_code);
 }
