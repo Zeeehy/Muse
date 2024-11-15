@@ -13,6 +13,30 @@
 <%@include file="sidebar.jsp"%>
 <%@include file="musicalNamePopup.jsp"%>
 <style>
+.radio-btn {
+	margin-right: 8px; /* 라디오 버튼과 텍스트 사이의 간격 조정 */
+}
+
+/* 라디오 버튼을 조금 더 커지게 설정 */
+.radio-btn {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+}
+.table-content td input[type="radio"], td input[type="checkbox"] {
+	width: auto;
+	margin-right: 15px;
+}
+.table-content input[value="신청"]{
+	 width: 80px;
+    height: 40px; 
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #2d92f5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 </style>
 <body>
 	<div class="main-content">
@@ -20,6 +44,7 @@
 			<h1>뮤지컬 등록</h1>
 			<hr>
 		</div>
+		<form name="insertMusical" action="insertMusical.do">
 		<div class="table-content">
 			<table>
 				<tr>
@@ -29,11 +54,19 @@
 				</tr>
 
 				<tr>
-					<th>접수번호 / 상태</th>
-					<td colspan="3"></td>
-					<td colspan="4"><input type="text"></td>
-
-				</tr>
+						<th>등록 유형</th>
+						<td colspan="5"></td>
+						<td class="radio-container" style="width: 25%; text-align: right">
+							<label> <input type="radio" name="registration_type" 
+							 class="radio-btn" checked> 신규 등록
+						</label>
+						</td>
+						<td class="radio-container" colspan="2"
+							style="width: 25%; text-align: left;"><label> <input
+								type="radio" name="registration_type" value="update"
+								class="radio-btn" disabled> 수정
+						</label></td>
+					</tr>
 				<tr>
 					<th>관람 등급</th>
 					<td colspan="3"></td>
@@ -42,7 +75,7 @@
 				<tr>
 					<th>공연장</th>
 					<td colspan="3"></td>
-					<td colspan="4"><select>
+					<td colspan="4"><select name="mh_code">
 							<c:forEach var="dto" items="${HallList}">
 								<option value="${dto.mh_code}">${dto.mh_name}</option>
 							</c:forEach>
@@ -52,16 +85,16 @@
 				<tr>
 					<th>공연 스케줄</th>
 					<td colspan="3"></td>
-					<td><input type="date" id="startDate" name="m_startdate"></td>
+					<td><input type="date" id="m_startDate" name="m_startDate"></td>
 					<td style="text-align: center">~</td>
-					<td colspan="3"><input type="date" id="endDate"
-						name="m_enddate"></td>
+					<td colspan="3"><input type="date" id="m_endDate"
+						name="m_endDate"></td>
 				</tr>
 				<tr>
 					<th>판매 오픈 시간</th>
 					<td colspan="3"></td>
-					<td colspan="2"><input type="date" name="m_opendate"></td>
-					<td><input type="time" name="m_opentime"></td>
+					<td colspan="2"><input type="date" name="m_openDate"></td>
+					<td><input type="time" name="m_openTime"></td>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align: center;"></td>
@@ -71,13 +104,13 @@
 				<tr>
 					<td colspan="4" style="text-align: center;"></td>
 					<th colspan="2" style="text-align: center;">인터 미션 시간</th>
-					<td><input type="text" name="m_intime"></td>
+					<td><input type="text" name="m_inTime"></td>
 				</tr>
 				<tr>
 					<th>매수 제한</th>
 					<td colspan="3" style="text-align: center;"></td>
 					<td colspan="3" style="text-align: center;"><label>최대
-							매수</label><select name="m_maxticket">
+							매수</label><select name="m_maxTicket" id="m_maxTicket">
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -88,18 +121,20 @@
 				<tr>
 					<th>단독 판매 여부</th>
 					<td colspan="3"></td>
-					<td><label> 사용 <input type="radio" name="m_single">
+					<td>
+					<label> 사용 <input type="radio" name="m_single" value="1">
 					</label></td>
-					<td colspan="3"><label> 사용안함<input type="radio"
+					<td colspan="3"><label> 사용안함<input type="radio" value="0"
 							name="m_single">
-					</label></td>
+						</label>
+					</td>
 				</tr>
 				<tr>
 					<th>캐스트 보드 사용 유무</th>
 					<td colspan="3"></td>
-					<td><label> 사용 <input type="radio" name="m_calender">
+					<td><label> 사용 <input type="radio" name="m_calender" value="1">
 					</label></td>
-					<td><label> 사용안함 <input type="radio" name="m_calender">
+					<td><label> 사용안함 <input type="radio" name="m_calender" value="0">
 					</label></td>
 				</tr>
 
@@ -107,23 +142,20 @@
 				<tr>
 					<th>포스터 정보</th>
 					<td colspan="5" style="width: 60%"></td>
-					<td colspan="2"><input type="file"></td>
+					<td colspan="2"><input type="file" name="m_poster"></td>
 				</tr>
 				<tr>
 					<th>상세 이미지</th>
 					<td colspan="5" style="text-align: center;"></td>
-					<td colspan="2"><input type="file"></td>
+					<td colspan="2"><input type="file" name="m_detailImg"></td>
 				</tr>
-
-			</table>
-			<!-- 좌석 -->
-			<table>
 				<tr>
-
-				</tr>
+					<th>공연 정보</th>
+						<td colspan="4"><textarea class="textarea-style" name="m_notice"></textarea></td>
+					</tr>
+				
 			</table>
-
-
+			
 			<div class="partnerInfo">
 				<h2 style="text-align: center;">파트너 정보</h2>
 				<table>
@@ -147,11 +179,27 @@
 				</table>
 			</div>
 			<div class="buttondiv">
-				<input type="button" value="저장" onclick="insertCast()"> <input
+				<input type="submit" value="신청" onclick="insertCast()"> <input
 					type="reset" value="취소">
+					
 			</div>
 		</div>
-
+	</form>
 	</div>
 </body>
+<script>
+//var count = 0;
+var gradeList = [];
+/* function addGrade(){
+	 count++;
+	 const table = document.getElementById("gradeTable");
+	 const gradePrice = document.getElementById("gradePrice").value;
+	 const gradeColor = document.getElementById("gradeColor").value;
+} 
+
+function addClickList(evnet){
+	
+}
+*/
+</script>
 </html>
