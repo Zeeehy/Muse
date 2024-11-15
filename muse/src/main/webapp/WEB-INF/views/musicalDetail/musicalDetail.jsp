@@ -109,7 +109,16 @@
 								<li class="navItem"><a class="navLink" href="#"
 									data-target="ADDITIONAL">판매정보</a></li>
 								<li class="navItem"><a class="navLink" href="#"
-									data-target="REVIEW">관람후기<span class="countNum">999+</span></a></li>
+									data-target="REVIEW">관람후기
+									<span class="countNum">
+										 <c:if test="${countReview>999 }">
+										 	(999+)
+										 </c:if>
+										 
+										 <c:if test="${countReview<=999 }">
+										 	(${countReview })
+										 </c:if>
+									</span></a></li>
 								<li class="navItem"><a class="navLink" href="#"
 									data-target="QNA">Q&amp;A<span class="countNum">9</span></a></li>
 							</ul>
@@ -335,7 +344,7 @@
 										<td>현장수령 무료 (배송불가)</td>
 									</tr>
 									<tr>
-										<th>유효기간/이용조건</th>
+										<th>유효기간<br>/이용조건</th>
 										<td colspan="3">2024.11.22~2025.06.22 예매한 공연 날짜, 회차에 한해
 											이용가능</td>
 									</tr>
@@ -485,13 +494,14 @@
 										</div>
 									<div class="prdStarScore">
 										<!-- <span class="blind">평점: </span>9.9</div> -->
+										<span class="blind">${reviewAVG }</span>
 									</div>
 								</div>
-							</div>
+								</div>
 							<div class="bbsListWrap reviewAll">
 								<div class="bbsListHead">
 									<div class="leftSide">
-										<strong class="bbsTotal">총 <span class="num">185</span>개의 관람후기가 등록되었습니다.</strong>
+										<strong class="bbsTotal">총 <span class="num">${countReview }</span>개의 관람후기가 등록되었습니다.</strong>
 									</div>
 									<div class="rightSide">
     									<a class="bbsWriteBtn" role="button" href="#">관람후기 작성</a>
@@ -540,7 +550,7 @@
 						<img alt="크아악" src="resources/img/musical/matahariDetail.PNG">
 					</div>
 				</div>
-		</div>
+			</div>
 			
 		</div>
 	</div>
