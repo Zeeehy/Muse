@@ -10,6 +10,7 @@ public class SeatDTO {
     private int s_position; // 좌석 위치
     private int s_floor;
     private String s_section;
+    private String reservation_status;
 	public SeatDTO() {
 		super();
 	}
@@ -28,6 +29,32 @@ public class SeatDTO {
 		this.s_section = s_section;
 	}
 
+	
+
+
+	public SeatDTO(int s_code, String sg_code, String m_code, int mhl_code, int s_row, int s_position, int s_floor,
+			String s_section, String reservation_status) {
+		super();
+		this.s_code = s_code;
+		this.sg_code = sg_code;
+		this.m_code = m_code;
+		this.mhl_code = mhl_code;
+		this.s_row = s_row;
+		this.s_position = s_position;
+		this.s_floor = s_floor;
+		this.s_section = s_section;
+		this.reservation_status = reservation_status;
+	}
+
+
+	public String getReservation_status() {
+		return reservation_status;
+	}
+
+
+	public void setReservation_status(String reservation_status) {
+		this.reservation_status = reservation_status;
+	}
 
 
 	public int getS_code() {
@@ -94,9 +121,12 @@ public class SeatDTO {
 	public String toString() {
 		return "SeatDTO [s_code=" + s_code + ", sg_code=" + sg_code + ", m_code=" + m_code + ", mhl_code=" + mhl_code
 				+ ", s_row=" + s_row + ", s_position=" + s_position + ", s_floor=" + s_floor + ", s_section="
-				+ s_section + "]";
+				+ s_section + ", reservation_status=" + reservation_status + "]";
 	}
 
+
+
+	
 
     
     

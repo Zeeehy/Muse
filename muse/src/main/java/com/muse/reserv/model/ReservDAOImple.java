@@ -96,8 +96,15 @@ public class ReservDAOImple implements ReservDAO {
 		
 		@Override
 		public List<SeatDTO> getRealSeat(String m_code) {
-			
+
 			return sqlMap.selectList("getRealSeatReserv",m_code);
+		}
+		
+
+		@Override
+		public List<SeatDTO> getRealSeatOnlyReserv(Map<String, Object> params) {
+			// TODO Auto-generated method stub
+			return sqlMap.selectList("getRealSeatOnlyReserv",params);
 		}
 		
 		@Override
@@ -105,8 +112,54 @@ public class ReservDAOImple implements ReservDAO {
 			return sqlMap.selectOne("getMhl_codeReserv",mh_code);
 		}
 
+		@Override
+		public List<Map<String, Object>> getMusicalPrice(String m_code) {
+	        return sqlMap.selectList("getMusicalPrice", m_code);
+	    }
 
-	 
-
+		@Override
+		public Map<String, Integer> getRemainingSeat(Map<String, Object> params) {
+		    Map<String, Integer> remainingSeats = new HashMap<>();
+		    try {
+		        System.out.println("SQL 실행 전 파라미터: " + params);
+		        List<Map<String, Object>> resultList = sqlMap.selectList("getRemainingSeat", params);
+		        System.out.println("SQL 실행 결과 raw data: " + resultList); // SQL 결과 원본 확인
+		        
+		        if(resultList != null && !resultList.isEmpty()) {
+		            for(Map<String, Object> row : resultList) {
+		                System.out.println("현재 처리중인 row: " + row); // 각 행의 데이터 확인
+		                
+		                String grade = (String) row.get("GRADE");  // Oracle은 대문자로 반환할 수 있음
+		                if(grade == null) {
+		                    grade = (String) row.get("grade");     // 소문자로도 시도
+		                }
+		                
+		                Number countNum = (Number) row.get("COUNT");
+		                if(countNum == null) {
+		                    countNum = (Number) row.get("count");
+		                }
+		                
+		                if(grade != null && countNum != null) {
+		                    int count = countNum.intValue();
+		                    remainingSeats.put(grade, count);
+		                    System.out.println(String.format("매핑됨: grade=%s, count=%d", grade, count));
+		                }
+		            }
+		        }
+		        
+		        System.out.println("최종 매핑 결과: " + remainingSeats);
+		        
+		    } catch(Exception e) {
+		        e.printStackTrace();
+		        System.out.println("잔여석 조회 중 에러 발생: " + e.getMessage());
+		    }
+		    
+		    return remainingSeats;
+		}
+		
+		@Override
+		public List<String> getBookedSeats(Map<String, Object> params) {
+		    return sqlMap.selectList("getBookedSeats", params);
+		}
 
 }
