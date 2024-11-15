@@ -163,29 +163,7 @@
 					</tr>
 				
 			</table>
-			
-			<div class="partnerInfo">
-				<h2 style="text-align: center;">파트너 정보</h2>
-				<table>
-					<tr>
-						<th>파트너 명</th>
-						<td><input type="text" required></td>
-					</tr>
-					<tr>
-						<th>사업자 번호</th>
-						<td><input type="text" required></td>
-					</tr>
-					<tr>
-						<th>사업자 명</th>
-						<td><input type="text" required></td>
-					</tr>
-					<tr>
-						<th>대표자 이름</th>
-						<td><input type="text" required></td>
-					</tr>
-
-				</table>
-			</div>
+			<%@include file="partnerInfo.jsp" %>
 			<div class="buttondiv">
 				<input type="submit" value="신청" onclick="insertCast()"> <input
 					type="reset" value="취소">

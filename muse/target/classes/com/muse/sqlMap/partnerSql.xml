@@ -149,4 +149,22 @@ m_code = #{m_code}),
     )
 
 	</insert>
+	
+	<select id="selectPartner" resultType="com.muse.partner.model.PartnerDTO" parameterType="String">
+	select * from partner where pr_code = #{pr_code}
+	</select>
+	
+	<insert id="partnerInsert" parameterType="com.muse.partner.model.PartnerDTO">
+		insert into partner values(
+		'pr_'||PARTNER_PR_CODE.nextval,
+		0,
+		#{u_id},
+		#{pr_name},
+		#{pr_num},
+		#{pr_pnum},
+		#{pr_email}
+		)
+
+	</insert>
+
   </mapper>
