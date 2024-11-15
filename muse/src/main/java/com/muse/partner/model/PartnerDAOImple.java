@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.muse.seat.model.SeatDTO;
+
 public class PartnerDAOImple implements PartnerDAO {
 
 	@Autowired
@@ -102,5 +104,35 @@ public class PartnerDAOImple implements PartnerDAO {
 	public List<MusicalHallDTO> getMusicalHallList() {
 		List<MusicalHallDTO> list = sqlMap.selectList("selectMusicalHallList");
 		return list;
+	}
+	
+	@Override
+	public List<SeatGradeDTO> selectSeatGrade() {
+		List<SeatGradeDTO> list = sqlMap.selectList("selectSeatGradeList");
+		return list;
+	}
+	
+	@Override
+	public int insertSelectSeats(List<SeatDTO> seatList) {
+		int result=0;
+		for(int i=0; i<seatList.size(); i++) {
+			result+=sqlMap.insert("SelectSeatList", seatList.get(i));
+		}
+		return result;
+	}
+	
+	@Override
+	public int insertMusical(MusicalDTO DTO) {
+		int result = sqlMap.insert("insertMusical", DTO);
+		return result;
+	}
+	
+	@Override
+	public List<PartnerDTO> getPartnerInfo(String pr_code, String rs_code) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("pr_code", pr_code);
+		params.put("rs_code", rs_code);
+		List<PartnerDTO> list = sqlMap.selectList("selectPartner",params);
+		return null;
 	}
 }

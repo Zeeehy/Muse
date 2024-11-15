@@ -49,7 +49,16 @@
     #MusicalListTable {
     	width:100%;
     }
-
+.table-content input[value="찾기"] {
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 8px 20px;
+    background-color: #60c558;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 </style>
 </head>
 

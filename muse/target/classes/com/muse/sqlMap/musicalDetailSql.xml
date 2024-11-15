@@ -47,4 +47,46 @@
   		delete from LIKE_ACTOR where ma_code = #{ma_code} AND u_id = #{u_id}
   	</insert>
   	
+  	<select id="getScreenDay" parameterType="String" resultType="java.sql.Date">
+  		select distinct mo_date from musical_option where m_code = #{m_code}
+  	</select>
+  	
+  	<select id="getStartTime" parameterType="String" resultType="String">
+  		SELECT distinct mo_time
+		FROM MUSICAL_OPTION
+		WHERE M_CODE = #{m_code}
+		ORDER BY mo_time
+  	</select>
+  	
+  	<select id="getRoundActor" parameterType="map" resultType="com.muse.musicalDetail.model.MusicalDetailCastDTO">
+	  	select *
+		from musical_option mo, musical_casting mc, musical_actor ma
+		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
+		and mo.m_code =#{m_code}
+		<if test="range_start != null">
+			        and mo.mo_date between #{range_start} and #{range_end}
+		</if>
+		order by mo_date asc,mo_time asc, mc_char asc
+
+  	</select>
+  	
+  	<select id="getAllChar" parameterType="String" resultType="String">
+  		select distinct mc_char
+		from musical_option mo, musical_casting mc
+		where mo.mo_code = mc.mo_code 
+		and mo.m_code =#{m_code}
+        order by mc_char asc
+  	</select>
+  	
+  	<select id="getRoundDOW" parameterType="map" resultType="java.sql.Date">
+  		select mo.mo_date
+		from musical_option mo, musical_casting mc, musical_actor ma
+		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
+		and mo.m_code =#{m_code}
+		<if test="range_start != null">
+			        and mo.mo_date between #{range_start} and #{range_end}
+		</if>
+		order by mo_date asc,mo_time asc, mc_char asc
+  	</select>
+  	
   </mapper>

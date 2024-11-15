@@ -240,6 +240,8 @@ function inputMusicalName(element) {
     musical_code = MusicalM_code; //선택한 뮤지컬 idx값
 } 
 
+
+
  function insertTicketOpen(){
 	 if(document.getElementById("m_title")){
 		 alert('뮤지컬을 선택해주세요');

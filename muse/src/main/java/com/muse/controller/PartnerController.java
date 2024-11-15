@@ -1,32 +1,49 @@
 package com.muse.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.MusicalDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.partner.model.PartnerDAO;
-
+import com.muse.partner.model.PartnerDTO;
+import com.muse.partner.model.SeatGradeDTO;
+import com.muse.reserv.model.ReservDAO;
+import com.muse.seat.model.SeatDTO;
+import com.muse.seat.model.SeatLayoutDAO;
+import com.muse.seat.model.SeatLayoutDTO;
 @Controller
 public class PartnerController {
 
 	
 	@Autowired
 	private PartnerDAO partnerDao;
+	@Autowired
+	private SeatLayoutDAO seatLayoutDAO;
 	
 	@RequestMapping("/partnerAddForm.do")
-	public String partnerAddForm() {
+	public ModelAndView partnerAddForm(@RequestParam String u_id) {
 		
-		return "/partner/partnerAddForm";
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/partner/partnerAddForm");
+		return mav;
 	}
 	
 	@RequestMapping("/castAddForm.do")
@@ -38,13 +55,54 @@ public class PartnerController {
 	public String ticetOpenForm() {
 		return"/partner/ticetOpenNotice";
 	}
+	
+	@RequestMapping("/partnerMainForm.do")
+	public String partnerMain() {
+		return "/partner/partnerMainForm";
+	}
+	@RequestMapping("/musicalSeatAddForm.do")
+	public ModelAndView musicalSeatForm() {
+		ModelAndView mav = new ModelAndView();
+		List<SeatLayoutDTO> layout = seatLayoutDAO.seatLayoutSelect();
+		List<String> section = seatLayoutDAO.sectionSelect();
+		List<Integer> floor = seatLayoutDAO.bindByallFloorSelect();
+		Map<Integer,Integer> max_rowMap= seatLayoutDAO.max_rowSelect(); 
+		List<SeatDTO> seatList = seatLayoutDAO.getRealSeat();
+		List<SeatGradeDTO> seatGradeList = partnerDao.selectSeatGrade();
+		
+		
+		String jsonLayout = new Gson().toJson(layout);
+		String jsonSection =  new Gson().toJson(section); 
+		String jsonFloor = new Gson().toJson(floor);
+		String jsonMax_rowMap = new Gson().toJson(max_rowMap);
+		String jseatList =  new Gson().toJson(seatList);
+		String jseatGradeList = new Gson().toJson(seatGradeList);
+		
+		mav.addObject("layouts",jsonLayout);
+		mav.addObject("section",jsonSection);
+		mav.addObject("floor",jsonFloor);
+		mav.addObject("max_rowMap",jsonMax_rowMap);
+		mav.addObject("seatList",jseatList);
+
+		mav.addObject("seatGradeList",jseatGradeList);//좌석 등급 가져오는 리스트
+		mav.setViewName("/partner/musicalSeatAddForm");
+		return mav;
+	}
+	
+
+	//뮤지컬 등록 폼으로 가기
 	@RequestMapping("/musicalOpenForm.do")
 	public ModelAndView musicalAddForm() {
-		
+
 		ModelAndView mav = new ModelAndView();
 		List<MusicalHallDTO> list = partnerDao.getMusicalHallList();
-		mav.setViewName("/partner/musicalAddForm");
+
 		mav.addObject("HallList", list);
+		
+		
+
+		
+		mav.setViewName("/partner/musicalAddForm");
 		return mav;
 	}
 	
@@ -163,5 +221,74 @@ public class PartnerController {
 	    return mav;
 	}
 	
+	@RequestMapping(value="/insertSeat.do", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> processSeats(@RequestBody Map<String, List<Object[]>> request) {
+	    List<Object[]> seats = request.get("seats");
+	    //int i=0;
+	    List<SeatDTO> seatList = new ArrayList<>();
+	    
+	    for(Object[] seatData : seats) {
+	    		//i++;
+		       System.out.println(seatData.toString());
+		       System.out.println(seatData[0]);
+		       System.out.println(seatData[1]);
+		       System.out.println(seatData[2]);
+		       System.out.println(seatData[3]);
+		       System.out.println(seatData[4]);
+		       System.out.println(seatData[5]);
+		       System.out.println(seatData[6]);
+				
+				  SeatDTO seatDTO = new SeatDTO();
+				  seatDTO.setSg_code(String.valueOf(seatData[0])); // sg_code
+				  seatDTO.setM_code(String.valueOf(seatData[1]));// m_code
+				  seatDTO.setMhl_code(Integer.parseInt(String.valueOf(seatData[2]))); //뮤지컬 홀 레이아웃 코드
+				  seatDTO.setS_section(String.valueOf(seatData[3])); // section
+				  seatDTO.setS_position(Integer.parseInt(String.valueOf(seatData[4]))); //몇번째인지
+				  seatDTO.setS_row(Integer.parseInt(String.valueOf(seatData[5]))); //
+				  seatDTO.setS_floor(Integer.parseInt(String.valueOf(seatData[6])));
+				  seatList.add(seatDTO);
+				  System.out.println(seatDTO);
+	    }
+	    int result = partnerDao.insertSelectSeats(seatList);
+	    System.out.println(result+"결과값!!!!!!!!!!!!!!");
+	    // seatList 처리 로직
+	    
+	    return ResponseEntity.ok().body("Success");
+	}
+	
+	@RequestMapping("/insertMusical.do")
+	public ModelAndView insertMusical(MusicalDTO dto) {
+		
+        System.out.println("mh_code: " + dto.getMh_code());
+        System.out.println("pr_code: " + dto.getPr_code());
+        System.out.println("m_title: " + dto.getM_title());
+        System.out.println("m_startDate: " + dto.getM_startDate());
+        System.out.println("m_endDate: " + dto.getM_endDate());
+        System.out.println("m_time: " + dto.getM_time());
+        System.out.println("m_inTime: " + dto.getM_inTime());
+        System.out.println("m_maxTicet: " + dto.getm_maxTicket());
+        System.out.println("m_age: " + dto.getM_age());
+        System.out.println("m_openDate: " + dto.getM_openDate());
+        System.out.println("m_openTime: " + dto.getM_openTime());
+        System.out.println("m_notice: " + dto.getM_notice());
+        System.out.println("m_poster: " + dto.getM_poster());
+        System.out.println("m_detailImg: " + dto.getM_detailImg());
+        System.out.println("m_calender: " + dto.getm_calendar());
+        System.out.println("m_single: " + dto.getM_single());
+        System.out.println("m_viewState: " + dto.getM_viewState());
+        System.out.println("m_ref: " + dto.getM_ref());
+        
+        int result = partnerDao.insertMusical(dto);
+        System.out.println("결과@@@@@@@@@@@@@@@"+result);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/partner/partnerMainForm");
+		return mav;
+	}
+	@RequestMapping("/partnerInsert.do")
+	public ModelAndView partnerInsert(PartnerDTO DTO) {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
 	
 }

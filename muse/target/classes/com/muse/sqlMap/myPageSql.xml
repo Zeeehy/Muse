@@ -28,6 +28,7 @@
 	join musical m on mo.m_code = m.m_code
 	where b.u_id=#{u_id}
 	and to_char(b.b_date,'yyyy-mm') = #{bookingDate}
+	order by b.b_date desc
   </select>
   
   <select id="selectBookingPerformList" parameterType="map" resultType="com.muse.myPage.model.MyBookingListDTO">
@@ -37,6 +38,7 @@
 	join musical m on mo.m_code = m.m_code
 	where b.u_id=#{u_id}
 	and to_char(mo.mo_date,'yyyy-mm') = #{bookingDate}
+	order by b.b_date desc
   </select>
   
   <select id="selectBookingList" resultType="com.muse.myPage.model.MyBookingListDTO">
@@ -45,6 +47,7 @@
 		join musical_option mo on mo.mo_code = b.mo_code 
 		join musical m on mo.m_code = m.m_code
 		where b.u_id=#{u_id}
+		order by b.b_date desc
   </select>
   
   <select id="selectBookingDayList" parameterType="map" resultType="com.muse.myPage.model.MyBookingListDTO">
@@ -54,6 +57,7 @@
 	join musical m on mo.m_code = m.m_code
 	where b.u_id=#{u_id}
 	and b_date >= sysdate-#{bookingDay}
+	order by b.b_date desc
   </select>
   
   <select id="selectBookingMonthList" parameterType="map" resultType="com.muse.myPage.model.MyBookingListDTO">
@@ -62,8 +66,62 @@
 	join musical_option mo on mo.mo_code = b.mo_code 
 	join musical m on mo.m_code = m.m_code
 	where b.u_id=#{u_id}
-	and b_date >= sysdate-#{bookingMonth}
+	and b_date >= add_months(sysdate, -#{bookingMonth})
+	order by b.b_date desc
   </select>
+  
+  <!-- 뮤즈캐스트 -->
+  <select id="selectLikeActorCount" resultType="Integer">
+  	select count(*) from like_actor where u_id=#{u_id}
+  </select> 
+  
+  <select id="selectLikeActorList" parameterType="String" resultType="com.muse.myPage.model.MyLikeActorDTO">			<!-- join해서 바꿀예정 -->
+  	select la.la_code, ma.ma_code, ma.ma_name, ma.ma_img, la.la_date from like_actor la
+	join musical_actor ma on la.ma_code=ma.ma_code
+	where la.u_id=#{u_id}
+  </select> 
+  
+  <select id="selectLikeMusicalCount" resultType="Integer">
+  	select count(*) from like_musical where u_id=#{u_id}
+  </select> 
+  
+  <select id="selectLikeMusicalList" parameterType="String" resultType="com.muse.myPage.model.MyLikeMusicalDTO">			<!-- join해서 바꿀예정 -->
+  	select lm.lm_code, m.m_code, lm.lm_date,m.m_title,m.m_startdate,m.m_enddate, m.m_poster from like_musical lm
+	join musical m on lm.m_code=m.m_code
+	where lm.u_id=#{u_id}
+  </select> 
+  
+  <select id="selectSearchActorList" parameterType="map" resultType="com.muse.partner.model.ActorDTO">
+    select ma.ma_code, ma.ma_name,ma.ma_img,ma.ma_birth from musical_actor ma
+	left join like_actor la on la.ma_code=ma.ma_code and la.u_id=#{u_id}
+	where la.la_code is null 
+	and ma.ma_name like #{searchActor}
+	order by ma.ma_code
+  </select> 
+  
+  <select id="selectSearchMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
+    select m.m_code, m.m_title,m.m_poster,m.m_age,m.m_startdate,m.m_enddate from musical m
+	left join like_musical lm on lm.m_code=m.m_code and lm.u_id=#{u_id}
+	where lm.lm_code is null 
+	and m.m_title like #{searchMusical}
+	order by m.m_code
+  </select> 
+  
+  <insert id="insertLikeActorList" parameterType="map">
+  	insert into like_actor values('la_'||LIKE_ACTOR_LA_CODE.nextval,#{ma_code},#{u_id},to_char(sysdate, 'yyyy-mm-dd'))
+  </insert>
+  
+  <delete id="deleteLikeActorList" parameterType="map">
+  	delete from like_actor where la_code=#{la_code} and u_id=#{u_id}
+  </delete>
+  
+  <insert id="insertLikeMusicalList" parameterType="map">
+  	insert into like_musical values('lm_'||LIKE_MUSICAL_LM_CODE.nextval,#{m_code},#{u_id},to_char(sysdate, 'yyyy-mm-dd'))
+  </insert>
+  
+  <delete id="deleteLikeMusicalList" parameterType="map">
+  	delete from like_musical where lm_code=#{lm_code} and u_id=#{u_id}
+  </delete>
   
   <!-- 뮤즈패스 -->
   <select id="selectMPass" resultType="com.muse.myPage.model.MPassDTO">
@@ -73,6 +131,33 @@
   <!-- 뮤즈캘린더 -->
   <select id="calendarList"  resultType="com.muse.myPage.model.MuseCalendarDTO">
   	select * from calendar 
+  </select>
+  
+  <!-- 예매상세 -->
+  <select id="selectMyBookingDetail" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
+	select 
+	b.b_code,
+	b.b_date,
+	b.b_type,
+	mo.mo_date,
+	m.m_poster,		
+	m.m_title,
+	mh.mh_name,
+	mh.mh_addr,
+	bd.bd_price,
+	s.s_section,
+	s.s_position,
+	s.s_row,
+	s.s_floor,
+	u.u_name
+	from booking b
+	left join musical_option mo on mo.mo_code=b.mo_code
+	left join musical m on m.m_code=mo.m_code
+	left join musical_hall mh on mh.mh_code=m.mh_code
+	left join booking_detail bd on bd.b_code=b.b_code
+	left join seat s on s.s_code=bd.s_code
+	left join users u on u.u_id=b.u_id
+	where b.b_code=#{b_code}
   </select>
 
   </mapper>

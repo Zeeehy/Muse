@@ -139,7 +139,7 @@ function getBookingDay(param){
     xhr.open('GET', 'myPageBookingDayList.do?booking_day=' + param, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            document.getElementById('booking_table').innerHTML = xhr.responseText;
+            document.getElementById('booking_table').innerHTML = JSON.parse(xhr.responseText);
         }
     };
     xhr.send();
@@ -154,7 +154,7 @@ function getBookingMonth(param){
     xhr.open('GET', 'myPageBookingMonthList.do?booking_month=' + param, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            document.getElementById('booking_table').innerHTML = xhr.responseText;
+            document.getElementById('booking_table').innerHTML = JSON.parse(xhr.responseText);
         }
     };
     xhr.send();
@@ -180,7 +180,7 @@ function getBookingDate(){
     }
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            document.getElementById('booking_table').innerHTML = xhr.responseText;
+            document.getElementById('booking_table').innerHTML = JSON.parse(xhr.responseText);
         }
     };
     xhr.send();

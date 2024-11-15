@@ -6,6 +6,16 @@ import com.muse.review.model.MusicalReviewDTO;
 
 public interface AdminDAO {
 
+	List<OpenNoticeDTO> openRequestList();
+	OpenNoticeDTO openRequest(String on_code);
+	int openRequestEnd(String on_code,int rs_code);
+	
+	
+	List<OpenNoticeDTO> openApplyList();
+	OpenNoticeDTO openApply(String on_code);
+	int openApplyEnd(String on_code);
+	
+	
 	List<BannerDTO> bannerList();
 	List<BannerDTO> addBannerList();
 	int addBanner(String m_code);
