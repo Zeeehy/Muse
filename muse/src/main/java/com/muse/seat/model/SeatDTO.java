@@ -10,13 +10,10 @@ public class SeatDTO {
     private int s_position; // 좌석 위치
     private int s_floor;
     private String s_section;
-<<<<<<< HEAD
     private String reservation_status;
-=======
-    
+
     private double avg_score; //좌석 평균
     
->>>>>>> branch 'main' of https://github.com/Zeeehy/Muse.git
 	public SeatDTO() {
 		super();
 	}
