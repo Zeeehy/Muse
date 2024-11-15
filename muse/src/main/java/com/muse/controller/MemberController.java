@@ -3,6 +3,8 @@ package com.muse.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,12 @@ public class MemberController {
 	
 	// GET 요청 처리: 로그인 폼을 반환
     @RequestMapping(value = "/memberLogin.do", method = RequestMethod.GET)
-    public String memberLoginForm() {
+    public String memberLoginForm(HttpServletRequest request, HttpSession session) {
+    	 // 로그인 전 사용자가 요청한 URL을 세션에 저장
+        String referer = request.getHeader("Referer");  // 이전 페이지 URL을 가져옴
+        if (referer != null && !referer.contains("memberLogin.do")) {  // 로그인 페이지로 오는 URL은 제외
+            session.setAttribute("prevPage", referer);  // 세션에 이전 페이지 URL 저장
+        }
         return "/member/memberLogin";
     }
 
@@ -49,20 +56,33 @@ public class MemberController {
 			session.setAttribute("s_id", u_id);
 			session.setAttribute("s_name", s_info.getU_name());			
 			session.setAttribute("s_mpass", s_info.getU_mpass());
+			session.setAttribute("s_pr_code", s_info.getPr_code());
+			// 
 			
 			// 세션에서 값 가져오기
 		    // String s_id = (String) session.getAttribute("s_id");
 		    // String s_name = (String) session.getAttribute("s_name");
-		    // int s_mpass =  (int) session.getAttribute("s_mpass");		    
+		    // int s_mpass =  (int) session.getAttribute("s_mpass");		
+		    // String s_prcode = (String) session.getAttribute("s_pr_code");
 		    // 세션 값 확인을 위한 로그 출력
 		    // System.out.println("세션에 저장된 ID: " + s_id);
 		    // System.out.println("세션에 저장된 이름: " + s_name);
 		    // System.out.println("세션에 저장된 멤버십여부: " + s_mpass);
+		    // System.out.println("세션에 저장된 파트너여부: " + s_prcode);
 		
-			mav.addObject("goUrl", "index.do");
-			mav.addObject("msg", s_info.getU_name()+"님 환영합니다.");
-			mav.setViewName("member/memberMsg");	
+			// 로그인 후 이전 페이지로 리디렉션
+	        String prevPage = (String) session.getAttribute("prevPage");
+	        if (prevPage != null && !prevPage.isEmpty()) {
+	        	 mav.addObject("goUrl", prevPage);
+	        	 mav.addObject("msg", s_info.getU_name() + "님 환영합니다.");          
+	        	 mav.setViewName("member/memberMsg");
+	        } else {
+	            mav.addObject("goUrl", "index.do");
+	            mav.addObject("msg", s_info.getU_name() + "님 환영합니다.");
+	            mav.setViewName("member/memberMsg");
+	        }
 		}
+        
 		return mav;
     }
     
@@ -81,6 +101,7 @@ public class MemberController {
 		mav.addObject("msg", "로그아웃 되셨습니다.");
 		mav.setViewName("member/memberMsg");
         return mav;  // 로그아웃 후 index 페이지로 리디렉션
+    
     }
     
     

@@ -45,6 +45,8 @@ public class MemberDAOImple implements MemberDAO {
 	        MemberDTO dto = sqlMap.selectOne("loginSession", u_id);
 			return dto;
 		}
+	
+
 
 	// 회원가입
 	@Override
@@ -70,6 +72,5 @@ public class MemberDAOImple implements MemberDAO {
 		// System.out.println(pwdResult);
 		return pwdResult;
 	}
-
 	
 }

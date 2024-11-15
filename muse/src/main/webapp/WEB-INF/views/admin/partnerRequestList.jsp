@@ -88,7 +88,7 @@
 	<div class="main-content">
 	
 		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 파트너 회원 승인</h1>
-		<hr class="hrLine">
+		<hr id="hrLine">
 		<table id="bannerListTable" border="1" cellspacing="0">
 			<tr >
 				<th>순서</th>

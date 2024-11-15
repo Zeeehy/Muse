@@ -82,4 +82,71 @@ m_code = #{m_code}),
 <select id="selectMusicalHallList"  resultType="com.muse.partner.model.MusicalHallDTO">
 	select * from musical_Hall
 </select>
+
+<select id="selectSeatGradeList" resultType="com.muse.partner.model.SeatGradeDTO">
+	select * from seat_grade
+</select>
+
+<insert id="SelectSeatList" parameterType="com.muse.seat.model.SeatDTO">
+    INSERT INTO SEAT (
+            S_CODE, SG_CODE, M_CODE, MHL_CODE, 
+            S_SECTION, S_POSITION, S_ROW, S_FLOOR
+        ) 
+        VALUES (
+            seat_s_code.nextval,
+            #{sg_code},
+            #{m_code},
+            #{mhl_code},
+            #{s_section},
+            #{s_position},
+            #{s_row},
+            #{s_floor}
+        )
+	</insert>
+	
+	
+		<insert id="insertMusical" parameterType="com.muse.partner.model.MusicalDTO">
+    INSERT INTO musical (
+        M_CODE,
+        MH_CODE,
+        PR_CODE,
+        M_TITLE,
+        M_STARTDATE,
+        M_ENDDATE,
+        M_TIME,
+        M_INTIME,
+        M_MAXTICKET,
+        M_AGE,
+        M_OPENDATE,
+        M_OPENTIME,
+        M_NOTICE,
+        M_POSTER,
+        M_DETAILIMG,
+        M_CALENDAR,
+        M_SINGLE,
+        M_VIEWSTATE,
+        M_REF
+    ) VALUES (
+        'm_' || MUSICAL_M_CODE.NEXTVAL,  
+        #{mh_code},
+        #{pr_code}, 
+        #{m_title},                     
+        #{m_startDate},                  
+        #{m_endDate},                    
+        #{m_time},                       
+        #{m_inTime},                     
+        #{m_maxTicket},                  
+        #{m_age},                        
+        #{m_openDate},                   
+        #{m_openTime},                   
+        #{m_notice},                     
+        #{m_poster},                     
+        #{m_detailImg},                 
+        #{m_calendar},                  
+        #{m_single},                   
+        0,                 
+        0                       
+    )
+
+	</insert>
   </mapper>

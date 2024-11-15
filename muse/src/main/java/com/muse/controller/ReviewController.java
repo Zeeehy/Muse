@@ -63,10 +63,10 @@ public class ReviewController {
 	    }
 	    
 	    int mhl_code = reviewDao.getMhl_code(mh_code);
-	    System.out.println("mhl_code ="+mhl_code +" sl_bind="+sl_bind);
+	    //System.out.println("mhl_code ="+mhl_code +" sl_bind="+sl_bind);
 		
 	    //int sl_bind(바인드), int mhl_code(공연장) ,String m_code(뮤지컬)
-	    HashMap map = ReservSeatForm(sl_bind,mhl_code,m_code);
+	    HashMap map = ReservSeatForm(sl_bind,mhl_code,m_code,mh_code);
 		                           
 		Iterator ir = map.keySet().iterator();
 		
@@ -95,7 +95,7 @@ public class ReviewController {
 	}
 	
 	
-	public HashMap<String, String> ReservSeatForm(int sl_bind, int mhl_code,String m_code) {
+	public HashMap<String, String> ReservSeatForm(int sl_bind, int mhl_code,String m_code,String mh_code) {
 		
 		HashMap<String, String> map = new HashMap<String, String>();
 		
@@ -103,12 +103,21 @@ public class ReviewController {
 		List<String> section = reviewDao.sectionSelect(sl_bind, mhl_code);
 		List<Integer> floor = reviewDao.bindByallFloorSelect(sl_bind, mhl_code);
 		Map<Integer,Integer> max_rowMap= reviewDao.max_rowSelect(mhl_code); 
-		List<SeatDTO> seatList = reviewDao.getRealSeat(m_code);
+		List<SeatDTO> seatList ;
 		
-		System.out.println(section);
-		System.out.println(floor);
-		System.out.println(max_rowMap);
-		System.out.println(seatList);
+		//공연장검색이면
+		if(m_code.equals("")) {
+			seatList = reviewDao.getRealSeatByHall(mh_code);
+		}
+		//공연명검색이면
+		else {
+			seatList = reviewDao.getRealSeatByM(m_code);
+		} 
+		
+		//System.out.println(section);
+		//System.out.println(floor);
+		//System.out.println(max_rowMap);
+		//System.out.println(seatList);
 		
 		String jsonLayout = new Gson().toJson(layout);
 		String jsonSection =  new Gson().toJson(section); 
@@ -123,11 +132,11 @@ public class ReviewController {
 		map.put("seatList",jseatList);
 		
 		
-		System.out.println(jsonLayout);
-		System.out.println(jsonSection);
-		System.out.println(jsonFloor);
-		System.out.println(jsonMax_rowMap);
-		System.out.println(jseatList);
+		//System.out.println(jsonLayout);
+		//System.out.println(jsonSection);
+		//System.out.println(jsonFloor);
+		//System.out.println(jsonMax_rowMap);
+		//System.out.println(jseatList);
 				
 		
 		return map;
@@ -140,14 +149,48 @@ public class ReviewController {
 			@RequestParam(value = "sl_section") String sl_section,
 			@RequestParam(value = "sl_row") int sl_row,
 			@RequestParam(value = "sl_floor") int sl_floor,
-			@RequestParam(value = "s_position") int s_position) {
+			@RequestParam(value = "s_position") int s_position,
+			@RequestParam(value = "mh_code") String mh_code,
+			@RequestParam(value = "m_code", required = false, defaultValue = "") String m_code
+			) {
 		ModelAndView mav = new ModelAndView();
 		
+		//s_section, s_row, s_floor, s_position, mh_code
+		List<SeatReviewDTO> lists ;
+		
+		//평균평점 + 공연장명
+		double avg_score=0.0;
+		String mh_name = reviewDao.getMh_name(mh_code);
+		
+		//여기는 공연장으로 검색한 경우
+		if(m_code.equals("")) {
+			lists = reviewDao.srShowListByHall( sl_section, sl_row, sl_floor,  s_position,  mh_code);
+			if(lists.size()!=0) {
+				avg_score = reviewDao.srShowAvgByHall(sl_section, sl_row, sl_floor,  s_position,  mh_code);
+			}
+			
+		}
+		//공연명으로 검색한 경우
+		else {
+			lists = reviewDao.srShowListByM( sl_section, sl_row, sl_floor,  s_position,  mh_code,m_code);
+			if(lists.size()!=0) {
+				avg_score = reviewDao.srShowAvgByM(sl_section, sl_row, sl_floor,  s_position,  mh_code,m_code);
+			}
+			
+		}
+		
+		
+		
+		mav.addObject("lists", lists);
+		mav.addObject("avg_score", avg_score);
 		mav.addObject("sl_code", sl_code);
 		mav.addObject("sl_section", sl_section);
 		mav.addObject("sl_row", sl_row);
 		mav.addObject("sl_floor", sl_floor);
 		mav.addObject("s_position", s_position);
+		mav.addObject("mh_code", mh_code);
+		mav.addObject("m_code", m_code);
+		mav.addObject("mh_name", mh_name);
 		
 		mav.setViewName("review/srShowList");
 		return mav;
