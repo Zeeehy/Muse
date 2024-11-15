@@ -24,11 +24,10 @@
            	</c:if>
            	<c:if test="${!empty sessionScope.s_name}">
 	            <div class="loginNow" style="color: #fff;"><span>${sessionScope.s_name}</span> 님 로그인 중 <a href="memberLogout.do">LOGOUT</a></div>
-<<<<<<< HEAD
+
 	            <a href="#" class="topmusepass">My page <img src="resources/img/main/topicon.png"></a>
-=======
+
 	            <a href="myPageMain.do" class="topmusepass">My PAGE <img src="resources/img/main/topicon.png"></a>
->>>>>>> branch 'main' of https://github.com/Zeeehy/Muse.git
            	</c:if>
         </div>
         <div class="header">
