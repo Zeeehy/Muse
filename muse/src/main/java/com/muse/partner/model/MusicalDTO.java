@@ -19,7 +19,7 @@ public class MusicalDTO {
 	private String m_notice;
 	private String m_poster;
 	private String m_detailImg;
-	private int m_calender;
+	private int m_calendar;
 	private int m_single;
 	private int m_viewState;
 	private int m_ref;
@@ -34,7 +34,7 @@ public class MusicalDTO {
 	
 	public MusicalDTO(String m_code, String mh_code, String pr_code, String m_title, String m_startDate,
 			String m_endDate, int m_time, int m_inTime, int m_maxTicket, String m_age, String m_openDate, String m_openTime,
-			String m_notice, String m_poster, String m_detailImg, int m_calender, int m_single, int m_viewState,
+			String m_notice, String m_poster, String m_detailImg, int m_calendar, int m_single, int m_viewState,
 			int m_ref) {
 		super();
 		this.m_code = m_code;
@@ -52,7 +52,7 @@ public class MusicalDTO {
 		this.m_notice = m_notice;
 		this.m_poster = m_poster;
 		this.m_detailImg = m_detailImg;
-		this.m_calender = m_calender;
+		this.m_calendar = m_calendar;
 		this.m_single = m_single;
 		this.m_viewState = m_viewState;
 		this.m_ref = m_ref;
@@ -153,11 +153,11 @@ public class MusicalDTO {
 	public void setM_detailImg(String m_detailImg) {
 		this.m_detailImg = m_detailImg;
 	}
-	public int getM_calender() {
-		return m_calender;
+	public int getm_calendar() {
+		return m_calendar;
 	}
-	public void setM_calender(int m_calender) {
-		this.m_calender = m_calender;
+	public void setm_calendar(int m_calendar) {
+		this.m_calendar = m_calendar;
 	}
 	public int getM_single() {
 		return m_single;
