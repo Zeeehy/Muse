@@ -37,6 +37,14 @@
     border: none;
     cursor: pointer;
 }
+.textarea-style {
+	width: 100%;
+	height: 80px;
+	border-radius: 8px; /* 둥근 모서리 */
+	font-size: 16px;
+	background-color: #f9f9f9;
+	resize: none; /* 크기 조절 아이콘 제거 */
+}
 </style>
 <body>
 	<div class="main-content">
@@ -51,6 +59,7 @@
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
 					<td colspan="4"><input type="text" name="m_title"></td>
+					<td><input type="hidden" value="pr_1" name="pr_code"></td>
 				</tr>
 
 				<tr>
@@ -115,7 +124,6 @@
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
-							<option>5</option>
 					</select></td>
 				</tr>
 				<tr>
@@ -151,7 +159,7 @@
 				</tr>
 				<tr>
 					<th>공연 정보</th>
-						<td colspan="4"><textarea class="textarea-style" name="m_notice"></textarea></td>
+						<td colspan="6"><textarea class="textarea-style" name="m_notice"></textarea></td>
 					</tr>
 				
 			</table>

@@ -27,4 +27,8 @@ public interface PartnerDAO {
 	public List<SeatGradeDTO> selectSeatGrade();
 	
 	public int insertSelectSeats(List<SeatDTO> seatList);
+	
+	public int insertMusical(MusicalDTO DTO);
+	
+	public List<PartnerDTO> getPartnerInfo(String pr_code,String rs_code);
 }

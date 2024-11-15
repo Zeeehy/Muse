@@ -12,7 +12,7 @@
 	<%@include file="header.jsp" %>
   	<%@include file="sidebar.jsp" %>
     <!-- 메인 컨텐츠 영역 -->
-    <form name="partnerAddForm.do" action="#">
+    <form name="partnerAddForm" action="partnerInsert.do">
     <div class="main-content">
     	<div class="main-contenttop">
         	<h1>파트너 등록</h1>
