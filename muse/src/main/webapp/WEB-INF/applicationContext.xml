@@ -53,6 +53,9 @@
 	<bean id="musicalDetailDao" class="com.muse.musicalDetail.model.MusicalDetailDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="bookingDetailDao" class="com.muse.myPage.model.MyBookingDetailDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

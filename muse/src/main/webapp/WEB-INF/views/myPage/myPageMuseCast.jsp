@@ -152,6 +152,12 @@ body {
     color: #333;
 }
 
+.item img {				/**/
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    padding-left: 5px;
+}
 /* footer {
 	position: absolute;
 	bottom: 0;
@@ -282,7 +288,7 @@ function deleteLikeMusical(){
                 	<c:forEach var="lalist" items="${likeActorList}">
 	                	<div class="item">
                         <input type="checkbox" name="actorCheck" id="${lalist.la_code}">
-                        <img src="/resources/img/actor/${lalist.ma_img}" alt="Actor Image">
+                        <img src=" /muse/resources/img/actor/${lalist.ma_img}" alt="Actor Image">
                         <div class="item-info">
                             <p>${lalist.ma_name}</p>
                             <p>뮤지컬 배우</p>
@@ -303,10 +309,10 @@ function deleteLikeMusical(){
                 	<c:forEach var="lmlist" items="${likeMusicalList}">
 	                	<div class="item">
                         <input type="checkbox" name="musicalCheck" id="${lmlist.lm_code}">
-                        <img src="/resources/img/actor/${lmlist.m_poster}" alt="Actor Image">
+                        <img src="/muse/resources/img/musical/${lmlist.m_poster}" alt="Musical Image">
                         <div class="item-info">
                             <p>${lmlist.m_title}</p>
-                            <p>${lmlist.m_startdate}~${lmlist.m_enddate}</p>
+                            <p>${lmlist.m_startdate}</p><p>~${lmlist.m_enddate}</p>
                             <p>${lmlist.lm_date} 등록</p>
                         </div>
                     </div>
