@@ -33,16 +33,31 @@ import com.muse.seat.model.SeatLayoutDTO;
 public class PartnerController {
 
 	
+	private static final String String = null;
 	@Autowired
 	private PartnerDAO partnerDao;
 	@Autowired
 	private SeatLayoutDAO seatLayoutDAO;
 	
 	@RequestMapping("/partnerAddForm.do")
-	public ModelAndView partnerAddForm(@RequestParam String u_id) {
-		
+	public ModelAndView partnerAddForm(
+			@RequestParam(value="pr_code",required = false, defaultValue = "no")String pr_code,
+			@RequestParam(value="s_id",required = false, defaultValue = "no")String u_id) {
+		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");
+		System.out.println(u_id);
+		System.out.println(pr_code);
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
 		ModelAndView mav = new ModelAndView();
+		String msg= "";
+		if(DTO ==null) {
+			msg="파트너 신청을 해주세요";
+		}else {if(DTO.getRs_code()==1) {
+					msg="심사중입니다.";
+				}
+		}
+		mav.addObject("dto", DTO);
 		mav.setViewName("/partner/partnerAddForm");
+		mav.addObject("msg", msg);
 		return mav;
 	}
 	
@@ -52,8 +67,15 @@ public class PartnerController {
 		return "/partner/castAddForm";
 	}
 	@RequestMapping("/ticetOpenForm.do")
-	public String ticetOpenForm() {
-		return"/partner/ticetOpenNotice";
+	public ModelAndView ticetOpenForm(@RequestParam(
+			value="pr_code",
+			defaultValue = "no")String pr_code) {
+		
+		ModelAndView mav = new ModelAndView();
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		mav.addObject("dto", DTO);
+		mav.setViewName("/partner/ticetOpenNotice");
+		return mav;
 	}
 	
 	@RequestMapping("/partnerMainForm.do")
@@ -92,15 +114,12 @@ public class PartnerController {
 
 	//뮤지컬 등록 폼으로 가기
 	@RequestMapping("/musicalOpenForm.do")
-	public ModelAndView musicalAddForm() {
-
+	public ModelAndView musicalAddForm(String pr_code) {
+		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");	
 		ModelAndView mav = new ModelAndView();
 		List<MusicalHallDTO> list = partnerDao.getMusicalHallList();
 
 		mav.addObject("HallList", list);
-		
-		
-
 		
 		mav.setViewName("/partner/musicalAddForm");
 		return mav;
@@ -287,8 +306,16 @@ public class PartnerController {
 	}
 	@RequestMapping("/partnerInsert.do")
 	public ModelAndView partnerInsert(PartnerDTO DTO) {
+		int result = partnerDao.partnerInsert(DTO);
+		System.out.println(result+"@@@@@@@@@@");
+		
 		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/partner/partnerMainForm");
 		return mav;
 	}
 	
+	public PartnerDTO partenrInfo(String pr_code) {
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		return DTO;
+	}
 }

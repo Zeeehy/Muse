@@ -30,5 +30,10 @@ public interface PartnerDAO {
 	
 	public int insertMusical(MusicalDTO DTO);
 	
-	public List<PartnerDTO> getPartnerInfo(String pr_code,String rs_code);
+	public PartnerDTO getPartnerInfo(String pr_code);
+	
+	public int partnerInsert(PartnerDTO dto);
+	
+	
+	
 }

@@ -2,12 +2,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<body>
+<body onload="onloadSession()">
 	<div class="header">
 	<div class="left-section">
         <input type="image" src="/muse/resources/img/museimage.png" class="header-image" onclick="window.location.href='partnerMainForm.do';">
-
-         
          <select>
          	<option selected>기획사</option>
          	<option>2</option>
@@ -17,9 +15,19 @@
          </div>
           <div class="right-section">
          	<a>박형주님</a>|<a>로그아웃</a>
-         	<input type="hidden" value="pr_1" name="pr_code">
+         	<input type="text" value="${s_pr_code}" name="pr_code">
          	<!-- <input type="hidden" value="${pr_code}" name="pr_code"> -->
           </div>
     </div>
 </body>
+<script>
+
+function onloadSession(){
+	var pr_code= "${s_pr_code}";
+	var u_id = "${u_id}";
+	if(pr_code=="no"||pr_code==null){
+		window.location.href='partnerAddForm.do?u_id='+u_id+"&pr_code="+pr_code;
+		}
+}
+</script>
 </html>
