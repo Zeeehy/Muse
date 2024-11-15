@@ -40,7 +40,7 @@ public class MainDAOImple implements MainDAO {
 	@Override
 	public List<MusicalDTO> main_musicallist(int page, int size) {
 		 // 10개씩 가져오는 쿼리로 오프셋을 계산
-	    int offset = (page - 1) * size; // 예: 1페이지이면 offset = 0, 2페이지이면 offset = 10
+	    int offset = (page - 1) * size+1; // 예: 1페이지이면 offset = 1, 2페이지이면 offset = 11
 	    int limit = page * size;         // 예: 1페이지면 limit = 10, 2페이지면 limit = 20
 	    Map<String, Integer> params = new HashMap<>();
 	    params.put("offset", offset);
