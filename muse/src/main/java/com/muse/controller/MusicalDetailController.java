@@ -60,7 +60,7 @@ public class MusicalDetailController {
 		List<String> startTimes = musicalDetaildao.getStartTime(m_code);
 		
 		List<String> allChar = musicalDetaildao.getAllChar(m_code);
-		
+				
 		Map paramMap = new HashMap<String,String>();
 		paramMap.put("m_code", m_code);
 		List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
@@ -72,6 +72,9 @@ public class MusicalDetailController {
 			actorByRound.get(i).setDow(dows.get(i));
 		}
 		
+		int countReview = musicalDetaildao.countMusicalReview(m_code);
+		double reviewAVG = musicalDetaildao.getMusicalReviewAVG(m_code);
+		
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
@@ -81,6 +84,9 @@ public class MusicalDetailController {
 		mav.addObject("startTimes",startTimes);
 		mav.addObject("actorByRound",actorByRound);
 		mav.addObject("allChar",allChar);
+		mav.addObject("countReview",countReview);
+		mav.addObject("reviewAVG",reviewAVG);
+		
 		mav.setViewName("musicalDetail/musicalDetail");
 		
 		
@@ -215,12 +221,9 @@ public class MusicalDetailController {
 	        paramMap.put("m_code", m_code);
 	        
 
-	        
 	        // 캐스팅 정보 조회
 	        List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
-	        
 
-	        
 	        List<Date> getRoundDOW = musicalDetaildao.getRoundDOW(paramMap); 
 
 	        // 요일 정보 설정
@@ -251,6 +254,10 @@ public class MusicalDetailController {
 	    
 	    return result;
 	}
+	
+	
+	
+	
 	
 	
 }

@@ -1,7 +1,16 @@
 @charset "UTF-8";
 
+table {
+    border-collapse: collapse; /* 셀 간의 보더를 겹치게 설정 */
+}
 
+li, label, input, tr, th, td {
+    font-size: 14px;
+}
 
+.content {
+    padding: 20px 0;
+}
 .content h3{
 	padding: 25px 0 35px;
 }
@@ -26,7 +35,7 @@
 
 
 .navList {
-	
+	    width: 800px;
 	display: flex;
     justify-content: space-around; /* 네비게이션 항목들 사이에 공간을 균등하게 배치 */
     gap: 10px; /* 네비게이션 항목들 간의 간격 */
@@ -151,6 +160,7 @@
 .productWrapper .nav .navItem {
     color: #666;
     font-weight: bold;
+    height: 40px;
 }
 
 .productWrapper .nav .navItem.is-active {
@@ -173,7 +183,8 @@
 }
 
 .prdContents p, .prdContents td, .prdContents tr{
-	font-size: 14px;
+	font-size: 15px;
+	line-height: 2;
 }
 
 .prdCastBtn{
@@ -184,9 +195,18 @@
 	width:17px;
 	margin-right: 5px;
 }
+.prdCast {
+	margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
 
 .productWrapper .detail .casting .castingTop {
        position: relative
+
+}
+.productWrapper .detail .casting .castingInfo {
+       text-align:center;
 
 }
 .castingList{
@@ -220,12 +240,11 @@ img.castingImage{
 
 .filterLabel {
     display: inline-block;
-    min-width: 7rem;
+    min-width: 5rem;
     height: 3rem;
-    margin-right: 1rem;
     line-height: 2.6rem;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 1rem;
     border: 0.1rem solid #dbdbdb;
     border-radius: 1rem;
     box-sizing: border-box;
@@ -251,28 +270,238 @@ img.castingImage{
     border-color: #333;
     background-color: #333;
 }
-
+.prdContents.castingDetail .content {
+	padding-top:50px;
+}
+.prdContents.castingDetail .content .castingDetailTable{
+	width:100%;
+}
+.prdContents.castingDetail .content .castingDetailGuideText{
+	color: #666;
+	margin-bottom: 10px;
+}
 .productWrapper .prdContents {
     padding-top: 10px;
     padding-bottom: 50px;
 }
+.castingDetailFilter {
+	display: flex;
+    flex-direction: column;
+    padding: 50px 0;
+}
+.castingDetailFilter .filterItem{
+	display: flex;
+    align-items: center;
+        padding: 20px 0;
+}
+.castingDetailFilter .filterItem .filterSearchBtn{
+	width: 50px;
+    display: inline-block;
+    padding: 10px;
+    text-align: center;
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+.productWrapper .castingDetail .castingDetailFilter .filterTitle {
+    display: inline-block;
+    width: 150px;
+    padding: 0 1rem;
+    font-size: 17px;
+    font-weight: bold;
+}
+.productWrapper .castingDetail .castingDetailFilter .filterContent {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.productWrapper .filterDateWrap {
+	display: flex;
+    gap: 20px;
+}
+.filterContent .filterDateWrap .filterDate input{
+	    width: 205px;
+	    height:30px;
+	    padding: 0 10px;
+}
+.productWrapper .castingDetail .castingDetailTable tr {
+    border-bottom: 0.1rem solid #dfe5ed;
+}
+.productWrapper .castingDetail .castingDetailTable th {
+    position: relative;
+    padding: 1.2rem 0;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: normal;
+    color: #666;
+    white-space: normal;
+    line-height: 130%;
+    background-color: #f4f6f9;
+    border-top: 0.1rem solid #b6bdc7;
+}
+.productWrapper .castingDetail .castingDetailTable tr th span {
+    font-size: 17px;
+    font-weight:bold;
+}
+.productWrapper .castingDetail .castingDetailTable td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    padding: 0 0.5rem;
+    line-height: 4.6rem;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    white-space: normal;
+    word-break: keep-all;
+    height: 4.6rem;
+}
+.productWrapper .castingDetail .castingDetailTable td:after {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: block;
+    transform: translateY(-50%);
+    width: 0.1rem;
+    height: 1.5rem;
+    background-color: #dfe5ed;
+    content: '';
+}
+.productWrapper .castingDetail .castingDetailTable td:after {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    display: block;
+    transform: translateY(-50%);
+    width: 0.1rem;
+    height: 1.5rem;
+    background-color: #dfe5ed;
+    content: '';
+}
+.productWrapper .castingDetail .castingDetailTable td:last-child:after {
+    content: none;
+}
+.productWrapper .castingDetail .castingDetailTable tr td {
+    border-bottom: 0.1rem solid #dfe5ed;
+}
+.productWrapper .castingDetail .castingDetailFilter .filterItem {
+    border-top: 0.1rem solid #dfe5ed;
+}
 
+/* 판매 정보 */
+.productWrapper .prdContents .moreInfoContainer {
+    padding-top: 30px;
+}
+.productWrapper .prdContents .moreInfoContainer h4 {
+    padding: 20px 0;
+    font-size: 18px;
+}
+
+.productWrapper .moreInfoTable th {
+    padding: 1rem 1.3rem;
+    color: #666;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left;
+    background-color: #f4f6f9;
+        text-align: center;
+}
+.productWrapper .castingDetail .castingDetailTable th span:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 0.1rem;
+    height: 1.5rem;
+    background-color: #dfe5ed;
+}
+.productWrapper .castingDetail .castingDetailTable th:last-child span:after {
+    content: none;
+}
+.productWrapper .moreInfoTable .col1,
+.productWrapper .moreInfoTable .col3 {
+  width: 15rem;
+}
+
+.productWrapper .moreInfoTable .col2,
+.productWrapper .moreInfoTable .col4 {
+  width: 30rem;
+}
+.productWrapper .moreInfoContainer + .moreInfoContainer {
+    margin-top: 20px;
+}
+.productWrapper .moreInfoContainer h3 {
+    padding-bottom: 30px;
+    font-size: 18px;
+}
+.productWrapper .moreInfoTable td {
+    padding: 1rem 1.5rem;
+    line-height: 2rem;
+}
+.productWrapper .moreInfoTable td table {
+    width:100%;
+}
+.productWrapper .moreInfoTable td span {
+    font-size:15px;
+}
+.productWrapper .moreInfoTable tr:first-child {
+    border-top: 0.1rem solid #dfe5ed;
+}
+.productWrapper .moreInfoTable tr {
+    border-bottom: 0.1rem solid #dfe5ed;
+}
+.productWrapper .moreInfoTable .cancleGuide th {
+    padding: 0.6rem 1.2rem;
+    text-align: center;
+    font-size: 96%;
+    border-right: 0.1rem solid #dfe5ed;
+}
+.productWrapper .moreInfoTable .cancleGuide th:last-child, .productWrapper .moreInfoTable .cancleGuide td:last-child {
+    border-right: 0;
+}
+.productWrapper .moreInfoTable .cancleGuide td {
+    padding: 0.4rem 0.8rem;
+    text-align: left;
+    font-size: 94%;
+    border-right: 0.1rem solid #dfe5ed;
+}
+.productWrapper .moreInfoTable .cancleGuide th:last-child, .productWrapper .moreInfoTable .cancleGuide td:last-child {
+    border-right: 0;
+}
+
+.productWrapper .escrowGuide {
+    margin-top: 4rem;
+    padding: 1rem;
+    color: #666;
+    border-top: 0.1rem solid #dfe5ed;
+    border-bottom: 0.1rem solid #dfe5ed;
+}
+.productWrapper .escrowGuide .escrowText {
+    margin-top: 1rem;
+    font-size: 14px;
+}
 /* 후기 */
 .bbsNotice{
 	
 	margin-bottom: 3rem;
 }
 .prdBbs{
-	padding-top : 30px;
+	padding-top : 50px;
 }
 
 .bbsNoticeHead{
 	font-weight : bold;
-	margin-bottom : 10px;	
+	margin-bottom : 30px;	
+	font-size: 18px;
 }
 
 .bbsNotice .bbsNoticeText {
-    line-height: 1.5rem;
+    font-size: 14px;
 }
 
 .bbsListHead{
@@ -285,4 +514,14 @@ padding-bottom: 1rem;
 .bbsItem{
 	border: 1px solid black;
 	margin-top: 20px;
+}
+
+.bbsInfo .reviewStarTotal {
+	display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.bbsListWrap.reviewAll {
+	padding-top: 30px;
 }
