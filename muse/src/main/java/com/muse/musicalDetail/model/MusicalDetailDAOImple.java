@@ -1,5 +1,6 @@
 package com.muse.musicalDetail.model;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,8 +84,35 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 		return sqlMap.delete("deleteLikeActor",params);
 	}
 	
-
+	@Override
+	public List<Date> getScreenDay(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getScreenDay",m_code);
+	}
 	
+	@Override
+	public List<String> getStartTime(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getStartTime",m_code);
+	}
+	
+	@Override
+	public List<String> getAllChar(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getAllChar",m_code);
+	}
+
+	@Override
+	public List<MusicalDetailCastDTO> getRoundActor(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getRoundActor",paramMap);
+	}
+	
+	@Override
+	public List<Date> getRoundDOW(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getRoundDOW",paramMap);
+	}
 	
 
 }
