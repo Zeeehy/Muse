@@ -64,7 +64,8 @@
     </button>
     <div class="dropdown-container">
       <a href="#">연장 신청</a>
-      <a href="castAddForm.do">캐스팅 신청</a>
+      <a href="musicalSeatAddForm.do">시트 등록</a>
+      <a href="castAddForm.do">캐스팅 등록</a>
       <a href="#">커뮤니티</a>
     </div>
 

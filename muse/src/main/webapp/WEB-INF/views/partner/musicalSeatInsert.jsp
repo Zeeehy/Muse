@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <style>
 
@@ -138,6 +139,8 @@ var jfloor = ${floor};
 // 모든 좌석 ver json
 var seatList = ${seatList};
 
+
+var seatGradeList = ${seatGradeList};
 console.log(seatList);
 
 // 한 층의 최대 행을 가져와 뿌리기 위함 ex)12 => 1~12
@@ -155,6 +158,11 @@ var floorGroupDiv = new Map();
 
 // seatList를 층별 섹션별로 관리하기 위함
 var floorSeatMap = new Map();
+
+var dummyFloorMap = new Map();
+
+var selectedSeats = [];
+
 
 
 document.addEventListener("DOMContentLoaded",()=>{
@@ -298,7 +306,7 @@ function setSeats(section_div,rowLayout){
 			// 현재는 seat의 position만 활용하였기때문에, 중복되는 id 발생 
 			// => ex) 층 섹션 행 열 을 활용하여 id 설정하면 좋을 듯
 			//seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(index+1)+'</p></div>';
-			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(seatNum)+'</p></div>';
+			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"data-floor='+rowLayout.sl_floor+' data-section='+rowLayout.sl_section+' data-row='+rowLayout.sl_row+' data-seatNum='+seatNum+'><p>'+(seatNum)+'</p></div>';
 			//seat_div.innerHTML = '<div class="seat"><p>'+(rowLayout.sl_code)+'</p></div>';
 			
 			
@@ -306,7 +314,7 @@ function setSeats(section_div,rowLayout){
 			
 			// 모든 좌석에 click 이벤트 활용하는 예시
 			seat_div.addEventListener("click",function(event){
-				testClick(rowLayout,event);
+				testClick(rowLayout,event,seatNum);
 			});
 			
 			
@@ -344,11 +352,7 @@ function setSeats(section_div,rowLayout){
 			                    // 행, 열 확인
 			                        // class 부여 => 색 표시
 			                        alert(seatNum + ' : ' + real_seat.s_position);
-			                        
-			                        
 			                        seat_div.classList.add('VIP');
-			                        
-			                    
 			                });
 			            }
 			        }
@@ -375,11 +379,23 @@ function setSeats(section_div,rowLayout){
 }
 
 // 특정 좌석 정보를 출력하는 예시
-function testClick(rowLayout, event) {
+function testClick(rowLayout, event,seatNum) {
     // 클릭된 요소에서 가장 가까운 .seat 클래스를 가진 부모 요소 찾기
     // 이벤트 버블링 때문에
     const seatDiv = event.target.closest('.seat');
+   
+    const selectedColorElement =document.querySelector('input[name="selectGrade"]:checked');
     
+	const tdElement = selectedColorElement.parentElement;//선택된 색의 td값
+    
+    
+    const trElement = tdElement.closest('tr'); // td의 부모 tr 찾기
+    const gradeColorDiv = trElement.querySelector('#GradeColor'); //tr의 자식요소 중 div
+    
+    console.log('여기');
+    console.log(gradeColorDiv);
+    
+    const currentBackgroundColor = gradeColorDiv.style.backgroundColor; //div의 배경색
 	var str = '';
     // rowLayout 객체의 모든 키와 값을 출력
     Object.entries(rowLayout).forEach(([key, value]) => {
@@ -389,14 +405,81 @@ function testClick(rowLayout, event) {
     });
 	
     if (seatDiv && seatDiv.id) {
-        console.log('클릭된 요소 ID:', seatDiv.id);
-        alert(str+'클릭된 요소 ID: ' + seatDiv.id);
+        //console.log('클릭된 요소 ID:', seatDiv.id);
+       // alert(str+'클릭된 요소 ID: ' + seatDiv.id);
     } else {
         console.log('클릭된 요소에 ID가 없습니다.');
     }
 
+    seatDiv.style.backgroundColor = currentBackgroundColor; // 선택된 색상으로 변경
+    
+    seatDiv.classList.add(trElement.id);
+    
+    console.log(seatDiv.classList+"전에 찍은거!!!!!!!!!!!!!!!");
+    console.log(trElement.id+"te엘리멘트"); //좌석 등급 알려주는거 
+    
+//  dummyPositionMap.get(seatNum).push([, 'm_1', mhl_code, section, seatNum, row, floor]);
+	
+	
+	//좌석등급, 뮤지컬idx, 뮤지컬홀idx,행 정보, 세션 정보, 행 정보
+	
+	seatDiv.className='';//시트 초기화
+	seatDiv.classList.add('seat');//기존 시트 추가(시트인지 알아보기 위함)
+	seatDiv.classList.add(trElement.id);//좌석 이름
+	seatDiv.classList.add(seatDiv.dataset.row); //몇열인지
+	seatDiv.classList.add('select'); //등급이 추가된적 있는지
+	console.log(seatDiv.classList+"@@@@@@@@@@@@@@@@@@@@@@");
+	//seatDiv =>  클래스 제거, seat클래스 추가, grade 추가,  tr.id
+	 var selectRow = document.querySelectorAll('.select');
+	 
+/* 	  var arr =  [];
+	 	arr.push(seatDiv);
+	 	seats.forEach(function(seat){
+	 	seat.classList
+	}); */
+	
+
+	
+    //selectedSeats.push([trElement.id,'m_1','mhl_1',rowLayout.sl_section,seatDiv.textContent,rowLayout.sl_row,rowLayout.sl_floor]);
+	
+	//console.log(selectedSeats+"@@@@@@@@@@@@@@@@@#@#@#");
+    
 }
 
+function makeDummy(){
+	var lists = document.querySelectorAll('.select');
+	lists.forEach(function(list){
+		var data=list.dataset;
+		console.log(list.classList+"!!!!!!!!!!!!!!!!!!!!");
+		  var lastClass = list.classList[list.classList.length - 3];
+	       //등급 코드, 뮤지컬 코드,뮤지컬 홀 레이아웃, 섹션,왼쪽 몇번째에서 시작하는지, 열번호, 층번호
+	     selectedSeats.push([lastClass, 'm_1', '1', data.section, list.textContent, data.row, data.floor]);
+		
+	});
+	
+	fetch('insertSeat.do', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=UTF-8',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({seats : selectedSeats})
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('서버 응답:', data);
+    })
+    .catch(error => {
+        console.error('오류 발생:', error);
+    });
+	
+	console.log(selectedSeats);
+}
 
 // 구역과 구역 사이의 기다란 숫자 근데 신경안써도 됨
 function makeRowNum(floorSectionDiv,floor){
@@ -411,7 +494,6 @@ function makeRowNum(floorSectionDiv,floor){
 	}
 	
 	floorSectionDiv.appendChild(rowNumDiv);
-
 }
 
 
@@ -453,6 +535,8 @@ function makeSeatListToMap() {
 
 
 
+
+
 </script>
 </head>
 <body>
@@ -463,6 +547,7 @@ function makeSeatListToMap() {
 		
 	</div>
 </div>
+
 
 </body>
 </html>

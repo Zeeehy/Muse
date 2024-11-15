@@ -82,4 +82,25 @@ m_code = #{m_code}),
 <select id="selectMusicalHallList"  resultType="com.muse.partner.model.MusicalHallDTO">
 	select * from musical_Hall
 </select>
+
+<select id="selectSeatGradeList" resultType="com.muse.partner.model.SeatGradeDTO">
+	select * from seat_grade
+</select>
+
+<insert id="SelectSeatList" parameterType="com.muse.seat.model.SeatDTO">
+    INSERT INTO SEAT (
+            S_CODE, SG_CODE, M_CODE, MHL_CODE, 
+            S_SECTION, S_POSITION, S_ROW, S_FLOOR
+        ) 
+        VALUES (
+            seat_s_code.nextval,
+            #{sg_code},
+            #{m_code},
+            #{mhl_code},
+            #{s_section},
+            #{s_position},
+            #{s_row},
+            #{s_floor}
+        )
+	</insert>
   </mapper>

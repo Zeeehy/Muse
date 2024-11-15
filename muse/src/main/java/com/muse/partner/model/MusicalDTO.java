@@ -12,10 +12,10 @@ public class MusicalDTO {
 	private String m_endDate;
 	private int m_time;
 	private int m_inTime;
-	private int m_maxTicet;
+	private int m_maxTicket;
 	private String m_age;
 	private String m_openDate;
-	private int m_openTime;
+	private String m_openTime;
 	private String m_notice;
 	private String m_poster;
 	private String m_detailImg;
@@ -33,7 +33,7 @@ public class MusicalDTO {
 	
 	
 	public MusicalDTO(String m_code, String mh_code, String pr_code, String m_title, String m_startDate,
-			String m_endDate, int m_time, int m_inTime, int m_maxTicet, String m_age, String m_openDate, int m_openTime,
+			String m_endDate, int m_time, int m_inTime, int m_maxTicket, String m_age, String m_openDate, String m_openTime,
 			String m_notice, String m_poster, String m_detailImg, int m_calender, int m_single, int m_viewState,
 			int m_ref) {
 		super();
@@ -45,7 +45,7 @@ public class MusicalDTO {
 		this.m_endDate = m_endDate;
 		this.m_time = m_time;
 		this.m_inTime = m_inTime;
-		this.m_maxTicet = m_maxTicet;
+		this.m_maxTicket = m_maxTicket;
 		this.m_age = m_age;
 		this.m_openDate = m_openDate;
 		this.m_openTime = m_openTime;
@@ -111,11 +111,11 @@ public class MusicalDTO {
 	public void setM_inTime(int m_inTime) {
 		this.m_inTime = m_inTime;
 	}
-	public int getM_maxTicet() {
-		return m_maxTicet;
+	public int getm_maxTicket() {
+		return m_maxTicket;
 	}
-	public void setM_maxTicet(int m_maxTicet) {
-		this.m_maxTicet = m_maxTicet;
+	public void setm_maxTicket(int m_maxTicket) {
+		this.m_maxTicket = m_maxTicket;
 	}
 	public String getM_age() {
 		return m_age;
@@ -129,10 +129,10 @@ public class MusicalDTO {
 	public void setM_openDate(String m_openDate) {
 		this.m_openDate = m_openDate;
 	}
-	public int getM_openTime() {
+	public String getM_openTime() {
 		return m_openTime;
 	}
-	public void setM_openTime(int m_openTime) {
+	public void setM_openTime(String m_openTime) {
 		this.m_openTime = m_openTime;
 	}
 	public String getM_notice() {
