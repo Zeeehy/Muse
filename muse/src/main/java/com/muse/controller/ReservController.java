@@ -237,5 +237,22 @@ public class ReservController {
 		return "reservation/reservSuccess";
 	}
 	
-	
+	@GetMapping("/getSeatReviewAvg.do")
+	@ResponseBody
+	public double getSeatReviewAvg(
+	        @RequestParam("s_code") String s_code,
+	        @RequestParam("m_code") String m_code) {
+
+	    System.out.println("Received Parameters:");
+	    System.out.println("s_code: "+s_code);
+	    System.out.println("m_code: " + m_code);
+	    
+	    
+	    Double avg = reservDAO.getMusicalSeatByHall(s_code, m_code);
+	    System.out.println(avg);
+	    // 평균 평점 계산
+	    //return reservDAO.getMusicalSeatByHall(s_section, Integer.parseInt(s_row), Integer.parseInt(s_floor), Integer.parseInt(s_position), mh_code);
+	    return avg;
+	}
+
 }

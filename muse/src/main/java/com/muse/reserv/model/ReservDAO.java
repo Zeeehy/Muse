@@ -31,5 +31,7 @@ public interface ReservDAO {
     // 예매된 좌석
     List<String> getBookedSeats(Map<String, Object> params);
 
-    
+    // 좌석리뷰
+	double getMusicalSeatByHall(String s_code, String mh_code);
+
 }
