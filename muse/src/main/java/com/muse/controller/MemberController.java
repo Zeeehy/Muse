@@ -57,6 +57,7 @@ public class MemberController {
 			session.setAttribute("s_name", s_info.getU_name());			
 			session.setAttribute("s_mpass", s_info.getU_mpass());
 			session.setAttribute("s_pr_code", s_info.getPr_code());
+			session.setAttribute("s_rs_code", s_info.getRs_code());
 			// 
 			
 			// 세션에서 값 가져오기
@@ -64,11 +65,13 @@ public class MemberController {
 		    // String s_name = (String) session.getAttribute("s_name");
 		    // int s_mpass =  (int) session.getAttribute("s_mpass");		
 		    // String s_prcode = (String) session.getAttribute("s_pr_code");
+		    // int s_rscode =  (int) session.getAttribute("s_rs_code");		
 		    // 세션 값 확인을 위한 로그 출력
 		    // System.out.println("세션에 저장된 ID: " + s_id);
 		    // System.out.println("세션에 저장된 이름: " + s_name);
 		    // System.out.println("세션에 저장된 멤버십여부: " + s_mpass);
 		    // System.out.println("세션에 저장된 파트너여부: " + s_prcode);
+		    // System.out.println("세션에 저장된 파트너 승인여부: " + s_rscode);
 		
 			// 로그인 후 이전 페이지로 리디렉션
 	        String prevPage = (String) session.getAttribute("prevPage");

@@ -10,7 +10,11 @@
     
     <!--  로그인 세션 쿼리 -->
     <select id="loginSession" resultType="com.muse.member.model.MemberDTO">
-        SELECT u.u_id, u.u_name, u.u_mpass, NVL(p.pr_code, 'no') as pr_code
+        SELECT u.u_id, u.u_name, u.u_mpass, NVL(p.pr_code, 'no') as pr_code,
+        			CASE 
+				        WHEN p.pr_code IS NOT NULL THEN p.rs_code
+				        ELSE 4
+				    END as rs_code
 		FROM users u
 		Left OUTER JOIN partner p ON p.u_id = u.u_id
 		WHERE u.u_id = #{u_id}

@@ -14,6 +14,7 @@ public class MemberDTO {
 	private java.sql.Date u_date;
 	private int u_out;
 	private String pr_code;
+	private int rs_code;
 	
 		
 	public MemberDTO() {
@@ -31,7 +32,7 @@ public class MemberDTO {
 	}
 
 	public MemberDTO(String u_id, String u_pwd, String u_name, String u_email, String u_pnum, int u_age, int u_mpass,
-			Date u_date, int u_out,String pr_code) {
+			Date u_date, int u_out, String pr_code, int rs_code) {
 		super();
 		this.u_id = u_id;
 		this.u_pwd = u_pwd;
@@ -43,6 +44,7 @@ public class MemberDTO {
 		this.u_date = u_date;
 		this.u_out = u_out;
 		this.pr_code = pr_code;
+		this.rs_code = rs_code;
 	}
 	
 	
@@ -106,7 +108,12 @@ public class MemberDTO {
 	public void setPr_code(String pr_code) {
 		this.pr_code = pr_code;
 	}
-
+	public int getRs_code() {
+		return rs_code;
+	}
+	public void setRs_code(int rs_code) {
+		this.rs_code = rs_code;
+	}
 	
 }
 
