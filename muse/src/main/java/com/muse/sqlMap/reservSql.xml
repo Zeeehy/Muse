@@ -182,7 +182,7 @@
 	        sg.sg_name
 	</select>
 	
-	<!-- 예매된 좌석 가져오기 -->
+	<!-- 예매된 좌석 가져오기 
 	<select id="getBookedSeats" parameterType="map" resultType="string">
 	    SELECT s.s_code
 	    FROM seat s
@@ -192,5 +192,23 @@
 	    WHERE mo.m_code = #{m_code}
 	    AND mo.mo_date = #{selectedDate}
 	    AND mo.mo_time = #{selectedTime}
+	</select>-->
+	
+	<select id="getMusicalSeatByHall" resultType="Double" parameterType="map">
+	SELECT 
+
+	    ROUND(AVG(sr.sr_score), 1) as avg_score
+	FROM 
+	    musical_hall mh
+	    JOIN MUSICAL M ON mh.mh_code = m.mh_code
+	    JOIN musical_hall_layout mhl ON mh.mh_code = mhl.mh_code
+	    JOIN seat s ON mhl.mhl_code = s.mhl_code
+	    LEFT JOIN booking_detail bd ON s.s_code = bd.s_code
+	    LEFT JOIN seat_review sr ON bd.bd_code = sr.bd_code
+	WHERE 
+	    m.m_code = #{m_code}
+	    and s.s_code = #{s_code}
+
 	</select>
+	
 </mapper>

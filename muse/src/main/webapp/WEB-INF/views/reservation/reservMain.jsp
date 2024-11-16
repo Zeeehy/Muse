@@ -519,6 +519,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+ //좌석 클릭 이벤트
+
+// 좌석 리뷰 UI 업데이트 함수
+/* 
+ * 
+ 중복된 함수
+ function updateSeatReview(avgScore, seatInfo) {
+    const reviewDiv = document.querySelector('.seatReview');
+    if (reviewDiv) {
+        reviewDiv.querySelector('p').innerHTML = `
+            선택하신 <b>[${seatInfo.section}석 ${seatInfo.floor}층-${seatInfo.section}블록 ${seatInfo.row}열 ${seatInfo.position}번]</b>
+            좌석의 평균 평점은 (${avgScore.toFixed(1)}) 입니다.
+        `;
+        reviewDiv.style.display = 'block';
+    }
+} */
 </script>
 </body>
 </html>
