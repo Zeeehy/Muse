@@ -28,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
 import com.muse.musicalDetail.model.MusicalDetailDAO;
 import com.muse.musicalDetail.model.MusicalDetailDTO;
+import com.muse.reserv.model.ReservDAO;
+import com.muse.review.model.MusicalReviewDTO;
 
 
 @Controller
@@ -35,6 +37,9 @@ public class MusicalDetailController {
 	
 	@Autowired
 	private MusicalDetailDAO musicalDetaildao;
+	
+	@Autowired
+	private ReservDAO reservDAO;
 	
 	private static final String[] DAY_NAMES = {
 	        "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"
@@ -75,6 +80,7 @@ public class MusicalDetailController {
 		int countReview = musicalDetaildao.countMusicalReview(m_code);
 		double reviewAVG = musicalDetaildao.getMusicalReviewAVG(m_code);
 		
+		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(m_code);
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
@@ -86,6 +92,7 @@ public class MusicalDetailController {
 		mav.addObject("allChar",allChar);
 		mav.addObject("countReview",countReview);
 		mav.addObject("reviewAVG",reviewAVG);
+		mav.addObject("reviews",reviews);
 		
 		mav.setViewName("musicalDetail/musicalDetail");
 		
@@ -255,7 +262,52 @@ public class MusicalDetailController {
 	    return result;
 	}
 	
+	@RequestMapping("/getRounds.do")
+	@ResponseBody  // JSON 응답을 위해 추가
+	public List<String> getRounds(@RequestParam String m_code, 
+	                                           @RequestParam String mo_date) {
+		Map<String, Object> paramMap = new HashMap<>();
+
+	    paramMap.put("mo_date", mo_date);
+	    paramMap.put("m_code", m_code);
+	    System.out.println(mo_date);
+	    System.out.println(m_code);
+        List<String> getRound = musicalDetaildao.getRound(paramMap);
+	    
+	    return getRound;
+	}
 	
+	
+	@RequestMapping("/getSelectedMusicalOption.do")
+	@ResponseBody  // JSON 응답을 위해 추가
+	public Map<String, Object> getSelectedMusicalOption(@RequestParam String m_code, 
+	                                           @RequestParam String mo_date,
+	                                           @RequestParam String mo_time) {
+		Map<String, Object> paramMap = new HashMap<>();
+
+	    paramMap.put("mo_date", mo_date);
+	    paramMap.put("mo_time", mo_time);
+	    paramMap.put("m_code", m_code);
+	    
+
+		List<String> getActors = musicalDetaildao.getSelectedRoundActors(paramMap);
+		System.out.println("gsmo");
+		System.out.println(getActors.size());
+		
+		 Map<String, Object> params = new HashMap<>();
+	     params.put("selectedDate", mo_date);
+	     params.put("selectedTime", mo_time);
+	     params.put("m_code", m_code);
+	    
+	     Map<String,Integer> getRemainseats = reservDAO.getRemainingSeat(params);
+	     System.out.println(reservDAO.getRemainingSeat(params).size());
+	     
+	     Map<String, Object> result = new HashMap<>();
+	     result.put("actors", getActors);
+	     result.put("seats", getRemainseats);
+	    
+	    return result;
+	}
 	
 	
 	
