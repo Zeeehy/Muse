@@ -28,10 +28,10 @@ public class PartnerDAOImple implements PartnerDAO {
 	}
 
 	@Override
-	public List<MusicalDTO> SeachMusicalList(@Param("mh_code") String mh_code,
+	public List<MusicalDTO> SeachMusicalList(@Param("pr_code") String pr_code,
 			@Param("seachMusical") String seachMusical) {
 		List<MusicalDTO> list = sqlMap.selectList("selectMusicalList",
-				Map.of("mh_code", mh_code, "seachMusical", seachMusical));
+				Map.of("pr_code", pr_code, "seachMusical", seachMusical));
 		return list;
 	}
 
@@ -137,6 +137,26 @@ public class PartnerDAOImple implements PartnerDAO {
 	@Override
 	public int partnerInsert(PartnerDTO dto) {
 			int result = sqlMap.insert("partnerInsert",dto);
+		return result;
+	}
+	
+	@Override
+	public List<MusicalReviewDTO> seachReview(String pr_code) {
+		List<MusicalReviewDTO> list = sqlMap.selectList("reviewList",pr_code);
+		return list;
+	}
+	@Override
+	public int seachCode(String idx,String table) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("table", table);
+		params.put("code", idx);
+		int result = sqlMap.selectOne("seachCode",params);
+		return result;
+	}
+	
+	@Override
+	public int InsertServiceRequest(ServiceRequestDTO dto) {
+		int result = sqlMap.insert("insertservRe",dto);
 		return result;
 	}
 	

@@ -3,8 +3,8 @@ package com.muse.partner.model;
 public class ServiceRequestDTO {
 
 	private String sr_code;
-	private String rs_code;
-	private String rt_code;
+	private int rs_code;
+	private int rt_code;
 	private String m_code;
 	private String sr_date;
 	private String sr_etc;
@@ -14,8 +14,8 @@ public class ServiceRequestDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ServiceRequestDTO(String sr_code, String rs_code, String rt_code, String m_code, String sr_date,
-			String sr_etc, String sr_reason) {
+	public ServiceRequestDTO(String sr_code, int rs_code, int rt_code, String m_code, String sr_date, String sr_etc,
+			String sr_reason) {
 		super();
 		this.sr_code = sr_code;
 		this.rs_code = rs_code;
@@ -34,19 +34,19 @@ public class ServiceRequestDTO {
 		this.sr_code = sr_code;
 	}
 
-	public String getRs_code() {
+	public int getRs_code() {
 		return rs_code;
 	}
 
-	public void setRs_code(String rs_code) {
+	public void setRs_code(int rs_code) {
 		this.rs_code = rs_code;
 	}
 
-	public String getRt_code() {
+	public int getRt_code() {
 		return rt_code;
 	}
 
-	public void setRt_code(String rt_code) {
+	public void setRt_code(int rt_code) {
 		this.rt_code = rt_code;
 	}
 
@@ -81,6 +81,7 @@ public class ServiceRequestDTO {
 	public void setSr_reason(String sr_reason) {
 		this.sr_reason = sr_reason;
 	}
+
 	
 	
 }

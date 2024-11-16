@@ -8,7 +8,7 @@ public interface PartnerDAO {
 
 	public List<ActorDTO> SeachActorList(String ma_name);//actor팝업 배우검색
 	
-	public List<MusicalDTO> SeachMusicalList(String mh_code,String seachMusical);
+	public List<MusicalDTO> SeachMusicalList(String pr_code,String seachMusical);
 	
 	public MusicalDTO getMusicalDateSelect(String m_code);
 	
@@ -34,6 +34,9 @@ public interface PartnerDAO {
 	
 	public int partnerInsert(PartnerDTO dto);
 	
+	public List<MusicalReviewDTO> seachReview(String pr_code);
 	
+	public int seachCode(String idx,String table);
 	
+	public int InsertServiceRequest(ServiceRequestDTO dto);
 }

@@ -3,6 +3,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!-- 검색 아이콘 -->
 <style>
 /* 팝업 스타일 */
 .musicalNamePopup {
@@ -85,12 +88,14 @@
 
 function SeachMusicalName(){
 	//파트너 연동하면 파트너idx값 쏴줘야함
-	var param = 'mh_code=mh_1';
-	var mh_code;
+	var param = 'pr_code=${s_pr_code}'; // JSP의 EL(${s_pr_code})로 값이 치환될 것을 가정
 	var searchInputMusicalName = document.getElementById("searchInputMusicalName").value;
-	if(searchInputMusicalName!==null){
-		param= 'mh_code=mh_1&seachMusical='+searchInputMusicalName;
-	}
+
+// 입력값이 null이 아닌 경우에만 param 수정
+if (searchInputMusicalName) {
+    param = param + '&searchMusical=' + encodeURIComponent(searchInputMusicalName);
+}
+
 
 		var searchInputMusicalName = sendRequest('getMusicalList.do',param,ResultSeachMusicalName,'GET');
 }
