@@ -26,4 +26,6 @@ public interface MusicalDetailDAO {
 	public int countMusicalReview(String m_code);
 	public double getMusicalReviewAVG(String m_code);
 	public List<MusicalReviewDTO> getMusicalReviews(String m_code);
+	public List<String> getSelectedRoundActors(Map paramMap);
+	public List<String> getRound(Map paramMap);
 }

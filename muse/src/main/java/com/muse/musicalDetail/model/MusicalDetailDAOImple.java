@@ -123,14 +123,26 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 	
 	@Override
 	public double getMusicalReviewAVG(String m_code) {
-		
-		return sqlMap.selectOne("getMusicalReviewAVG",m_code);
+		Double result = sqlMap.selectOne("getMusicalReviewAVG",m_code);
+	    return (result != null) ? result : 0.0;
 	}
 	
 	@Override
 	public List<MusicalReviewDTO> getMusicalReviews(String m_code) {
 		// TODO Auto-generated method stub
 		return sqlMap.selectList("getMusicalReviews",m_code);
+	}
+	
+	@Override
+	public List<String> getRound(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getRound",paramMap);
+	}
+	
+	@Override
+	public List<String> getSelectedRoundActors(Map paramMap) {
+		
+		return sqlMap.selectList("getSelectedRoundActors",paramMap);
 	}
 
 }
