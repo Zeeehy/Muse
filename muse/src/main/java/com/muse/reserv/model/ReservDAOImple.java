@@ -161,5 +161,16 @@ public class ReservDAOImple implements ReservDAO {
 		public List<String> getBookedSeats(Map<String, Object> params) {
 		    return sqlMap.selectList("getBookedSeats", params);
 		}
+		
+		@Override
+		public double getMusicalSeatByHall(String s_code, String m_code) {
+			Map<String,Object> map = new HashMap<>();
+			map.put("s_code", s_code);
+			map.put("m_code", m_code);
+			
+			Double avg = sqlMap.selectOne("getMusicalSeatByHall",map);
+			System.out.println("nullCheck"+avg);
+			return avg==null?0.0:avg;
+		}
 
 }

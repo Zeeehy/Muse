@@ -433,7 +433,7 @@ function testClick(rowLayout, event) {
     }
 
     const seatInfo = {
-        id: seatElement.id,
+        id: seatElement.parentElement.id,
         grade: grade,
         floor: rowLayout.sl_floor,
         section: rowLayout.sl_section,
@@ -468,15 +468,33 @@ function testClick(rowLayout, event) {
 
         selectedSeats.add(seatInfo);
         seatElement.classList.add('selected');
+        
+        const s_code = seatInfo.id;
+        
+        console.log('#############');
+        console.log('#############');
+        
+        const params = 's_code='+s_code+'&m_code=${m_code}';
+        alert(params);
+        sendRequest('getSeatReviewAvg.do', params, function() {
+            if (XHR.readyState === 4 && XHR.status === 200) {
+            	alert('컨트롤러 통과완료');
+                const avgScore = parseFloat(XHR.responseText);
+                alert(avgScore);
+                
+                if (seatReviewDiv) {
+                    seatReviewDiv.querySelector('p').innerHTML = 
+                        //`선택하신 <b> [${grade}] 석 ${seatInfo.section} 구역 ${seatInfo.row} 열 ${seatInfo.number} 좌석의 평균은 (5.0) 입니다.</b>`;
+                    	'선택하신 <b> ['+grade+'] 석 '+seatInfo.section+' 구역 '+seatInfo.row+' 열 '+seatInfo.number+' 좌석의 평균은 ('+avgScore+') 입니다.</b>';
+                    seatReviewDiv.style.display = 'block';
+                    currentReviewSeat = seatElement;
+                }
+                updateSeatReview(avgScore, seatInfo);
+            }
+        }, 'GET');
 
         // 리뷰 정보 업데이트
-        if (seatReviewDiv) {
-            seatReviewDiv.querySelector('p').innerHTML = 
-                //`선택하신 <b> [${grade}] 석 ${seatInfo.section} 구역 ${seatInfo.row} 열 ${seatInfo.number} 좌석의 평균은 (5.0) 입니다.</b>`;
-            	'선택하신 <b> ['+grade+'] 석 '+seatInfo.section+' 구역 '+seatInfo.row+' 열 '+seatInfo.number+' 좌석의 평균은 (5.0) 입니다.</b>';
-            seatReviewDiv.style.display = 'block';
-            currentReviewSeat = seatElement;
-        }
+
     }
 
     // 선택 좌석 목록 업데이트
