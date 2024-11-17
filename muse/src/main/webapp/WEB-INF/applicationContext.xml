@@ -23,6 +23,9 @@
 	<bean id="memberDao" class="com.muse.member.model.MemberDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="mainDao" class="com.muse.main.model.MainDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<bean id="partnerDao" class="com.muse.partner.model.PartnerDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
@@ -41,7 +44,18 @@
 	<bean id="seatLayoutDao" class="com.muse.seat.model.SeatLayoutDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
-	
+	<bean id="museCastDao" class="com.muse.myPage.model.MuseCastDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="reservDao" class="com.muse.reserv.model.ReservDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="musicalDetailDao" class="com.muse.musicalDetail.model.MusicalDetailDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
+	<bean id="bookingDetailDao" class="com.muse.myPage.model.MyBookingDetailDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

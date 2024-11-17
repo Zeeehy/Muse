@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muse.main.mapper.MainMapper">
+    
+	    <!-- 메인 배너 부분 -->
+	    <select id="main_banner" resultType="com.muse.main.model.MusicalDTO">
+			SELECT b.m_code, m.m_poster, m.m_title, mh.mh_name, m.m_startdate, m.m_enddate
+			FROM banner b JOIN musical m ON b.m_code = m.m_code
+			JOIN musical_hall mh ON m.mh_code = mh.mh_code
+	    </select>
+	    
+	    <!-- 메인 티켓 오픈 부분 -->
+	   <select id="main_ticketopen" resultType="com.muse.main.model.TicketOpenDTO">
+		    SELECT *
+		    FROM (
+		        SELECT m.m_poster, m.m_title, openn.on_open, openn.on_muse_open, openn.on_type, openn.on_code
+		        FROM musical m
+		        JOIN open_notice openn ON m.m_code = openn.m_code
+		        WHERE <![CDATA[TO_DATE(openn.on_open, 'YYYY-MM-DD HH24:MI:SS') >= SYSDATE ]]> and m.m_viewstate = 1
+		        ORDER BY openn.on_open ASC, m.m_title ASC 
+		    	)
+		    WHERE <![CDATA[ ROWNUM <= 10]]>
+		</select>
+	    
+	    <!-- 메인 베스트 리뷰 부분-->
+	     <select id="main_bestreview" resultType="com.muse.main.model.BestReviewDTO">
+			SELECT *
+			FROM (
+			    SELECT m.m_poster, m.m_title, mr.mr_title, mr.mr_content, mr.mr_score, u.u_id, m.m_code,
+        					ROW_NUMBER() OVER (PARTITION BY m.m_title ORDER BY DBMS_RANDOM.VALUE) AS rn
+			    FROM musical m
+			    JOIN musical_option mo ON m.m_code = mo.m_code
+			    JOIN booking b ON mo.mo_code = b.mo_code
+			    JOIN users u ON u.u_id = b.u_id
+			    JOIN musical_review mr ON b.b_code = mr.b_code
+			    WHERE mr.mr_state = 1
+			)
+			WHERE rn = 1 AND <![CDATA[ ROWNUM <= 4]]>
+	    </select>
+	    
+	    <!-- 메인 뮤지컬 리스트 부분  -->
+		<select id="main_musicallist" resultType="com.muse.main.model.MusicalDTO">
+			  SELECT *
+		      FROM (
+		        SELECT m.m_code, m.m_poster, m.m_title, mh.mh_name, m.m_startdate, m.m_enddate,
+		               ROWNUM AS rn
+		        FROM musical m 
+		        JOIN musical_hall mh ON m.mh_code = mh.mh_code
+		        WHERE m.m_viewstate = 1
+		        ORDER BY m.m_startdate ASC
+		      )
+		      WHERE rn BETWEEN #{offset} AND #{limit}
+	    </select>
+	
+</mapper>

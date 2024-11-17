@@ -7,14 +7,14 @@
 		SELECT *
 		FROM musical_hall_layout hl
 		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
-		where sl_bind=2 AND MHL_CODE = 2
+		where <!-- sl_bind=2 AND --> MHL_CODE = 1
 	</select>
 	
 	<select id="sectionSelect" resultType="java.lang.String">
 		SELECT distinct sl_section
 		FROM musical_hall_layout hl
 		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
-		where sl_bind=2 AND MHL_CODE = 2
+		where <!-- sl_bind=2 AND --> MHL_CODE = 1
 		
 	</select>
 	
@@ -22,7 +22,7 @@
 		SELECT distinct sl_floor
 		FROM musical_hall_layout hl
 		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
-		where sl_bind=2 AND MHL_CODE = 2
+		where <!-- sl_bind=2 AND --> MHL_CODE = 1
 	</select>
 	
 	<resultMap id="MaxRowResultMap" type="java.util.HashMap">
@@ -36,7 +36,7 @@
 	    FROM seat_layout sl, MUSICAL_HALL_LAYOUT mhl
 	    WHERE 
             sl.lt_code = mhl.mhl_code and
-        MHL_CODE = 2
+        MHL_CODE = 1
 	    GROUP BY sl_floor
 	    ORDER BY sl_floor
 	</select>
@@ -44,6 +44,24 @@
 	<select id="getRealSeat" resultType="com.muse.seat.model.SeatDTO">
 		select *
 		from seat
-		where m_code = 'M_2'
+		where m_code = 'm_2'
 	</select>
+	
+	<!-- batch insert -->
+	<insert id="insertSeatList" parameterType="com.muse.seat.model.SeatDTO">
+    INSERT INTO SEAT (
+            S_CODE, SG_CODE, M_CODE, MHL_CODE, 
+            S_SECTION, S_POSITION, S_ROW, S_FLOOR
+        ) 
+        VALUES (
+            seat_s_code.nextval,
+            #{sg_code},
+            #{m_code},
+            #{mhl_code},
+            #{s_section},
+            #{s_position},
+            #{s_row},
+            #{s_floor}
+        )
+	</insert>
   </mapper>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muse.reserv.mapper.ReservMapper">
+	<!-- 뮤지컬 이름 및 장소 가져오기 -->
+	<select id="getMusicalInfo" resultType="java.util.Map">
+		SELECT m.m_title AS m_title, mh.mh_name AS mh_name
+	    FROM musical m
+	    JOIN musical_hall mh ON m.mh_code = mh.mh_code
+	    WHERE m.mh_code = #{mh_code}
+	</select>
+	<!-- 날짜 가져오기 -->
+	<select id="getMusicalDate" resultType="java.lang.String">
+		SELECT mo_date_with_day
+		FROM (
+		    SELECT DISTINCT TO_CHAR(mo.mo_date, 'YYYY-MM-DD (DY)', 'NLS_DATE_LANGUAGE=KOREAN') AS mo_date_with_day
+		    FROM musical m
+		    JOIN musical_option mo ON m.m_code = mo.m_code
+		    WHERE m.m_code = #{m_code}
+		)
+		ORDER BY mo_date_with_day
+	</select>
+	<!-- 날짜에 해당되는 시간 가져오기 -->
+	<select id="getMusicalTimeByDate" parameterType="map" resultType="java.lang.String">
+	    SELECT DISTINCT mo_time AS Time
+	    FROM musical_option
+	    WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD')
+	    ORDER BY mo_time ASC
+	</select>
+	<!-- 공연별 최대 매수 가져오기(파라미터) -->
+	<select id="getMusicalMaxTicket" parameterType="String" resultType="int">
+	    SELECT m_maxticket
+	    FROM musical
+	    WHERE m_code = #{m_code}
+	</select>
+	<!-- 좌석등급 가져오기 -->
+	<select id="getMusicalSeatList" resultType="map">
+	    SELECT s.*, sg.sg_name 
+	    FROM seat s 
+	    JOIN seat_grade sg ON s.sg_code = sg.sg_code 
+	    ORDER BY sg.sg_name DESC
+	</select>
+	
+	<!-- 좌석 -->
+	<select id="seatLayoutSelectReserv" resultType="com.muse.seat.model.SeatLayoutDTO" parameterType="map">
+		SELECT *
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=#{sl_bind} AND MHL_CODE = #{mhl_code}
+		order by sl_code
+	</select>
+	<!-- 전체좌석에서 예매가능(1)/예매불가능(0) 좌석 가져오기 -->
+	
+	<select id="getRealSeatReserv" parameterType="map" resultType="com.muse.seat.model.SeatDTO">
+		   SELECT * FROM (
+		       SELECT s.*, 
+		              CASE 
+		                  WHEN reserved_seats.s_code IS NOT NULL THEN '0' 
+		                  ELSE '1' 
+		              END AS reservation_status
+		       FROM seat s
+		       LEFT JOIN (
+		           SELECT DISTINCT s.s_code
+		           FROM seat s
+		           JOIN booking_detail bd ON s.s_code = bd.s_code
+		           JOIN booking b ON bd.b_code = b.b_code
+		           JOIN musical_option mo ON b.mo_code = mo.mo_code
+		           WHERE mo.m_code = #{m_code}
+		           <if test="selectedDate != null and selectedDate != '' and selectedTime != null and selectedTime != ''">
+		               AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
+		               AND mo.mo_time = #{selectedTime}
+		           </if>
+		       ) reserved_seats ON s.s_code = reserved_seats.s_code
+		   ) sub_query
+		   ORDER BY s_code
+	</select>
+	
+	<select id="getRealSeatOnlyReserv" parameterType="map" resultType="com.muse.seat.model.SeatDTO">
+		   SELECT * FROM (
+		       SELECT s.*, 
+		              CASE 
+		                  WHEN reserved_seats.s_code IS NOT NULL THEN '0' 
+		                  ELSE '1' 
+		              END AS reservation_status
+		       FROM seat s
+		       LEFT JOIN (
+		           SELECT DISTINCT s.s_code
+		           FROM seat s
+		           JOIN booking_detail bd ON s.s_code = bd.s_code
+		           JOIN booking b ON bd.b_code = b.b_code
+		           JOIN musical_option mo ON b.mo_code = mo.mo_code
+		           WHERE mo.m_code = #{m_code}
+		           <if test="selectedDate != null and selectedDate != '' and selectedTime != null and selectedTime != ''">
+		               AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
+		               AND mo.mo_time = #{selectedTime}
+		           </if>
+		       ) reserved_seats ON s.s_code = reserved_seats.s_code
+		   ) sub_query
+		   <if test="reserved != null and reserved != ''">
+		       WHERE sub_query.reservation_status = '0'
+		   </if>
+		   ORDER BY s_code
+	</select>
+	
+	<select id="sectionSelectReserv" resultType="java.lang.String" parameterType="map">
+		SELECT distinct sl_section
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=#{sl_bind} AND MHL_CODE = #{mhl_code}
+		
+	</select>
+	
+	<select id="bindByallFloorSelectReserv" resultType="Integer" parameterType="map">
+		SELECT distinct sl_floor
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where sl_bind=#{sl_bind} AND MHL_CODE = #{mhl_code}
+	</select>
+	
+	<resultMap id="MaxRowResultMap" type="java.util.HashMap">
+	    <result property="sl_floor_key" column="sl_floor_key"/>
+	    <result property="max_row" column="max_row"/>
+	</resultMap>
+	
+	<select id="max_rowSelectReserv" resultMap="MaxRowResultMap" parameterType="Integer">
+	      SELECT sl_floor AS sl_floor_key, MAX(sl_row) AS max_row
+	    FROM seat_layout sl, MUSICAL_HALL_LAYOUT mhl
+	    WHERE 
+            sl.lt_code = mhl.mhl_code and
+        MHL_CODE = #{mhl_code}
+	    GROUP BY sl_floor
+	    ORDER BY sl_floor
+	</select>
+	
+<!-- 	<select id="getRealSeatReserv" resultType="com.muse.seat.model.SeatDTO" parameterType="String">
+		select *
+		from seat
+		where m_code = #{m_code}
+	</select> -->
+	
+	<select id="getMhl_codeReserv" resultType="Integer" parameterType="String">
+		select mhl_code
+		from musical_hall_layout
+		where mh_code=#{mh_code}
+	</select>	
+	
+	<!-- 좌석이름 / 좌석가격 가져오기 -->
+	<select id="getMusicalPrice" parameterType="string" resultType="map">
+	    SELECT DISTINCT sg.sg_name as sg_name, sp.sp_price as sp_price
+	    FROM seat_price sp
+	    INNER JOIN seat_grade sg ON sp.sg_code = sg.sg_code
+	    WHERE sp.m_code = #{m_code}
+	    ORDER BY sp.sp_price desc
+	</select>
+	
+	<!-- 해당날짜와 시간에 따른 잔여좌석 가져오기 -->
+	<select id="getRemainingSeat" parameterType="map" resultType="map">
+	    SELECT 
+	        sg.sg_name AS grade,
+	        COUNT(s.s_code) - COALESCE(SUM(CASE WHEN bd.s_code IS NOT NULL THEN 1 ELSE 0 END), 0) AS count
+	    FROM 
+	        musical m
+	    JOIN 
+	        musical_option mo ON m.m_code = mo.m_code
+	    JOIN 
+	        seat s ON m.m_code = s.m_code
+	    JOIN 
+	        seat_grade sg ON s.sg_code = sg.sg_code
+	    LEFT JOIN 
+	        booking b ON mo.mo_code = b.mo_code
+	    LEFT JOIN 
+	        booking_detail bd ON b.b_code = bd.b_code
+	                         AND s.s_code = bd.s_code
+	    WHERE 
+	        m.m_code = #{m_code}
+	        AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
+	        AND mo.mo_time = #{selectedTime}
+	    GROUP BY 
+	        sg.sg_name
+	    ORDER BY 
+	        sg.sg_name
+	</select>
+	
+	<!-- 예매된 좌석 가져오기 
+	<select id="getBookedSeats" parameterType="map" resultType="string">
+	    SELECT s.s_code
+	    FROM seat s
+	    JOIN booking_detail bd ON s.s_code = bd.s_code
+	    JOIN booking b ON bd.b_code = b.b_code
+	    JOIN musical_option mo ON b.mo_code = mo.mo_code
+	    WHERE mo.m_code = #{m_code}
+	    AND mo.mo_date = #{selectedDate}
+	    AND mo.mo_time = #{selectedTime}
+	</select>-->
+	
+	<select id="getMusicalSeatByHall" resultType="Double" parameterType="map">
+	SELECT 
+
+	    ROUND(AVG(sr.sr_score), 1) as avg_score
+	FROM 
+	    musical_hall mh
+	    JOIN MUSICAL M ON mh.mh_code = m.mh_code
+	    JOIN musical_hall_layout mhl ON mh.mh_code = mhl.mh_code
+	    JOIN seat s ON mhl.mhl_code = s.mhl_code
+	    LEFT JOIN booking_detail bd ON s.s_code = bd.s_code
+	    LEFT JOIN seat_review sr ON bd.bd_code = sr.bd_code
+	WHERE 
+	    m.m_code = #{m_code}
+	    and s.s_code = #{s_code}
+
+	</select>
+	
+</mapper>

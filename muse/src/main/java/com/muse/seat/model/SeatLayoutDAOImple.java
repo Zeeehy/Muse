@@ -1,8 +1,10 @@
 package com.muse.seat.model;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,5 +63,15 @@ public class SeatLayoutDAOImple implements SeatLayoutDAO{
 		return sqlMap.selectList("getRealSeat");
 	}
 
+	@Override
+	public void insertDummySeats(List<SeatDTO> seatList) {
+		
+		for(int i=0; i<seatList.size(); i++) {
+			sqlMap.insert("insertSeatList", seatList.get(i));
+
+		}
+	}
+	
+	
 
 }

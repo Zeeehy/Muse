@@ -11,12 +11,12 @@ public class MusicalReviewDTO {
 	private String mr_content; //내용
 	private Date mr_date; //작성일
 	private String mr_state; //베스트리뷰선정유무
-	
 
 	// 예매번호로 가져와아햐는 데이터
 	// 공연명,관람일시
 	private String m_title; //공연명
 	private String mo_date; //관람일시, mo_date _mo_time
+	private String u_id; // 작성자
 	
 	
 	
@@ -79,6 +79,18 @@ public class MusicalReviewDTO {
 	}
 	public void setMo_date(String mo_date) {
 		this.mo_date = mo_date;
+	}
+
+
+
+	public String getU_id() {
+		return u_id;
+	}
+
+
+
+	public void setU_id(String u_id) {
+		this.u_id = u_id;
 	}
 	
 	

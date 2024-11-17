@@ -4,7 +4,7 @@
 <body>
    <div class="sidebar">
     <div class="sidebartop">
-      <a href="#">파트너 등록</a> | 
+      <a href="partnerAddForm.do">파트너 등록</a> | 
       <span class="popup-container" style="position: relative;"> <!-- 팝업 위치를 상대적으로 설정 -->
         <a href="#" onclick="showPopup()">요청 현황</a>
         <!-- 레이어 팝업 -->
@@ -55,16 +55,17 @@
       신규 등록
     </button>
     <div class="dropdown-container">
-      <a href="#">파트너 신청</a>
-      <a href="#">사업자 등록</a>
+      <a href="musicalOpenForm.do?pr_code=${s_pr_code}">뮤지컬 등록 요청</a>
+      <a href="ticetOpenForm.do?pr_code=${s_pr_code}">티켓 오픈 공지 등록 요청</a>
     </div>
 
     <button class="dropdown-btn">
       뮤지컬 관리
     </button>
     <div class="dropdown-container">
-      <a href="#">공연 등록</a>
-      <a href="#">공연 수정</a>
+      <a href="musicalSeatAddForm.do">시트 등록</a>
+      <a href="castAddForm.do">캐스팅 등록</a>
+      <a href="#">커뮤니티</a>
     </div>
 
     <button class="dropdown-btn">
@@ -72,7 +73,8 @@
     </button>
     <div class="dropdown-container">
       <a href="#">회원 정보 수정</a>
-      <a href="#">비밀번호 변경</a>
+      <a href="#">티켓 오픈 공지 수정</a>
+      <a href="#">공연 수정</a>
     </div>
 
     <button class="dropdown-btn">

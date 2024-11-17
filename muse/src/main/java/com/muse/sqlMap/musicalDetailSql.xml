@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.seat.mapper.musicalDetailSql">
+  	
+  	<select id="getMusicalBasicInfo" parameterType="String" resultType="com.muse.musicalDetail.model.MusicalDetailDTO">
+  		select * from musical where m_code = #{m_code} and m_viewstate = 1 and m_ref=0
+  	</select>
+  	
+  	<select id="checkLikeMusical" parameterType="map" resultType="Integer">
+  		select count(*) from like_musical where m_code = #{m_code} and u_id = #{u_id}
+  	</select>
+  	
+  	<select id="countLikeMusical" parameterType="String" resultType="Integer">
+  		select count(*) from like_musical where m_code = #{m_code}
+  	</select>
+  	
+  	<insert id="insertLikeMusical" parameterType="map">
+  		insert into LIKE_MUSICAL values(LIKE_MUSICAL_lm_code.nextval, #{m_code}, #{u_id},sysdate)
+  	</insert>
+  	
+  	<insert id="deleteLikeMusical" parameterType="map">
+  		delete from LIKE_MUSICAL where m_code = #{m_code} AND u_id = #{u_id}
+  	</insert>
+  
+  	<select id="getCastingWithLike" parameterType="map" resultType="com.muse.musicalDetail.model.MusicalDetailCastDTO">
+  		SELECT DISTINCT ma.ma_name, 
+                mc.mc_char,
+                ma.ma_code,
+                ma.ma_img,
+                CASE WHEN la.la_code IS NOT NULL THEN 'Y' ELSE 'N' END AS is_liked
+				FROM musical m
+				JOIN musical_option mo ON m.m_code = mo.m_code
+				JOIN musical_casting mc ON mo.mo_code = mc.mo_code
+				JOIN musical_actor ma ON mc.ma_code = ma.ma_code
+				LEFT JOIN like_actor la ON mc.ma_code = la.ma_code AND la.u_id = #{u_id}
+				WHERE m.m_code = #{m_code}
+				ORDER BY mc.mc_char
+  	</select>
+  	
+  	<insert id="insertLikeActor" parameterType="map">
+  		insert into LIKE_ACTOR values(LIKE_ACTOR_la_code.nextval, #{ma_code}, #{u_id},sysdate)
+  	</insert>
+  	
+  	<insert id="deleteLikeActor" parameterType="map">
+  		delete from LIKE_ACTOR where ma_code = #{ma_code} AND u_id = #{u_id}
+  	</insert>
+  	
+  	<select id="getScreenDay" parameterType="String" resultType="java.sql.Date">
+  		select distinct mo_date from musical_option where m_code = #{m_code}
+  	</select>
+  	
+  	<select id="getStartTime" parameterType="String" resultType="String">
+  		SELECT distinct mo_time
+		FROM MUSICAL_OPTION
+		WHERE M_CODE = #{m_code}
+		ORDER BY mo_time
+  	</select>
+  	
+  	<select id="getRoundActor" parameterType="map" resultType="com.muse.musicalDetail.model.MusicalDetailCastDTO">
+	  	select *
+		from musical_option mo, musical_casting mc, musical_actor ma
+		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
+		and mo.m_code =#{m_code}
+		<if test="range_start != null">
+			        and mo.mo_date between #{range_start} and #{range_end}
+		</if>
+		order by mo_date asc,mo_time asc, mc_char asc
+
+  	</select>
+  	
+  	<select id="getAllChar" parameterType="String" resultType="String">
+  		select distinct mc_char
+		from musical_option mo, musical_casting mc
+		where mo.mo_code = mc.mo_code 
+		and mo.m_code =#{m_code}
+        order by mc_char asc
+  	</select>
+  	
+  	<select id="getRoundDOW" parameterType="map" resultType="java.sql.Date">
+  		select mo.mo_date
+		from musical_option mo, musical_casting mc, musical_actor ma
+		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
+		and mo.m_code =#{m_code}
+		<if test="range_start != null">
+			        and mo.mo_date between #{range_start} and #{range_end}
+		</if>
+		order by mo_date asc,mo_time asc, mc_char asc
+  	</select>
+  	
+  	<select id="countMusicalReview" parameterType="String" resultType="Integer">
+  		select count(*)
+		from musical_review mr, musical m, booking b, musical_option mo
+		where  b.b_code = mr.b_code and b.mo_code = mo.mo_code and m.m_code = mo.m_code
+		    and m.m_code = #{m_code}
+  	</select>
+  	
+  	<select id="getMusicalReviewAVG" parameterType="String" resultType="Double">
+  		select avg(mr_score)
+		from musical_review mr, booking b, musical_option mo, musical m
+		where mr.b_code = b.b_code and b.mo_code = mo.mo_code and mo.m_code = m.m_code 
+		and m.m_code = #{m_code}
+  	</select>
+  	
+  	<select id="getMusicalReviews" parameterType="String" resultType="com.muse.review.model.MusicalReviewDTO">
+  		select *
+		from musical_review mr, booking b, musical_option mo, musical m
+		where mr.b_code = b.b_code and b.mo_code = mo.mo_code and mo.m_code = m.m_code 
+		and m.m_code = #{m_code}
+		order by mr_date desc
+  	</select>
+  	
+  </mapper>

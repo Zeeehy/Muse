@@ -113,7 +113,7 @@ hr {
     <!-- 공연명 -->
     <c:if test="${searchTag eq 'm_title'}">
     	<c:forEach var="dto" items="${list}">
-    		 <div class="musical-item" onclick="location.href='/muse/musical/detail/${dto.m_code}'" style="cursor: pointer;">
+    		 <div class="musical-item" onclick="window.location.href='srShow.do?m_code=${dto.m_code}&mh_code=${dto.mh_code}'" style="cursor: pointer;">
 
 	    		<img src="/muse/resources/img/musical/${dto.m_poster}" alt="${dto.m_title}">
 		        <div style="margin-left:40px;">
@@ -128,9 +128,10 @@ hr {
     	</c:forEach>
     </c:if>
     
+    <!-- 공연장명 -->
     <c:if test="${searchTag eq 'mh_name'}">
     	<c:forEach var="dto" items="${list}">
-    		 <div class="musical-item" onclick="location.href='/muse/musical/detail/${dto.mh_code}'" style="cursor: pointer;margin-top: 30px;align-items: center; gap: 25px;">
+    		 <div class="musical-item" onclick="window.location.href='srShow.do?mh_code=${dto.mh_code}'" style="cursor: pointer;margin-top: 30px;align-items: center; gap: 25px;">
 
 	    		<img src="/muse/resources/img/seatReview.PNG" style="width:150px;" >
 	    			<p style="font-size:14pt;"><strong>${dto.mh_name}</strong></p>
