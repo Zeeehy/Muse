@@ -1,5 +1,6 @@
 package com.muse.admin.model;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,12 +148,38 @@ public class AdminDAOImple implements AdminDAO {
 	}
 
 
+	@Override
+	public HashMap<String, BigDecimal> musePassStats() {
+		HashMap<String, BigDecimal> map = sqlMap.selectOne("musePassStats");
+		
+		return map;
+	}
 
 
+	@Override
+	public List<RequestListDTO> pReviewList() {
+		List<RequestListDTO> lists = sqlMap.selectList("pReviewList");
+		return lists;
+	}
 
 
+	@Override
+	public int pReview(String bdr_code, int bdr_state) {
+		
+		HashMap<String,Object> map = new HashMap<String, Object>();
+		map.put("bdr_code", bdr_code);
+		map.put("bdr_state", bdr_state);
+		
+		int result = sqlMap.update("pReview",map);
+		return result;
+	}
 
 
+	@Override
+	public int pReviewDelete(String bdr_code) {
+		int result = sqlMap.update("pReviewDelete",bdr_code);
+		return result;
+	}
 
 	
 	
