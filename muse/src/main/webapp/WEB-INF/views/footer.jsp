@@ -43,6 +43,16 @@
 				</li>
 			</ul>
 		</div>
+		<div class="ft04">
+			<ul>
+				<li>
+					<a href="partnerMainForm.do">제작사</a>
+				</li>
+				<li>
+					<a href="#">관리자</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<div class="bottom">
 		<p>COPYRIGHT(C) SSANGYONG CENTER FOR THE PROGRAMING. ALL RIGHTS RESERVED</p>

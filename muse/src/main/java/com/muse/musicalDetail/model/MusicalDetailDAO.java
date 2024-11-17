@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.muse.review.model.MusicalReviewDTO;
+
 public interface MusicalDetailDAO {
 
 	public MusicalDetailDTO getMusicalBasicInfo(String m_code);
@@ -21,4 +23,9 @@ public interface MusicalDetailDAO {
 	public List<MusicalDetailCastDTO> getRoundActor(Map paramMap);
 	public List<String> getAllChar(String m_code);
 	public List<Date> getRoundDOW (Map paramMap);
+	public int countMusicalReview(String m_code);
+	public double getMusicalReviewAVG(String m_code);
+	public List<MusicalReviewDTO> getMusicalReviews(String m_code);
+	public List<String> getSelectedRoundActors(Map paramMap);
+	public List<String> getRound(Map paramMap);
 }

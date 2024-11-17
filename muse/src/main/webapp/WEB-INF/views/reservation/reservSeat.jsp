@@ -8,6 +8,9 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <style>
+.floor{
+	padding-bottom:110px;
+}
 .floorSection {
     display: flex;
     justify-content: center;
@@ -51,7 +54,7 @@
     
 }
 .seats{
-	margin: 2px;
+	margin: 2px;1
     background: #fff;
     border: 0.5px solid #666;
     cursor: pointer;
@@ -93,6 +96,22 @@
 .VIP{
 	background-color: red;
 }
+.R{
+	background-color: blue;
+}
+.S{
+	background-color: green;
+}
+.A{
+	background-color: yellow;
+}
+.disabled {
+    cursor: not-allowed; /* 비활성화 상태 커서 */
+    background-color: #ccc; /* 회색으로 표시 */
+    border: 1px solid #aaa; /* 테두리 색 변경 */
+    opacity: 0.5; /* 흐리게 표시 */
+}
+
 </style>
 
 <script type="text/javascript">
@@ -136,7 +155,8 @@ document.addEventListener("DOMContentLoaded",()=>{
  // 층별로 그룹레이아웃을 관리하는 Map 객체 생성
     // `layoutData` 배열을 순회하면서 층별로 그룹화된 섹션 데이터를 저장
     layoutData.forEach(function(line,index) {
-    	
+    	console.log('여기');
+    	console.log(line);
     	//seatLayout의 구역과 층
         var section = line.sl_section;
         var floor = line.sl_floor;
@@ -311,18 +331,40 @@ function setSeats(section_div,rowLayout){
 			            // 열별 접근 (좌석 정보가 존재할 경우)
 			            if (positionSeats) {
 			                // seat Table 데이터 처리
-			                positionSeats.forEach((real_seat,index) => {
-			                    // 행, 열 확인
-			                        // class 부여 => 색 표시
-			                        alert(seatNum + ' : ' + real_seat.s_position);
-			                        
-			                        /* if(real_seat.sg_code=='sg_1'){
-			                        	
-			                        } */
-			                        
-			                        seat_div.classList.add('VIP');
-			                        
-			                    
+			                // 좌석 등급별 처리
+							positionSeats.forEach((real_seat, index) => {
+								
+								seat_div.id = real_seat.s_code;
+								
+							    // 기존 등급 클래스들 제거
+							    seat_div.classList.remove('VIP', 'R', 'S', 'A');
+							    
+							    // 등급별 클래스 추가
+							    switch(real_seat.sg_code) {
+							        case 'sg_1':
+							            seat_div.classList.add('VIP');
+							            break;
+							        case 'sg_2':
+							            seat_div.classList.add('R');
+							            break;
+							        case 'sg_3':
+							            seat_div.classList.add('S');
+							            break;
+							        case 'sg_4':
+							            seat_div.classList.add('A');
+							            break;
+							        default:
+							            // 기본 스타일
+							            seat_div.classList.add('default');
+							    }
+							    
+							    //// `reservation_status`가 0인 경우 비활성화 처리
+						        if (real_seat.reservation_status === '0') {
+						        	alert(1);
+						            seat_div.classList.add('disabled'); // 비활성화 스타일 추가
+						            seat_div.style.pointerEvents = 'none'; // 클릭 막기
+						            seat_div.style.opacity = '0.5'; // 시각적으로 비활성화 표시 (선택적)
+						        }
 			                });
 			            }
 			        }
@@ -357,18 +399,45 @@ function testClick(rowLayout, event) {
     const seatReviewDiv = document.querySelector('.seatReview');
     const seatNumber = seatElement.id.slice(3); // 좌석 번호 추출
 
-    // rowLayout에서 필요한 값이 유효하지 않을 경우 기본값 설정
-    const grade = seatElement.getAttribute('data-grade');
-    const floor = rowLayout.sl_floor;
-    const section = rowLayout.sl_section;
-    const row = rowLayout.sl_row;
+    // floorSeatMap에서 좌석 정보 가져오기
+    const floorMap = floorSeatMap.get(rowLayout.sl_floor);
+    let grade = 'A';  // 기본값 설정
+
+    if (floorMap) {
+        const sectionMap = floorMap.get(rowLayout.sl_section);
+        if (sectionMap) {
+            const rowMap = sectionMap.get(rowLayout.sl_row);
+            if (rowMap) {
+                const positionSeats = rowMap.get(parseInt(seatNumber));
+                if (positionSeats && positionSeats[0]) {
+                    // sg_code를 등급 이름으로 변환
+                    switch(positionSeats[0].sg_code) {
+                        case 'sg_1':
+                            grade = 'VIP';
+                            break;
+                        case 'sg_2':
+                            grade = 'R';
+                            break;
+                        case 'sg_3':
+                            grade = 'S';
+                            break;
+                        case 'sg_4':
+                            grade = 'A';
+                            break;
+                        default:
+                            grade = 'A';
+                    }
+                }
+            }
+        }
+    }
 
     const seatInfo = {
-        id: seatElement.id,
+        id: seatElement.parentElement.id,
         grade: grade,
-        floor: floor,
-        section: section,
-        row: row,
+        floor: rowLayout.sl_floor,
+        section: rowLayout.sl_section,
+        row: rowLayout.sl_row,
         number: seatNumber,
         element: seatElement
     };
@@ -391,26 +460,46 @@ function testClick(rowLayout, event) {
     } else {
         // 새로운 좌석 선택
         if (selectedSeats.size >= MAX_SEATS) {
-            alert(`최대 ${MAX_SEATS}개의 좌석까지만 선택할 수 있습니다.`);
+    	    const message = "최대 " + MAX_SEATS + "개의 좌석까지만 선택할 수 있습니다.";
+    	    alert(message);
+
             return;
         }
 
         selectedSeats.add(seatInfo);
         seatElement.classList.add('selected');
+        
+        const s_code = seatInfo.id;
+        
+        console.log('#############');
+        console.log('#############');
+        
+        const params = 's_code='+s_code+'&m_code=${m_code}';
+        alert(params);
+        sendRequest('getSeatReviewAvg.do', params, function() {
+            if (XHR.readyState === 4 && XHR.status === 200) {
+            	alert('컨트롤러 통과완료');
+                const avgScore = parseFloat(XHR.responseText);
+                alert(avgScore);
+                
+                if (seatReviewDiv) {
+                    seatReviewDiv.querySelector('p').innerHTML = 
+                        //`선택하신 <b> [${grade}] 석 ${seatInfo.section} 구역 ${seatInfo.row} 열 ${seatInfo.number} 좌석의 평균은 (5.0) 입니다.</b>`;
+                    	'선택하신 <b> ['+grade+'] 석 '+seatInfo.section+' 구역 '+seatInfo.row+' 열 '+seatInfo.number+' 좌석의 평균은 ('+avgScore+') 입니다.</b>';
+                    seatReviewDiv.style.display = 'block';
+                    currentReviewSeat = seatElement;
+                }
+                updateSeatReview(avgScore, seatInfo);
+            }
+        }, 'GET');
 
         // 리뷰 정보 업데이트
-        if (seatReviewDiv) {
-            seatReviewDiv.querySelector('p').innerHTML = 
-            	'선택하신 <b> ['+grade+'] 석 '+section+' 구역 '+row+' 열 '+seatNumber+' 좌석의 평균은 (5.0) 입니다.</b>';
-            seatReviewDiv.style.display = 'block';
-            currentReviewSeat = seatElement;
-        }
+
     }
 
     // 선택 좌석 목록 업데이트
     updateSelectedSeats();
 }
-
 
 
 // 구역과 구역 사이의 기다란 숫자 근데 신경안써도 됨

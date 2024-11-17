@@ -109,7 +109,16 @@
 								<li class="navItem"><a class="navLink" href="#"
 									data-target="ADDITIONAL">판매정보</a></li>
 								<li class="navItem"><a class="navLink" href="#"
-									data-target="REVIEW">관람후기<span class="countNum">999+</span></a></li>
+									data-target="REVIEW">관람후기
+									<span class="countNum">
+										 <c:if test="${countReview>999 }">
+										 	(999+)
+										 </c:if>
+										 
+										 <c:if test="${countReview<=999 }">
+										 	(${countReview })
+										 </c:if>
+									</span></a></li>
 								<li class="navItem"><a class="navLink" href="#"
 									data-target="QNA">Q&amp;A<span class="countNum">9</span></a></li>
 							</ul>
@@ -335,7 +344,7 @@
 										<td>현장수령 무료 (배송불가)</td>
 									</tr>
 									<tr>
-										<th>유효기간/이용조건</th>
+										<th>유효기간<br>/이용조건</th>
 										<td colspan="3">2024.11.22~2025.06.22 예매한 공연 날짜, 회차에 한해
 											이용가능</td>
 									</tr>
@@ -476,54 +485,97 @@
 							</div>
 							
 							<div class="bbsInfo">
-								<div class="reviewStarTotal">
-									<strong class="reviewStarTitle">관람 평점</strong>
-									<div class="prdStar type-total">
-										<div class="prdStarBack">
-											<div class="prdStarIcon" data-star="5">
+								<c:if test="${!empty reviews }">
+									<div class="reviewStarTotal">
+										<strong class="reviewStarTitle">관람 평점</strong>
+										<div class="prdStar type-total">
+											<div class="prdStarBack">
+												<c:forEach begin="1" end="5" var="i">
+													<c:choose>
+											            <%-- 완전한 별 --%>
+											            <c:when test="${i <= Math.floor(reviewAVG)}">
+											                <img src="/muse/resources/img/ystar.svg" >
+											            </c:when>
+											            
+											            <%-- 반 별 --%>
+											            <c:when test="${i == Math.ceil(reviewAVG) && reviewAVG % 1 >= 0.5}">
+											                <span class="ystarHalf"></span>
+											                <span class="gstarHalf"></span>
+											            </c:when>
+											            
+											            <%-- 빈 별 --%>
+											            <c:otherwise>
+											                <img src="/muse/resources/img/gstar.svg" >
+											            </c:otherwise>
+											        </c:choose>
+											   </c:forEach>
+											</div>
+											<div class="prdStarScore">
+											<!-- <span class="blind">평점: </span>9.9</div> -->
+											<span class="blind">${reviewAVG }</span>
 											</div>
 										</div>
-									<div class="prdStarScore">
-										<!-- <span class="blind">평점: </span>9.9</div> -->
 									</div>
-								</div>
-							</div>
+								</c:if>
 							<div class="bbsListWrap reviewAll">
 								<div class="bbsListHead">
 									<div class="leftSide">
-										<strong class="bbsTotal">총 <span class="num">185</span>개의 관람후기가 등록되었습니다.</strong>
+										<strong class="bbsTotal">총 <span class="num">${countReview }</span>개의 관람후기가 등록되었습니다.</strong>
 									</div>
 									<div class="rightSide">
     									<a class="bbsWriteBtn" role="button" href="#">관람후기 작성</a>
 									</div>
 								</div>
+								<c:if test="${empty reviews }">
+											<div class="noResult">등록된 리뷰가 없습니다.</div>
+								</c:if>
 								<ul class="bbsList reviewList">
-									<li class="bbsItem">
-									    <div class="bbsContent">
-									        <div class="bbsItemHead">
-									            <div class="leftSide">
-									                <div>별별별별별</div>
-									            </div>
-									            <div class="rightSide">
-									                <div>이름|2024.11.14|공감 하트</div>
-									            </div>
-									        </div>
-									        <div class="bbsItemBody">
-									            <div class="bbsBodyMain">
-									                <div class="bbsTitle">
-									                    <strong class="bbsTitleText">안본분 앙대요~~~</strong>
-									                </div>
-									                <p class="bbsText">
-									                    극의 구성도 치밀하고 배우분들 모두 짱~~~<br>
-									                    알차고 알차요~~~<br>
-									                    딸램과 감동 엄청나게 받고 왔네요~~^^<br>
-									                    애기귀신 맡으신 여자분 4월은...봄이다...에서 감동 받고 또 감동~~~건승하세요~^^<br>
-									                </p>
-									            </div>
-									        </div>
-									    </div>
-									</li>
-																		
+								
+									<c:forEach items="${reviews }" var="review">
+										<li class="bbsItem">
+										    <div class="bbsContent">
+										        <div class="bbsItemHead">
+										            <div class="leftSide">
+										                	<c:forEach begin="1" end="5" var="i">
+																<c:choose>
+														            <%-- 완전한 별 --%>
+														            <c:when test="${i <= Math.floor(review.mr_score)}">
+														                <img src="/muse/resources/img/ystar.svg" >
+														            </c:when>
+														            
+														            <%-- 반 별 --%>
+														            <c:when test="${i == Math.ceil(review.mr_score) && review.mr_score % 1 >= 0.5}">
+														                <span class="ystarHalf"></span>
+														                <span class="gstarHalf"></span>
+														            </c:when>
+														            
+														            <%-- 빈 별 --%>
+														            <c:otherwise>
+														                <img src="/muse/resources/img/gstar.svg" >
+														            </c:otherwise>
+														        </c:choose>
+														   </c:forEach>
+										                
+										                
+										            </div>
+										            <div class="rightSide">
+										                <div>${review.u_id }|${review.mr_date }|공감 하트</div>
+										            </div>
+										        </div>
+										        <div class="bbsItemBody">
+										            <div class="bbsBodyMain">
+										                <div class="bbsTitle">
+										                    <strong class="bbsTitleText">${review.mr_title }</strong>
+										                </div>
+										                <p class="bbsText">
+										                    ${review.mr_content }
+										                </p>
+										            </div>
+										        </div>
+										    </div>
+										</li>
+									</c:forEach>		
+															
 								</ul>
 							</div>
 						</div>
@@ -537,10 +589,11 @@
 			<div class="productSide">
 				<div class="stickyWrap">
 					<div>
-						<img alt="크아악" src="resources/img/musical/matahariDetail.PNG">
+						<%@ include file="reserveCal.jsp" %>
+							
 					</div>
 				</div>
-		</div>
+			</div>
 			
 		</div>
 	</div>

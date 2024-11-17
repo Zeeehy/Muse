@@ -15,7 +15,7 @@ public class MusicalDetailDTO {
     private int m_maxticket;          // M_MAXTICKET
     private String m_age;             // M_AGE
     private Date m_opendate;          // M_OPENDATE
-    private int m_opentime;           // M_OPENTIME
+    private String m_opentime;           // M_OPENTIME
     private String m_notice;          // M_NOTICE
     private String m_poster;          // M_POSTER
     private String m_detailimg;       // M_DETAILIMG
@@ -29,7 +29,7 @@ public class MusicalDetailDTO {
 	}
 
 	public MusicalDetailDTO(String m_code, String mh_code, String pr_code, String m_title, Date m_startdate,
-			Date m_enddate, int m_time, int m_intime, int m_maxticket, String m_age, Date m_opendate, int m_opentime,
+			Date m_enddate, int m_time, int m_intime, int m_maxticket, String m_age, Date m_opendate, String m_opentime,
 			String m_notice, String m_poster, String m_detailimg, int m_calender, int m_single, int m_viewstate,
 			int m_ref) {
 		super();
@@ -142,11 +142,11 @@ public class MusicalDetailDTO {
 		this.m_opendate = m_opendate;
 	}
 
-	public int getM_opentime() {
+	public String getM_opentime() {
 		return m_opentime;
 	}
 
-	public void setM_opentime(int m_opentime) {
+	public void setM_opentime(String m_opentime) {
 		this.m_opentime = m_opentime;
 	}
 

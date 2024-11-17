@@ -136,7 +136,7 @@ function getSearchCast(){
 	}
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            document.getElementById('items').innerHTML = xhr.responseText;
+            document.getElementById('items').innerHTML = JSON.parse(xhr.responseText);
         }
     };
     xhr.send();
@@ -209,6 +209,14 @@ function insertLikeMusical(){
 	
 }
 
+function insertLike(){
+	var filter = document.getElementById('filter').value;
+	if(document.getElementById('filter').checked){
+		insertLikeActor();
+	} else {
+		insertLikeMusical();
+	}
+}
 
 </script>
 </head>
@@ -234,7 +242,7 @@ function insertLikeMusical(){
         <div class="items" id="items">
         </div>
         <div class="actions">
-            <button class="register-btn" onclick="insertLikeMusical()">등록</button>
+            <button class="register-btn" onclick="insertLike()">등록</button>
             <button class="cancel-btn">취소</button>
         </div>
     </div>

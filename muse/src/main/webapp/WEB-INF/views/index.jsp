@@ -20,40 +20,53 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <!-- main 포스터 -->
  <script>
+ function formatDate(dateString) {
+	    const date = new Date(dateString); // 서버에서 받은 날짜 문자열을 Date 객체로 변환
+	    const year = date.getFullYear();
+	    const month = String(date.getMonth() + 1).padStart(2, '0');
+	    const day = String(date.getDate()).padStart(2, '0');
+	    return year + '-' + month + '-' + day;
+	}
+ 
  $(document).ready(function() {
 	    // '뮤지컬 전체보기' 버튼 클릭 시 추가 데이터를 요청
 	    $("#loadMore").on("click", function() {
 	        var page = $(this).data("page");  // 현재 페이지 정보 가져오기
+	        $("#entire_look").hide();         
 	        console.log(page);
+	        
 	        $.ajax({
 	            url: "loadMoreMusicals.do",  // Ajax 요청 URL
 	            type: "GET",
-	            data: { page: page },          // page 번호를 요청 파라미터로 전송
-	            dataType: "json",              // JSON 응답을 기대
+	            data: { page: page },  // page 번호를 요청 파라미터로 전송
+	            dataType: "json", // JSON 응답을 기대
 	            success: function(response) {
+	            	
+	            	
 	                // 서버에서 받아온 데이터를 이용해 화면에 추가
 	                var musicals = response.main_musicallist;
 	                
 	                // 뮤지컬 리스트 항목을 반복문으로 동적으로 추가
 	                musicals.forEach(function(musical) {
-	                    var musicalItem = `
-	                        <div class="screening-item all">
-	                            <div class="thumbnail">
-	                                <a href="musicalDetail.do?m_code=${musical.m_code}">
-	                                    <img src="resources/img/musical/${musical.m_poster}" alt="공연 포스터" width="250px" height="440px">
-	                                </a>
-	                            </div>
-	                            <div class="title">${musical.m_title}</div>
-	                            <div class="meta">${musical.mh_name}  <br>  ${musical.m_startdate} ~ ${musical.m_enddate}</div>
-	                        </div>
-	                    `;
+	                	 // 날짜를 형식에 맞게 변환
+	                    var formattedStartDate = formatDate(musical.m_startdate);               	 
+	                    var formattedEndDate = formatDate(musical.m_enddate);
+	                    
+	                    var musicalItem = `<div class="screening-item all">
+	                            						<div class="thumbnail">
+								                            <a href="musicalDetail.do?m_code=\${musical.m_code}">
+								                                <img src="resources/img/musical/\${musical.m_poster}" alt="공연 포스터" width="250px" height="440px">
+								                            </a>
+							                            </div>
+							                            <div class="title">\${musical.m_title}</div>
+							                            <div class="meta">\${musical.mh_name}  <br> \${formattedStartDate} ~ \${formattedEndDate}</div>
+							                        </div>
+	                    						`;
 	                    
 	                    // .screening-container.all의 마지막에 새 항목을 추가
 	                    $(".screening-container.all").append(musicalItem);
-	                });
-
-	                // 페이지 업데이트 (다음 페이지로)
-	                $("#loadMore").data("page", page + 1);  // 다음 페이지 번호로 갱신
+	                });		
+	             	
 	            },
 	            error: function(xhr, status, error) {
 	                console.error("데이터 로딩 실패: ", error);
@@ -89,7 +102,7 @@ $(document).ready(function() {
 	<!-- main 시작 -->
 	 <div class="content">
         <article class="whatsOn">
-        <a href="#" class="calender"><img src="resources/img/main/calender.png">공연일정 전체보기</a> <!-- 캘린더 -->            
+        <a href="myPageMuseCalendar.do" class="calender"><img src="resources/img/main/calender.png">공연일정 전체보기</a> <!-- 캘린더 -->            
             <h2>What's on</h2>
             <div class="screening-container">           
 	            <!-- main_banner 데이터 반복문으로 출력 -->
@@ -174,16 +187,16 @@ $(document).ready(function() {
         	<div class="screening-container all">
         		<!-- main_musicallist 데이터 반복문으로 출력 -->
         		<c:forEach var="musicallist" items="${main_musicallist}">
-                <div class="screening-item all">
-                     	<div class="thumbnail"><a href="musicalDetail.do?m_code=${musicallist.m_code}"><img src="resources/img/musical/${musicallist.m_poster}"alt="공연 포스터" width="250px" height="440px"></a></div>
-	                    <div class="title">${musicallist.m_title}</div>
-	                    <div class="meta">${musicallist.mh_name}  <br>  ${musicallist.m_startdate} ~ ${musicallist.m_enddate}</div>
-                </div>
+	                <div class="screening-item all">
+	                     	<div class="thumbnail"><a href="musicalDetail.do?m_code=${musicallist.m_code}"><img src="resources/img/musical/${musicallist.m_poster}"alt="공연 포스터" width="250px" height="440px"></a></div>
+		                    <div class="title">${musicallist.m_title}</div>
+		                    <div class="meta">${musicallist.mh_name}  <br>  ${musicallist.m_startdate} ~ ${musicallist.m_enddate}</div>
+	                </div>
                 </c:forEach>               
             </div> 
             <!-- 전체보기 버튼 -->
-            <div class="bt ticketOpen">
-                <a href="javascript:void(0);" id="loadMore" data-page="2">뮤지컬 전체보기 <i class="fa-solid fa-angle-right"></i></a>
+            <div id="entire_look" class="bt ticketOpen">
+                <a href="javascript:void(0);" id="loadMore" data-page="2">뮤지컬 전체보기<i class="fa-solid fa-angle-right"></i></a>
             </div>
         </article>
     </div>

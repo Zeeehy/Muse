@@ -23,6 +23,7 @@ import com.muse.partner.model.MusicalDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.partner.model.PartnerDAO;
+import com.muse.partner.model.PartnerDTO;
 import com.muse.partner.model.SeatGradeDTO;
 import com.muse.reserv.model.ReservDAO;
 import com.muse.seat.model.SeatDTO;
@@ -32,15 +33,32 @@ import com.muse.seat.model.SeatLayoutDTO;
 public class PartnerController {
 
 	
+	private static final String String = null;
 	@Autowired
 	private PartnerDAO partnerDao;
 	@Autowired
 	private SeatLayoutDAO seatLayoutDAO;
 	
 	@RequestMapping("/partnerAddForm.do")
-	public String partnerAddForm() {
-		
-		return "/partner/partnerAddForm";
+	public ModelAndView partnerAddForm(
+			@RequestParam(value="pr_code",required = false, defaultValue = "no")String pr_code,
+			@RequestParam(value="s_id",required = false, defaultValue = "no")String u_id) {
+		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");
+		System.out.println(u_id);
+		System.out.println(pr_code);
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		ModelAndView mav = new ModelAndView();
+		String msg= "";
+		if(DTO ==null) {
+			msg="파트너 신청을 해주세요";
+		}else {if(DTO.getRs_code()==1) {
+					msg="심사중입니다.";
+				}
+		}
+		mav.addObject("dto", DTO);
+		mav.setViewName("/partner/partnerAddForm");
+		mav.addObject("msg", msg);
+		return mav;
 	}
 	
 	@RequestMapping("/castAddForm.do")
@@ -49,10 +67,21 @@ public class PartnerController {
 		return "/partner/castAddForm";
 	}
 	@RequestMapping("/ticetOpenForm.do")
-	public String ticetOpenForm() {
-		return"/partner/ticetOpenNotice";
+	public ModelAndView ticetOpenForm(@RequestParam(
+			value="pr_code",
+			defaultValue = "no")String pr_code) {
+		
+		ModelAndView mav = new ModelAndView();
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		mav.addObject("dto", DTO);
+		mav.setViewName("/partner/ticetOpenNotice");
+		return mav;
 	}
 	
+	@RequestMapping("/partnerMainForm.do")
+	public String partnerMain() {
+		return "/partner/partnerMainForm";
+	}
 	@RequestMapping("/musicalSeatAddForm.do")
 	public ModelAndView musicalSeatForm() {
 		ModelAndView mav = new ModelAndView();
@@ -85,15 +114,12 @@ public class PartnerController {
 
 	//뮤지컬 등록 폼으로 가기
 	@RequestMapping("/musicalOpenForm.do")
-	public ModelAndView musicalAddForm() {
-
+	public ModelAndView musicalAddForm(String pr_code) {
+		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");	
 		ModelAndView mav = new ModelAndView();
 		List<MusicalHallDTO> list = partnerDao.getMusicalHallList();
 
 		mav.addObject("HallList", list);
-		
-		
-
 		
 		mav.setViewName("/partner/musicalAddForm");
 		return mav;
@@ -252,7 +278,7 @@ public class PartnerController {
 	
 	@RequestMapping("/insertMusical.do")
 	public ModelAndView insertMusical(MusicalDTO dto) {
-		System.out.println("m_code: " + dto.getM_code());
+		
         System.out.println("mh_code: " + dto.getMh_code());
         System.out.println("pr_code: " + dto.getPr_code());
         System.out.println("m_title: " + dto.getM_title());
@@ -267,29 +293,29 @@ public class PartnerController {
         System.out.println("m_notice: " + dto.getM_notice());
         System.out.println("m_poster: " + dto.getM_poster());
         System.out.println("m_detailImg: " + dto.getM_detailImg());
-        System.out.println("m_calender: " + dto.getM_calender());
+        System.out.println("m_calender: " + dto.getm_calendar());
         System.out.println("m_single: " + dto.getM_single());
         System.out.println("m_viewState: " + dto.getM_viewState());
         System.out.println("m_ref: " + dto.getM_ref());
         
-      //  System.out.println("뮤지컬명: " + m_title);
-      //  System.out.println("등록 유형: " + registrationType);
-      //  System.out.println("관람 등급: " + m_age);
-      //  System.out.println("공연장 코드: " + mh_code);
-      //  System.out.println("공연 시작 날짜: " + m_startDate);
-       // System.out.println("공연 종료 날짜: " + m_endDate);
-       // System.out.println("판매 오픈 날짜: " + m_openDate);
-       // System.out.println("판매 오픈 시간: " + m_openTime);
-    //    System.out.println("공연 시간: " + m_time);
-    //    System.out.println("인터미션 시간: " + m_inTime);
-    //    System.out.println("최대 매수: " + m_maxTicket);
-   //     System.out.println("단독 판매 여부: " + m_single);
-    //    System.out.println("캘린더 사용 여부: " + m_calendar);
-    //    System.out.println("포스터: " + (m_poster != null ? m_poster.getOriginalFilename() : "없음"));
-    //    System.out.println("상세 이미지: " + (m_detailImg != null ? m_detailImg.getOriginalFilename() : "없음"));
-      //  System.out.println("공연 정보: " + m_notice);
+        int result = partnerDao.insertMusical(dto);
+        System.out.println("결과@@@@@@@@@@@@@@@"+result);
 		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/partner/partnerMainForm");
+		return mav;
+	}
+	@RequestMapping("/partnerInsert.do")
+	public ModelAndView partnerInsert(PartnerDTO DTO) {
+		int result = partnerDao.partnerInsert(DTO);
+		System.out.println(result+"@@@@@@@@@@");
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/partner/partnerMainForm");
 		return mav;
 	}
 	
+	public PartnerDTO partenrInfo(String pr_code) {
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		return DTO;
+	}
 }

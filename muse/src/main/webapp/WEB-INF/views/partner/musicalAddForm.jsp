@@ -37,6 +37,14 @@
     border: none;
     cursor: pointer;
 }
+.textarea-style {
+	width: 100%;
+	height: 80px;
+	border-radius: 8px; /* 둥근 모서리 */
+	font-size: 16px;
+	background-color: #f9f9f9;
+	resize: none; /* 크기 조절 아이콘 제거 */
+}
 </style>
 <body>
 	<div class="main-content">
@@ -51,6 +59,7 @@
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
 					<td colspan="4"><input type="text" name="m_title"></td>
+					<td><input type="hidden" value="pr_1" name="pr_code"></td>
 				</tr>
 
 				<tr>
@@ -115,7 +124,6 @@
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
-							<option>5</option>
 					</select></td>
 				</tr>
 				<tr>
@@ -151,33 +159,11 @@
 				</tr>
 				<tr>
 					<th>공연 정보</th>
-						<td colspan="4"><textarea class="textarea-style" name="m_notice"></textarea></td>
+						<td colspan="6"><textarea class="textarea-style" name="m_notice"></textarea></td>
 					</tr>
 				
 			</table>
-			
-			<div class="partnerInfo">
-				<h2 style="text-align: center;">파트너 정보</h2>
-				<table>
-					<tr>
-						<th>파트너 명</th>
-						<td><input type="text" required></td>
-					</tr>
-					<tr>
-						<th>사업자 번호</th>
-						<td><input type="text" required></td>
-					</tr>
-					<tr>
-						<th>사업자 명</th>
-						<td><input type="text" required></td>
-					</tr>
-					<tr>
-						<th>대표자 이름</th>
-						<td><input type="text" required></td>
-					</tr>
-
-				</table>
-			</div>
+			<%@include file="partnerInfo.jsp" %>
 			<div class="buttondiv">
 				<input type="submit" value="신청" onclick="insertCast()"> <input
 					type="reset" value="취소">

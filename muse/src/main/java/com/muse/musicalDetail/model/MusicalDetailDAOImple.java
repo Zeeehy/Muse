@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.muse.review.model.MusicalReviewDTO;
+
 public class MusicalDetailDAOImple implements MusicalDetailDAO{
 	
 	private SqlSessionTemplate sqlMap;
@@ -114,5 +116,33 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 		return sqlMap.selectList("getRoundDOW",paramMap);
 	}
 	
+	@Override
+	public int countMusicalReview(String m_code) {
+		return sqlMap.selectOne("countMusicalReview", m_code);
+	}
+	
+	@Override
+	public double getMusicalReviewAVG(String m_code) {
+		Double result = sqlMap.selectOne("getMusicalReviewAVG",m_code);
+	    return (result != null) ? result : 0.0;
+	}
+	
+	@Override
+	public List<MusicalReviewDTO> getMusicalReviews(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getMusicalReviews",m_code);
+	}
+	
+	@Override
+	public List<String> getRound(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getRound",paramMap);
+	}
+	
+	@Override
+	public List<String> getSelectedRoundActors(Map paramMap) {
+		
+		return sqlMap.selectList("getSelectedRoundActors",paramMap);
+	}
 
 }

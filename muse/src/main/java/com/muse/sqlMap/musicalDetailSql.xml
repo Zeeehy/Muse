@@ -89,4 +89,45 @@
 		order by mo_date asc,mo_time asc, mc_char asc
   	</select>
   	
+  	<select id="countMusicalReview" parameterType="String" resultType="Integer">
+  		select count(*)
+		from musical_review mr, musical m, booking b, musical_option mo
+		where  b.b_code = mr.b_code and b.mo_code = mo.mo_code and m.m_code = mo.m_code
+		    and m.m_code = #{m_code}
+  	</select>
+  	
+  	<select id="getMusicalReviewAVG" parameterType="String" resultType="Double">
+  		select avg(mr_score)
+		from musical_review mr, booking b, musical_option mo, musical m
+		where mr.b_code = b.b_code and b.mo_code = mo.mo_code and mo.m_code = m.m_code 
+		and m.m_code = #{m_code}
+  	</select>
+  	
+  	<select id="getMusicalReviews" parameterType="String" resultType="com.muse.review.model.MusicalReviewDTO">
+  		select *
+		from musical_review mr, booking b, musical_option mo, musical m
+		where mr.b_code = b.b_code and b.mo_code = mo.mo_code and mo.m_code = m.m_code 
+		and m.m_code = #{m_code}
+		order by mr_date desc
+  	</select>
+  	
+	<select id="getRound" parameterType="map" resultType="String">
+	  	select mo_time
+		from musical_option mo
+		where  mo.m_code =#{m_code}
+   		and mo.mo_date = to_Date(#{mo_date}, 'YYYY-MM-DD')
+
+  	</select>  
+  		
+  	<select id="getSelectedRoundActors" parameterType="map" resultType="com.muse.musicalDetail.model.MusicalDetailCastDTO">
+	  	select ma.ma_name
+		from musical_option mo, musical_casting mc, musical_actor ma
+		where mo.mo_code = mc.mo_code and ma.ma_code = mc.ma_code
+		and mo.m_code =#{m_code}
+		and mo.mo_date = to_Date(#{mo_date},'YYYY-MM-DD') and mo.mo_time = #{mo_time}
+
+  	</select>
+  	
+
+  	
   </mapper>

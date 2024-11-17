@@ -25,6 +25,8 @@ import com.muse.myPage.model.MPassDTO;
 import com.muse.myPage.model.MuseCalendarDAO;
 import com.muse.myPage.model.MuseCalendarDTO;
 import com.muse.myPage.model.MuseCastDAO;
+import com.muse.myPage.model.MyBookingDetailDAO;
+import com.muse.myPage.model.MyBookingDetailDTO;
 import com.muse.myPage.model.MyBookingListDAO;
 import com.muse.myPage.model.MyBookingListDTO;
 import com.muse.myPage.model.MyLikeActorDTO;
@@ -47,6 +49,8 @@ public class MyPageController {
 	private MPassDAO mPassDao;
 	@Autowired
 	private MuseCastDAO museCastDao;
+	@Autowired
+	private MyBookingDetailDAO mybookingDetailDao;
 
 	
 	/**메인페이지*/	
@@ -227,6 +231,19 @@ public class MyPageController {
 		    return responseHtml.toString();
 		}
 	
+	/**마이페이지 예매상세*/
+	//예매상세 폼
+	@RequestMapping("/myPageBookingDetail.do")
+	public ModelAndView myPageBookingDetailForm() {
+		ModelAndView mav=new ModelAndView();
+		
+		List<MyBookingDetailDTO> bookingDetailList=mybookingDetailDao.getLikeBookingDetailList("b_1");	//test와 마찬가지로 바꿔야함
+		
+		mav.addObject("bookingDetailList",bookingDetailList);
+		mav.setViewName("/myPage/myPageBookingDetail");
+		return mav;
+	}		
+	
 	/**마이페이지 뮤즈캐스트*/
 	//뮤즈캐스트 폼
 	@RequestMapping("/myPageMuseCast.do")
@@ -267,7 +284,7 @@ public class MyPageController {
 	    for (ActorDTO actor : searchActorList) {
 	        responseHtml.append("<div class='item'>"
 	        		+ "<input type='checkbox' name='actorCheck' id='"+actor.getMa_code()+"'>"
-	        		+ "<img src='"+actor.getma_img()+"' alt='Actor Image'>"
+	        		+ "<img src='/muse/resources/img/actor/"+actor.getma_img()+"' alt='Actor Image'>"
 	        		+ "<div class='item-info'>"
 	        		+ "<h3>"+actor.getMa_name()+"</h3>"
 	        		+ "<p>뮤지컬배우</p>"
@@ -291,7 +308,7 @@ public class MyPageController {
 	    for (MusicalDTO musical : searchMusicalList) {
 	        responseHtml.append("<div class='item'>"
 	        		+ "<input type='checkbox' name='musicalCheck' id='"+musical.getM_code()+"'>"
-	        		+ "<img src='"+musical.getM_poster()+"' alt='Actor Image'>"
+	        		+ "<img src='/muse/resources/img/musical/"+musical.getM_poster()+"' alt='Musical Image'>"
 	        		+ "<div class='item-info'>"
 	        		+ "<h3>"+musical.getM_title() +"</h3>"
 	        		+ "<p>관람연령: "+musical.getM_age()+"</p>"

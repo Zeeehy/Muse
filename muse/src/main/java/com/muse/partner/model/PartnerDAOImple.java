@@ -120,4 +120,24 @@ public class PartnerDAOImple implements PartnerDAO {
 		}
 		return result;
 	}
+	
+	@Override
+	public int insertMusical(MusicalDTO DTO) {
+		int result = sqlMap.insert("insertMusical", DTO);
+		return result;
+	}
+	
+	@Override
+	public PartnerDTO getPartnerInfo(String pr_code) {
+		
+		PartnerDTO dto = sqlMap.selectOne("selectPartner",pr_code);
+		return dto;
+	}
+	
+	@Override
+	public int partnerInsert(PartnerDTO dto) {
+			int result = sqlMap.insert("partnerInsert",dto);
+		return result;
+	}
+	
 }
