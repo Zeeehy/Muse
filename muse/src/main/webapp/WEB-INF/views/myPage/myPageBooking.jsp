@@ -126,11 +126,12 @@ table td {
     color: #666;
 }
 
-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
+table button {
+	padding: 3px;
+	border: 1px solid #ddd;
+	border-radius: 10%;
 }
+
 </style>
 <script>
 function getBookingDay(param){
@@ -260,13 +261,29 @@ function getBookingDate(){
 	                        <td>${blist.b_date}</td>
 	                        <td>${blist.b_code}</td>
 	                        <td>${blist.m_title}</td>
-	                        <td>${blist.mo_date} | ${blist.mo_time}</td>
-	                        <td>${blist.b_count}</td>
-	                        <td>${blist.b_date}</td>
+	                        <td>${blist.mo_date} ${blist.mo_time}</td>
+	                        <td>${blist.b_count}매</td>
+	                        <td>${blist.mr_date} ${blist.mo_time}</td>
 	                        <td>
+	                        <c:choose>
+	                        <c:when test="${blist.b_state eq 0}">취소</c:when>
+                        	<c:when test="${blist.b_state eq 1}">
+	                        	예매
+	                        	<c:if test="${blist.review_state eq 1}">
+	                        		<button>리뷰쓰기</button>
+	                        	</c:if>	                        	
+                        	</c:when>
+	                        </c:choose>	
+	                        <!--  
 	                        	<c:if test="${blist.b_state eq 0}">취소</c:if>
-	                        	<c:if test="${blist.b_state eq 1}">예매</c:if>
+	                        	<c:if test="${blist.b_state eq 1}">
+		                        	예매
+		                        	<button>리뷰쓰기</button>
+	                        	</c:if>
+	                        	<c:if test="${blist.b_state eq 2}">예매(일부취소)</c:if>
+	                        -->
 	                        </td>
+	                        
 	                    </tr>
                 	</c:forEach>
                     <!-- 반복행 -->
