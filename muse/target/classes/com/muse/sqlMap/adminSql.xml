@@ -118,4 +118,42 @@
    update musical_review set mr_state=#{mr_state} where mr_code=#{mr_code}
   </update>
   
+  
+
+  
+  	<resultMap id="musePassStatsMap" type="java.util.HashMap">
+	    <result property="nopass" column="nopass"/>
+	    <result property="mpass" column="mpass"/>
+	</resultMap>
+	
+  <select id="musePassStats" resultMap="musePassStatsMap">
+	  SELECT 
+	    COUNT(CASE WHEN u_mpass = 0 THEN 1 END) AS nopass,
+	    COUNT(CASE WHEN u_mpass = 1 THEN 1 END) AS mpass
+	FROM users
+  </select>
+  
+  
+  <select id="pReviewList" resultType="com.muse.admin.model.RequestListDTO" >
+	select bdr_code,bdr.pr_code,bdr_key as mr_code, bdr_reason,  mr_score, mr_title,mr_content, mr_date, m_title,p.u_id,pr_name
+	from BBS_DELETE_REQUEST bdr, musical_review mr, booking b, musical_option mo, musical m,partner p
+	where bdr_type=0 and bdr_state=0
+	and bdr.bdr_key = mr.mr_code
+	and b.b_code = mr.b_code and b.mo_code = mo.mo_code and m.m_code = mo.m_code and bdr.pr_code = p.pr_code
+  </select>
+  
+  
+  <update id="pReview" parameterType="map">
+  update bbs_delete_request set bdr_state=#{bdr_state} where bdr_code=#{bdr_code}
+  </update>
+  
+  <delete id="pReviewDelete" parameterType="String">
+	delete from musical_review where mr_code in
+	(
+	select bdr_key
+	from bbs_delete_request
+	where bdr_code=#{bdr_code}
+	)
+  </delete>
+  
   </mapper>

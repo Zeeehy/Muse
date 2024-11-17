@@ -30,7 +30,8 @@
 }
 
 .sidebar a:hover, .dropdown-btn:hover {
-    background-color: #BFD9E0; /* Recommended dropdown hover color */
+    background-color: #BFD9E0;
+    color:white;
 }
 
 .sidebar .dropdown-btn:hover {
@@ -76,7 +77,8 @@
 }
 
 .dropdown-container a:hover {
-    background-color: #575757;
+    background-color: #add9ff;
+    color: white;
 }
 
 </style>
@@ -91,7 +93,7 @@
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="#">공연 등록 승인</a>
+            <a href="addRequestList.do">공연 등록 승인</a>
     		<a href="openRequestList.do">오픈공지 승인</a>
     		<a href="#">연장신청 승인</a>
         </div>
@@ -112,8 +114,8 @@
         </button>
         <div class="dropdown-container">
             <a href="adminReviewList.do">불량 리뷰 관리</a>
-		    <a href="#">파트너 리뷰 관리</a>
-		    <a href="#">파트너 QnA 관리</a>
+		    <a href="pReviewList.do">파트너 리뷰 관리</a>
+		    <a href="pQnAList.do">파트너 QnA 관리</a>
         </div>
         
         <button class="dropdown-btn">통계
@@ -121,7 +123,7 @@
         </button>
         <div class="dropdown-container">
             <a href="musePassStats.do">일반 / 회원 멤버쉽 통계</a>
-		    <a href="#">회원증가량</a>
+		    <a href="memberStats.do">회원증가량</a>
 		    <a href="#">공연 랭킹</a>
 		    <a href="#">파트너 랭킹</a>
         </div>

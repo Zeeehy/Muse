@@ -1,5 +1,7 @@
 package com.muse.admin.model;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 import com.muse.review.model.MusicalReviewDTO;
@@ -24,7 +26,16 @@ public interface AdminDAO {
 	List<MusicalReviewDTO> adminReviewList();
 	int adminDeleteReview(String mr_code,int mr_state);
 	
+	List<RequestListDTO> pReviewList();
+	int pReview(String bdr_code,int bdr_state);
+	int pReviewDelete(String bdr_code);
+	
 	List<PartnerDTO> partnerRequestList();
 	PartnerDTO partnerRequest(String pr_code);
 	int partnerRequestEnd(int rs_code,String pr_code);
+	
+	
+	HashMap<String,BigDecimal> musePassStats();
 }
+
+
