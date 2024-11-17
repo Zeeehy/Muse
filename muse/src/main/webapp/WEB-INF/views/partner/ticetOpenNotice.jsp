@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="/muse/resources/css/Phj.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
+
 </head>
 <%@include file="header.jsp"%>
 <%@include file="sidebar.jsp"%>

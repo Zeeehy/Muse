@@ -28,10 +28,10 @@ public class PartnerDAOImple implements PartnerDAO {
 	}
 
 	@Override
-	public List<MusicalDTO> SeachMusicalList(@Param("mh_code") String mh_code,
+	public List<MusicalDTO> SeachMusicalList(@Param("pr_code") String pr_code,
 			@Param("seachMusical") String seachMusical) {
 		List<MusicalDTO> list = sqlMap.selectList("selectMusicalList",
-				Map.of("mh_code", mh_code, "seachMusical", seachMusical));
+				Map.of("pr_code", pr_code, "seachMusical", seachMusical));
 		return list;
 	}
 
@@ -140,4 +140,39 @@ public class PartnerDAOImple implements PartnerDAO {
 		return result;
 	}
 	
+	@Override
+	public List<MusicalReviewDTO> seachReview(String pr_code) {
+		List<MusicalReviewDTO> list = sqlMap.selectList("reviewList",pr_code);
+		return list;
+	}
+	@Override
+	public int seachCodeMax(String idx,String table) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("table", table);
+		params.put("code", idx);
+		int result = sqlMap.selectOne("seachCode",params);
+		return result;
+	}
+	
+	@Override
+	public int InsertServiceRequest(ServiceRequestDTO dto) {
+		int result = sqlMap.insert("insertservRe",dto);
+		return result;
+	}
+	@Override
+	public String MaxMcode() {
+		String m_code = sqlMap.selectOne("maxMcode");
+		return m_code;
+	}
+	
+@Override
+	public List<MusicalReviewDTO> seachMusicalReview(String pr_code, String m_code) {
+
+	Map<String, Object> params = new HashMap<>();
+	params.put("pr_code", pr_code);
+	params.put("m_code", m_code);
+	List<MusicalReviewDTO> list = sqlMap.selectList("reviewMuscialList",params);
+	System.out.println("뮤지컬 이름으로 리뷰 리스트 접근확인");
+	return list;
+	}
 }

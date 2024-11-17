@@ -2,10 +2,10 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<body onload="onloadSession()">
+<body><!--  onload="onloadSession()" -->
 	<div class="header">
 	<div class="left-section">
-        <input type="image" src="/muse/resources/img/museimage.png" class="header-image" onclick="window.location.href='partnerMainForm.do';">
+        <input type="image" src="/muse/resources/img/museimage.png" class="header-image" onclick="window.location.href='partnerMainForm.do?pr_code='${s_pr_code};">
          <select>
          	<option selected>기획사</option>
          	<option>2</option>
@@ -22,12 +22,14 @@
 </body>
 <script>
 
-function onloadSession(){
+/* function onloadSession(){
 	var pr_code= "${s_pr_code}";
 	var u_id = "${u_id}";
-	if(pr_code=="no"||pr_code==null){
+	
+	if(pr_code=="no"||pr_code==null||pr_code==""){
+		alert("파트너 등록 먼저 해주세요");
 		window.location.href='partnerAddForm.do?u_id='+u_id+"&pr_code="+pr_code;
 		}
-}
+} */
 </script>
 </html>

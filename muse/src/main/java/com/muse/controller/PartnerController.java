@@ -22,9 +22,11 @@ import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.MusicalDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
+import com.muse.partner.model.MusicalReviewDTO;
 import com.muse.partner.model.PartnerDAO;
 import com.muse.partner.model.PartnerDTO;
 import com.muse.partner.model.SeatGradeDTO;
+import com.muse.partner.model.ServiceRequestDTO;
 import com.muse.reserv.model.ReservDAO;
 import com.muse.seat.model.SeatDTO;
 import com.muse.seat.model.SeatLayoutDAO;
@@ -41,23 +43,38 @@ public class PartnerController {
 	
 	@RequestMapping("/partnerAddForm.do")
 	public ModelAndView partnerAddForm(
-			@RequestParam(value="pr_code",required = false, defaultValue = "no")String pr_code,
-			@RequestParam(value="s_id",required = false, defaultValue = "no")String u_id) {
+			@RequestParam(value="s_pr_code",required = false, defaultValue = "no")String pr_code) {
 		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");
-		System.out.println(u_id);
-		System.out.println(pr_code);
+		
 		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		//System.out.println(DTO.getRs_code()+"@###################");
 		ModelAndView mav = new ModelAndView();
 		String msg= "";
 		if(DTO ==null) {
 			msg="파트너 신청을 해주세요";
-		}else {if(DTO.getRs_code()==1) {
-					msg="심사중입니다.";
+		}else if(DTO.getRs_code()==2) {
+					msg="관리자에게 문의하세요.";
+				}else if(DTO.getRs_code()==0) {
+					msg="승인 대기중입니다.";
 				}
-		}
+
+
 		mav.addObject("dto", DTO);
 		mav.setViewName("/partner/partnerAddForm");
 		mav.addObject("msg", msg);
+		return mav;
+	}
+	
+	
+	@RequestMapping("/reviewDeleteForm.do")
+	public ModelAndView reviewDelete(@RequestParam(value="pr_code") String pr_code) {
+		List<MusicalReviewDTO> list = partnerDao.seachReview(pr_code);
+		System.out.println("123");
+		System.out.println(pr_code);
+		System.out.println(list.size());
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", list);
+		mav.setViewName("/partner/reviewDelete");
 		return mav;
 	}
 	
@@ -72,15 +89,18 @@ public class PartnerController {
 			defaultValue = "no")String pr_code) {
 		
 		ModelAndView mav = new ModelAndView();
-		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
-		mav.addObject("dto", DTO);
+		PartnerDTO dto = partenrInfo(pr_code);
+		mav.addObject("dto", dto);
 		mav.setViewName("/partner/ticetOpenNotice");
 		return mav;
 	}
 	
 	@RequestMapping("/partnerMainForm.do")
-	public String partnerMain() {
-		return "/partner/partnerMainForm";
+	public ModelAndView partnerMain(@RequestParam(value="s_pr_code", defaultValue = "no") String pr_code) {
+		ModelAndView mav =new ModelAndView();
+		mav.addObject("pr_code", pr_code);
+		mav.setViewName("/partner/partnerMainForm");
+		return mav;
 	}
 	@RequestMapping("/musicalSeatAddForm.do")
 	public ModelAndView musicalSeatForm() {
@@ -118,9 +138,9 @@ public class PartnerController {
 		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");	
 		ModelAndView mav = new ModelAndView();
 		List<MusicalHallDTO> list = partnerDao.getMusicalHallList();
-
+		PartnerDTO dto = partenrInfo(pr_code);
+		mav.addObject("dto", dto);
 		mav.addObject("HallList", list);
-		
 		mav.setViewName("/partner/musicalAddForm");
 		return mav;
 	}
@@ -136,9 +156,9 @@ public class PartnerController {
 	}
 	
 	@RequestMapping("/getMusicalList.do")
-	public ModelAndView getMusicalList(@RequestParam String mh_code, 
+	public ModelAndView getMusicalList(@RequestParam String pr_code, 
 			@RequestParam(defaultValue="")String seachMusical) {
-			List<MusicalDTO> list = partnerDao.SeachMusicalList(mh_code, seachMusical);
+			List<MusicalDTO> list = partnerDao.SeachMusicalList(pr_code, seachMusical);
 			ModelAndView mav = new ModelAndView();
 			
 	    	mav.addObject("list",list);
@@ -299,7 +319,18 @@ public class PartnerController {
         System.out.println("m_ref: " + dto.getM_ref());
         
         int result = partnerDao.insertMusical(dto);
+        String m_code= partnerDao.MaxMcode();
+        ServiceRequestDTO Srdto = new ServiceRequestDTO();
+        Srdto.setM_code(m_code);
+        Srdto.setRs_code(0);
+        Srdto.setRt_code(0);
+        
+        int sr_result = partnerDao.InsertServiceRequest(Srdto);
+        System.out.println(m_code+"@@@@@@@@@@@@@@");
+        
+        
         System.out.println("결과@@@@@@@@@@@@@@@"+result);
+        System.out.println("결과@@@@@@@@@@@@@@@"+sr_result+"@@@@@@@@@@@@@@@@@한번에가자");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/partner/partnerMainForm");
 		return mav;
@@ -318,4 +349,44 @@ public class PartnerController {
 		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
 		return DTO;
 	}
+	/*
+	 * @RequestMapping() public ModelAndView reviewDeleteForm() { ModelAndView mav =
+	 * new ModelAndView(); return mav; }
+	 */
+	@RequestMapping("/deleteReviewAction.do")
+	public ModelAndView deleteReviewAction(
+	        @RequestParam(value = "mr_code") String mr_code,
+	        @RequestParam(value = "mr_title") String mr_title,  // 제목
+	        @RequestParam(value = "u_id") String u_id,          // 작성자
+	        @RequestParam(value = "mr_date") String mr_date,
+	        @RequestParam(value= "pr_code")String pr_code) {
+		System.out.println("리뷰삭제페이지이동 컨트롤러메서드진입확인");
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	@RequestMapping("/serchMusical.do")
+	public ModelAndView serchMusicalReview() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	@RequestMapping("/getmusicalReview.do")
+	public ModelAndView getmusicalReview(
+			@RequestParam(value="pr_code") String pr_code, 
+			@RequestParam(value = "m_code",defaultValue="")String m_code) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(m_code+"@@@@@@@@@@@@@@");
+		List<MusicalReviewDTO> list = partnerDao.seachMusicalReview(pr_code,m_code);
+		System.out.println(pr_code);
+		System.out.println("해당 뮤지컬 리스트 사이즈"+list.size());
+		mav.addObject("list", list);
+		mav.setViewName("parkJson");
+		return mav;
+	}
+	@RequestMapping("/deleteReviewForm.do")
+	public ModelAndView deleteReview() {
+		ModelAndView mav = new ModelAndView();
+		
+		return mav;
+	}
+
 }

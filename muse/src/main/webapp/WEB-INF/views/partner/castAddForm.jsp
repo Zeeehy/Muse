@@ -10,9 +10,7 @@
 <link rel="stylesheet" href="/muse/resources/css/Phj.css"
 	type="text/css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<!-- 검색 아이콘 -->
+
 
 <style>
 .table-content td input {
