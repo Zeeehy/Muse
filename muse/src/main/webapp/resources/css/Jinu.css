@@ -43,8 +43,17 @@ li, label, input, tr, th, td {
     padding: 0;
     margin: 0;
     border-bottom: 0.1rem solid #b6bdc7;
+    background-color: #fff;
     
 }
+
+.productMainBody .nav{
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+
 
 .navItem {
     flex: 1; /* 각 항목이 동일한 공간을 차지하도록 설정 */
@@ -161,6 +170,8 @@ li, label, input, tr, th, td {
     color: #666;
     font-weight: bold;
     height: 40px;
+    padding-top: 20px;
+    
 }
 
 .productWrapper .nav .navItem.is-active {
@@ -507,8 +518,9 @@ img.castingImage{
 .bbsListHead{
     display: flex;
     justify-content: space-between;
-padding-bottom: 1rem;
+	padding-bottom: 1rem;
     border-bottom: 0.1rem solid #b6bdc7;
+    align-items: center;
 }
 
 .bbsItem{
@@ -534,7 +546,6 @@ padding-bottom: 1rem;
     display: inline-block; /* 나란히 배치 */
     background-repeat: no-repeat;
     background-size: 24px 24px; /* 이미지 크기를 24px로 설정 */
-    margin-left: -4px;
 }
 
 .ystarHalf {
@@ -545,6 +556,8 @@ padding-bottom: 1rem;
 .gstarHalf {
     background-image: url("/muse/resources/img/gstar.svg");
     background-position: right; /* 오른쪽 반만 빈 별로 */
+        margin-left: -4px;
+    
 }
 
 /* 채운 별과 빈 별을 나란히 배치 */
@@ -574,3 +587,138 @@ padding-bottom: 1rem;
     height: 24px;
     margin-right: 4px;
 }
+.prdStar{
+	display:flex;
+	    gap: 10px;
+}
+
+.tagText{
+	display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+}
+
+/* 리뷰 */
+.prdStar.type-total{
+	display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blind {
+	font-size: 20px;
+    font-weight: bold;
+}
+
+.bbsItemHead{
+	display: flex;
+    justify-content: space-between;
+}
+
+.prdBbs .bbsContent {
+    padding: 2rem 2.4rem;
+    border: 0.1rem solid #dfe5ed;
+    border-radius: 1rem;
+    box-sizing: border-box;
+}
+
+.bbsTitle{
+	padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.bbsTitleText{
+	    font-size: 17px;
+	
+}
+
+.bbsTotal .num{
+	font-size: 16px;
+    color: #9b43d4;
+}
+
+.bbsWriteBtn{
+	display: inline-block;
+    background-color: black;
+    color: white;
+    border-radius: 0.3rem;
+    height: 30px;
+    box-sizing: border-box;
+    line-height: 0;
+    padding: 20px;
+}
+
+
+/* 구글맵 관련  */
+.musical_hall_mapper{
+	position:absolute;
+	left: 35%;
+	background-color: white;
+	border: 0.1rem solid #ccc;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+	z-index: 99;
+    width: 700px;
+}
+
+#map{
+	padding: 1.6rem 2.5rem 2.5rem;
+	
+}
+
+.popupTitle{
+	    font-size: 20px;
+	
+}
+
+.popupHead{
+	    height: 5rem;
+    padding: 0 2rem;
+    line-height: 5rem;
+    text-align: left;
+    border-bottom: 0.1rem solid #dde4ec;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+        display: flex;
+    justify-content: space-between;
+}
+
+.popPlaceWrap {
+    text-align: left;
+    padding: 1.6rem 2.5rem 2.5rem;
+}
+
+ .popPlaceTitle {
+    display: inline-block;
+    max-width: 55rem;
+    margin-right: 0.2rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #000;
+    padding-bottom: 20px;
+}
+.popPlaceInfo p, .popPlaceInfo span{
+	line-height: 160%;
+	color: #666;
+    font-size: 1rem;
+	padding-top: 5px;    
+	padding-bottom: 20px;
+	
+}
+
+.hall_img{
+	width: 50%;
+    height: 50%;
+    object-fit: contain;
+        
+}
+
+.popupCloseBtn{
+	font-size: 40px;
+    width: 60px;
+    background-color: white;
+	
+}
+    

@@ -8,6 +8,8 @@ public class MusicalHallDTO {
 	private String mh_name;
 	private String mh_addr;
 	private String mh_img;
+	private double mh_x;
+	private double mh_y;
 	public MusicalHallDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -46,6 +48,27 @@ public class MusicalHallDTO {
 	public void setMh_img(String mh_img) {
 		this.mh_img = mh_img;
 	}
+
+
+	public double getMh_x() {
+		return mh_x;
+	}
+
+
+	public void setMh_x(double mh_x) {
+		this.mh_x = mh_x;
+	}
+
+
+	public double getMh_y() {
+		return mh_y;
+	}
+
+
+	public void setMh_y(double mh_y) {
+		this.mh_y = mh_y;
+	}
+	
 	
 	
 }

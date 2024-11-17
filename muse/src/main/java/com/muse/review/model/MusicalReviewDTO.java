@@ -18,7 +18,8 @@ public class MusicalReviewDTO {
 	private String mo_date; //관람일시, mo_date _mo_time
 	private String u_id; // 작성자
 	
-	
+	private String checkLike; // 좋아요 유무
+	private int like_count; // 좋아요 개수
 	
 	public MusicalReviewDTO() {
 		super();
@@ -91,6 +92,30 @@ public class MusicalReviewDTO {
 
 	public void setU_id(String u_id) {
 		this.u_id = u_id;
+	}
+
+
+
+	public String getCheckLike() {
+		return checkLike;
+	}
+
+
+
+	public void setCheckLike(String checkLike) {
+		this.checkLike = checkLike;
+	}
+
+
+
+	public int getLike_count() {
+		return like_count;
+	}
+
+
+
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
 	}
 	
 	
