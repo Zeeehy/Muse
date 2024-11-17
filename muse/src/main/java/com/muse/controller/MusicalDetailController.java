@@ -25,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.muse.admin.model.PartnerDTO;
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
 import com.muse.musicalDetail.model.MusicalDetailDAO;
 import com.muse.musicalDetail.model.MusicalDetailDTO;
+import com.muse.partner.model.MusicalHallDTO;
 import com.muse.reserv.model.ReservDAO;
 import com.muse.review.model.MusicalReviewDTO;
 
@@ -48,7 +50,9 @@ public class MusicalDetailController {
 	@RequestMapping("/musicalDetail.do")
 	public ModelAndView musicalDetail(@RequestParam String m_code,HttpSession session) {
 		
+		
 		ModelAndView mav = new ModelAndView();
+		
 		String s_id = (String) session.getAttribute("s_id")==null?"0":(String) session.getAttribute("s_id");
 		
 		MusicalDetailDTO mddto = musicalDetaildao.getMusicalBasicInfo(m_code);
@@ -68,6 +72,7 @@ public class MusicalDetailController {
 				
 		Map paramMap = new HashMap<String,String>();
 		paramMap.put("m_code", m_code);
+		paramMap.put("u_id", s_id);
 		List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
 		List<Date> getRoundDOW = musicalDetaildao.getRoundDOW(paramMap); 
 		
@@ -80,7 +85,13 @@ public class MusicalDetailController {
 		int countReview = musicalDetaildao.countMusicalReview(m_code);
 		double reviewAVG = musicalDetaildao.getMusicalReviewAVG(m_code);
 		
-		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(m_code);
+		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(paramMap);
+		
+		PartnerDTO pdto = musicalDetaildao.getPartnerInfoByMusical(m_code);
+		
+		MusicalHallDTO mhdto = musicalDetaildao.getMusicalHallInfo(m_code);
+		
+		List priceList = reservDAO.getMusicalPrice(m_code);
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
@@ -93,6 +104,9 @@ public class MusicalDetailController {
 		mav.addObject("countReview",countReview);
 		mav.addObject("reviewAVG",reviewAVG);
 		mav.addObject("reviews",reviews);
+		mav.addObject("pdto",pdto);
+		mav.addObject("mhdto",mhdto);
+		mav.addObject("priceList",priceList);
 		
 		mav.setViewName("musicalDetail/musicalDetail");
 		
@@ -208,6 +222,40 @@ public class MusicalDetailController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("/changeLikeReview.do")
+	public ModelAndView changeLikeReview( @RequestParam String mr_code, @RequestParam String checkLike,HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		String u_id = (String)session.getAttribute("s_id");
+		
+		System.out.println(mr_code);
+		System.out.println(u_id);
+		System.out.println(checkLike);
+		// 0일 때 1로 옴
+		// 미등록일때 1로 옴
+		
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("u_id", u_id);
+		paramMap.put("mr_code", mr_code);
+		if(checkLike.equals("N")) {
+			System.out.println("등록분기");
+
+			musicalDetaildao.insertLikeMusicalReview(paramMap);
+		} else {
+			System.out.println("삭제분기");
+			musicalDetaildao.deleteLikeMusicalReview(paramMap);
+		}
+		
+		int result = musicalDetaildao.countLikeMusicalReview(mr_code);
+		
+		mav.addObject("result",result);
+		
+		mav.setViewName("parkJson");
+		
+		return mav;
+	}
+	
 	
 	@RequestMapping("/getCastingByRange.do")
 	@ResponseBody  // JSON 응답을 위해 추가

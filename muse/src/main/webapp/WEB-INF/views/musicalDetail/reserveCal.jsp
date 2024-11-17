@@ -377,8 +377,19 @@
         
 
         function previousMonth() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            showCalendar(currentDate);
+        	
+        	const newDate = new Date(currentDate);
+        	   newDate.setMonth(newDate.getMonth() - 1);
+
+        	   // 오늘 날짜
+        	   const today = new Date();
+        	   today.setDate(1);  // 월 비교를 위해 1일로 설정
+
+        	   if(newDate >= startDate && newDate >= today) {
+        	       currentDate.setMonth(currentDate.getMonth() - 1);
+        	       showCalendar(currentDate);
+        	   }
+
         }
 
         function nextMonth() {

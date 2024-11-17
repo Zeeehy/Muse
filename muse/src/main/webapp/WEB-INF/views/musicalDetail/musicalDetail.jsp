@@ -12,6 +12,8 @@
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Jinu.css">
 <script src="/muse/resources/js/httpRequest.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2eeedad15b040c264a695f50e1505ff3&libraries=services"></script>
+
 
 </head>
 <body>
@@ -20,6 +22,19 @@
 	<div id="container">
 		<div class="contents">
 			<div class="productWrapper">
+				<div class="musical_hall_mapper" style="display:none;">
+					<div class="popupHead"><strong class="popupTitle">공연장 정보</strong><button class="popupCloseBtn">X</button></div>
+					<div class="popupBody">
+							<div class="popPlaceWrap">
+							<div class="popPlaceTitle">${mhdto.mh_name }</div>
+							<div class="popPlaceInfo">
+								<img alt="aaa" src="resources/img/musicial_hall/${mhdto.mh_img }" class="hall_img">
+								<p>주소 : <span id="addr"></span> </p>
+							</div>
+							<div id="map" style="width: 500px; height: 400px;"></div>
+						</div>
+					</div>
+				</div>
 				<div class="productMain">
 					<div class="productMainTop">
 						<div class="summary">
@@ -27,7 +42,41 @@
 								<h2 class="prdTitle">${mddto.m_title }</h2>
 								<div class="prdSection">
 									<div class="tagText">
-										<span>뮤지컬</span><span> 주간 1위 . 별별별별별 처리해야됨</span>
+										<span>뮤지컬</span>
+										<span> 주간 1위 <c:if test="${!empty reviews }"> : </c:if> </span>
+										<span> 
+											<c:if test="${!empty reviews }">
+												<div class="reviewStarTotal">
+													<div class="prdStar">
+														<div class="prdStarBack">
+															<c:forEach begin="1" end="5" var="i">
+																<c:choose>
+														            <%-- 완전한 별 --%>
+														            <c:when test="${i <= Math.floor(reviewAVG)}">
+														                <img src="/muse/resources/img/ystar.svg" >
+														            </c:when>
+														            
+														            <%-- 반 별 --%>
+														            <c:when test="${i == Math.ceil(reviewAVG) && reviewAVG % 1 >= 0.5}">
+														                <span class="ystarHalf"></span>
+														                <span class="gstarHalf"></span>
+														            </c:when>
+														            
+														            <%-- 빈 별 --%>
+														            <c:otherwise>
+														                <img src="/muse/resources/img/gstar.svg" >
+														            </c:otherwise>
+														        </c:choose>
+														   </c:forEach>
+														</div>
+														<div class="prdStarScore">
+														<!-- <span class="blind">평점: </span>9.9</div> -->
+														<span class="blind">${reviewAVG }</span>
+														</div>
+													</div>
+												</div>
+											</c:if>
+										</span>
 									</div>
 									<div class="prdTitleBottom"></div>
 								</div>
@@ -41,11 +90,13 @@
 									<div class="posterBoxBottom">
 										<div class="prdCast">
 											<div class="prdCastWrap">
-												<a class="prdCastBtn" href="#"> <c:if
+												<a class="prdCastBtn" href="#"> 
+													<c:if
 														test="${empty sessionScope.s_id}">
 														<img class="cast_icon" alt=""
 															src="resources/img/muse_cast/empty_heart.png">
-													</c:if> <c:if test="${!empty sessionScope.s_id}">
+													</c:if>
+													<c:if test="${!empty sessionScope.s_id}">
 														<c:choose>
 															<c:when test="${checkLikeMusical == 1}">
 																<img class="cast_icon" alt=""
@@ -67,7 +118,7 @@
 									<li class="infoItem"><strong class="infoLabel">장소</strong>
 									<div class="infoDesc">
 											<a class="infoBtn" data-popup="info-place" role="button"
-												href="#">두산아트센터 연강홀<i>(자세히)</i></a>
+												href="#">${mhdto.mh_name }<i>(자세히)</i></a>
 										</div></li>
 									<li class="infoItem"><strong class="infoLabel">공연기간</strong>
 									<div class="infoDesc">
@@ -86,13 +137,13 @@
 									<li class="infoItem infoPrice"><strong class="infoLabel">가격</strong>
 									<div class="infoDesc">
 											<ul class="infoPriceList">
-												<li class="infoPriceItem is-largePrice"><a
-													class="infoBtn is-accent" data-popup="info-price"
-													role="button" href="#">전체가격보기 <i>(자세히)</i></a></li>
-												<li class="infoPriceItem"><span class="name">R석
-														처리해야됨</span><span class="price ">88,000원</span></li>
-												<li class="infoPriceItem"><span class="name">S석</span><span
-													class="price ">66,000원</span></li>
+												
+												<c:forEach items="${priceList}" var="price">
+												        <li class="infoPriceItem">
+												        	<span class="name">${price.SG_NAME}</span>
+												        	<span class="price ">${price.SP_PRICE}원</span>
+												        </li>
+												</c:forEach>
 											</ul>
 										</div></li>
 								</ul>
@@ -119,8 +170,8 @@
 										 	(${countReview })
 										 </c:if>
 									</span></a></li>
-								<li class="navItem"><a class="navLink" href="#"
-									data-target="QNA">Q&amp;A<span class="countNum">9</span></a></li>
+<!-- 								<li class="navItem"><a class="navLink" href="#"
+									data-target="QNA">Q&amp;A<span class="countNum">9</span></a></li> -->
 							</ul>
 						</nav>
 						<div id="INFO" class="prdContents detail">
@@ -298,14 +349,14 @@
 
 					<div id="ADDITIONAL" class="prdContents prdMoreInfo"
 						style="display: none;">
-						<div class="moreInfoContainer">
+<!-- 						<div class="moreInfoContainer">
 							<h4 class="moreInfoTitle">기획사 정보 처리해야함</h4>
 							<p>
 								주최 알라딘문화산업전문회사, 롯데컬처웍스, 클립서비스 / 제작 S&amp;CO <br>제작투자 대구MBC,
 								IBK기업은행, 로간벤처스 / 협찬 메르세데스-벤츠 코리아, 콤텍시스템 <br>공동주관 다날엔터테인먼트 /
 								공연문의 1577-3363
 							</p>
-						</div>
+						</div> -->
 
 						<div class="moreInfoContainer">
 							<h3 class="contentTitle">상품관련 정보</h3>
@@ -318,24 +369,27 @@
 									<col class="col4">
 								</colgroup>
 								<tbody>
-									<tr>
+									<!-- <tr>
 										<th>주최/기획</th>
 										<td>클립서비스주식회사</td>
 										<th>고객문의</th>
 										<td>1577-3363</td>
-									</tr>
+									</tr> -->
 									<tr>
 										<th>공연시간</th>
-										<td>150 분(인터미션 : 20분)</td>
+										<td>${mddto.m_time } 분(인터미션 : ${mddto.m_intime }분)</td>
 										<th>관람등급</th>
-										<td>8세이상 관람가능</td>
+										<td>${mddto.m_age }</td>
 									</tr>
 									<tr>
 										<th>주연</th>
-										<td><span class="moreInfoCast">김준수, 서경수, 박강현, 정성화,
-												정원영, 강홍석, 이성경, 민경아, 최지혜, 이상준, 황만익, 윤선용, 임별, 방보용, 양병철</span></td>
+										<td><span class="moreInfoCast">
+											<c:forEach items="${ castings}" var="casting">
+												${casting.ma_name }
+											</c:forEach>
+										</span></td>
 										<th>공연장소</th>
-										<td>샤롯데씨어터</td>
+										<td>${mhdto.mh_name}</td>
 									</tr>
 									<tr>
 										<th>예매수수료</th>
@@ -345,7 +399,7 @@
 									</tr>
 									<tr>
 										<th>유효기간<br>/이용조건</th>
-										<td colspan="3">2024.11.22~2025.06.22 예매한 공연 날짜, 회차에 한해
+										<td colspan="3">${mddto.m_startdate }~${mddto.m_enddate } 예매한 공연 날짜, 회차에 한해
 											이용가능</td>
 									</tr>
 									<tr>
@@ -395,7 +449,7 @@
 										<td colspan="3"><ul class="moreInfoList">
 												<li>My티켓 &gt; 예매/취소내역에서 직접 취소 또는 고객센터 (1544-1555)를 통해서
 													예매를 취소할 수 있습니다.</li>
-												<li>티켓이 배송된 이후에는 인터넷 취소가 안되며, 취소마감 시간 이전에 티켓이 인터파크 티켓
+												<li>티켓이 배송된 이후에는 인터넷 취소가 안되며, 취소마감 시간 이전에 티켓이 뮤즈
 													고객센터로 반송되어야 취소 가능합니다. 취소수수료는 도착일자 기준으로 부과되며, 배송료는 환불되지
 													않습니다.</li>
 											</ul></td>
@@ -412,13 +466,10 @@
 									<tr>
 										<th>모바일티켓 안내</th>
 										<td colspan="3"><ul class="moreInfoList">
-												<li>티켓수령방법을 모바일티켓으로 선택 시 인터파크 앱, 인터파크 티켓 앱에서 즉시 이용
+												<li>티켓수령방법을 모바일티켓으로 선택 시 뮤즈 앱에서 즉시 이용
 													가능합니다.</li>
-												<li>모바일티켓으로 예매하실 경우 종이 티켓으로 입장권 수령방법 변경 불가합니다.</li>
 												<li>결제완료(입금완료)후 모바일티켓을 확인할 수 있습니다.</li>
 												<li>안드로이드 버전 4.0이상만 사용 가능, iOS 7 이상만 사용 가능합니다.</li>
-												<li>스포츠 시즌권 구매고객이거나 인터파크 외 예매처에서 예매한 모바일티켓은 별도의 모바일티켓
-													앱을 통해서만 이용 가능합니다.</li>
 											</ul></td>
 									</tr>
 								</tbody>
@@ -435,29 +486,29 @@
 									<col class="col4">
 								</colgroup>
 								<tbody>
-									<tr>
-										<th>상호</th>
-										<td>클립서비스주식회사</td>
+ 									<tr>
+<!-- 										<th>상호</th>
+										<td>클립서비스주식회사</td> -->
 										<th>대표자명</th>
-										<td>설도권</td>
+										<td>${pdto.pr_name }</td>
 									</tr>
 									<tr>
 										<th>사업자등록번호</th>
-										<td>211-86-93404</td>
+										<td>${pdto.pr_num }</td>
 										<th>E-mail</th>
-										<td>clipservicetm@naver.com</td>
+										<td>${pdto.pr_email }</td>
 									</tr>
 									<tr>
 										<th>연락처</th>
-										<td colspan="3">1577-3363</td>
+										<td colspan="3">${pdto.pr_pnum }</td>
 									</tr>
-									<tr>
+									<!-- <tr>
 										<th>주소</th>
 										<td colspan="3">서울특별시 강남구 강남대로 564(논현동) 지하1층,6층(논현동,원빌딩)</td>
-									</tr>
+									</tr> -->
 								</tbody>
 							</table>
-							<div class="escrowGuide">
+<!-- 							<div class="escrowGuide">
 								<strong class="escrowTitle">㈜인터파크 안전결제시스템 <span
 									class="is-light">(Escrow System, 에스크로)</span> 안내
 								</strong>
@@ -467,7 +518,7 @@
 										href="//www.fss.or.kr/fss/bbs/B0000392/view.do?nttId=63552&amp;viewType=BODY&amp;menuNo=&amp;sd[…]d=1&amp;searchWrd=%EC%9D%B8%ED%84%B0%ED%8C%8C%ED%81%AC&amp;pageIndex=1"
 										class="escrowLink" target="_blank">서비스 가입사실 확인</a>
 								</p>
-							</div>
+							</div> -->
 						</div>
 
 						<div class="moreInfoContainer">유의사항 등등</div>
@@ -559,7 +610,43 @@
 										                
 										            </div>
 										            <div class="rightSide">
-										                <div>${review.u_id }|${review.mr_date }|공감 하트</div>
+										                <div class="reviewInfo">
+										                	<span>${review.u_id } |</span> <span> ${review.mr_date } |</span>
+										                	<span class="like_review" data-code="${review.mr_code }">공감 ${review.like_count }</span>  
+										                	<span>
+											                <c:if test="${review.checkLike=='Y' }">
+											                	<img class="cast_icon" alt=""
+																			src="resources/img/muse_cast/full_heart.png" data-code = "${review.mr_code }"
+																			data-check-like = "${review.checkLike }">
+											                </c:if>
+											                <c:if test="${review.checkLike=='N' }">
+											                	<img class="cast_icon" alt=""
+																			src="resources/img/muse_cast/empty_heart.png" data-code = "${review.mr_code }"
+																			data-check-like = "${review.checkLike }">
+											                </c:if>
+										                	</span>
+										                
+										                <%-- <c:if test="${empty sessionScope.s_id}">
+														<img class="cast_icon" alt=""
+															src="resources/img/muse_cast/empty_heart.png">
+														</c:if>
+														<c:if test="${!empty sessionScope.s_id}">
+															<c:choose>
+																<c:when test="${checkLikeMusical == 1}">
+																	<img class="cast_icon" alt=""
+																		src="resources/img/muse_cast/full_heart.png">
+																</c:when>
+																<c:otherwise>
+																	<img class="cast_icon" alt=""
+																		src="resources/img/muse_cast/empty_heart.png">
+																</c:otherwise>
+															</c:choose>
+														</c:if> --%>
+										                
+										                
+										                
+										                
+										                </div>
 										            </div>
 										        </div>
 										        <div class="bbsItemBody">
@@ -590,7 +677,6 @@
 				<div class="stickyWrap">
 					<div>
 						<%@ include file="reserveCal.jsp" %>
-							
 					</div>
 				</div>
 			</div>
@@ -708,6 +794,8 @@
 																castingHeart.src = 'resources/img/muse_cast/full_heart.png';
 																castingHeart.dataset.liked = 'Y';
 															}
+															
+
 
 														}
 													}
@@ -720,6 +808,48 @@
 								});
 
 			});
+	
+	var review_casts = document.querySelectorAll('.reviewInfo .cast_icon');
+
+	review_casts.forEach(function(cast) {
+	    cast.addEventListener("click", function() {
+	        
+	    	if (s_id) {
+	    		alert(cast.dataset.checkLike);
+				var params = 'mr_code='
+						+ cast.dataset.code;
+				params += "&checkLike="
+						+ cast.dataset.checkLike;
+				sendRequest('changeLikeReview.do',params,function() {
+							// 요청 성공 시 추가 처리
+							if (XHR.readyState === 4) {
+								if (XHR.status === 200) {
+
+									if (cast.dataset.checkLike === 'Y') {
+										cast.src = 'resources/img/muse_cast/empty_heart.png';
+										cast.dataset.checkLike = 'N';
+									} else {
+										cast.src = 'resources/img/muse_cast/full_heart.png';
+										cast.dataset.checkLike = 'Y';
+									}
+									var countLike = XHR.responseText;
+									var data = JSON.parse(countLike);
+									var countLikeSpan = document.querySelector(".like_review[data-code='" + cast.dataset.code + "']");
+									countLikeSpan.innerText='공감 ' +data.result;
+									
+									console.log(data);
+								}
+							}
+						}, 'GET');
+			} else {
+				if (confirm('로그인을 하신 후 서비스 이용이 가능합니다. 로그인하시겠습니까?')) {
+					window.location.href = 'memberLogin.do';
+				}
+			}
+	    	
+	    });
+	});
+	
 	
 	// 캐스팅 필터링 날짜 기본 세팅
 	var range_start = document.querySelector('#range_start');
@@ -884,7 +1014,47 @@
             
         });
     }
+    
+    var hall_popup = document.querySelector(".musical_hall_mapper");
+    document.querySelector(".popupCloseBtn").addEventListener("click", function(){
+    	hall_popup.style.display = 'none';
+    });
 	
+    document.querySelector(".infoBtn").addEventListener("click", function(){
+    	hall_popup.style.display = 'block';
+    });
+</script>
+
+<script type="text/javascript">
+window.onload = function() {
+
+	var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+	var options = { //지도를 생성할 때 필요한 기본 옵션
+		center: new kakao.maps.LatLng(${mhdto.mh_x}, ${mhdto.mh_y}), //지도의 중심좌표.
+		level: 5 //지도의 레벨(확대, 축소 정도)
+	};
 	
+	var map = new kakao.maps.Map(container, options);
+	
+    var marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(${mhdto.mh_x}, ${mhdto.mh_y}),
+        map: map
+    });
+    
+    
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.coord2Address( ${mhdto.mh_y},${mhdto.mh_x}, function(result, status) {
+    	if (status === kakao.maps.services.Status.OK) {
+            var address = result[0].address.address_name;
+            document.querySelector('#addr').innerText = address;
+            console.log('주소는 ' + address);
+            // 상세 정보도 확인해볼 수 있습니다
+        } else {
+            alert('주소 변환 실패: ' + status);
+        }
+    });
+    
+}
 </script>
 </html>
