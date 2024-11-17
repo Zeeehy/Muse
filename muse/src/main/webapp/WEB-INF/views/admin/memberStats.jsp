@@ -3,15 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
-
-
 
 <style type="text/css">
 .highcharts-figure,
 .highcharts-data-table table {
-    min-width: 320px;
+    min-width: 360px;
     max-width: 800px;
     margin: 1em auto;
 }
@@ -52,86 +51,100 @@
     background: #f1f7ff;
 }
 
-input[type="number"] {
-    min-width: 50px;
-}
-
 </style>
 
 
 
 </head>
-<body>
 
-<%@include file="header.jsp"%>
-<%@include file="sidebar.jsp"%>
-
-
-<body>
 <script src="/muse/resources/Highcharts-10.3.1/code/highcharts.js"></script>
+<script src="/muse/resources/Highcharts-10.3.1/code/modules/series-label.js"></script>
 <script src="/muse/resources/Highcharts-10.3.1/code/modules/exporting.js"></script>
 <script src="/muse/resources/Highcharts-10.3.1/code/modules/export-data.js"></script>
 <script src="/muse/resources/Highcharts-10.3.1/code/modules/accessibility.js"></script>
 
+
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<!-- style="margin-top: 200px;" -->
+<body>
+<%@include file="header.jsp"%>
+<%@include file="sidebar.jsp"%>
+
+
 <div style="margin-top: 200px;">
-	<figure class="highcharts-figure" >
+	<figure class="highcharts-figure">
 	    <div id="container"></div>
 	    <p class="highcharts-description">
-	        오늘 기준 뮤즈회원과 일반회원의 비율 통계를 보여줍니다.
+	        뮤즈 회원의 증가량과 뮤즈패스 회원의 증가량을 보여주는 그래프입니다.
 	    </p>
 	</figure>
 </div>
 
 
-<script type="text/javascript">
-// Data retrieved from https://netmarketshare.com
-Highcharts.chart('container', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: '뮤즈패스 회원 비율 통계'
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            }
-        }
-    },
-    series: [{
-        name: '회원',
-        colorByPoint: true,
-        data: [{
-            name: '뮤즈회원',
-            y: ${mpassper},
-            sliced: true,
-            selected: true
-        }, {
-            name: '일반회원',
-            y: ${nopassper}
-        }]
-    }]
-});
 
+
+<script type="text/javascript">
+Highcharts.chart('container', {
+
+    title: {
+        text: '뮤즈회원 증가량 & 뮤즈패스 회원 증가량'
+    },
+
+    yAxis: {
+        title: {
+            text: '회원 수'
+        }
+    },
+
+    xAxis: {
+        accessibility: {
+            rangeDescription: 'Range: 2010 to 2020'
+        }
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 2010
+        }
+    },
+
+    series: [ {
+        name: '회원 총 수',
+        data: [null, null, null, null, null, null, null,
+            null, 11164, 11218, 10077]
+    }, {
+        name: '뮤즈패스 회원 총 수',
+        data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
+            17300, 13053, 11906, 10073]
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
 		</script>
-	</body>
+</body>
 </html>

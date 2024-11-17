@@ -172,8 +172,8 @@ table tr, th, td { /*
 				<div class="buttondiv" style="margin-bottom:50px;margin-top:50px;">
 				
 					<input class="blueButton" type="button" value="승인" onclick="window.location.href='openRequestEnd.do?rs_code=1&on_code=${dto.on_code}'" style="width: 90px;font-size: 16pt;height: 50px;">
-					<input class="grayButton" type="button" value="뒤로가기" onclick="window.location.href='openRequestList.do'" style="margin: 20px; width: 90px;font-size: 16pt;height: 50px;">
 					<input class="redButton" type="button" value="거절" onclick="window.location.href='openRequestEnd.do?rs_code=2&on_code=${dto.on_code}'" style="width: 90px;font-size: 16pt;height: 50px;">
+					<input class="grayButton" type="button" value="뒤로가기" onclick="window.location.href='openRequestList.do'" style="margin: 20px; width: 90px;font-size: 16pt;height: 50px;">
 					
 				</div>
 

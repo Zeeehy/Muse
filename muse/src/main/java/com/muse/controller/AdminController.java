@@ -1,8 +1,10 @@
 package com.muse.controller;
 
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.muse.admin.model.AdminDTO;
 import com.muse.admin.model.BannerDTO;
 import com.muse.admin.model.OpenNoticeDTO;
 import com.muse.admin.model.PartnerDTO;
+import com.muse.admin.model.RequestListDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
@@ -26,6 +29,33 @@ public class AdminController {
 	@Autowired
 	private AdminDAO adminDao;
 	
+	
+	/*공연등록 승인 시작*/
+	//오픈공지 리스트
+	@RequestMapping("addRequestList.do")
+	public ModelAndView addRequestList() {
+		ModelAndView mav = new ModelAndView();
+		
+		
+		List<OpenNoticeDTO> lists = adminDao.openRequestList();
+		
+		mav.addObject("lists",lists);
+		mav.setViewName("/admin/addRequestList");
+		return mav;
+	}
+	
+	@RequestMapping("addRequest.do")
+	public ModelAndView addRequest() {
+		ModelAndView mav = new ModelAndView();
+		
+		
+		List<OpenNoticeDTO> lists = adminDao.openRequestList();
+		
+		mav.addObject("lists",lists);
+		mav.setViewName("/admin/addRequest");
+		return mav;
+	}
+	/*공연등록 승인 끝*/
 	
 	/*오픈공지 승인 시작*/
 	//오픈공지 리스트
@@ -111,6 +141,8 @@ public class AdminController {
 	}
 	
 	
+	
+	
 	/*오픈공지 반영 시작*/
 	//오픈공지 반영 리스트
 	@RequestMapping("openApplyList.do")
@@ -159,6 +191,13 @@ public class AdminController {
 	
 	
 	/*오픈공지 반영 끝*/
+	
+	
+	
+	
+	
+	
+	
 	
 	/*배너 등록 삭제 시작*/
 	//배너 리스트 가져오기
@@ -224,7 +263,11 @@ public class AdminController {
 	/*배너 등록 삭제 끝*/
 	
 	
-	/* 불량리뷰관리 */
+	
+	
+	
+	
+	/* 불량리뷰관리 시작 */
 	//리뷰리스트
 	@RequestMapping("/adminReviewList.do")
 	public ModelAndView adminReviewList() {
@@ -241,16 +284,82 @@ public class AdminController {
 	public ModelAndView adminDeleteReview(@RequestParam("mr_code") String mr_code,@RequestParam("mr_state") int mr_state) {
 		ModelAndView mav =new ModelAndView();
 		
-		int result = adminDao.adminDeleteReview(mr_code,mr_state);
+		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
+		mav.addObject("lists",lists);
 		
-		mav.addObject("msg", "리뷰 상태 변경 완료!");
-		mav.setViewName("/admin/adminMsg");
 		mav.addObject("goUrl", "adminReviewList.do");
 		
 		return mav;
 	}
 	
+	/* 불량리뷰관리 끝 */
 	
+	
+	
+	
+	
+	
+	
+	/* 파트너 리뷰관리 시작 */
+	@RequestMapping("pReviewList.do")
+	public ModelAndView pReviewList() {
+		ModelAndView mav =new ModelAndView();
+		
+		List<RequestListDTO> lists = adminDao.pReviewList();
+		mav.addObject("lists",lists);
+		
+		mav.setViewName("/admin/pReviewList");
+		return mav;
+	}
+	
+	
+	//거절이면 bdr만 삭제
+	@RequestMapping("pReview.do")
+	public ModelAndView pReview(@RequestParam("bdr_code") String bdr_code,
+			@RequestParam("bdr_state") int bdr_state) {
+		ModelAndView mav =new ModelAndView();
+		
+		int result;
+		
+		//삭제
+		if(bdr_state==1) {
+			result = adminDao.pReview(bdr_code,1);
+			
+			//하고 리뷰 삭제하기
+			int result1 = adminDao.pReviewDelete(bdr_code);
+			
+			if(result ==1 && result1==1) {
+				mav.setViewName("/admin/adminMsg");
+				mav.addObject("goUrl","pReviewList.do");
+				mav.addObject("msg","해당 리뷰 삭제 완료!");
+			}
+		}
+		//거절
+		else {
+			result = adminDao.pReview(bdr_code,2);
+			
+			if(result ==1 ) {
+				mav.setViewName("/admin/adminMsg");
+				mav.addObject("goUrl","pReviewList.do");
+				mav.addObject("msg","해당 리뷰 삭제 요청 거절!");
+			}
+		}
+		
+		
+		return mav;
+	}
+	/* 파트너 리뷰관리 끝 */
+	
+	
+	
+	/* 파트너 Qna관리 시작 삭제*/
+	/*
+	 * @RequestMapping("pQnAList.do") public ModelAndView pQnAList() { ModelAndView
+	 * mav =new ModelAndView();
+	 * 
+	 * mav.setViewName("/admin/pQnAList"); return mav; }
+	 */
+	/* 파트너 Qna관리 시작 */
 	
 	
 	
@@ -311,18 +420,42 @@ public class AdminController {
 	
 	
 	
-	
-	//통계
+	/* 통계 시작*/
+	// 회원 뮤즈패스 비율
 	@RequestMapping("/musePassStats.do")
 	public ModelAndView musePassStats() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/musePassStats");
 		
+		HashMap<String,BigDecimal> map = adminDao.musePassStats();
+		
+		BigDecimal nopass = map.get("nopass");
+		BigDecimal mpass = map.get("mpass");
+
+		// 퍼센트 계산
+		double nopassper = Math.round((nopass.doubleValue() / (nopass.doubleValue() + mpass.doubleValue())) * 1000) / 10.0;
+		double mpassper = Math.round((mpass.doubleValue() / (nopass.doubleValue() + mpass.doubleValue())) * 1000) / 10.0;
+
+		
+		mav.addObject("nopassper", nopassper);
+		mav.addObject("mpassper", mpassper);
+		
 		
 		return mav;
 	}
 	
+	//회원 증가량
+	@RequestMapping("/memberStats.do")
+	public ModelAndView memberStats() {
+		ModelAndView mav = new ModelAndView();
+		
+		
+		mav.setViewName("admin/memberStats");
+		return mav;
+	}
 	
+	
+	/* 통계 끝 */
 	
 }
 
