@@ -146,7 +146,7 @@ public class PartnerDAOImple implements PartnerDAO {
 		return list;
 	}
 	@Override
-	public int seachCode(String idx,String table) {
+	public int seachCodeMax(String idx,String table) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("table", table);
 		params.put("code", idx);
@@ -159,5 +159,20 @@ public class PartnerDAOImple implements PartnerDAO {
 		int result = sqlMap.insert("insertservRe",dto);
 		return result;
 	}
+	@Override
+	public String MaxMcode() {
+		String m_code = sqlMap.selectOne("maxMcode");
+		return m_code;
+	}
 	
+@Override
+	public List<MusicalReviewDTO> seachMusicalReview(String pr_code, String m_code) {
+
+	Map<String, Object> params = new HashMap<>();
+	params.put("pr_code", pr_code);
+	params.put("m_code", m_code);
+	List<MusicalReviewDTO> list = sqlMap.selectList("reviewMuscialList",params);
+	System.out.println("뮤지컬 이름으로 리뷰 리스트 접근확인");
+	return list;
+	}
 }

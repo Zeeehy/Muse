@@ -319,14 +319,14 @@ public class PartnerController {
         System.out.println("m_ref: " + dto.getM_ref());
         
         int result = partnerDao.insertMusical(dto);
-        int code = partnerDao.seachCode("m_code", "musical");
+        String m_code= partnerDao.MaxMcode();
         ServiceRequestDTO Srdto = new ServiceRequestDTO();
-        Srdto.setM_code("m_"+code);
+        Srdto.setM_code(m_code);
         Srdto.setRs_code(0);
         Srdto.setRt_code(0);
         
         int sr_result = partnerDao.InsertServiceRequest(Srdto);
-        
+        System.out.println(m_code+"@@@@@@@@@@@@@@");
         
         
         System.out.println("결과@@@@@@@@@@@@@@@"+result);
@@ -354,10 +354,39 @@ public class PartnerController {
 	 * new ModelAndView(); return mav; }
 	 */
 	@RequestMapping("/deleteReviewAction.do")
-	public ModelAndView deleteReviewAction() {
+	public ModelAndView deleteReviewAction(
+	        @RequestParam(value = "mr_code") String mr_code,
+	        @RequestParam(value = "mr_title") String mr_title,  // 제목
+	        @RequestParam(value = "u_id") String u_id,          // 작성자
+	        @RequestParam(value = "mr_date") String mr_date,
+	        @RequestParam(value= "pr_code")String pr_code) {
+		System.out.println("리뷰삭제페이지이동 컨트롤러메서드진입확인");
 		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
-	
+	@RequestMapping("/serchMusical.do")
+	public ModelAndView serchMusicalReview() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	@RequestMapping("/getmusicalReview.do")
+	public ModelAndView getmusicalReview(
+			@RequestParam(value="pr_code") String pr_code, 
+			@RequestParam(value = "m_code",defaultValue="")String m_code) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(m_code+"@@@@@@@@@@@@@@");
+		List<MusicalReviewDTO> list = partnerDao.seachMusicalReview(pr_code,m_code);
+		System.out.println(pr_code);
+		System.out.println("해당 뮤지컬 리스트 사이즈"+list.size());
+		mav.addObject("list", list);
+		mav.setViewName("parkJson");
+		return mav;
+	}
+	@RequestMapping("/deleteReviewForm.do")
+	public ModelAndView deleteReview() {
+		ModelAndView mav = new ModelAndView();
+		
+		return mav;
+	}
 
 }

@@ -87,8 +87,7 @@
 <script>
 
 function SeachMusicalName(){
-	//파트너 연동하면 파트너idx값 쏴줘야함
-	var param = 'pr_code=${s_pr_code}'; // JSP의 EL(${s_pr_code})로 값이 치환될 것을 가정
+	var param = 'pr_code=${s_pr_code}';
 	var searchInputMusicalName = document.getElementById("searchInputMusicalName").value;
 
 // 입력값이 null이 아닌 경우에만 param 수정
@@ -97,7 +96,7 @@ if (searchInputMusicalName) {
 }
 
 
-		var searchInputMusicalName = sendRequest('getMusicalList.do',param,ResultSeachMusicalName,'GET');
+	var searchInputMusicalName = sendRequest('getMusicalList.do',param,ResultSeachMusicalName,'GET');
 }
 function ResultSeachMusicalName(){
 	if(XHR.readyState==4){

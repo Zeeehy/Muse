@@ -13,7 +13,7 @@ public class ServiceRequestDTO {
 	public ServiceRequestDTO() {
 		// TODO Auto-generated constructor stub
 	}
-
+ 
 	public ServiceRequestDTO(String sr_code, int rs_code, int rt_code, String m_code, String sr_date, String sr_etc,
 			String sr_reason) {
 		super();
@@ -82,6 +82,7 @@ public class ServiceRequestDTO {
 		this.sr_reason = sr_reason;
 	}
 
+	
 	
 	
 }

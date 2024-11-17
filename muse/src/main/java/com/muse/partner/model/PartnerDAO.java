@@ -36,7 +36,11 @@ public interface PartnerDAO {
 	
 	public List<MusicalReviewDTO> seachReview(String pr_code);
 	
-	public int seachCode(String idx,String table);
+	public int seachCodeMax(String idx,String table);
 	
 	public int InsertServiceRequest(ServiceRequestDTO dto);
+	
+	public String MaxMcode();
+	
+	public List<MusicalReviewDTO> seachMusicalReview(String pr_code,String m_code);
 }
