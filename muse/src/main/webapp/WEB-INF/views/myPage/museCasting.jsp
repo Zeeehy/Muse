@@ -126,6 +126,7 @@
 </style>
 <script>
 function getSearchCast(){
+	//생각해보니 얜 굳이 ajax로 할 필요가?페이징할땐 필요하려나
 	var filter = document.getElementById('filter').value;
 	var search_cast=document.getElementById('search_cast').value;
 	var xhr = new XMLHttpRequest();

@@ -9,4 +9,6 @@ public interface MyBookingListDAO {
 	List<MyBookingListDTO> getBookingMonth(Map<String, Object> map);
 	List<MyBookingListDTO> getBookingReserve(Map<String, Object> map);
 	List<MyBookingListDTO> getBookingPerform(Map<String, Object> map);
+	int getMusicalReviewCount(String b_code);
+	int getMusicalReviewDateCheck(String b_code);
 }

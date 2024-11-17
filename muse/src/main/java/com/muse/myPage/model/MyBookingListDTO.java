@@ -23,14 +23,16 @@ public class MyBookingListDTO {
 	private Date mo_date;
 	private String mo_time;
 	private int b_count;
+	private Date mr_date;		//취소가능날짜
 	private int b_state;
-	
+	private int review_state;	//리뷰버튼 생성여부
+
 	public MyBookingListDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public MyBookingListDTO(Date b_date, String b_code, String m_title, Date mo_date, String mo_time, int b_count,
-			int b_state) {
+			Date mr_date, int b_state, int review_state) {
 		super();
 		this.b_date = b_date;
 		this.b_code = b_code;
@@ -38,7 +40,9 @@ public class MyBookingListDTO {
 		this.mo_date = mo_date;
 		this.mo_time = mo_time;
 		this.b_count = b_count;
+		this.mr_date = mr_date;
 		this.b_state = b_state;
+		this.review_state = review_state;
 	}
 
 	public Date getB_date() {
@@ -89,6 +93,14 @@ public class MyBookingListDTO {
 		this.b_count = b_count;
 	}
 
+	public Date getMr_date() {
+		return mr_date;
+	}
+
+	public void setMr_date(Date mr_date) {
+		this.mr_date = mr_date;
+	}
+
 	public int getB_state() {
 		return b_state;
 	}
@@ -96,6 +108,16 @@ public class MyBookingListDTO {
 	public void setB_state(int b_state) {
 		this.b_state = b_state;
 	}
+
+	public int getReview_state() {
+		return review_state;
+	}
+
+	public void setReview_state(int review_state) {
+		this.review_state = review_state;
+	}
+	
+	
 	
 	
 	
