@@ -102,7 +102,7 @@
             <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-container">
-            <a href="#">공연 등록 반영</a>
+            <a href="addApplyList.do">공연 등록 반영</a>
 		    <a href="#">공연수정반영</a>
 		    <a href="openApplyList.do">오픈공지 반영</a>
 		    <a href="#">연장신청반영</a>

@@ -7,19 +7,24 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.admin.model.AdminDAO;
 import com.muse.admin.model.AdminDTO;
 import com.muse.admin.model.BannerDTO;
+import com.muse.admin.model.MusicalDTO;
 import com.muse.admin.model.OpenNoticeDTO;
 import com.muse.admin.model.PartnerDTO;
 import com.muse.admin.model.RequestListDTO;
+import com.muse.admin.model.ServiceRequestDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
@@ -30,6 +35,58 @@ public class AdminController {
 	private AdminDAO adminDao;
 	
 	
+	@RequestMapping("/adminIndex.do")
+	public ModelAndView adminIndex() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/index");
+		return mav;
+	}
+	
+	
+	@RequestMapping("/adminLogin.do")
+	public ModelAndView goAdminLogin() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/adminLogin");
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/adminLogin.do", method = RequestMethod.POST)
+	public ModelAndView adminLogin(@RequestParam("a_id") String a_id, @RequestParam("a_pwd") String a_pwd,HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		int result = adminDao.goAdminLogin(a_id,a_pwd);
+		
+		if(result==1) {
+			mav.addObject("msg","관리자님 환영합니다.");
+			mav.addObject("goUrl","addRequestList.do");
+			mav.setViewName("admin/adminMsg");
+			
+			session.setAttribute("s_aid", a_id);
+		}
+		else {
+			mav.addObject("msg","아이디 또는 비밀번호가 틀렸습니다.");
+			mav.addObject("goUrl","adminLogin.do");
+			mav.setViewName("admin/adminMsg");
+		}
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping("/adminLogout")
+	public ModelAndView adminLogout(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		session.invalidate();  // 세션 무효화
+		mav.addObject("msg","관리자 로그아웃 완료");
+		mav.addObject("goUrl","index.do");
+		mav.setViewName("admin/adminMsg");
+		
+		return mav;
+	}
+	
+	
 	/*공연등록 승인 시작*/
 	//오픈공지 리스트
 	@RequestMapping("addRequestList.do")
@@ -37,7 +94,7 @@ public class AdminController {
 		ModelAndView mav = new ModelAndView();
 		
 		
-		List<OpenNoticeDTO> lists = adminDao.openRequestList();
+		List<ServiceRequestDTO> lists = adminDao.addRequestList(0);
 		
 		mav.addObject("lists",lists);
 		mav.setViewName("/admin/addRequestList");
@@ -45,17 +102,44 @@ public class AdminController {
 	}
 	
 	@RequestMapping("addRequest.do")
-	public ModelAndView addRequest() {
+	public ModelAndView addRequest(@RequestParam("sr_code") String sr_code) {
 		ModelAndView mav = new ModelAndView();
 		
+		MusicalDTO dto = adminDao.addRequest(sr_code);
+		mav.addObject("dto",dto);
 		
-		List<OpenNoticeDTO> lists = adminDao.openRequestList();
 		
-		mav.addObject("lists",lists);
+		mav.addObject("dto");
 		mav.setViewName("/admin/addRequest");
 		return mav;
 	}
+	
+	@RequestMapping("addRequestEnd.do")
+	public ModelAndView addRequestEnd(@RequestParam("sr_code") String sr_code , @RequestParam("rs_code") int rs_code) {
+		ModelAndView mav = new ModelAndView();
+		
+		int result = adminDao.addRequestEnd(sr_code, rs_code);
+		
+		if(result==1) {
+			mav.addObject("goUrl","addRequestList.do");
+			
+			mav.setViewName("/admin/adminMsg");
+			
+			if(rs_code==1) {
+				mav.addObject("msg", "공연 등록 승인 완료!");
+			}else {
+				mav.addObject("msg", "공연 등록 거절 완료!");
+			}
+			
+		}
+		
+		return mav;
+	}
 	/*공연등록 승인 끝*/
+	
+	
+	
+	
 	
 	/*오픈공지 승인 시작*/
 	//오픈공지 리스트
@@ -111,34 +195,61 @@ public class AdminController {
 	/*오픈공지 승인 끝*/
 	
 	
-	//ModelAndView는 request와 비슷함
-	@RequestMapping("/hello.do") //명령어에 의해 진입하는 메소드. 즉 hello.do가 불러지면 실행
-	public ModelAndView hello() {
+
+
+	
+	
+	
+	/*공연등록 반영 시작*/
+	//공연등록 반영 리스트
+	@RequestMapping("addApplyList.do")
+	public ModelAndView addApplyList() {
+		ModelAndView mav = new ModelAndView();
 		
-		String result="spring MVC Framework!";
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("msg", result);
-		mav.setViewName("/hello");
-		//view 페이지 저장
+		List<ServiceRequestDTO> lists = adminDao.addApplyList();
 		
+		mav.addObject("lists",lists);
+		
+		
+		mav.setViewName("/admin/addApplyList");
 		return mav;
 	}
 	
-	
-	@RequestMapping("/adminIndex.do")
-	public ModelAndView adminIndex() {
+	//공연등록 반영 홈페이지
+	//공연등록 상세
+	@RequestMapping("addApply.do")
+	public ModelAndView addApply(@RequestParam("sr_code") String sr_code) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/admin/index");
+		
+		MusicalDTO dto = adminDao.addApply(sr_code);
+		mav.addObject("dto",dto);
+		mav.setViewName("/admin/addApply");
 		return mav;
 	}
 	
-	
-	@RequestMapping("/adminLogin.do")
-	public ModelAndView goAdminLogin() {
+	//공연등록 반영
+	@RequestMapping("addApplyEnd.do")
+	public ModelAndView addApplyEnd(@RequestParam("m_code") String m_code) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/admin/login");
+		
+		int result = adminDao.addApplyEnd(m_code);
+		
+		if(result>=1){
+			mav.setViewName("/admin/adminMsg");
+		
+			mav.addObject("msg", "공연등록 반영 완료!");
+			
+			mav.addObject("goUrl", "addApplyList.do");
+			
+		}
+	
 		return mav;
 	}
+	
+	
+	/*공연등록 반영 끝*/
+	
+	
 	
 	
 	

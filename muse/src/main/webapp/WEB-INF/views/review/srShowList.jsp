@@ -17,17 +17,19 @@
     display: inline-block; /* 나란히 배치 */
     background-repeat: no-repeat;
     background-size: 24px 24px; /* 이미지 크기를 24px로 설정 */
-    margin-left: -4px;
 }
 
 .ystarHalf {
     background-image: url("/muse/resources/img/ystar.svg");
     background-position: left; /* 왼쪽 반만 채워지게 */
+    
 }
 
 .gstarHalf {
     background-image: url("/muse/resources/img/gstar.svg");
     background-position: right; /* 오른쪽 반만 빈 별로 */
+            margin-left: -4px;
+    
 }
 
 </style>
