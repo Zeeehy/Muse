@@ -168,6 +168,12 @@ body {
     padding: 8px;
     text-align: center;
 }
+
+table button {
+	padding: 3px;
+	border: 1px solid #ddd;
+	border-radius: 10%;
+}
 </style>
 </head>
 <body>
@@ -264,8 +270,8 @@ body {
                         <th>좌석번호</th>
                         <th>좌석가격</th>
                         <th>결제금액</th>
-                        <th>취소여부(일단 관람일)</th>
-                        <th>취소버튼</th>
+                        <th>취소여부</th>
+                        <th>-</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -276,11 +282,27 @@ body {
 	                        <td>${bdlist.s_section}구역 ${bdlist.s_position}행 ${bdlist.s_row}열 ${bdlist.s_floor}층</td>
 	                        <td>${bdlist.sp_price}원</td>
 	                        <td>${bdlist.bd_price}원</td>
-	                        <td>
-	                        	<c:if test="${bdlist.b_state eq 0}">취소불가</c:if>
-	                        	<c:if test="${bdlist.b_state eq 1}">취소가능</c:if>
+	                        
+
+                        	<c:if test="${bdlist.bd_state eq 0}"><td>취소됨</td><td>대충취소날짜</td></c:if>
+                        	<c:if test="${bdlist.bd_state eq 1}">									
+								<c:if test="${bdlist.refund_state eq 0}">
+									<td>취소불가</td>
+									<c:if test="${bdlist.review_state eq 0}"><td>-</td></c:if>
+									<c:if test="${bdlist.review_state eq 1}"><td><button>리뷰작성</button></td></c:if>
+								</c:if>
+								<c:if test="${bdlist.refund_state eq 1}"><td>취소가능</td><td><button>취소하기</button></td></c:if>
+							</c:if>
+	                        	
+	                                              
+	                        
+	                        <%-- <td>
+	                        	
+	                        	<c:if test="${bdlist.bd_state eq 0}">취소됨</c:if>
+	                        	<c:if test="${bdlist.bd_state eq 1}">취소가능</c:if>
+	                        	
 	                        </td>                       
-	                        <td>대충버튼자리</td>
+	                        <td>대충버튼자리</td> --%>
 	                    </tr>
                 	</c:forEach>
                 </tbody>
