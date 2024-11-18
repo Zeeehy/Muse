@@ -13,6 +13,7 @@ public class MyBookingDetailDTO {
 	private String mh_name;
 	private String mh_addr;
 	private String bd_code;
+	private int bd_state;
 	private int bd_price;
 	private int d_num;
 	private String d_name;
@@ -23,14 +24,17 @@ public class MyBookingDetailDTO {
 	private String sg_name;
 	private int sp_price;
 	private String u_name;
+	private int refund_state;
+	private int review_state;
 
 	public MyBookingDetailDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public MyBookingDetailDTO(String b_code, Date b_date, String b_type, String b_state, Date mo_date, String m_poster,
-			String m_title, String mh_name, String mh_addr, String bd_code, int bd_price, int d_num, String d_name,
-			String s_section, int s_position, int s_row, int s_floor, String sg_name, int sp_price, String u_name) {
+			String m_title, String mh_name, String mh_addr, String bd_code, int bd_state, int bd_price, int d_num,
+			String d_name, String s_section, int s_position, int s_row, int s_floor, String sg_name, int sp_price,
+			String u_name, int refund_state, int review_state) {
 		super();
 		this.b_code = b_code;
 		this.b_date = b_date;
@@ -42,6 +46,7 @@ public class MyBookingDetailDTO {
 		this.mh_name = mh_name;
 		this.mh_addr = mh_addr;
 		this.bd_code = bd_code;
+		this.bd_state = bd_state;
 		this.bd_price = bd_price;
 		this.d_num = d_num;
 		this.d_name = d_name;
@@ -52,6 +57,8 @@ public class MyBookingDetailDTO {
 		this.sg_name = sg_name;
 		this.sp_price = sp_price;
 		this.u_name = u_name;
+		this.refund_state = refund_state;
+		this.review_state = review_state;
 	}
 
 	public String getB_code() {
@@ -134,6 +141,14 @@ public class MyBookingDetailDTO {
 		this.bd_code = bd_code;
 	}
 
+	public int getBd_state() {
+		return bd_state;
+	}
+
+	public void setBd_state(int bd_state) {
+		this.bd_state = bd_state;
+	}
+
 	public int getBd_price() {
 		return bd_price;
 	}
@@ -214,5 +229,21 @@ public class MyBookingDetailDTO {
 		this.u_name = u_name;
 	}
 
-	
+	public int getRefund_state() {
+		return refund_state;
+	}
+
+	public void setRefund_state(int refund_state) {
+		this.refund_state = refund_state;
+	}
+
+	public int getReview_state() {
+		return review_state;
+	}
+
+	public void setReview_state(int review_state) {
+		this.review_state = review_state;
+	}
+
+
 }

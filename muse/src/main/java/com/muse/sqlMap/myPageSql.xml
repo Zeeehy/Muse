@@ -157,7 +157,8 @@
 	m.m_title,
 	mh.mh_name,
 	mh.mh_addr,
-	bd.bd_code,			
+	bd.bd_code,
+	bd.bd_state,			
 	bd.bd_price,
 	d.d_num,				
 	d.d_name,				
@@ -182,4 +183,16 @@
 	order by bd.bd_code
   </select>
 
+  <select id="selectRefundRemainDate" parameterType="String" resultType="Integer">
+  select sysdate-to_date(to_char(mo.mo_date,'YYYY-MM-DD') || ' ' || mo.mo_time || ':00','YYYY-MM-DD HH24:MI:SS')
+  from booking b
+  join musical_option mo on mo.mo_code = b.mo_code 
+  join musical m on mo.m_code = m.m_code
+  where b.b_code=#{b_code}
+  order by b.b_date desc	
+  </select>
+  
+  <select id="selectSeatReviewCount" parameterType="String" resultType="Integer">
+	select count(*) from seat_review where bd_code=#{bd_code}
+  </select> 
   </mapper>
