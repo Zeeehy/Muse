@@ -43,10 +43,9 @@ public class ReservDAOImple implements ReservDAO {
 	}
 
 	 @Override public int getMusicalMaxTicket(String m_code) { 
-		 return sqlMap.selectOne("getMusicalMaxTicket", m_code); 
+		Integer result = sqlMap.selectOne("getMusicalMaxTicket", m_code);
+		return result != null ? result : 0; // null일 경우 0 반환
 	 }
-
-	 // 좌석 
 	 
 	 @Override
 		public List<SeatLayoutDTO> seatLayoutSelect(int sl_bind, int mhl_code) {
@@ -172,5 +171,21 @@ public class ReservDAOImple implements ReservDAO {
 			System.out.println("nullCheck"+avg);
 			return avg==null?0.0:avg;
 		}
+		
+		/*
+		 * @Override public List<Map<String, Object>> getMusicalSeatPrice(String mCode)
+		 * { return sqlMap.selectList("getMusicalSeatPrice", mCode); }
+		 */
+		
+		
+		@Override
+		public int getPoint(String s_id) {
+			return sqlMap.selectOne("getPoint", s_id);
+		}
+		
+		@Override
+	    public int usePoint(String s_id, Map<String,Object> params) {
+			return sqlMap.update("point.updatePoint", params);
+	    }
 
 }

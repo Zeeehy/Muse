@@ -6,8 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.google.gson.Gson;
 import com.muse.partner.model.MusicalDTO;
 import com.muse.reserv.model.ReservDAO;
@@ -22,6 +28,11 @@ import com.muse.seat.model.SeatDTO;
 import com.muse.seat.model.SeatLayoutDAO;
 import com.muse.seat.model.SeatLayoutDAOImple;
 import com.muse.seat.model.SeatLayoutDTO;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+
 
 @Controller
 public class ReservController {
@@ -86,6 +97,135 @@ public class ReservController {
 	    }
 
 	    return mav;
+	}
+	
+	@RequestMapping(value = "/reservSale.do", method = RequestMethod.POST)
+	public ModelAndView reservSale(
+	        @RequestParam String mh_code,
+	        @RequestParam String m_code,
+	        @RequestParam String selectedDate,
+	        @RequestParam String selectedTime,
+	        @RequestParam String selectedSeats) {
+	    ModelAndView mav = new ModelAndView();
+	    
+	    try {
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        TypeFactory typeFactory = objectMapper.getTypeFactory();
+	        List<Map<String, Object>> seatList = objectMapper.readValue(
+	                selectedSeats, typeFactory.constructCollectionType(List.class, Map.class));
+	        
+	        // 뮤지컬 및 가격 정보 조회
+	        Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	        List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
+	        System.out.println("가격 리스트: " + musicalPrice);
+
+	        // 좌석 목록에 가격 정보 추가
+	        for(Map<String, Object> seat : seatList) {
+	            String grade = (String)seat.get("grade");
+	            for(Map<String, Object> price : musicalPrice) {
+	                if(price.get("SG_NAME").equals(grade)) {
+	                    seat.put("price", price.get("SP_PRICE"));
+	                    break;
+	                }
+	            }
+	        }
+	        System.out.println("가격 매핑 후 좌석 리스트: " + seatList);
+
+	        mav.addObject("mh_code", mh_code);
+	        mav.addObject("m_code", m_code);
+	        mav.addObject("selectedDate", selectedDate);
+	        mav.addObject("selectedTime", selectedTime);
+	        mav.addObject("selectedSeats", seatList);
+	        mav.addObject("seatCount", seatList.size());
+	        mav.addObject("musicalInfo", musicalInfo);
+	        mav.addObject("musicalPrice", musicalPrice);
+	        mav.setViewName("reservation/reservSale");
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        mav.setViewName("redirect:/reservMain.do?mh_code=" + mh_code + "&m_code=" + m_code);
+	    }
+	    return mav;
+	}
+
+	
+	@RequestMapping(value = "/reservCheck.do", method = RequestMethod.POST)
+	public ModelAndView ReservCheckForm(
+	        @RequestParam(value = "mh_code") String mh_code,
+	        @RequestParam(value = "m_code", required = false) String m_code,
+	        @RequestParam(value = "sl_bind", required = false, defaultValue = "1") int sl_bind,
+	        @RequestParam(value = "selectedDate", required = false) String selectedDate,
+	        @RequestParam(value = "selectedTime", required = false) String selectedTime,
+	        @RequestParam("selectedSeats") String selectedSeats) {
+
+	    ModelAndView mav = new ModelAndView();
+
+	    try {
+	        // JSON 데이터를 Java 객체로 변환
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        TypeFactory typeFactory = objectMapper.getTypeFactory();
+	        List<Map<String, Object>> seatList = objectMapper.readValue(
+	                selectedSeats, typeFactory.constructCollectionType(List.class, Map.class));
+
+	        // 뮤지컬 정보 및 가격 정보 조회
+	        Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	        if (musicalInfo == null) {
+	            throw new IllegalArgumentException("뮤지컬 정보를 찾을 수 없습니다.");
+	        }
+
+	        List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
+	        if (musicalPrice == null || musicalPrice.isEmpty()) {
+	            throw new IllegalArgumentException("뮤지컬 가격 정보를 찾을 수 없습니다.");
+	        }
+
+	        // 좌석 목록에 가격 정보 추가
+	        for (Map<String, Object> seat : seatList) {
+	            String grade = (String) seat.get("grade");
+	            for (Map<String, Object> price : musicalPrice) {
+	                if (price.get("SG_NAME").equals(grade)) {
+	                    seat.put("price", price.get("SP_PRICE"));
+	                    break;
+	                }
+	            }
+	        }
+
+	        // ModelAndView에 데이터 추가
+	        mav.addObject("mh_code", mh_code);
+	        mav.addObject("m_code", m_code);
+	        mav.addObject("selectedDate", selectedDate);
+	        mav.addObject("selectedTime", selectedTime);
+	        mav.addObject("selectedSeats", seatList);
+	        mav.addObject("seatCount", seatList.size());
+	        mav.addObject("musicalInfo", musicalInfo);
+	        mav.addObject("musicalPrice", musicalPrice);
+
+	        mav.setViewName("reservation/reservCheck");
+	    } catch (JsonProcessingException e) {
+	        // JSON 파싱 예외 처리
+	        mav.addObject("errorMessage", "좌석 정보가 올바르지 않습니다.");
+	        mav.setViewName("error/errorPage");
+	    } catch (IllegalArgumentException e) {
+	        // 사용자 정의 예외 처리
+	        mav.addObject("errorMessage", e.getMessage());
+	        mav.setViewName("error/errorPage");
+	    } catch (Exception e) {
+	        // 기타 예외 처리
+	        mav.addObject("errorMessage", "예기치 못한 오류가 발생했습니다.");
+	        mav.setViewName("error/errorPage");
+	    }
+
+	    return mav;
+	}
+
+	
+	@RequestMapping("/reservCancle.do")
+	public String ReservCancleForm() {
+		return "reservation/reservCancle";
+	}
+	
+	@RequestMapping("/reservSuccess.do")
+	public String ReservSuccesForm() {
+		return "reservation/reservSuccess";
 	}
 
 	
@@ -217,25 +357,7 @@ public class ReservController {
 	     return seatList;
 	}
 	 
-	@RequestMapping("/reservSale.do")
-	public String ReservSaleForm() {
-		return "reservation/reservSale";
-	}
 	
-	@RequestMapping("/reservCheck.do")
-	public String ReservCheckForm() {
-		return "reservation/reservCheck";
-	}
-	
-	@RequestMapping("/reservCancle.do")
-	public String ReservCancleForm() {
-		return "reservation/reservCancle";
-	}
-	
-	@RequestMapping("/reservSuccess.do")
-	public String ReservSuccesForm() {
-		return "reservation/reservSuccess";
-	}
 	
 	@GetMapping("/getSeatReviewAvg.do")
 	@ResponseBody
@@ -254,5 +376,134 @@ public class ReservController {
 	    //return reservDAO.getMusicalSeatByHall(s_section, Integer.parseInt(s_row), Integer.parseInt(s_floor), Integer.parseInt(s_position), mh_code);
 	    return avg;
 	}
+	
+	@RequestMapping(value = "/calculatePrice.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> calculatePrice(@RequestParam String ticketData) {
+	    Map<String, Object> result = new HashMap<>();
+	    ObjectMapper mapper = new ObjectMapper();
+	    
+	    try {
+	        Map<String, Object> data = mapper.readValue(ticketData, Map.class);
+	        
+	        int basePrice = ((Number)data.get("price")).intValue(); // 여기서 basePrice 선언
+	        int normalCount = ((Number)data.get("normal")).intValue();
+	        int veteranCount = ((Number)data.get("veteran")).intValue();
+	        int disability13Count = ((Number)data.get("disability13")).intValue();
+	        int disability46Count = ((Number)data.get("disability46")).intValue();
+	        
+	        // 가격 계산 로직
+	        int totalPrice = normalCount * basePrice;
+	        int discountedPrice = basePrice / 2; // basePrice 사용
+	        int discountTotal = (veteranCount + disability13Count + disability46Count) * discountedPrice;
+	        
+	        totalPrice += discountTotal;
+	        int discountAmount = (veteranCount + disability13Count + disability46Count) * (basePrice - discountedPrice);
+	        
+	        result.put("totalPrice", totalPrice);
+	        result.put("discountAmount", discountAmount);
+	        result.put("grade", data.get("grade"));
+	        result.put("maxTickets", normalCount + veteranCount + disability13Count + disability46Count);
+	        System.out.println("Received ticketData: " + ticketData);
 
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return new HashMap<>();
+	}
+	
+	// 포인트 조회
+    @RequestMapping(value="/checkPoint.do", method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> checkPoint(HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+        	String u_id = (String) session.getAttribute("s_id");
+
+            if (u_id == null) {
+                response.put("success", false);
+                response.put("message", "로그인이 필요합니다.");
+                return response;
+            }
+            
+            int point = reservDAO.getPoint(u_id);
+            response.put("success", true);
+            response.put("point", point);
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "포인트 조회 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        
+        return response;
+    }
+    
+    @RequestMapping(value = "/usePoint.do", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> usePoint(HttpSession session, @RequestParam int usePoint) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            String s_id = (String) session.getAttribute("s_id");
+            if (s_id == null) {
+                response.put("success", false);
+                response.put("message", "로그인이 필요합니다.");
+                return response;
+            }
+            
+            // 현재 포인트 조회
+            int currentPoint = reservDAO.getPoint(s_id);
+            
+            // 사용 가능 여부 확인
+            if (currentPoint < usePoint) {
+                response.put("success", false);
+                response.put("message", "사용 가능한 포인트가 부족합니다.");
+                return response;
+            }
+            
+            // 세션에 사용할 포인트 금액 저장
+            session.setAttribute("usePoint", usePoint);
+            
+            response.put("success", true);
+            response.put("message", "포인트 사용이 선택되었습니다.");
+            response.put("usePoint", usePoint);
+            response.put("remainingPoint", currentPoint);  // 아직 차감되지 않은 현재 포인트
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "포인트 사용 선택 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        
+        return response;
+    }
+
+    // 결제 완료 후 포인트 차감 처리 (예매 완료 시점에 호출)
+    private void processPointDeduction(HttpSession session) {
+        try {
+            String s_id = (String) session.getAttribute("s_id");
+            Integer usePoint = (Integer) session.getAttribute("usePoint");
+            
+            if (s_id != null && usePoint != null && usePoint > 0) {
+                // 포인트 차감 처리
+                Map<String, Object> params = new HashMap<>();
+                params.put("s_id", s_id);
+                params.put("usePoint", usePoint);
+                reservDAO.usePoint(s_id, params);
+                
+                // 사용 완료된 포인트 정보 세션에서 제거
+                session.removeAttribute("usePoint");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 포인트 차감 실패 시 처리 로직 추가
+        }
+    }
+    
 }
+
+
+

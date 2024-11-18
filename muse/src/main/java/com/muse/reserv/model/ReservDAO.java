@@ -33,5 +33,11 @@ public interface ReservDAO {
 
     // 좌석리뷰
 	double getMusicalSeatByHall(String s_code, String mh_code);
+	
+	// 포인트 조회
+	int getPoint(String s_id);
+	
+	// 포인트 사용
+	int usePoint(String s_id, Map<String,Object> params);
 
 }
