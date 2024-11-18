@@ -23,7 +23,12 @@
 </head>
 <body>
 <h1>예매페이지</h1>
-<form>
+<form action="reservSale.do" id="reservationForm" method="post">
+	<input type="hidden" name="mh_code" value="${mh_code}">
+    <input type="hidden" name="m_code" value="${m_code}">
+    <input type="hidden" name="selectedDate" id="formDate">
+    <input type="hidden" name="selectedTime" id="formTime">
+    <input type="hidden" name="selectedSeats" id="formSeats">
     <section class="reservWrap">
         <article class="contWrap">
             <header class="step">
@@ -130,11 +135,11 @@
                         </div>
                     </div>
                     <div class="s Button">
-                        <button class="nextBt">좌석선택완료</button>
-                        <div class="subBtList">
-                            <button class="subBt" style="width:100%;">좌석 다시 선택</button>
-                        </div>
-                    </div>
+				        <button type="button" class="nextBt" onclick="validateAndSubmit()">좌석선택완료</button>
+				        <div class="subBtList">
+				            <button type="button" class="subBt" style="width:100%;">좌석 다시 선택</button>
+				        </div>
+				    </div>
                 </aside>
             </section>
         </article>
@@ -511,14 +516,44 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 좌석 다시 선택 버튼 이벤트
     document.querySelector('.subBtList .subBt').addEventListener('click', function(event) {
-        event.preventDefault();
-        resetSeatSelections();
-        
-        if (isValidSelection()) {
-            seatL.style.display = 'block';
+        if (!event.target.classList.contains('nextBt')) {
+            event.preventDefault(); // 다른 버튼만 기본 동작 방지
+            resetSeatSelections();
         }
     });
 });
+
+function validateAndSubmit() {
+    const playDate = document.getElementById('playDate').value;
+    const playTime = document.getElementById('playTime').value;
+    
+    if (!playDate || playDate === '선택하세요!') {
+        alert('공연 날짜를 선택해주세요.');
+        return false;
+    }
+    
+    if (!playTime || playTime === '선택하세요!') {
+        alert('공연 시간을 선택해주세요.');
+        return false;
+    }
+    
+    if (selectedSeats.size === 0) {
+        alert('좌석을 선택해주세요.');
+        return false;
+    }
+
+    // hidden 필드에 값 설정
+    document.getElementById('formDate').value = playDate;
+    document.getElementById('formTime').value = playTime;
+    
+    // 선택된 좌석 정보를 JSON 문자열로 변환하여 저장
+    const seatsArray = Array.from(selectedSeats);
+    document.getElementById('formSeats').value = JSON.stringify(seatsArray);
+    
+    // 폼 제출
+    document.getElementById('reservationForm').submit();
+    return true;
+}
 
  //좌석 클릭 이벤트
 

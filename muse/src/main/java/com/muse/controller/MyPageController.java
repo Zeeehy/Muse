@@ -125,6 +125,15 @@ public class MyPageController {
 		
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList("test");	// 수정예정
 		mav.addObject("bookingList",bookingList);
+		//이떄 review_state한번씩 다 할당해주는건데 페이징일때는 전체만되나 부분만되나?진짜모름 페이징할때 다시 생각해보자 아닌가?할당안되나?sql문에서 해주는게 낫나 이러면 테이블고쳐야하는데 끼야악
+		for (MyBookingListDTO booking : bookingList) {
+			//일단 이건 처음 booking페이지 들어갈떄 필요한건 맞을듯?
+			if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
+				booking.setReview_state(1);
+			} else {
+				booking.setReview_state(0);
+			}
+		}
 		
 		mav.setViewName("/myPage/myPageBooking");
 		return mav;
@@ -141,16 +150,29 @@ public class MyPageController {
 
 	    StringBuilder responseHtml = new StringBuilder();
 	    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+	    if(bookingList.isEmpty() || bookingList==null) {
+	    	responseHtml.append("<tr><td colspan='7' align='center'>설정된 기간에 맞는 예매내역이 존재하지 않습니다</td></tr>");
+	    }
 	    for (MyBookingListDTO booking : bookingList) {
-	        responseHtml.append("<tr>")
-	                    .append("<td>").append(booking.getB_date()).append("</td>")
-	                    .append("<td>").append(booking.getB_code()).append("</td>")
-	                    .append("<td>").append(booking.getM_title()).append("</td>")
-	                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
-	                    .append("<td>").append(booking.getB_count()).append("</td>")
-	                    .append("<td>").append(booking.getB_date()).append("</td>")
-	                    .append("<td>").append(booking.getB_state()).append("</td>")
-	                    .append("</tr>");
+	    	responseHtml.append("<tr>")
+            .append("<td>").append(booking.getB_date()).append("</td>")
+            .append("<td>").append(booking.getB_code()).append("</td>")
+            .append("<td>").append(booking.getM_title()).append("</td>")
+            .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
+            .append("<td>").append(booking.getB_count()).append("매</td>")
+            .append("<td>").append(booking.getMr_date()).append(" ").append(booking.getMo_time()).append("</td>")
+            .append("<td>");
+            if(booking.getB_state()==0) {
+            	responseHtml.append("취소");
+            } else {
+            	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
+            		responseHtml.append("예매<button>리뷰쓰기</button>");
+    			} else {
+    				responseHtml.append("예매");
+    			}       	
+            }
+            responseHtml.append("</td>")
+            .append("</tr>");
 	    }
 	    System.out.println(responseHtml.toString());
 	    return responseHtml.toString();
@@ -166,17 +188,31 @@ public class MyPageController {
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingMonth(params);
 	    
 	    StringBuilder responseHtml = new StringBuilder();
+	    
 	    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+	    if(bookingList.isEmpty() || bookingList==null) {
+	    	responseHtml.append("<tr><td colspan='7' align='center'>설정된 기간에 맞는 예매내역이 존재하지 않습니다</td></tr>");
+	    }
 	    for (MyBookingListDTO booking : bookingList) {
-	        responseHtml.append("<tr>")
-	                    .append("<td>").append(booking.getB_date()).append("</td>")
-	                    .append("<td>").append(booking.getB_code()).append("</td>")
-	                    .append("<td>").append(booking.getM_title()).append("</td>")
-	                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
-	                    .append("<td>").append(booking.getB_count()).append("</td>")
-	                    .append("<td>").append(booking.getB_date()).append("</td>")
-	                    .append("<td>").append(booking.getB_state()).append("</td>")
-	                    .append("</tr>");
+			responseHtml.append("<tr>")
+            .append("<td>").append(booking.getB_date()).append("</td>")
+            .append("<td>").append(booking.getB_code()).append("</td>")
+            .append("<td>").append(booking.getM_title()).append("</td>")
+            .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
+            .append("<td>").append(booking.getB_count()).append("매</td>")
+            .append("<td>").append(booking.getMr_date()).append(" ").append(booking.getMo_time()).append("</td>")
+            .append("<td>");
+            if(booking.getB_state()==0) {
+            	responseHtml.append("취소");
+            } else {
+            	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
+            		responseHtml.append("예매<button>리뷰쓰기</button>");
+    			} else {
+    				responseHtml.append("예매");
+    			}       	
+            }
+            responseHtml.append("</td>")
+            .append("</tr>");
 	    }
 	    return responseHtml.toString();
 	}
@@ -192,16 +228,29 @@ public class MyPageController {
 		    
 		    StringBuilder responseHtml = new StringBuilder();
 		    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+		    if(bookingList.isEmpty() || bookingList==null) {
+		    	responseHtml.append("<tr><td colspan='7' align='center'>설정된 기간에 맞는 예매내역이 존재하지 않습니다</td></tr>");
+		    }
 		    for (MyBookingListDTO booking : bookingList) {
-		        responseHtml.append("<tr>")
-		                    .append("<td>").append(booking.getB_date()).append("</td>")
-		                    .append("<td>").append(booking.getB_code()).append("</td>")
-		                    .append("<td>").append(booking.getM_title()).append("</td>")
-		                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
-		                    .append("<td>").append(booking.getB_count()).append("</td>")
-		                    .append("<td>").append(booking.getB_date()).append("</td>")
-		                    .append("<td>").append(booking.getB_state()).append("</td>")
-		                    .append("</tr>");
+		    	responseHtml.append("<tr>")
+	            .append("<td>").append(booking.getB_date()).append("</td>")
+	            .append("<td>").append(booking.getB_code()).append("</td>")
+	            .append("<td>").append(booking.getM_title()).append("</td>")
+	            .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
+	            .append("<td>").append(booking.getB_count()).append("매</td>")
+	            .append("<td>").append(booking.getMr_date()).append(" ").append(booking.getMo_time()).append("</td>")
+	            .append("<td>");
+	            if(booking.getB_state()==0) {
+	            	responseHtml.append("취소");
+	            } else {
+	            	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
+	            		responseHtml.append("예매<button>리뷰쓰기</button>");
+	    			} else {
+	    				responseHtml.append("예매");
+	    			}       	
+	            }
+	            responseHtml.append("</td>")
+	            .append("</tr>");
 		    }
 		    return responseHtml.toString();
 		}
@@ -217,16 +266,29 @@ public class MyPageController {
 		    
 		    StringBuilder responseHtml = new StringBuilder();
 		    responseHtml.append("<thead><tr><th>예약일</th><th>예약번호</th><th>공연명</th><th>관람일</th><th>매수</th><th>취소가능일</th><th>상태</th></tr></thead>");
+		    if(bookingList.isEmpty() || bookingList==null) {
+		    	responseHtml.append("<tr><td colspan='7' align='center'>설정된 기간에 맞는 예매내역이 존재하지 않습니다</td></tr>");
+		    }
 		    for (MyBookingListDTO booking : bookingList) {
-		        responseHtml.append("<tr>")
-		                    .append("<td>").append(booking.getB_date()).append("</td>")
-		                    .append("<td>").append(booking.getB_code()).append("</td>")
-		                    .append("<td>").append(booking.getM_title()).append("</td>")
-		                    .append("<td>").append(booking.getMo_date()).append(" | ").append(booking.getMo_time()).append("</td>")
-		                    .append("<td>").append(booking.getB_count()).append("</td>")
-		                    .append("<td>").append(booking.getB_date()).append("</td>")
-		                    .append("<td>").append(booking.getB_state()).append("</td>")
-		                    .append("</tr>");
+		    	responseHtml.append("<tr>")
+	            .append("<td>").append(booking.getB_date()).append("</td>")
+	            .append("<td>").append(booking.getB_code()).append("</td>")
+	            .append("<td>").append(booking.getM_title()).append("</td>")
+	            .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
+	            .append("<td>").append(booking.getB_count()).append("매</td>")
+	            .append("<td>").append(booking.getMr_date()).append(" ").append(booking.getMo_time()).append("</td>")
+	            .append("<td>");
+	            if(booking.getB_state()==0) {
+	            	responseHtml.append("취소");
+	            } else {
+	            	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
+	            		responseHtml.append("예매<button>리뷰쓰기</button>");
+	    			} else {
+	    				responseHtml.append("예매");
+	    			}       	
+	            }
+	            responseHtml.append("</td>")
+	            .append("</tr>");
 		    }
 		    return responseHtml.toString();
 		}
@@ -238,7 +300,9 @@ public class MyPageController {
 		ModelAndView mav=new ModelAndView();
 		
 		List<MyBookingDetailDTO> bookingDetailList=mybookingDetailDao.getLikeBookingDetailList("b_1");	//test와 마찬가지로 바꿔야함
+		int bookingDetailCount=bookingDetailList.size();
 		
+		mav.addObject("bookingDetailCount",bookingDetailCount);
 		mav.addObject("bookingDetailList",bookingDetailList);
 		mav.setViewName("/myPage/myPageBookingDetail");
 		return mav;

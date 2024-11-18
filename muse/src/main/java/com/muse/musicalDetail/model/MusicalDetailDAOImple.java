@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.muse.admin.model.PartnerDTO;
+import com.muse.partner.model.MusicalHallDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 public class MusicalDetailDAOImple implements MusicalDetailDAO{
@@ -128,9 +130,9 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 	}
 	
 	@Override
-	public List<MusicalReviewDTO> getMusicalReviews(String m_code) {
+	public List<MusicalReviewDTO> getMusicalReviews(Map paramMap) {
 		// TODO Auto-generated method stub
-		return sqlMap.selectList("getMusicalReviews",m_code);
+		return sqlMap.selectList("getMusicalReviews",paramMap);
 	}
 	
 	@Override
@@ -143,6 +145,36 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 	public List<String> getSelectedRoundActors(Map paramMap) {
 		
 		return sqlMap.selectList("getSelectedRoundActors",paramMap);
+	}
+	
+	@Override
+	public int insertLikeMusicalReview(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.insert("insertLikeMusicalReview",paramMap);
+	}
+	
+	@Override
+	public int deleteLikeMusicalReview(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.insert("deleteLikeMusicalReview",paramMap);
+	}
+	
+	@Override
+	public int countLikeMusicalReview(String mr_code) {
+			
+		return sqlMap.selectOne("countLikeMusicalReview",mr_code);
+	}
+	
+	@Override
+	public PartnerDTO getPartnerInfoByMusical(String m_code) {
+		PartnerDTO dto = sqlMap.selectOne("getPartnerInfoByMusical",m_code);
+		return dto;
+	}
+	
+	@Override
+	public MusicalHallDTO getMusicalHallInfo(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectOne("getMusicalHallInfo",m_code);
 	}
 
 }

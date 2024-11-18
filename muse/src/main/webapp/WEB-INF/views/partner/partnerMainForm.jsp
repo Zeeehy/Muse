@@ -8,9 +8,10 @@
 <link rel="stylesheet" href="/muse/resources/css/Phj.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 </head>
-<body onload="">
+<body>
 	<%@include file="header.jsp" %>
   	<%@include file="sidebar.jsp" %>
+  	
   	<h1>메인입니다</h1>
 </body>
 </html>

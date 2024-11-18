@@ -10,7 +10,7 @@
 
 	<select id="selectMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
     SELECT * FROM musical
-    WHERE mh_code = #{mh_code}
+    WHERE pr_code = #{pr_code}
     <if test="seachMusical != null and seachMusical != ''">
     AND m_title LIKE '%' || #{seachMusical} || '%'
 	</if>
@@ -166,5 +166,72 @@ m_code = #{m_code}),
 		)
 
 	</insert>
+	<select id="reviewList" resultType="com.muse.partner.model.MusicalReviewDTO" parameterType="String">
+	SELECT 
+    r.MR_CODE, 
+    r.MR_TITLE, 
+    r.MR_CONTENT, 
+    r.MR_SCORE, 
+    r.MR_DATE,
+    b.u_id
+FROM 
+    musical_review r
+JOIN 
+    booking b ON r.B_CODE = b.B_CODE
+JOIN 
+    musical_option mo ON b.MO_CODE = mo.MO_CODE
+JOIN 
+    musical m ON mo.M_CODE = m.M_CODE 
+WHERE 
+    m.pr_code = #{pr_code}
+	</select>
+<select id="seachCode" parameterType="map" resultType="int">
+    SELECT NVL(MAX(TO_NUMBER(REGEXP_SUBSTR(m_code, '[0-9]+$'))), 0) AS max_idx
+	FROM musical
+	 WHERE m_code LIKE 'm_%';
+</select>
 
+
+<insert id="insertservRe" parameterType="com.muse.partner.model.ServiceRequestDTO">
+	INSERT INTO SERVICE_REQUEST ( 
+        SR_CODE, RT_CODE, RS_CODE, M_CODE, RS_DATE, RS_ETC, RS_REASON
+    ) 
+    VALUES (
+        'sr' || SERVICE_REQUEST_SR_CODE.NEXTVAL,
+        #{rt_code},
+        #{rs_code},
+        #{m_code},
+        sysdate,
+        '0',
+        '0'
+    )
+    </insert>
+    
+    <select id="maxMcode" resultType="String">
+    <![CDATA[
+    SELECT 'm_' || MAX(TO_NUMBER(NVL(REGEXP_SUBSTR(m_code, '[0-9]+$'), '0'))) AS max_m_code
+    FROM musical
+    WHERE m_code LIKE 'm_%'
+    ]]>
+</select>
+
+<select id="reviewMuscialList" parameterType="map" resultType="com.muse.partner.model.MusicalReviewDTO">
+	SELECT 
+    r.MR_CODE, 
+    r.MR_TITLE, 
+    r.MR_CONTENT, 
+    r.MR_SCORE, 
+    r.MR_DATE,
+    b.u_id
+FROM 
+    musical_review r
+JOIN 
+    booking b ON r.B_CODE = b.B_CODE
+JOIN 
+    musical_option mo ON b.MO_CODE = mo.MO_CODE
+JOIN 
+    musical m ON mo.M_CODE = m.M_CODE 
+WHERE 
+    m.pr_code = #{pr_code} and m.m_code = #{m_code}
+</select>
   </mapper>

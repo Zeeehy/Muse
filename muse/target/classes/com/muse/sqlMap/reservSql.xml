@@ -5,10 +5,17 @@
 <mapper namespace="com.muse.reserv.mapper.ReservMapper">
 	<!-- 뮤지컬 이름 및 장소 가져오기 -->
 	<select id="getMusicalInfo" resultType="java.util.Map">
-		SELECT m.m_title AS m_title, mh.mh_name AS mh_name
-	    FROM musical m
-	    JOIN musical_hall mh ON m.mh_code = mh.mh_code
-	    WHERE m.mh_code = #{mh_code}
+		SELECT 
+        m.m_title AS M_TITLE,
+        m.m_poster AS M_POSTER,
+        m.M_STARTDATE AS M_STARTDATE,
+        m.M_ENDDATE AS M_ENDDATE,
+        m.m_time AS M_TIME,
+        m.m_age AS M_AGE,         
+        mh.mh_name AS MH_NAME
+    FROM musical m
+    JOIN musical_hall mh ON m.mh_code = mh.mh_code
+    WHERE m.mh_code = #{mh_code}
 	</select>
 	<!-- 날짜 가져오기 -->
 	<select id="getMusicalDate" resultType="java.lang.String">
@@ -194,6 +201,7 @@
 	    AND mo.mo_time = #{selectedTime}
 	</select>-->
 	
+	<!-- 해당 공연장 좌석 리뷰 평균평점 조회 -->
 	<select id="getMusicalSeatByHall" resultType="Double" parameterType="map">
 	SELECT 
 
@@ -208,7 +216,37 @@
 	WHERE 
 	    m.m_code = #{m_code}
 	    and s.s_code = #{s_code}
-
 	</select>
+	
+	<!-- 해당 뮤지컬 가격 가져오기 -->
+	<select id="getMusicalSeatPrice" resultType="map" parameterType="String">
+	SELECT
+	    sp.SP_CODE,
+	    sp.M_CODE,
+	    sg.SG_NAME,
+	    sp.SP_PRICE
+	FROM SEAT_PRICE sp
+	JOIN SEAT_GRADE sg ON sp.SG_CODE = sg.SG_CODE
+	WHERE sp.M_CODE = #{m_code}
+	ORDER BY sp.SP_CODE;
+	</select>
+	
+	<!-- 사용자 포인트 조회하기 -->
+	<select id="getPoint" resultType="int">
+	SELECT
+	    NVL(SUM(CASE 
+	        WHEN p.PT_CATEGORY = 1 THEN p.PT_POINT  
+	        WHEN p.PT_CATEGORY = 2 THEN -p.PT_POINT
+	    END), 0) as POINT
+	FROM
+	    USERS u
+	LEFT JOIN
+	    POINT p
+	ON
+	    u.U_ID = p.U_ID
+	WHERE
+	    u.U_ID = #{s_id}
+	</select>
+	
 	
 </mapper>

@@ -1,6 +1,5 @@
 package com.muse.myPage.model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,5 +50,17 @@ public class MyBookingListDAOImpl implements MyBookingListDAO{
 	    
 		return bookingList;
 	
+	}
+	
+	@Override
+	public int getMusicalReviewDateCheck(String b_code) {
+		int musicalReviewDateCheck = sqlMap.selectOne("selectMusicalReviewDateCheck",b_code);
+		return musicalReviewDateCheck;
+	}
+	
+	@Override
+	public int getMusicalReviewCount(String b_code) {
+		int musicalReviewCount = sqlMap.selectOne("selectMusicalReviewCount",b_code);
+		return musicalReviewCount;
 	}
 }

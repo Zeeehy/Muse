@@ -202,11 +202,28 @@ body {
                 <table>
                     <tr>
                         <th>예매번호</th>
-                        <td>${bookingDetailList[0].b_code}~${bookingDetailList[0].b_code}</td>
+                        <td>
+                        	<c:if test="${bookingDetailCount eq 1}">
+                        		${bookingDetailList[0].bd_code} (총 ${bookingDetailCount}매)
+                        	</c:if>
+                        	<c:if test="${bookingDetailCount != 1}">
+                        		${bookingDetailList[0].bd_code}~${bookingDetailList[bookingDetailCount-1].bd_code} (총 ${bookingDetailCount}매)
+                        	</c:if>
+                        </td>
+                        	
                     </tr>
                     <tr>
                         <th>좌석</th>
-                        <td>${bookingDetailList[0].s_section}구역 ${bookingDetailList[0].s_position}행 ${bookingDetailList[0].s_row}열 ${bookingDetailList[0].s_floor}층</td>
+                        <td>
+                        <c:forEach var="bdlist" items="${bookingDetailList}" varStatus="status">
+                       		(${bdlist.s_section}구역 ${bdlist.s_position}행 ${bdlist.s_row}열 ${bdlist.s_floor}층)
+                        	
+                    		<c:if test="${bookingDetailCount != status.count}">
+                    		, 
+                    		</c:if>
+                        </c:forEach>
+                        
+                        </td>
                     </tr>
                     <tr>
                         <th>티켓수령 방법</th>
@@ -227,18 +244,18 @@ body {
                     </tr>
                     <tr>
                         <th>결제상태</th>
-                        <td>결제 완료일까?</td>
+                        <td>결제 완료</td>
                     </tr>
                 </table>
             </div>
             
-            <a href="#" class="button">여기다간 뭐넣지</a>
-            <a href="#" class="button cancel-button">예매 취소하지말아라</a>
+            <a href="#" class="button">여기다간 뭐넣지(뮤즈캐스트 등록?)</a>
+            <a href="#" class="button cancel-button">예매 취소하지말아라(뮤지컬 상세보기?)</a>
         </div>
-
+		 <h2>결제내역</h2>
 		<div class="ticket-info">
 			<div class="recent-history">
-                <h2>결제내역</h2>
+               
                 <table>
                 <thead>
                     <tr>
@@ -246,31 +263,19 @@ body {
                         <th>좌석등급</th>
                         <th>좌석번호</th>
                         <th>좌석가격</th>
+                        <th>결제금액</th>
                         <th>취소여부(일단 관람일)</th>
                         <th>취소버튼</th>
                     </tr>
                 </thead>
-                <!--
-                <tbody>
-                <tr>
-	                        <td>${bookingDetail.b_code}</td>
-	                        <td>sg_code받아와야됨</td>
-	                        <td>${bookingDetail.s_section}구역 ${bookingDetail.s_position}행 ${bookingDetail.s_row}열 ${bookingDetail.s_floor}층</td>
-	                        <td></td>
-	                        <td>b_state나 관람일 받아오기</td>
-	                        <td>
-	                        	취소하기<input type="checkbox" style="margin-left:2px;">
-	                        </td>
-	                    </tr>
-                </tbody>
-                -->
                 <tbody>
                 	<c:forEach var="bdlist" items="${bookingDetailList}">
 	                	<tr>
 	                        <td>${bdlist.bd_code}</td>
 	                        <td>${bdlist.sg_name}</td>
 	                        <td>${bdlist.s_section}구역 ${bdlist.s_position}행 ${bdlist.s_row}열 ${bdlist.s_floor}층</td>
-	                        <td>${(bdlist.sp_price*(100-bdlist.d_num)/100).intValue()}원</td>
+	                        <td>${bdlist.sp_price}원</td>
+	                        <td>${bdlist.bd_price}원</td>
 	                        <td>
 	                        	<c:if test="${bdlist.b_state eq 0}">취소불가</c:if>
 	                        	<c:if test="${bdlist.b_state eq 1}">취소가능</c:if>
@@ -279,31 +284,6 @@ body {
 	                    </tr>
                 	</c:forEach>
                 </tbody>
-                <!--
-                <tbody>
-	           		<c:if test="${empty bookingList }">
-						<tr>
-							<td colspan="7" align="center">
-								모든 리스트를 통합한 검색결과가 없습니다
-							</td>
-						</tr>
-					</c:if>
-                	<c:forEach var="blist" items="${bookingList}">
-	                	<tr>
-	                        <td>${blist.b_date}</td>
-	                        <td>${blist.b_code}</td>
-	                        <td>${blist.m_title}</td>
-	                        <td>${blist.mo_date} | ${blist.mo_time}</td>
-	                        <td>${blist.b_count}</td>
-	                        <td>${blist.b_date}</td>
-	                        <td>
-	                        	<c:if test="${blist.b_state eq 0}">취소</c:if>
-	                        	<c:if test="${blist.b_state eq 1}">예매</c:if>
-	                        </td>
-	                    </tr>
-                	</c:forEach>
-                </tbody>
-               	 -->
             </table>
             </div>
         </div>

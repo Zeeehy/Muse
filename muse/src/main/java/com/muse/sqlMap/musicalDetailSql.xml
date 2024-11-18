@@ -8,6 +8,13 @@
   		select * from musical where m_code = #{m_code} and m_viewstate = 1 and m_ref=0
   	</select>
   	
+  	<select id="getMusicalHallInfo" parameterType="String" resultType="com.muse.partner.model.MusicalHallDTO">
+  		select *
+  		from musical_hall mh, musical m
+  		where mh.mh_code = m.mh_code and m.m_code = #{m_code}
+  	</select>
+  	
+  	
   	<select id="checkLikeMusical" parameterType="map" resultType="Integer">
   		select count(*) from like_musical where m_code = #{m_code} and u_id = #{u_id}
   	</select>
@@ -17,7 +24,7 @@
   	</select>
   	
   	<insert id="insertLikeMusical" parameterType="map">
-  		insert into LIKE_MUSICAL values(LIKE_MUSICAL_lm_code.nextval, #{m_code}, #{u_id},sysdate)
+  		insert into LIKE_MUSICAL values('ml'||LIKE_MUSICAL_lm_code.nextval, #{m_code}, #{u_id},sysdate)
   	</insert>
   	
   	<insert id="deleteLikeMusical" parameterType="map">
@@ -40,7 +47,7 @@
   	</select>
   	
   	<insert id="insertLikeActor" parameterType="map">
-  		insert into LIKE_ACTOR values(LIKE_ACTOR_la_code.nextval, #{ma_code}, #{u_id},sysdate)
+  		insert into LIKE_ACTOR values('la'||LIKE_ACTOR_la_code.nextval, #{ma_code}, #{u_id},sysdate)
   	</insert>
   	
   	<insert id="deleteLikeActor" parameterType="map">
@@ -103,12 +110,18 @@
 		and m.m_code = #{m_code}
   	</select>
   	
-  	<select id="getMusicalReviews" parameterType="String" resultType="com.muse.review.model.MusicalReviewDTO">
-  		select *
-		from musical_review mr, booking b, musical_option mo, musical m
-		where mr.b_code = b.b_code and b.mo_code = mo.mo_code and mo.m_code = m.m_code 
-		and m.m_code = #{m_code}
-		order by mr_date desc
+  	<select id="getMusicalReviews" parameterType="map" resultType="com.muse.review.model.MusicalReviewDTO">
+  		SELECT DISTINCT mr.*, b.u_id,
+  		       (SELECT COUNT(*) FROM like_musical_review WHERE mr_code = mr.mr_code) AS like_count,
+               CASE WHEN lmr.mr_code IS NOT NULL THEN 'Y' ELSE 'N' END AS checkLike
+				FROM musical_review mr
+				JOIN booking b ON mr.b_code = b.b_code
+				JOIN musical_option mo ON b.mo_code = mo.mo_code
+				JOIN musical m ON mo.m_code = m.m_code
+				JOIN users u on u.u_id = b.u_id
+				LEFT JOIN like_musical_review lmr ON mr.mr_code = lmr.mr_code AND lmr.u_id = #{u_id}
+				WHERE m.m_code = #{m_code}
+				ORDER BY mr.mr_date DESC
   	</select>
   	
 	<select id="getRound" parameterType="map" resultType="String">
@@ -128,6 +141,25 @@
 
   	</select>
   	
+  	<insert id="insertLikeMusicalReview" parameterType="map">
+  	  		insert into LIKE_MUSICAL_REVIEW values('lmr'||LIKE_MUSICAL_REVIEW_LMR_CODE.nextval, #{mr_code}, #{u_id})
+  	</insert>
+  	
+  	<insert id="deleteLikeMusicalReview" parameterType="map">
+  		delete from LIKE_MUSICAL_REVIEW where mr_code = #{mr_code} AND u_id = #{u_id}
+  	</insert>
+  	
+  	
+  	<select id="countLikeMusicalReview" parameterType="String" resultType="Integer">
+  		select count(*) from like_musical_review where mr_code = #{mr_code}
+  	</select>
 
+  	
+  	<select id="getPartnerInfoByMusical" parameterType="String" resultType="com.muse.admin.model.PartnerDTO">
+  		SELECT p.*
+		FROM MUSICAL_REVIEW MR, BOOKING B, MUSICAL_OPTION MO, MUSICAL M, PARTNER P
+		WHERE MR.B_CODE = B.B_CODE AND MO.MO_CODE = B.MO_CODE AND MO.M_CODE = M.M_CODE AND P.PR_CODE = M.PR_CODE
+		AND M.M_CODE = #{m_code}
+  	</select>
   	
   </mapper>
