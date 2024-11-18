@@ -8,10 +8,20 @@ import com.muse.review.model.MusicalReviewDTO;
 
 public interface AdminDAO {
 
+	int goAdminLogin(String a_id,String a_pwd);
+	
+	List<ServiceRequestDTO> addRequestList(int rt_code);
+	MusicalDTO addRequest(String sr_code);
+	int addRequestEnd(String sr_code, int rs_code);
+	
 	List<OpenNoticeDTO> openRequestList();
 	OpenNoticeDTO openRequest(String on_code);
 	int openRequestEnd(String on_code,int rs_code);
 	
+	
+	List<ServiceRequestDTO> addApplyList();
+	MusicalDTO addApply(String sr_code);
+	int addApplyEnd(String sr_code);
 	
 	List<OpenNoticeDTO> openApplyList();
 	OpenNoticeDTO openApply(String on_code);

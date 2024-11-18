@@ -4,6 +4,14 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.muse.admin.mapper.adminSQL">
   
+  <select id="goAdminLogin" resultType="Int" parameterType="map">
+	select count(*)
+	from admin
+	where a_id=#{a_id} and a_pwd=#{a_pwd}
+  </select>
+  
+  
+  
   <select id="openRequestList" resultType="com.muse.admin.model.OpenNoticeDTO">
  	select on_code,o.m_code,o.rs_code,on_type,on_open,on_muse_open,on_info,on_sale,on_content,on_casting,on_img,on_etc,on_viewstate, m_title, pr_name,pr_num,pr_pnum,pr_email
 	from 
@@ -155,5 +163,53 @@
 	where bdr_code=#{bdr_code}
 	)
   </delete>
+  
+  
+  <select id="addRequestList" resultType="com.muse.admin.model.ServiceRequestDTO" parameterType="Int">
+  select sr_code, m.m_code, m.m_title,rs_date,rs_etc,pr_name, m_startdate, m_enddate, m_opendate,m_single
+	from service_request sr, partner p, musical m
+	where sr.rt_code = #{rt_code} and sr.rs_code =0 
+	and m.m_code = sr.m_code and p.pr_code = m.pr_code
+  </select>
+  
+  <select id="addRequest" resultType="com.muse.admin.model.MusicalDTO" parameterType="String">
+ select sr_code, m.m_code,m_title,m_startdate,m_enddate,m_time,m_intime,m_maxticket,m_age,m_opendate,m_opentime,m_notice,m_poster,m_detailimg,m_calendar,m_single,
+  mh_name,pr_name,pr_num,pr_pnum,pr_email
+	from service_request sr, partner p, musical m, musical_hall mh
+	where sr.rt_code = 0 and sr.rs_code =0 and sr_code = #{sr_code}
+	and m.m_code = sr.m_code and p.pr_code = m.pr_code and mh.mh_code = m.mh_code
+  </select>
+  
+  <update id="addRequestEnd" parameterType="map">
+  update service_request set rs_code=#{rs_code} where sr_code=#{sr_code}
+  </update>  
+  
+  
+  
+   <select id="addApplyList" resultType="com.muse.admin.model.ServiceRequestDTO">
+	<![CDATA[
+	  SELECT sr_code, m_title, pr_name, m_opendate, m_startdate,m_enddate, m.m_code
+	  FROM musical m, service_request sr, partner p
+	  WHERE m.m_code = sr.m_code 
+	    AND p.pr_code = m.pr_code 
+	    AND sr.rs_code = 1 
+	    AND rt_code = 0 and m_viewstate=0
+	    AND m_opendate <= SYSDATE + 7
+	]]>
+
+  </select>  
+  
+  
+  <select id="addApply" parameterType="String" resultType="com.muse.admin.model.MusicalDTO">
+   select sr_code, m.m_code,m_title,m_startdate,m_enddate,m_time,m_intime,m_maxticket,m_age,m_opendate,m_opentime,m_notice,m_poster,m_detailimg,m_calendar,m_single,
+  mh_name,pr_name,pr_num,pr_pnum,pr_email
+	from service_request sr, partner p, musical m, musical_hall mh
+	where sr.rt_code = 0 and sr.rs_code =1 and sr_code = #{sr_code}
+	and m.m_code = sr.m_code and p.pr_code = m.pr_code and mh.mh_code = m.mh_code 
+  </select>
+  
+  <update id="addApplyEnd" parameterType="String">
+  update musical set m_viewstate = 1 where m_code = #{m_code}
+  </update>
   
   </mapper>

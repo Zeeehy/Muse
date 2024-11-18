@@ -181,6 +181,64 @@ public class AdminDAOImple implements AdminDAO {
 		return result;
 	}
 
+
+	@Override
+	public List<ServiceRequestDTO> addRequestList(int rt_code) {
+		List<ServiceRequestDTO> lists = sqlMap.selectList("addRequestList",rt_code);
+		return lists;
+	}
+
+
+	@Override
+	public MusicalDTO addRequest(String sr_code) {
+		MusicalDTO dto = sqlMap.selectOne("addRequest",sr_code);
+		return dto;
+	}
+
+
+	@Override
+	public int addRequestEnd(String sr_code, int rs_code) {
+		
+		HashMap<String,Object> map = new HashMap<String, Object>();
+		map.put("sr_code", sr_code);
+		map.put("rs_code", rs_code);
+		
+		int result = sqlMap.update("addRequestEnd",map);
+		return result;
+	}
+
+
+	@Override
+	public List<ServiceRequestDTO> addApplyList() {
+		List<ServiceRequestDTO> lists = sqlMap.selectList("addApplyList");
+		return lists;
+	}
+
+
+	@Override
+	public MusicalDTO addApply(String sr_code) {
+		MusicalDTO dto = sqlMap.selectOne("addApply",sr_code);
+		return dto;
+	}
+
+
+	@Override
+	public int addApplyEnd(String sr_code) {
+		
+		return sqlMap.update("addApplyEnd",sr_code);
+	}
+
+
+	@Override
+	public int goAdminLogin(String a_id, String a_pwd) {
+		
+		HashMap<String,String> map = new HashMap<String, String>();
+		map.put("a_id", a_id);
+		map.put("a_pwd", a_pwd);
+		
+		return sqlMap.selectOne("goAdminLogin",map);
+	}
+
 	
 	
 }

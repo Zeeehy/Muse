@@ -87,7 +87,7 @@
 
 	<div class="main-content">
 	
-		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 공연 등록 승인</h1>
+		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 공연 등록 반영</h1>
 		<hr id="hrLine">
 		<table id="bannerListTable" border="1" cellspacing="0">
 			<tr >
@@ -100,10 +100,10 @@
 			
 			<c:forEach var="dto" items="${lists}" varStatus="status">
 			    <tr>
-			        <td><a href="addRequest.do?sr_code=${dto.sr_code}">${dto.m_title}</a></td> 
-			        <td><a href="addRequest.do?sr_code=${dto.sr_code}">${dto.pr_name}</a></td> 
-			        <td><a href="addRequest.do?sr_code=${dto.sr_code}">${dto.m_startdate} ~ ${dto.m_enddate}</a></td>
-			        <td><a href="addRequest.do?sr_code=${dto.sr_code}"> 
+			        <td><a href="addApply.do?sr_code=${dto.sr_code}">${dto.m_title}</a></td> 
+			        <td><a href="addApply.do?sr_code=${dto.sr_code}">${dto.pr_name}</a></td> 
+			        <td><a href="addApply.do?sr_code=${dto.sr_code}">${dto.m_opendate} ~ ${dto.m_enddate}</a></td>
+			        <td><a href="addApply.do?sr_code=${dto.sr_code}"> 
 			        	<c:if test="${dto.m_single == 1}">
 			        		단독 판매
 			        	</c:if>
@@ -111,13 +111,13 @@
 			        		단독 판매 X
 			        	</c:if>
 			        </a></td>
-			        <td><a href="addRequest.do?sr_code=${dto.sr_code}">${dto.m_opendate}</a></td>
+			        <td><a href="addApply.do?sr_code=${dto.sr_code}">${dto.m_opendate}</a></td>
 			    </tr>
 			</c:forEach>
 			
 			<c:if test="${empty lists}">
 				<tr>
-					<td colspan="4" align="center">공연등록 신청이 없습니다.</td>
+					<td colspan="5" align="center"> 1주일 안에 반영해야할 공연등록이 없습니다.</td>
 				</tr>
 			</c:if>
 			

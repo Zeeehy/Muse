@@ -174,7 +174,6 @@ public class MyPageController {
             responseHtml.append("</td>")
             .append("</tr>");
 	    }
-	    System.out.println(responseHtml.toString());
 	    return responseHtml.toString();
 	}
 	
@@ -299,8 +298,26 @@ public class MyPageController {
 	public ModelAndView myPageBookingDetailForm() {
 		ModelAndView mav=new ModelAndView();
 		
+//		refund_state : 취소불가=0, 취소가능=1
+//		review_state : 리뷰작성불가=0 리뷰작성가능=1
+		
 		List<MyBookingDetailDTO> bookingDetailList=mybookingDetailDao.getLikeBookingDetailList("b_1");	//test와 마찬가지로 바꿔야함
 		int bookingDetailCount=bookingDetailList.size();
+		
+		int selectRefundRemainDate=mybookingDetailDao.getRefundRemainDate("b_1");
+		
+		for (MyBookingDetailDTO booking : bookingDetailList) {
+			if(selectRefundRemainDate>-1) {
+				booking.setRefund_state(0);
+				if(selectRefundRemainDate>0&&mybookingDetailDao.getSeatReviewCount(booking.getBd_code())==0) {
+					booking.setReview_state(1);
+				} else {
+					booking.setReview_state(0);
+				}
+			} else {
+				booking.setRefund_state(1);
+			}
+		}
 		
 		mav.addObject("bookingDetailCount",bookingDetailCount);
 		mav.addObject("bookingDetailList",bookingDetailList);
@@ -380,7 +397,6 @@ public class MyPageController {
 	        		+ "</div>"
 	        		+ "</div>");
 	    }
-	    System.out.println(responseHtml.toString());
 	    return responseHtml.toString();
 	}
 	

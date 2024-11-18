@@ -55,6 +55,8 @@
 	<div class="header">
         <input type="image" src="/muse/resources/img/museimage.png" class="header-image">
         <h3 style="margin-left:20px;">관리자</h3>
+        <h6 style="margin-left: auto; margin-right: 45px;">관리자 로그인중</h6>
+        <a href="adminLogout.do" style="text-decoration: none; font-size: 13pt; margin-right: 45px;">LOGOUT</a>
     </div>
 </body>
 </html>

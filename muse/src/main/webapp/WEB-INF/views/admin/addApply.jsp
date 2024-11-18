@@ -163,9 +163,8 @@
 			</div>
 			<div class="buttondiv" style="margin-bottom:50px;margin-top:50px;">
 			
-				<input class="blueButton" type="button" value="승인" onclick="window.location.href='addRequestEnd.do?sr_code=${dto.sr_code}&rs_code=1'" style="margin: 10px; width: 90px;font-size: 16pt;height: 50px;">
-				<input class="redButton" type="button" value="거절" onclick="window.location.href='addRequestEnd.do?sr_code=${dto.sr_code}&rs_code=2'" style="margin: 10px; width: 90px;font-size: 16pt;height: 50px;">
-				<input class="grayButton" type="button" value="뒤로가기" onclick="window.location.href='addRequestList.do'" style="margin: 10px; width: 90px;font-size: 16pt;height: 50px;">
+				<input class="blueButton" type="button" value="반영" onclick="window.location.href='addApplyEnd.do?m_code=${dto.m_code}'" style="margin: 10px; width: 90px;font-size: 16pt;height: 50px;">
+				<input class="grayButton" type="button" value="뒤로가기" onclick="window.location.href='addApplyList.do'" style="margin: 10px; width: 90px;font-size: 16pt;height: 50px;">
 				
 			</div>
       </div>

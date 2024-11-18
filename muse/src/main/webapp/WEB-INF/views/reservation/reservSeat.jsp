@@ -475,12 +475,12 @@ function testClick(rowLayout, event) {
         console.log('#############');
         
         const params = 's_code='+s_code+'&m_code=${m_code}';
-        alert(params);
+        //alert(params);
         sendRequest('getSeatReviewAvg.do', params, function() {
             if (XHR.readyState === 4 && XHR.status === 200) {
-            	alert('컨트롤러 통과완료');
+            	//alert('컨트롤러 통과완료');
                 const avgScore = parseFloat(XHR.responseText);
-                alert(avgScore);
+                //alert(avgScore);
                 
                 if (seatReviewDiv) {
                     seatReviewDiv.querySelector('p').innerHTML = 
