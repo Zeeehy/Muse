@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,18 +50,18 @@
             <article class="contWrap">
                 <header class="step">
                     <h2>04 취소수수료</h2>
-                    <h3>뮤지컬[시라노] <span>| 홍익대 대학로 아트센터 대극장</span></h3>
+                    <h3>${musicalInfo.M_TITLE}<span> | ${musicalInfo.MH_NAME}</span></h3>
                     <div class="select">
-                        <em>다른 관람일자 선택 : </em>
-                        <span>일자</span>
-                        <select id="playDate">
-                            <option>선택하세요!</option>
-                        </select>
-                        <span>시간</span>
-                        <select id="playTime">
-                            <option>선택하세요!</option>
-                        </select>
-                    </div>
+				        <em>다른 관람일자 선택 : </em>
+				        <span>일자</span>
+				        <select id="playDate">
+				            <option selected>${selectedDate}</option>
+				        </select>
+				        <span>시간</span>
+				        <select id="playTime">
+				            <option selected>${selectedTime}</option>
+				        </select>
+				    </div>
                 </header>
                 <section class="allSeat">
                     <aside class="seatL" style="display: flex; flex-direction: column;">
@@ -131,47 +134,50 @@
                                 <div style="display: flex; gap: 15px; flex-direction: row; align-items: stretch;">
                                     <img src="">
                                     <ul class="mInfoList">
-                                        <li><span>뮤지컬 [이프덴]</span></li>
-                                        <li>2024.09.17 ~ 2024.11.17</li>
-                                        <li>홍익대 대학로 아트센터 대극장</li>
-                                        <li>중학생 이상 관람가</li>
-                                        <li>관람시간 : 160분 </li>
-                                    </ul>
+							            <li><span>${musicalInfo.M_TITLE}</span></li>
+							            <li>
+							            	<fmt:formatDate value="${musicalInfo.M_STARTDATE}" pattern="yyyy.MM.dd"/> ~ 
+    										<fmt:formatDate value="${musicalInfo.M_ENDDATE}" pattern="yyyy.MM.dd"/>
+    									</li>
+							            <li>${musicalInfo.MH_NAME}</li>
+							            <li>${musicalInfo.M_AGE}</li>
+							            <li>관람시간 : ${musicalInfo.M_TIME}분</li>
+							        </ul>
                                 </div>
                                 <table style="margin-top: 15px;">
                                     <tbody>
                                         <tr>
                                             <th>일시</th>
-                                            <td>2024년 12월 11일(수) 19:30</td>
+                                            <td>${selectedDate} ${selectedTime}</td>
                                         </tr>
                                         <tr>
-                                            <th>선택좌석<br>(2석)</th>
+                                            <th>선택좌석<br>(${seatCount}석)</th>
                                             <td>
-                                                <ul class="seatInf">
-                                                    <li>밀라노석 1층-A블록 1열 2</li>
-                                                    <li>밀라노석 1층-A블록 1열 2</li>
-                                                </ul>
-                                            </td>
+										        <ul class="seatInf">
+												    <c:if test="${not empty selectedSeats}">
+												        <c:forEach var="seat" items="${selectedSeats}">
+												            <li>
+												                ${seat.grade}석, ${seat.floor}층-${seat.section}블록, ${seat.row}열 ${seat.number}번
+												            </li>
+												        </c:forEach>
+												    </c:if>
+												    <c:if test="${empty selectedSeats}">
+												        <li>선택된 좌석이 없습니다.</li>
+												    </c:if>
+												</ul>
+										    </td>
                                         </tr>
-                                        <tr>
-                                            <th>티켓금액</th>
-                                            <td>310,000원</td>
-                                        </tr>
-                                        <tr>
-                                            <th>할인</th>
-                                            <td>0원</td>
-                                        </tr>
-                                        <tr>
-                                            <th>포인트</th>
-                                            <td><b>2000P</b> 사용</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody>
+                                         <tr>
+										    <th>티켓금액</th>
+										    <td id="ticketPrice">0원</td>
+										</tr>
+										<tr>
+										    <th>포인트 사용</th>
+										    <td><b id="selectedPointAmount">${usePoint} P</b> 사용</td>
+										</tr>
                                         <tr>
                                             <th>취소기한</th>
-                                            <td><b>2024년 12월 16일(월) 17:00</b></td>
+                                            <td><b id="cancelDeadline">${jcancelDeadline != null ? jcancelDeadline : '취소기한이 설정되지 않았습니다.'}</b></td>
                                         </tr>
                                         <tr>
                                             <th>취소 수수료</th>
@@ -184,12 +190,12 @@
                         <div class="s Choice">
                             <h2>총 결제 금액</h2>
                             <div>
-                                <span><b>310,000원</b></span>
+                                <span><b id="totalPrice">0원</b></span>
                             </div>
                         </div>
                         <div class="s Button"> 
                             <div class="subBtList">
-                                <button class="subBt">이전단계</button>
+                                <button type="button" class="subBt" onclick="goBack()">이전단계</button>
                                 <button class="subBt" style="background: #FF3D32; color: #fff;">다음단계</button>
                             </div>
                         </div>
@@ -198,5 +204,11 @@
             </article>
         </section>
     </form>
+<script>
+//이전단계
+function goBack() {
+    history.back();
+}
+</script>
 </body>
 </html>

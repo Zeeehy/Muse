@@ -23,7 +23,7 @@
 </head>
 <body>
 <h1>예매페이지</h1>
-<form action="reservSale.do" id="reservationForm" method="post">
+<form id="reservationForm" action="reservSale.do" method="post">
 	<input type="hidden" name="mh_code" value="${mh_code}">
     <input type="hidden" name="m_code" value="${m_code}">
     <input type="hidden" name="selectedDate" id="formDate">
@@ -146,8 +146,6 @@
     </section>
 </form>
 <script>
-//CSS 스타일 추가
-//CSS 스타일 추가
 const style = document.createElement('style');
 style.textContent = `
     .seat.selected {
@@ -549,6 +547,11 @@ function validateAndSubmit() {
     // 선택된 좌석 정보를 JSON 문자열로 변환하여 저장
     const seatsArray = Array.from(selectedSeats);
     document.getElementById('formSeats').value = JSON.stringify(seatsArray);
+    
+    console.log('히어');
+    console.log(seatsArray);
+    alert(seatsArray);
+
     
     // 폼 제출
     document.getElementById('reservationForm').submit();
