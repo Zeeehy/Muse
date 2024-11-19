@@ -145,7 +145,7 @@ function getSearchCast(){
 }
 
 function insertLikeActor(){
-	var user_id = "test";
+	var user_id = "${sessionScope.s_id}";
 	var checkedValues = [];
 	var likeActorList =  document.getElementsByName("actorCheck");
 	for(var i=0; i<likeActorList.length;i++){
@@ -178,7 +178,7 @@ function insertLikeActor(){
 }
 
 function insertLikeMusical(){
-	var user_id = "test";
+	var user_id = "${sessionScope.s_id}";
 	var checkedValues = [];
 	var likeMusicalList =  document.getElementsByName("musicalCheck");
 	for(var i=0; i<likeMusicalList.length;i++){
@@ -247,7 +247,7 @@ function insertLike(){
             <button class="cancel-btn">취소</button>
         </div>
     </div>
-    <form enctype="application/x-www-form-urlencoded"></form>
+    <!--<form enctype="application/x-www-form-urlencoded"></form>  -->
 </div>
 </body>
 </html>

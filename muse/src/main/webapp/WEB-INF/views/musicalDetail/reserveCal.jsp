@@ -21,16 +21,21 @@
             align-items: center;
             margin-bottom: 20px;
         }
-        .calendar-header button {
+        /* .calendar-header button {
             background: #4CAF50;
             color: white;
             border: none;
             padding: 8px 16px;
             cursor: pointer;
             border-radius: 4px;
-        }
+        } */
+        .button {
+		    color: #ff3d32;
+		    background: none;
+		    font-size: 1.2rem;
+		}
         .calendar-header button:hover {
-            background: #45a049;
+            color: #000;
         }
         table {
             width: 100%;
@@ -53,16 +58,15 @@
         .today {
             background: #e3f2fd;
         }
-        .selected {
+        /* .selected {
             background: #b3e5fc;
-        }
+        } */
         .disabled {
             color: #ccc;
             cursor: not-allowed;
         }
         .reservation-form {
             margin-top: 20px;
-            padding: 20px;
             border-top: 1px solid #ddd;
             display: none;
         }
@@ -77,14 +81,54 @@
         .reservation-form button:hover {
             background: #1976D2;
         }
+        .calendar-header {
+		    padding: 20px 20px 30px;
+		}
+		.calendar-header h2 {
+			font-size: 1.2rem;
+	    	word-spacing: 0.5rem;
+	    	font-weight: 500;
+		}
+		.flex {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 10px;
+		    margin-bottom: 20px;
+		    color: #444;
+		    font-weight: 700;
+		}
+		.flex span {
+			font-size: 14px;
+		    font-weight: 500;
+		    padding: 15px;
+		    border: 1px solid #ff3d32;
+		    border-radius: 10px;
+		    width: 100px;
+		    text-align: center;
+		    color: #ff3d32;
+		}
+		.flex .time-option.selected {
+			padding-top:15px;
+		}
+		.flex .time-option.selected span{
+			margin-left:15px;
+		}
+		#roundCasting {
+			padding:20px;
+			border-top:1px solid #ddd;
+		}
+		#remainSeats{
+			padding: 0 15px 15px;
+    		color: #bbb;
+		}
     </style>
 </head>
 <body>
  <div class="calendar-container">
         <div class="calendar-header">
-            <button onclick="previousMonth()">&lt; 이전</button>
+            <button onclick="previousMonth()">◀</button>
             <h2 id="currentMonth"></h2>
-            <button onclick="nextMonth()">다음 &gt;</button>
+            <button onclick="nextMonth()">▶</button>
         </div>
         <table id="calendar">
             <thead>
@@ -101,29 +145,52 @@
             <tbody id="calendarBody"></tbody>
         </table>
         <div id="reservationForm" class="reservation-form">
-            <h3>회차: <span id="selectedDate"></span></h3>
-            <p>공연 시간 선택:</p>
-            <div id="timeSelect">
-
+        <div style="padding:20px;">
+            <span id="selectedDate" style="display: none;"></span>
+            <div class="flex">
+            회차
+            <div id="timeSelect"></div>
             </div>
+        </div>
             <div id="remainSeats">
             
             </div>
             <div id="roundCasting">
-            	<h3 class="roundCastingHead">캐스팅</h3>
+            	<h3 class="roundCastingHead" style="padding-bottom:15px;">캐스팅</h3>
             	<div id="roundCastingList"></div>
             </div>
-            <button onclick="makeReservation()">예매하기</button>
-        </div>
+           </div>
     </div>
-
+	<button onclick="makeReservation()" style="    width: 100%;
+    padding: 20px;
+    background: #ff3d32;
+    color: #fff;
+    font-size: 20px;
+	">예매하기</button>
+        
     <script>
     
-    const startDate = new Date('2024-11-15');
-    const endDate = new Date('2025-06-22');
+    //const startDate = new Date('2024-11-15');
+    	var s_id = '${sessionScope.s_id}';
+
+    const maxPerform = ${maxPerform};
     
-    console.log(startDate);
-    console.log(endDate);
+    
+    const endDate = new Date(maxPerform.mo_date);
+
+    
+    //performList
+	let performList = ${performList};
+	
+	
+    
+	let availableDates = performList.map(perform => {
+	    return new Date(perform.mo_date);
+	});
+	
+	const startDate = availableDates[0];
+	
+
     startDate.setHours(0, 0, 0, 0);
     endDate.setHours(23, 59, 59, 999);
 
@@ -137,26 +204,32 @@
 		var timeSelect = document.querySelector('#timeSelect');
 
         // 공연 가능한 날짜 (예시 데이터)
-        const availableDates = [5, 6, 12, 13, 19, 20, 26, 27];
         
         function isAvailableDate(year, month, day) {
             const checkDate = new Date(year, month-1, day);
             checkDate.setHours(0, 0, 0, 0);
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);  // 오늘 날짜도 시간을 0시 0분으로 설정
 
-            // 시작일과 종료일 사이에 있는지, 오늘 이후인지 확인
-            if (checkDate >= startDate && checkDate <= endDate && checkDate >= new Date()) {
-            	console.log('분기');
-            	console.log(checkDate);
-            	console.log(startDate);
-            	console.log(endDate);
+            // 시작일과 종료일 사이에 있는지, 오늘 이후(또는 같은 날)인지 확인
+/*             if (checkDate >= startDate && checkDate <= endDate && checkDate >= today) {
                 const dayOfWeek = checkDate.getDay();
                 // 공연 요일 체크 (예: 월요일 공연)
-                
                 if (dayOfWeek < 8) {
                     return true;
                 }
             }
-            return false;
+            return false; */
+            
+            
+            return availableDates.some(date => {
+                const availableDate = new Date(date);
+                return availableDate.getFullYear() === checkDate.getFullYear() &&
+                       availableDate.getMonth() === checkDate.getMonth() &&
+                       availableDate.getDate() === checkDate.getDate();
+            });
+            
         }
         
         function selectNearestAvailableDate(date) {
@@ -176,19 +249,30 @@
 
         function initCalendar() {
             // 오늘 날짜가 공연 시작일보다 이전이면 시작일을, 아니면 오늘 날짜를 기준으로
-            currentDate = new Date() < startDate ? new Date(startDate) : new Date();
+/*             currentDate = new Date() < startDate ? new Date(startDate) : new Date();
             showCalendar(currentDate);
             // 가장 가까운 예매 가능일 선택
+            selectNearestAvailableDate(currentDate); */
+            
+        	if (availableDates.length > 0) {
+                currentDate = new Date(availableDates[0]);
+            } else {
+                currentDate = new Date();
+            }
+            showCalendar(currentDate);
             selectNearestAvailableDate(currentDate);
         }
+        
 
         function showCalendar(date) {
+        	
+        	
             const year = date.getFullYear();
             const month = date.getMonth();
 
             // 헤더 업데이트
-            document.getElementById('currentMonth').textContent = year+'년'+(month + 1)+'월';
-
+            document.getElementById('currentMonth').textContent = year+'년 '+(month + 1)+'월';
+	
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
             const startingDay = firstDay.getDay();
@@ -325,8 +409,7 @@
 	    				
 	    				var actors = response.actors;
 	    		        var seats = response.seats;
-	    		        console.log(actors);
-	    		        console.log(seats);
+
 //	    				var remainSeats =document.querySelector('#remainSeats');
 //	    				var roundCasting =document.querySelector('#roundCasting');
 	    				
@@ -377,8 +460,7 @@
         
 
         function previousMonth() {
-        	
-        	const newDate = new Date(currentDate);
+        	   const newDate = new Date(currentDate);
         	   newDate.setMonth(newDate.getMonth() - 1);
 
         	   // 오늘 날짜
@@ -387,18 +469,94 @@
 
         	   if(newDate >= startDate && newDate >= today) {
         	       currentDate.setMonth(currentDate.getMonth() - 1);
-        	       showCalendar(currentDate);
-        	   }
+        	       
+        	       var year = currentDate.getFullYear();
+        	       var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        	       var dateString = year+'-'+month+'-01';
+        	       
+        	       var params = 'm_code=${mddto.m_code}&dateString='+ dateString;
+        	       sendRequest('moveMonthCalendar.do', params, function(){
+        	           if (XHR.readyState === 4) {
+        	               if (XHR.status === 200) {
+        	                   performList = JSON.parse(XHR.responseText);
+        	                   availableDates = performList.map(perform => {
+        	                       return new Date(perform.mo_date);
+        	                   });
+        	                   // 데이터 로드 완료 후 달력 표시
+        	                   showCalendar(currentDate);
+        	                   selectNearestAvailableDate(currentDate);
 
-        }
+        	               }
+        	           }
+        	       }, 'GET');
+        	   }
+        	}
 
         function nextMonth() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            showCalendar(currentDate);
+            const newDate = new Date(currentDate);
+            newDate.setMonth(newDate.getMonth() + 1);
+            
+            if ((newDate.getFullYear() < endDate.getFullYear()) || 
+                (newDate.getFullYear() === endDate.getFullYear() && newDate.getMonth() <= endDate.getMonth())) {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                
+                var year = currentDate.getFullYear();
+                var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+                var dateString = year+'-'+month+'-01';
+                
+                var params = 'm_code=${mddto.m_code}&dateString='+ dateString;
+                sendRequest('moveMonthCalendar.do', params, function(){
+                    if (XHR.readyState === 4) {
+                        if (XHR.status === 200) {
+                            performList = JSON.parse(XHR.responseText);
+                            availableDates = performList.map(perform => {
+                                return new Date(perform.mo_date);
+                            });
+                            // 데이터 로드 완료 후 달력 표시
+                            showCalendar(currentDate);
+                            selectNearestAvailableDate(currentDate);
+
+                        }
+                    }
+                }, 'GET');
+            }
+        }
+        
+        function showMonthMusicalOption(){
+        	
+        	//currentDate = js date
+        	var year = currentDate.getFullYear();
+        	var month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 1자리 월을 2자리로
+        	var dateString = year+'-'+month+'-01';
+        	alert(dateString);
+        	var params = 'm_code=${mddto.m_code}&dateString='+ dateString;
+        	sendRequest('moveMonthCalendar.do', params, function(){
+        		if (XHR.readyState === 4) {
+	    			if (XHR.status === 200) {
+	    				
+	    				console.log(XHR.responseText);
+	    				
+	    				alert(JSON.parse(XHR.responseText));
+	    				performList = JSON.parse(XHR.responseText);
+	    				
+	    				availableDates = performList.map(perform => {
+	    				    return new Date(perform.mo_date);
+	    				});
+	    				
+	    				
+	    			}
+        		}
+        	},
+			'GET');
         }
 
         function makeReservation() {
-            if (!selectedDate) {
+        	//reserveMain.do
+        	//param
+        	
+        	//m_code, mh_code, 일자, 시간
+        	// selectedDate 
+/*             if (!selectedDate) {
                 alert('날짜를 선택해주세요.');
                 return;
             }
@@ -406,7 +564,31 @@
             const time = document.getElementById('timeSelect').value;
             const reservationDate = selectedDate.toLocaleDateString();
             
-            alert('예매가 완료되었습니다!\n날짜: '+reservationDate+'\n시간:'+time);
+            alert('예매가 완료되었습니다!\n날짜: '+reservationDate+'\n시간:'+time); */
+            
+            var selected = document.querySelector('.selected');
+            
+            if(!selected){
+                alert('날짜를 선택해주세요.');
+				return;
+            }
+            
+            if(!s_id){
+            	window.location.href = 'memberLogin.do';
+            	return;
+            }
+            
+            console.log(selected);
+            
+            var time_sel = document.querySelector('.time-option.selected');
+            
+            console.log(time_sel);
+            
+            var dateParam = selected.dataset.year+'-'+selected.dataset.month+'-'+selected.dataset.date;
+            var timeParam = time_sel.dataset.time;
+            
+            window.open('reservMain.do?mh_code=${mhdto.mh_code }&m_code=${mddto.m_code}&sl_bind=1&selectedDate=' + dateParam + '&selectedTime=' + timeParam, "reservMain", "width=1250, height=850, top=100, left=200, location=no");
+            
         }
 
         // 초기 달력 생성

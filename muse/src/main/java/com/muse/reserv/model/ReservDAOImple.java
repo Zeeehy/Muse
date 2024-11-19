@@ -185,7 +185,12 @@ public class ReservDAOImple implements ReservDAO {
 		
 		@Override
 	    public int usePoint(String s_id, Map<String,Object> params) {
-			return sqlMap.update("point.updatePoint", params);
+			return sqlMap.update("updatePoint", params);
 	    }
+		
+		@Override
+		public Map<String, Object> getMemberInfo(String s_id) {
+			return sqlMap.selectOne("getMemberInfo",s_id);
+		}
 
 }

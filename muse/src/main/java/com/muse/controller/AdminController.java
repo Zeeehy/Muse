@@ -5,7 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.muse.admin.model.AdminDAO;
 import com.muse.admin.model.AdminDTO;
 import com.muse.admin.model.BannerDTO;
+import com.muse.admin.model.MemberStatsDTO;
 import com.muse.admin.model.MusicalDTO;
 import com.muse.admin.model.OpenNoticeDTO;
 import com.muse.admin.model.PartnerDTO;
@@ -36,14 +39,14 @@ public class AdminController {
 	@Autowired
 	private AdminDAO adminDao;
 	
-	
+	/*
 	@RequestMapping("/adminIndex.do")
 	public ModelAndView adminIndex() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/index");
 		return mav;
 	}
-	
+	*/
 	
 	@RequestMapping("/adminLogin.do")
 	public ModelAndView goAdminLogin() {
@@ -222,7 +225,7 @@ public class AdminController {
 	//공연등록 반영 홈페이지
 	//공연등록 상세
 	@RequestMapping("addApply.do")
-	public ModelAndView addApply(@RequestParam("sr_code") String sr_code,HttpSession session,HttpServletRequest request) {
+	public ModelAndView requiredLogin_addApply(@RequestParam("sr_code") String sr_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		MusicalDTO dto = adminDao.addApply(sr_code);
@@ -233,7 +236,7 @@ public class AdminController {
 	
 	//공연등록 반영
 	@RequestMapping("addApplyEnd.do")
-	public ModelAndView addApplyEnd(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
+	public ModelAndView requiredLogin_addApplyEnd(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.addApplyEnd(m_code);
@@ -344,7 +347,7 @@ public class AdminController {
 	
 	//배너 추가하기
 	@RequestMapping("/addBanner.do")
-	public ModelAndView addBanner(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
+	public ModelAndView requiredLogin_addBanner(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		//banner테이블에 추가하기
@@ -385,7 +388,7 @@ public class AdminController {
 	/* 불량리뷰관리 시작 */
 	//리뷰리스트
 	@RequestMapping("/adminReviewList.do")
-	public ModelAndView adminReviewList(HttpSession session,HttpServletRequest request) {
+	public ModelAndView requiredLogin_adminReviewList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/adminReviewList");
 		
@@ -396,7 +399,7 @@ public class AdminController {
 	
 	//삭제, 상태 바꾸기
 	@RequestMapping("adminDeleteReview.do")
-	public ModelAndView adminDeleteReview(@RequestParam("mr_code") String mr_code,@RequestParam("mr_state") int mr_state,
+	public ModelAndView  requiredLogin_adminDeleteReview(@RequestParam("mr_code") String mr_code,@RequestParam("mr_state") int mr_state,
 			HttpSession session,HttpServletRequest request) {
 		ModelAndView mav =new ModelAndView();
 		
@@ -405,6 +408,18 @@ public class AdminController {
 		
 		mav.addObject("goUrl", "adminReviewList.do");
 		
+		return mav;
+	}
+	
+	
+	// 불량단어 필터링 페이지
+	@RequestMapping("/adminBadReviewList.do")
+	public ModelAndView requiredLogin_adminBadReviewList(HttpSession session,HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/adminBadReviewList");
+		
+		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
+		mav.addObject("lists",lists);
 		return mav;
 	}
 	
@@ -563,9 +578,24 @@ public class AdminController {
 	//회원 증가량
 	@RequestMapping("/memberStats.do")
 	public ModelAndView requiredLogin_memberStats(HttpSession session,HttpServletRequest request) {
+		
 		ModelAndView mav = new ModelAndView();
 		
+		List<MemberStatsDTO> lists = adminDao.memberStats();
+/*		
+		for (MemberStatsDTO memberStats : lists) {
+		    // MemberStatsDTO에서 필요한 값들 가져오기
+		    String joinMonth = memberStats.getJoinMonth();  // 예: '2024-01'
+		    Integer total = memberStats.getMemberTotal();        // 예: 회원 수
+		    Integer museTotal = memberStats.getMuseTotal();       // 예: 회원 수
+
+		    // 출력
+		    System.out.println("가입월: " + joinMonth + ", 누적회원수: " + total+" , 뮤즈: "+museTotal);
+		}
+*/		
 		
+		
+		mav.addObject("lists",lists);
 		mav.setViewName("admin/memberStats");
 		return mav;
 	}

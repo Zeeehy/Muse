@@ -111,6 +111,40 @@
   	</select>
   	
   	<select id="getMusicalReviews" parameterType="map" resultType="com.muse.review.model.MusicalReviewDTO">
+  	
+  	 SELECT * FROM (
+            SELECT ROWNUM AS rnum, A.* FROM (
+                SELECT DISTINCT 
+                    mr.*,
+                    b.u_id,
+                    (
+                        SELECT COUNT(*) 
+                        FROM like_musical_review 
+                        WHERE mr_code = mr.mr_code
+                    ) AS like_count,
+                    CASE 
+                        WHEN lmr.mr_code IS NOT NULL THEN 'Y' 
+                        ELSE 'N' 
+                    END AS checkLike
+                FROM musical_review mr
+                JOIN booking b ON mr.b_code = b.b_code
+                JOIN musical_option mo ON b.mo_code = mo.mo_code
+                JOIN musical m ON mo.m_code = m.m_code
+                JOIN users u ON u.u_id = b.u_id
+                LEFT JOIN like_musical_review lmr 
+                    ON mr.mr_code = lmr.mr_code 
+                    AND lmr.u_id = #{u_id}
+                WHERE m.m_code = #{m_code}
+                ORDER BY mr.mr_date DESC
+            ) A 
+            WHERE ROWNUM &lt;= #{endnum}
+        ) B 
+        WHERE rnum &gt;= #{startnum}
+        
+        
+  	</select>
+  	
+  	<select id="getBestReviewsByMusical" parameterType="map" resultType="com.muse.review.model.MusicalReviewDTO">
   		SELECT DISTINCT mr.*, b.u_id,
   		       (SELECT COUNT(*) FROM like_musical_review WHERE mr_code = mr.mr_code) AS like_count,
                CASE WHEN lmr.mr_code IS NOT NULL THEN 'Y' ELSE 'N' END AS checkLike
@@ -120,7 +154,7 @@
 				JOIN musical m ON mo.m_code = m.m_code
 				JOIN users u on u.u_id = b.u_id
 				LEFT JOIN like_musical_review lmr ON mr.mr_code = lmr.mr_code AND lmr.u_id = #{u_id}
-				WHERE m.m_code = #{m_code}
+				WHERE m.m_code = #{m_code} and mr.mr_state = 1
 				ORDER BY mr.mr_date DESC
   	</select>
   	
@@ -161,5 +195,38 @@
 		WHERE MR.B_CODE = B.B_CODE AND MO.MO_CODE = B.MO_CODE AND MO.M_CODE = M.M_CODE AND P.PR_CODE = M.PR_CODE
 		AND M.M_CODE = #{m_code}
   	</select>
+  	
+  	
+  	<select id="getRecentMusicalOption" parameterType="String" resultType = "com.muse.partner.model.MusicalOptionDTO">
+		SELECT *
+		FROM musical_option
+		WHERE m_code = #{m_code}
+		AND mo_date >= TRUNC(SYSDATE)
+		AND TO_CHAR(mo_date, 'YYYY-MM') = (
+		    SELECT TO_CHAR(MIN(mo_date), 'YYYY-MM')
+		    FROM musical_option
+		    WHERE m_code = #{m_code}
+		    AND mo_date >= TRUNC(SYSDATE)
+		)
+		ORDER BY mo_date
+  	</select>
+  	
+  	<select id="getMaxMusicalOption" parameterType="String" resultType="com.muse.partner.model.MusicalOptionDTO">
+  		select max(mo_date) as mo_date
+  		from musical_option
+  		where m_code = #{m_code}
+  	
+  	</select>
+  	
+  	
+  	<select id="getNextMonthMusicalOption" parameterType="map" resultType="com.muse.partner.model.MusicalOptionDTO">
+  		SELECT *
+		FROM musical_option
+		WHERE m_code = #{m_code}
+		AND TO_CHAR(mo_date, 'YYYY-MM') = TO_CHAR(TO_DATE(#{dateString}, 'YYYY-MM-DD'), 'YYYY-MM')
+		ORDER BY mo_date
+  	</select>
+  	
+  	
   	
   </mapper>
