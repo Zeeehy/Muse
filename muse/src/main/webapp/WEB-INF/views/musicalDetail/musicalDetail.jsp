@@ -715,27 +715,7 @@ td.selected {
 												                </c:if>
 												                
 											                	</span>
-											                
-											                <%-- <c:if test="${empty sessionScope.s_id}">
-															<img class="cast_icon" alt=""
-																src="resources/img/muse_cast/empty_heart.png">
-															</c:if>
-															<c:if test="${!empty sessionScope.s_id}">
-																<c:choose>
-																	<c:when test="${checkLikeMusical == 1}">
-																		<img class="cast_icon" alt=""
-																			src="resources/img/muse_cast/full_heart.png">
-																	</c:when>
-																	<c:otherwise>
-																		<img class="cast_icon" alt=""
-																			src="resources/img/muse_cast/empty_heart.png">
-																	</c:otherwise>
-																</c:choose>
-															</c:if> --%>
-											                
-											                
-											                
-											                
+  
 											                </div>
 											            </div>
 											        </div>
@@ -770,6 +750,7 @@ td.selected {
 										</c:if>		
 									</c:forEach>		
 								</ul>
+									<div id="pageNav">${pagingStr }</div>
 							</div>
 						</div>
 					
@@ -831,7 +812,7 @@ td.selected {
 	// 뮤즈캐스트
 	var prdCastBtn = document.querySelector(".prdCastBtn");
 	var checkLikeMusical = ${checkLikeMusical};
-	var s_id = '${sessionScope.s_id}';
+	//var s_id = '${sessionScope.s_id}';
 
 	// 뮤지컬 뮤즈캐스트 등록 및 취소
 	prdCastBtn.addEventListener("click", function() {
@@ -1129,6 +1110,95 @@ td.selected {
     document.querySelector(".infoBtn").addEventListener("click", function(){
     	hall_popup.style.display = 'block';
     });
+    
+    //페이징
+    
+function showNotice(cr){
+    var params = 'crpage='+cr+'&m_code=${mddto.m_code}';
+    sendRequest('reviewList.do', params, function(){
+        if (XHR.readyState === 4) {
+            if (XHR.status === 200) {
+                var data = JSON.parse(XHR.responseText);
+                var html = '';
+                
+                data.reviews.forEach(function(review) {
+                    if(review.mr_state != 2) {
+                        html += '<li class="bbsItem">';
+                        html += '    <div class="bbsContent">';
+                        html += '        <div class="bbsItemHead">';
+                        html += '            <div class="leftSide">';
+                        
+                        // 별점 처리
+                        for(let i = 1; i <= 5; i++) {
+                            if(i <= Math.floor(review.mr_score)) {
+                                html += '<img src="/muse/resources/img/ystar.svg">';
+                            } else if(i == Math.ceil(review.mr_score) && review.mr_score % 1 >= 0.5) {
+                                html += '<span class="ystarHalf"></span>';
+                                html += '<span class="gstarHalf"></span>';
+                            } else {
+                                html += '<img src="/muse/resources/img/gstar.svg">';
+                            }
+                        }
+                        
+                        html += '            </div>';
+                        html += '            <div class="rightSide">';
+                        html += '                <div class="reviewInfo">';
+                        html += '                    <span>' + review.u_id + ' |</span>';
+                        html += '                    <span> ' + formatDate(review.mr_date) + ' |</span>';
+                        html += '                    <span class="like_review" data-code="' + review.mr_code + '">공감 ' + review.like_count + '</span>';
+                        html += '                    <span class="heartspan">';
+                        
+                        // 좋아요 하트 이미지
+                        if(review.checkLike == 'Y') {
+                            html += '<img class="cast_icon" alt="" src="resources/img/muse_cast/full_heart.png"';
+                        } else {
+                            html += '<img class="cast_icon" alt="" src="resources/img/muse_cast/empty_heart.png"';
+                        }
+                        html += ' data-code="' + review.mr_code + '" data-check-like="' + review.checkLike + '">';
+                        
+                        html += '                    </span>';
+                        html += '                </div>';
+                        html += '            </div>';
+                        html += '        </div>';
+                        html += '        <div class="bbsItemBody">';
+                        html += '            <div class="bbsBodyMain">';
+                        html += '                <div class="bbsTitle">';
+                        html += '                    <strong class="bbsTitleText">' + review.mr_title + '</strong>';
+                        html += '                </div>';
+                        html += '                <p class="bbsText">';
+                        html += '                    ' + review.mr_content;
+                        html += '                </p>';
+                        html += '            </div>';
+                        html += '        </div>';
+                        html += '    </div>';
+                        html += '</li>';
+                    } else {
+                        // 차단된 리뷰
+                        html += '<li class="bbsItem">';
+                        html += '    <div class="bbsContent">';
+                        html += '        <div class="bbsItemBody">';
+                        html += '            <div class="bbsBodyMain">';
+                        html += '                <div class="bbsTitle">';
+                        html += '                    <strong class="bbsTitleText">관리자에 의해 차단된 리뷰입니다.</strong>';
+                        html += '                </div>';
+                        html += '            </div>';
+                        html += '        </div>';
+                        html += '    </div>';
+                        html += '</li>';
+                    }
+                });
+                
+                // 생성된 HTML을 페이지에 삽입
+                document.querySelector('.bbsList').innerHTML = html;
+                
+                // 페이징 문자열 삽입
+                document.getElementById('pageNav').innerHTML = data.pagingStr;
+            }
+        }
+    }, 'GET');
+}
+
+
 </script>
 
 <script type="text/javascript">
