@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import com.muse.admin.model.PartnerDTO;
 import com.muse.partner.model.MusicalHallDTO;
+import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 public class MusicalDetailDAOImple implements MusicalDetailDAO{
@@ -136,6 +137,12 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 	}
 	
 	@Override
+	public List<MusicalReviewDTO> getBestReviewsByMusical(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getBestReviewsByMusical",paramMap);
+	}
+	
+	@Override
 	public List<String> getRound(Map paramMap) {
 		// TODO Auto-generated method stub
 		return sqlMap.selectList("getRound",paramMap);
@@ -175,6 +182,24 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 	public MusicalHallDTO getMusicalHallInfo(String m_code) {
 		// TODO Auto-generated method stub
 		return sqlMap.selectOne("getMusicalHallInfo",m_code);
+	}
+	
+	@Override
+	public List<MusicalOptionDTO> getRecentMusicalOption(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getRecentMusicalOption",m_code);
+	}
+	
+	@Override
+	public List<MusicalOptionDTO> getNextMonthMusicalOption(Map paramMap) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectList("getNextMonthMusicalOption",paramMap);
+	}
+	
+	@Override
+	public MusicalOptionDTO getMaxMusicalOption(String m_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectOne("getMaxMusicalOption",m_code);
 	}
 
 }
