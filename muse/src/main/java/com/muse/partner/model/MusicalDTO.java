@@ -23,19 +23,16 @@ public class MusicalDTO {
 	private int m_single;
 	private int m_viewState;
 	private int m_ref;
+	private String mh_name;
 	public MusicalDTO() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	
-	
-	
-	
-	
 	public MusicalDTO(String m_code, String mh_code, String pr_code, String m_title, String m_startDate,
-			String m_endDate, int m_time, int m_inTime, int m_maxTicket, String m_age, String m_openDate, String m_openTime,
-			String m_notice, String m_poster, String m_detailImg, int m_calendar, int m_single, int m_viewState,
-			int m_ref) {
+			String m_endDate, int m_time, int m_inTime, int m_maxTicket, String m_age, String m_openDate,
+			String m_openTime, String m_notice, String m_poster, String m_detailImg, int m_calendar, int m_single,
+			int m_viewState, int m_ref, String mh_name) {
 		super();
 		this.m_code = m_code;
 		this.mh_code = mh_code;
@@ -56,11 +53,8 @@ public class MusicalDTO {
 		this.m_single = m_single;
 		this.m_viewState = m_viewState;
 		this.m_ref = m_ref;
+		this.mh_name = mh_name;
 	}
-
-
-
-
 
 
 	public String getM_code() {
@@ -111,10 +105,10 @@ public class MusicalDTO {
 	public void setM_inTime(int m_inTime) {
 		this.m_inTime = m_inTime;
 	}
-	public int getm_maxTicket() {
+	public int getM_maxTicket() {
 		return m_maxTicket;
 	}
-	public void setm_maxTicket(int m_maxTicket) {
+	public void setM_maxTicket(int m_maxTicket) {
 		this.m_maxTicket = m_maxTicket;
 	}
 	public String getM_age() {
@@ -153,10 +147,10 @@ public class MusicalDTO {
 	public void setM_detailImg(String m_detailImg) {
 		this.m_detailImg = m_detailImg;
 	}
-	public int getm_calendar() {
+	public int getM_calendar() {
 		return m_calendar;
 	}
-	public void setm_calendar(int m_calendar) {
+	public void setM_calendar(int m_calendar) {
 		this.m_calendar = m_calendar;
 	}
 	public int getM_single() {
@@ -177,6 +171,16 @@ public class MusicalDTO {
 	public void setM_ref(int m_ref) {
 		this.m_ref = m_ref;
 	}
+	public String getMh_name() {
+		return mh_name;
+	}
+	public void setMh_name(String mh_name) {
+		this.mh_name = mh_name;
+	}
+	
+	
+	
+	
 	
 	
 

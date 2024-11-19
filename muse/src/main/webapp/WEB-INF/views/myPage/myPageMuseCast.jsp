@@ -177,7 +177,7 @@ function checkLikeActorAll(){
 }
 
 function deleteLikeActor(){
-	var user_id = "test";
+	var user_id = "${sessionScope.s_id}";
 	var checkedValues = [];
 	var likeActorList =  document.getElementsByName("actorCheck");
 	for(var i=0; i<likeActorList.length;i++){
@@ -216,7 +216,7 @@ function checkLikeMusicalAll(){
 }
 
 function deleteLikeMusical(){
-	var user_id = "test";
+	var user_id = "${sessionScope.s_id}";
 	var checkedValues = [];
 	var likeMusicalList =  document.getElementsByName("musicalCheck");
 	for(var i=0; i<likeMusicalList.length;i++){
@@ -256,12 +256,12 @@ function deleteLikeMusical(){
     <div class="sidebar">
         <h2>마이페이지</h2>
         <ul>
-            <li><a href="#">예약/취소내역</a></li>
-            <li><a href="#">나의 뮤즈캐스트</a></li>
-            <li><a href="#">나의 MUSEPASS</a></li>
+            <li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
+            <li><a href="myPageBooking.do">예약/취소내역</a></li>
+            <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
+            <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
             <li><a href="#">나의 후기</a></li>
-            <li><a href="#">뮤즈캘린더</a></li>
-            <li><a href="#">1:1 문의</a></li>
+            <li><a href="myPageMuseCalendar.do">뮤즈캘린더</a></li>
         </ul>
     </div>
 

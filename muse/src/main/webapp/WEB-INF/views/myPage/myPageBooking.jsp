@@ -132,6 +132,11 @@ table button {
 	border-radius: 10%;
 }
 
+table td a:hover {
+	 color: #d2322d;
+	 font-size: 16px;
+	 font-weight: bold;
+}
 </style>
 <script>
 function getBookingDay(param){
@@ -190,6 +195,10 @@ function getBookingDate(){
 
 }
 
+function openMusicalReview(b_code){
+	
+	location.href='mrWrite.do?b_code='+b_code;
+}
 </script>
 </head>
 <body>
@@ -199,12 +208,12 @@ function getBookingDate(){
     <div class="sidebar">
         <h2>마이페이지</h2>
         <ul>
-            <li><a href="#">예약/취소내역</a></li>
-            <li><a href="#">나의 뮤즈캐스트</a></li>
-            <li><a href="#">나의 MUSEPASS</a></li>
+            <li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
+            <li><a href="myPageBooking.do">예약/취소내역</a></li>
+            <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
+            <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
             <li><a href="#">나의 후기</a></li>
-            <li><a href="#">뮤즈캘린더</a></li>
-            <li><a href="#">1:1 문의</a></li>
+            <li><a href="myPageMuseCalendar.do">뮤즈캘린더</a></li>
         </ul>
     </div>
 
@@ -259,7 +268,7 @@ function getBookingDate(){
                 	<c:forEach var="blist" items="${bookingList}">
 	                	<tr>
 	                        <td>${blist.b_date}</td>
-	                        <td>${blist.b_code}</td>
+	                        <td><a href="myPageBookingDetail.do?b_code=${blist.b_code}">${blist.b_code}</a></td>
 	                        <td>${blist.m_title}</td>
 	                        <td>${blist.mo_date} ${blist.mo_time}</td>
 	                        <td>${blist.b_count}매</td>
@@ -270,7 +279,7 @@ function getBookingDate(){
                         	<c:when test="${blist.b_state eq 1}">
 	                        	예매
 	                        	<c:if test="${blist.review_state eq 1}">
-	                        		<button>리뷰쓰기</button>
+	                        		<button onclick="openMusicalReview('${blist.b_code}');">공연리뷰</button>
 	                        	</c:if>	                        	
                         	</c:when>
 	                        </c:choose>	

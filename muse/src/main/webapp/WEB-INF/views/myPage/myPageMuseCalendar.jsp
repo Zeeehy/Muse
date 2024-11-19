@@ -91,12 +91,12 @@ body {
     <div class="sidebar">
         <h2>마이페이지</h2>
         <ul>
-            <li><a href="#">예약/취소내역</a></li>
-            <li><a href="#">나의 뮤즈캐스트</a></li>
-            <li><a href="#">나의 MUSEPASS</a></li>
+            <li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
+            <li><a href="myPageBooking.do">예약/취소내역</a></li>
+            <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
+            <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
             <li><a href="#">나의 후기</a></li>
-            <li><a href="#">뮤즈캘린더</a></li>
-            <li><a href="#">1:1 문의</a></li>
+            <li><a href="myPageMuseCalendar.do">뮤즈캘린더</a></li>
         </ul>
     </div>
 
@@ -132,10 +132,10 @@ body {
 			events : [
 		        <c:forEach var="calendar" items="${calendarList}">
 		            {
-		                title: '${calendar.calendar_Title}',
-		                start: '${calendar.calendar_Start}',
-		                end: '${calendar.calendar_End}',
-		                color: '#' + Math.round(Math.random() * 0xffffff).toString(16)
+		                title: '${calendar.calendar_title}',
+		                start: '${calendar.calendar_start}',
+		                end: '${calendar.calendar_end}',
+		                color: '${calendar.calendar_color}'
 		            },
 		        </c:forEach>
 		    ]

@@ -2,11 +2,13 @@ package com.muse.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,12 +58,18 @@ public class MyPageController {
 	/**메인페이지*/	
 	//메인페이지 폼
 	@RequestMapping("/myPageMain.do")
-	public ModelAndView myPageMainForm() {
+	public ModelAndView myPageMainForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
-		
-		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList("test");	// 수정예정
-		MPassDTO myMPass = mPassDao.getMPass("test");
-		int mpRemainDays= mPassDao.getMPassRemainDays("test");
+		String u_id = (String) session.getAttribute("s_id");
+		//스크립트에서 처리하면 필요없을지도
+        if (u_id == null) {
+            System.out.println("잘못된 경로");
+            mav.setViewName("/myPage/");
+    		return mav;
+        }
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	
+		MPassDTO myMPass = mPassDao.getMPass(u_id);
+		int mpRemainDays= mPassDao.getMPassRemainDays(u_id);
 		mav.addObject("mpRemainDays",mpRemainDays);
 		mav.addObject("bookingList",bookingList);
 		mav.addObject("myMPass",myMPass);
@@ -73,12 +81,12 @@ public class MyPageController {
 	/**회원정보수정*/
 	//회원정보수정 폼
 	@RequestMapping("/myPageInfoUpdate.do")
-	public ModelAndView myPageInfoUpdateForm() {
+	public ModelAndView myPageInfoUpdateForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
+		String u_id = (String) session.getAttribute("s_id");
+		MyPageUserDTO user = myPageUserDao.getUserInfo(u_id);
 		
-		MyPageUserDTO dto = myPageUserDao.getUserInfo("test");
-		
-		mav.addObject("user", dto);
+		mav.addObject("user", user);
 		mav.setViewName("/myPage/myPageInfoUpdate");
 		return mav;
 	}
@@ -120,10 +128,11 @@ public class MyPageController {
 	/**예매내역*/
 	//예매내역 폼
 	@RequestMapping("/myPageBooking.do")
-	public ModelAndView myPageBookingForm() {
+	public ModelAndView myPageBookingForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
-		
-		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList("test");	// 수정예정
+
+		String u_id = (String) session.getAttribute("s_id");
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	// 수정예정
 		mav.addObject("bookingList",bookingList);
 		//이떄 review_state한번씩 다 할당해주는건데 페이징일때는 전체만되나 부분만되나?진짜모름 페이징할때 다시 생각해보자 아닌가?할당안되나?sql문에서 해주는게 낫나 이러면 테이블고쳐야하는데 끼야악
 		for (MyBookingListDTO booking : bookingList) {
@@ -142,9 +151,10 @@ public class MyPageController {
 	//예매내역 기간별 검색(일)
 	@RequestMapping("/myPageBookingDayList.do")
 	@ResponseBody
-	public String myPageBookingDayList(@RequestParam("booking_day") String bookingDay) {
+	public String myPageBookingDayList(@RequestParam("booking_day") String bookingDay, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		Map<String, Object> params = new HashMap<>();
-		params.put("u_id", "test");
+		params.put("u_id", u_id);
 		params.put("bookingDay", bookingDay);
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingDay(params);
 
@@ -156,7 +166,7 @@ public class MyPageController {
 	    for (MyBookingListDTO booking : bookingList) {
 	    	responseHtml.append("<tr>")
             .append("<td>").append(booking.getB_date()).append("</td>")
-            .append("<td>").append(booking.getB_code()).append("</td>")
+            .append("<td><a href='myPageBookingDetail.do?b_code=").append(booking.getB_code()).append("'>").append(booking.getB_code()).append("</a></td>")
             .append("<td>").append(booking.getM_title()).append("</td>")
             .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
             .append("<td>").append(booking.getB_count()).append("매</td>")
@@ -166,7 +176,10 @@ public class MyPageController {
             	responseHtml.append("취소");
             } else {
             	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
-            		responseHtml.append("예매<button>리뷰쓰기</button>");
+//            		responseHtml.append("예매<button>리뷰쓰기</button>");
+            		responseHtml.append("예매<button onclick=\"openMusicalReview('")
+            					.append(booking.getB_code())
+            					.append("')\">공연리뷰</button>");
     			} else {
     				responseHtml.append("예매");
     			}       	
@@ -180,9 +193,10 @@ public class MyPageController {
 	//예매내역 기간별 검색(월)
 	@RequestMapping("/myPageBookingMonthList.do")
 	@ResponseBody
-	public String myPageBookingMonthList(@RequestParam("booking_month") String bookingMonth) {
+	public String myPageBookingMonthList(@RequestParam("booking_month") String bookingMonth, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		Map<String, Object> params = new HashMap<>();
-		params.put("u_id", "test");
+		params.put("u_id", u_id);
 		params.put("bookingMonth", bookingMonth);
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingMonth(params);
 	    
@@ -195,7 +209,7 @@ public class MyPageController {
 	    for (MyBookingListDTO booking : bookingList) {
 			responseHtml.append("<tr>")
             .append("<td>").append(booking.getB_date()).append("</td>")
-            .append("<td>").append(booking.getB_code()).append("</td>")
+            .append("<td><a href='myPageBookingDetail.do?b_code=").append(booking.getB_code()).append("'>").append(booking.getB_code()).append("</a></td>")
             .append("<td>").append(booking.getM_title()).append("</td>")
             .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
             .append("<td>").append(booking.getB_count()).append("매</td>")
@@ -205,7 +219,9 @@ public class MyPageController {
             	responseHtml.append("취소");
             } else {
             	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
-            		responseHtml.append("예매<button>리뷰쓰기</button>");
+            		responseHtml.append("예매<button onclick=\"openMusicalReview('")
+					.append(booking.getB_code())
+					.append("')\">공연리뷰</button>");
     			} else {
     				responseHtml.append("예매");
     			}       	
@@ -219,9 +235,10 @@ public class MyPageController {
 	//예매내역 주문일자별 검색(예매일)
 		@RequestMapping("/myPageBookingReserveList.do")
 		@ResponseBody
-		public String myPageBookingReserveList(@RequestParam("booking_date") String bookingDate) {
+		public String myPageBookingReserveList(@RequestParam("booking_date") String bookingDate, HttpSession session) {
+			String u_id = (String) session.getAttribute("s_id");
 			Map<String, Object> params = new HashMap<>();
-			params.put("u_id", "test");
+			params.put("u_id", u_id);
 			params.put("bookingDate", bookingDate);
 			List<MyBookingListDTO> bookingList = myBookingListDao.getBookingReserve(params);
 		    
@@ -233,7 +250,7 @@ public class MyPageController {
 		    for (MyBookingListDTO booking : bookingList) {
 		    	responseHtml.append("<tr>")
 	            .append("<td>").append(booking.getB_date()).append("</td>")
-	            .append("<td>").append(booking.getB_code()).append("</td>")
+	            .append("<td><a href='myPageBookingDetail.do?b_code=").append(booking.getB_code()).append("'>").append(booking.getB_code()).append("</a></td>")
 	            .append("<td>").append(booking.getM_title()).append("</td>")
 	            .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
 	            .append("<td>").append(booking.getB_count()).append("매</td>")
@@ -243,7 +260,9 @@ public class MyPageController {
 	            	responseHtml.append("취소");
 	            } else {
 	            	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
-	            		responseHtml.append("예매<button>리뷰쓰기</button>");
+	            		responseHtml.append("예매<button onclick=\"openMusicalReview('")
+    					.append(booking.getB_code())
+    					.append("')\">공연리뷰</button>");
 	    			} else {
 	    				responseHtml.append("예매");
 	    			}       	
@@ -257,9 +276,10 @@ public class MyPageController {
 		//예매내역 주문일자별 검색(공연일)
 		@RequestMapping("/myPageBookingPerformList.do")
 		@ResponseBody
-		public String myPageBookingPerformList(@RequestParam("booking_date") String bookingDate) {
+		public String myPageBookingPerformList(@RequestParam("booking_date") String bookingDate, HttpSession session) {
+			String u_id = (String) session.getAttribute("s_id");
 			Map<String, Object> params = new HashMap<>();
-			params.put("u_id", "test");
+			params.put("u_id", u_id);
 			params.put("bookingDate", bookingDate);
 			List<MyBookingListDTO> bookingList = myBookingListDao.getBookingPerform(params);
 		    
@@ -271,7 +291,7 @@ public class MyPageController {
 		    for (MyBookingListDTO booking : bookingList) {
 		    	responseHtml.append("<tr>")
 	            .append("<td>").append(booking.getB_date()).append("</td>")
-	            .append("<td>").append(booking.getB_code()).append("</td>")
+	            .append("<td><a href='myPageBookingDetail.do?b_code=").append(booking.getB_code()).append("'>").append(booking.getB_code()).append("</a></td>")
 	            .append("<td>").append(booking.getM_title()).append("</td>")
 	            .append("<td>").append(booking.getMo_date()).append(" ").append(booking.getMo_time()).append("</td>")
 	            .append("<td>").append(booking.getB_count()).append("매</td>")
@@ -281,7 +301,9 @@ public class MyPageController {
 	            	responseHtml.append("취소");
 	            } else {
 	            	if(myBookingListDao.getMusicalReviewCount(booking.getB_code())==0 && myBookingListDao.getMusicalReviewDateCheck(booking.getB_code())>0) {
-	            		responseHtml.append("예매<button>리뷰쓰기</button>");
+	            		responseHtml.append("예매<button onclick=\"openMusicalReview('")
+    					.append(booking.getB_code())
+    					.append("')\">공연리뷰</button>");
 	    			} else {
 	    				responseHtml.append("예매");
 	    			}       	
@@ -295,16 +317,16 @@ public class MyPageController {
 	/**마이페이지 예매상세*/
 	//예매상세 폼
 	@RequestMapping("/myPageBookingDetail.do")
-	public ModelAndView myPageBookingDetailForm() {
+	public ModelAndView myPageBookingDetailForm(@RequestParam String b_code) {
 		ModelAndView mav=new ModelAndView();
 		
 //		refund_state : 취소불가=0, 취소가능=1
 //		review_state : 리뷰작성불가=0 리뷰작성가능=1
 		
-		List<MyBookingDetailDTO> bookingDetailList=mybookingDetailDao.getLikeBookingDetailList("b_1");	//test와 마찬가지로 바꿔야함
+		List<MyBookingDetailDTO> bookingDetailList=mybookingDetailDao.getLikeBookingDetailList(b_code);	//test와 마찬가지로 바꿔야함
 		int bookingDetailCount=bookingDetailList.size();
 		
-		int selectRefundRemainDate=mybookingDetailDao.getRefundRemainDate("b_1");
+		int selectRefundRemainDate=mybookingDetailDao.getRefundRemainDate(b_code);
 		
 		for (MyBookingDetailDTO booking : bookingDetailList) {
 			if(selectRefundRemainDate>-1) {
@@ -328,12 +350,13 @@ public class MyPageController {
 	/**마이페이지 뮤즈캐스트*/
 	//뮤즈캐스트 폼
 	@RequestMapping("/myPageMuseCast.do")
-	public ModelAndView myPageMuseCastForm() {
+	public ModelAndView myPageMuseCastForm(HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
-		int likeActorCount=museCastDao.getLikeActorCount("test");
-		int likeMusicalCount=museCastDao.getLikeMusicalCount("test");
-		List<MyLikeActorDTO> likeActorList=museCastDao.getLikeActorList("test");
-		List<MyLikeMusicalDTO> likeMusicalList=museCastDao.getLikeMusicalList("test");
+		int likeActorCount=museCastDao.getLikeActorCount(u_id);
+		int likeMusicalCount=museCastDao.getLikeMusicalCount(u_id);
+		List<MyLikeActorDTO> likeActorList=museCastDao.getLikeActorList(u_id);
+		List<MyLikeMusicalDTO> likeMusicalList=museCastDao.getLikeMusicalList(u_id);
 		
 		mav.addObject("likeActorList",likeActorList);
 		mav.addObject("likeMusicalList",likeMusicalList);
@@ -355,9 +378,10 @@ public class MyPageController {
 	//뮤즈캐스트 배우 검색(나중에 이미 등록된배우 안나오게 해야됨, 페이징처리도 해야됨, 일단 6명만 출력)
 	@RequestMapping("/museCastingSearchActor.do")
 	@ResponseBody
-	public String museCastingSearchActor(@RequestParam("search_cast") String searchActor) {
+	public String museCastingSearchActor(@RequestParam("search_cast") String searchActor, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		Map<String, Object> params = new HashMap<>();
-		params.put("u_id", "test");
+		params.put("u_id", u_id);
 		params.put("searchActor", searchActor+"%");
 		List<ActorDTO> searchActorList = museCastDao.getSearchActor(params);
 	    
@@ -379,9 +403,10 @@ public class MyPageController {
 	//뮤즈캐스트 공연 검색(나중에 이미 등록된공연 안나오게 해야됨, 페이징처리도 해야됨, 일단 6명만 출력)
 	@RequestMapping("/museCastingSearchMusical.do")
 	@ResponseBody
-	public String museCastingSearchMusical(@RequestParam("search_cast") String searchMusical) {
+	public String museCastingSearchMusical(@RequestParam("search_cast") String searchMusical, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		Map<String, Object> params = new HashMap<>();
-		params.put("u_id", "test");
+		params.put("u_id", u_id);
 		params.put("searchMusical", "%"+searchMusical+"%");
 		
 		List<MusicalDTO> searchMusicalList = museCastDao.getSearchMusical(params);
@@ -547,10 +572,11 @@ public class MyPageController {
 	/**마이페이지 뮤즈패스*/
 	//뮤즈패스 폼
 	@RequestMapping("/myPageMusePass.do")
-	public ModelAndView myPageMusePassForm() {
+	public ModelAndView myPageMusePassForm(HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
-		MPassDTO myMPass = mPassDao.getMPass("test");
-		int mpRemainDays= mPassDao.getMPassRemainDays("test");
+		MPassDTO myMPass = mPassDao.getMPass(u_id);
+		int mpRemainDays= mPassDao.getMPassRemainDays(u_id);
 		mav.addObject("mpRemainDays",mpRemainDays);
 		mav.addObject("myMPass",myMPass);
 		mav.setViewName("/myPage/myPageMusePass");
@@ -562,19 +588,45 @@ public class MyPageController {
 		
 	/**마이페이지 뮤즈캘린더*/
 	@RequestMapping(value = "/myPageMuseCalendar.do", method = RequestMethod.GET)
-	public ModelAndView myPageMuseCalendarForm() {
+	public ModelAndView myPageMuseCalendarForm(HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
-		List<MuseCalendarDTO> calendar = museCalendarDao.getCalendar();
-		if (calendar == null) {
-	        System.out.println("calendarList is null");
-	    }
-		mav.addObject("calendarList", calendar);
+		List<MuseCalendarDTO> calendarList = new ArrayList<>();
 		
-		for(int i=0; i<calendar.size(); i++) {
-			System.out.println(calendar.get(i));
+		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	// 수정예정
+		List<MyLikeMusicalDTO> musicalList = museCastDao.getLikeMusicalList(u_id);
+		
+		for (MyBookingListDTO booking : bookingList) {
+			MuseCalendarDTO calendar = new MuseCalendarDTO();
+			calendar.setCalendar_title(booking.getM_title());
+			calendar.setCalendar_start(booking.getMo_date());
+			calendar.setCalendar_end(booking.getMo_date());
+			calendar.setCalendar_color("#3498db");
+			calendarList.add(calendar);
 		}
 		
+		for (MyLikeMusicalDTO musical : musicalList) {
+			MuseCalendarDTO calendar = new MuseCalendarDTO();
+			calendar.setCalendar_title(musical.getM_title());
+			calendar.setCalendar_start(musical.getM_startdate());
+			calendar.setCalendar_end(musical.getM_enddate());
+			calendar.setCalendar_color("#e67e22");
+			calendarList.add(calendar);
+		}
+		
+
+		mav.addObject("calendarList",calendarList);
 		mav.setViewName("/myPage/myPageMuseCalendar");
+		
+//		List<MuseCalendarDTO> calendar = museCalendarDao.getCalendar();
+//		if (calendar == null) {
+//	        System.out.println("calendarList is null");
+//	    }
+//		mav.addObject("calendarList", calendar);
+//		
+//		for(int i=0; i<calendar.size(); i++) {
+//			System.out.println(calendar.get(i));
+//		}
 		return mav;
 	}
 
