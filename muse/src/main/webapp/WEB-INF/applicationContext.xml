@@ -59,6 +59,9 @@
 	<bean id="bookingDetailDao" class="com.muse.myPage.model.MyBookingDetailDAOImpl">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="openNoticeDao" class="com.muse.openNotice.model.OpenNoticeDAOImple">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

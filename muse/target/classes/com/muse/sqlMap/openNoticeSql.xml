@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.muse.seat.mapper.openNoticeSql">
+  
+  <select id="getOpenNoticeList" parameterType="map" resultType="com.muse.openNotice.model.OpenNoticeDTO">
+	SELECT *
+	FROM (
+	  SELECT a.*, ROWNUM AS rnum 
+	  FROM (
+	      SELECT o.on_code, o.on_info, o.on_open, o.on_viewstate, o.m_code, o.on_readnum, m.m_title
+	      FROM open_notice o
+	      JOIN musical m ON o.m_code = m.m_code 
+	      WHERE o.on_viewstate = 1
+	      ORDER BY o.on_code DESC
+	  ) a
+	) b
+	WHERE rnum BETWEEN #{startnum} AND #{endnum}
+</select>
+    
+   
+   <select id="countOpenNotice" resultType="Integer">
+   	select count(*)
+   	from open_Notice
+   	where on_viewstate = 1
+   </select>
+   
+   <update id="increaseReadNum" parameterType="String">
+   	update open_notice set readnum = readnum+1 where on_code = #{on_code}
+   </update>
+  	
+  	<select id="getNoticeDetail" parameterType="String" resultType="com.muse.openNotice.model.OpenNoticeDTO">
+  		select *
+  		from open_notice
+  		where on_code = #{on_code}
+  	</select>
+  
+  </mapper>
