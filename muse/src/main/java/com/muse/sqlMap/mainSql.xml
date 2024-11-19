@@ -53,24 +53,39 @@
 		      )
 		      WHERE rn BETWEEN #{offset} AND #{limit}
 	    </select>
-	
+
 		<!-- 메인 뮤지컬 홀 검색 -->
 	    <select id="search_mh" resultType="com.muse.main.model.MusicalHallDTO">
-			SELECT mh_name, mh_addr, mh_img
-			FROM musical_hall
-			WHERE mh_name LIKE '%' || #{searchWord} || '%'
+		    SELECT mh.mh_name, mh.mh_addr, mh.mh_img, 
+		           LISTAGG(m.m_title, ', ') WITHIN GROUP (ORDER BY m.m_title) AS mh_musicalList
+		    FROM musical_hall mh
+		    JOIN musical m ON mh.mh_code = m.mh_code
+		    WHERE mh.mh_name LIKE '%' || #{searchWord} || '%'
+		    GROUP BY mh.mh_name, mh.mh_addr, mh.mh_img
 	    </select>
 	    
 	    <!-- 메인 뮤지컬 배우 검색 -->
 	    <select id="search_ma" resultType="com.muse.main.model.MusicalActorDTO">
-			SELECT ma_name, ma_image, ma_birth
-			FROM musical_actor
-			WHERE ma_name LIKE '%' || #{searchWord} || '%'
+	    	SELECT ma.ma_name, ma.ma_img, ma.ma_birth, 
+		           LISTAGG(m.m_title, ', ') WITHIN GROUP (ORDER BY m.m_title) AS ma_musicalList
+		    FROM musical_actor ma
+		    JOIN musical_casting mc ON ma.ma_code = mc.ma_code
+		    JOIN musical_option mo ON mc.mo_code = mo.mo_code
+		    JOIN musical m ON m.m_code = mo.m_code		    
+		    WHERE ma_name LIKE '%' || #{searchWord} || '%'
+		    GROUP BY ma.ma_name, ma.ma_img, ma.ma_birth
 	    </select>
 	    
 	    <!-- 메인 뮤지컬 검색 -->
 	    <select id="search_m" resultType="com.muse.main.model.MusicalDTO">
 			SELECT m.m_code, m.m_poster, m.m_title, mh.mh_name, m.m_startdate, m.m_enddate
+			FROM musical m JOIN musical_hall mh ON m.mh_code = mh.mh_code
+			WHERE m.m_viewstate = 1 and m.m_title LIKE '%' || #{searchWord} || '%'
+	    </select>
+	    
+	    <!-- 메인 뮤지컬 검색 - 카운트  -->
+	    <select id="search_m_count" resultType="int">
+			SELECT COUNT(*) AS total_mcount
 			FROM musical m JOIN musical_hall mh ON m.mh_code = mh.mh_code
 			WHERE m.m_viewstate = 1 and m.m_title LIKE '%' || #{searchWord} || '%'
 	    </select>

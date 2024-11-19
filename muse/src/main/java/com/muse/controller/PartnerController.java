@@ -175,6 +175,8 @@ public class PartnerController {
 			List<MusicalDTO> list = partnerDao.SeachMusicalList(pr_code, seachMusical);
 			ModelAndView mav = new ModelAndView();
 			
+			System.out.println(list.size());
+			
 	    	mav.addObject("list",list);
 		    mav.setViewName("parkJson");
 		    return mav;
@@ -283,14 +285,12 @@ public class PartnerController {
 	    
 	    for(Object[] seatData : seats) {
 	    		//i++;
-		       System.out.println(seatData.toString());
-		       System.out.println(seatData[0]);
-		       System.out.println(seatData[1]);
-		       System.out.println(seatData[2]);
-		       System.out.println(seatData[3]);
-		       System.out.println(seatData[4]);
-		       System.out.println(seatData[5]);
-		       System.out.println(seatData[6]);
+				/*
+				 * System.out.println(seatData.toString()); System.out.println(seatData[0]);
+				 * System.out.println(seatData[1]); System.out.println(seatData[2]);
+				 * System.out.println(seatData[3]); System.out.println(seatData[4]);
+				 * System.out.println(seatData[5]); System.out.println(seatData[6]);
+				 */
 				
 				  SeatDTO seatDTO = new SeatDTO();
 				  seatDTO.setSg_code(String.valueOf(seatData[0])); // sg_code

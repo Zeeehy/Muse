@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Insert title here</title>
@@ -86,55 +88,72 @@
 
 
 <script type="text/javascript">
-Highcharts.chart('container', {
 
+var memberStatsData = [];
+
+// JSTL로 데이터를 반복하여 Highcharts 데이터 배열에 추가
+<c:forEach var="memberStats" items="${lists}">
+    memberStatsData.push({
+        joinMonth: '${memberStats.joinMonth}',  // 가입 월
+        memberTotal: ${memberStats.memberTotal}, // 누적회원수
+        museTotal: ${memberStats.museTotal}  // 뮤즈 회원수
+    });
+</c:forEach>
+
+// Highcharts용 데이터 형식 변환
+var joinMonthCategories = memberStatsData.map(function(item) {
+    return Date.parse(item.joinMonth + "-01"); // 'YYYY-MM'을 timestamp로 변환
+});
+
+var memberTotalData = memberStatsData.map(function(item) {
+    return item.memberTotal;
+});
+
+var museTotalData = memberStatsData.map(function(item) {
+    return item.museTotal;
+});
+
+var pointStart = joinMonthCategories[0];
+
+// Highcharts 설정
+Highcharts.chart('container', {
     title: {
         text: '뮤즈회원 증가량 & 뮤즈패스 회원 증가량'
     },
-
     yAxis: {
         title: {
             text: '회원 수'
         }
     },
-
     xAxis: {
-    	 //categories: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"]
-        type: "datetime",
-        tickInterval: 30 * 24 * 3600 * 1000
+        type: 'datetime',
+        labels: {
+            format: '{value:%Y-%m}', // 날짜 형식을 YYYY-MM으로 지정
+            step: 1 // 모든 포인트의 라벨 출력
+        },
+        tickInterval: 30 * 24 * 3600 * 1000 // 한 달 간격
     },
-
     legend: {
         layout: 'vertical',
         align: 'right',
         verticalAlign: 'middle'
     },
-
     plotOptions: {
         series: {
             label: {
                 connectorAllowed: false
             },
-            //pointStart: "1월"
-            pointStart: (function() {
-                const now = new Date(); // 현재 시간
-                now.setFullYear(now.getFullYear() - 1); // 1년 전
-                return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-            })(),
-			pointInterval: 30 * 24 * 3600 * 1000
+            pointStart: pointStart, // 기준 시작 날짜
+            pointInterval: 30 * 24 * 3600 * 1000 // 한 달 간격
         }
     },
-
-    series: [ {
+    series: [{
         name: '회원 총 수',
-        data: [null, null, null, null, null, null, null,
-            null, 11164, 11218, 10077]
+        data: memberTotalData // 누적회원수 데이터
     }, {
         name: '뮤즈패스 회원 총 수',
-        data: [21908, 5548, 8105, 11248, 8989, 11816, 18274,
-            17300, 13053, 11906, 10073]
+        data: museTotalData // 뮤즈회원수 데이터
     }],
-
     responsive: {
         rules: [{
             condition: {
@@ -149,10 +168,8 @@ Highcharts.chart('container', {
             }
         }]
     }
-
 });
+</script>
 
-
-		</script>
 </body>
 </html>

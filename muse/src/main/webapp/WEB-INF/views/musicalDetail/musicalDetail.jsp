@@ -206,7 +206,7 @@ td.selected {
 											<li class="castingItem">
 												<div class="castingTop">
 													<div class="castingProfile">
-														<img src="${casting.ma_img }" class="castingImage"
+														<img src="resources/img/actor/${casting.ma_img }" class="castingImage"
 															alt="프로필 사진">
 													</div>
 													<a class="castingHeartBtn"> <c:if
