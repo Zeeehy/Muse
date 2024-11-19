@@ -9,19 +9,19 @@
   </select>
 
 	<select id="selectMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
-
 	  SELECT *
-		FROM musical m
-	WHERE m.pr_code = #{pr_code}
-  AND EXISTS (
-    SELECT *
-    FROM service_request sr
-    WHERE sr.rs_code = 1
-    and sr.m_code = m.m_code
-  )
-  <if test="seachMusical != null and seachMusical != ''">
-  AND m.m_title LIKE '%' || #{seachMusical} || '%'
-  </if>
+			FROM musical m
+		WHERE m.pr_code = #{pr_code}
+	  AND EXISTS (
+	    SELECT *
+	    FROM service_request sr
+	    JOIN musical m ON m.m_code= sr.m_code
+	    WHERE sr.rs_code = 1
+	    and sr.m_code = m.m_code
+	  )
+	  <if test="seachMusical != null and seachMusical != ''">
+	  AND m.m_title LIKE '%' || #{seachMusical} || '%'
+	  </if>
 </select>
 
 <select id="selectStartEndDate"  resultType="com.muse.partner.model.MusicalDTO" parameterType="String">

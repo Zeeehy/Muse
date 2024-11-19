@@ -23,8 +23,8 @@ public class ReservDAOImple implements ReservDAO {
 	}
 	
 	@Override
-	public Map<String, Object> getMusicalInfo(String mh_code) {
-		Map<String,Object> musicalInfo = sqlMap.selectOne("getMusicalInfo",mh_code);
+	public Map<String, Object> getMusicalInfo(String m_code) {
+		Map<String,Object> musicalInfo = sqlMap.selectOne("getMusicalInfo",m_code);
 		return musicalInfo;
 	}
 	

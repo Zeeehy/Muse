@@ -406,6 +406,7 @@
 }
 .search-word{
 	padding:22px;
+	padding-top:45px;
 	padding-left:155px;
 	padding-bottom:50px;
 	font-family: 'Pretendard';
@@ -413,10 +414,20 @@
 	color: #726f6f;
 	font-weight: bold;
 }
-.search-word span{
+.search-word2{
+	padding:22px;
+	padding-top:45px;
+	padding-left:45px;
+	padding-bottom:50px;
+	font-family: 'Pretendard';
+	font-size: 23px;
+	color: #726f6f;
+	font-weight: bold;
+}
+.search-word span, .search-word2 span{
 	font-family: 'Pretendard';
 	font-size: 26px;
-	color: #ff3d32;
+	color: black;
 	font-weight: bold;
 }
 .search-actor, .search-place{
@@ -496,6 +507,7 @@
 }
 .search-tickets-title{
 	padding: 35px;
+	padding-top:45px;
 	font-family: 'Pretendard';	
 	font-size: 22px;
 	font-weight: bold;
@@ -507,9 +519,9 @@
     margin: 0 auto;	
     padding: 30px;
     padding-top: 70px;
-    display: flex;
-    flex-wrap: wrap;  
-    justify-content: space-between;
+    display: grid;  /* Flex에서 Grid로 변경 */
+  	grid-template-columns: repeat(4, 1fr);  /* 4개의 열을 고정 */
+  	gap: 20px;  /* 각 아이템 사이의 간격 */
 }
 .search-ticket{
   display: flex;
@@ -517,8 +529,8 @@
   flex-direction: row;
   background: #fff;
   margin-bottom: 30px; 
-  width: calc(25% - 20px); /* 4개의 항목이 한 줄에 배치되도록 조정, 양옆 간격을 뺀 값으로 설정 */
-
+  width: 100%;  /* 아이템을 그리드의 각 칸에 맞게 크기를 조절 */
+  box-sizing: border-box;
 } 
 .search-ticket-info {
   display: flex;
@@ -554,5 +566,18 @@
   font-family: 'Pretendard';
   font-size: 19px;
   color: gray;
+}
+.no-result{
+  width: 100%;
+  height: 500px;
+  margin: 0 auto;	
+  padding: 50px;
+  font-family: 'Pretendard';
+  font-size: 25px;
+  font-weight: bold;
+  color: #b1b1b1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
