@@ -32,13 +32,15 @@
             <ul>
                 <li><a href="#">오픈공지</a></li>
                 <li><a href="srIndex.do">좌석리뷰</a></li>
-                <li><a href="#">랭킹</a></li>
+                <li><a href="rank.do">랭킹</a></li>
                 <li><a href="musepass.do">뮤즈패스</a></li>
             </ul>
-            <div class="search">
-                <input type="text" placeholder="검색어를 입력해주세요.">
-                <button type="button">검색</button>
+            <form action="mainSearch.do">
+            <div class="search">           
+                <input name="searchWord" type="text" placeholder="검색어를 입력해주세요.">
+                <button type="submit">검색</button>
             </div>
+            </form>
       	</div>
 </body>
 </html>

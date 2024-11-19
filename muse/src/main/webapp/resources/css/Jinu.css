@@ -538,6 +538,26 @@ img.castingImage{
 	padding-top: 30px;
 }
 
+.bastBadge{
+	display: inline-block;
+    width: 3rem;
+    height: 1.1rem;
+    margin-right: 0.6rem;
+    color: #666;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    box-sizing: border-box;
+}
+
+.heartspan{
+	    vertical-align: middle;
+}
+
+
 
 /* 별  */
 .ystarHalf, .gstarHalf {

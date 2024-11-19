@@ -12,5 +12,11 @@ public interface MainDAO {
 		public List<BestReviewDTO> main_bestreview();
 		// 메인 페이지 뮤지컬 전체보기 부분
 		public List<MusicalDTO> main_musicallist(int page, int size);
-	
+		// 메인 검색바 - 뮤지컬 홀 검색
+		public List<MusicalHallDTO> search_mh(String searchWord);
+		// 메인 검색바 - 뮤지컬 배우 검색
+		public List<MusicalActorDTO> search_ma(String searchWord);
+		// 메인 검색바 - 뮤지컬 검색
+		public List<MusicalDTO> search_m(String searchWord);
+
 }

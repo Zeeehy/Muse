@@ -25,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.muse.admin.model.PartnerDTO;
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
 import com.muse.musicalDetail.model.MusicalDetailDAO;
 import com.muse.musicalDetail.model.MusicalDetailDTO;
 import com.muse.partner.model.MusicalHallDTO;
+import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.reserv.model.ReservDAO;
 import com.muse.review.model.MusicalReviewDTO;
 
@@ -46,6 +48,9 @@ public class MusicalDetailController {
 	private static final String[] DAY_NAMES = {
 	        "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"
 	    };
+	
+	private int listsize=2;
+	private int pagesize=3;
 
 	@RequestMapping("/musicalDetail.do")
 	public ModelAndView musicalDetail(@RequestParam String m_code,HttpSession session) {
@@ -71,8 +76,19 @@ public class MusicalDetailController {
 		List<String> allChar = musicalDetaildao.getAllChar(m_code);
 				
 		Map paramMap = new HashMap<String,String>();
+		
+		
 		paramMap.put("m_code", m_code);
+		
+		int crpage = 1;
+		
 		paramMap.put("u_id", s_id);
+		int startnum=(crpage-1)*listsize+1;
+		int endnum=crpage*listsize;
+
+		
+		paramMap.put("startnum", startnum);
+		paramMap.put("endnum", endnum);
 		List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
 		List<Date> getRoundDOW = musicalDetaildao.getRoundDOW(paramMap); 
 		
@@ -86,12 +102,22 @@ public class MusicalDetailController {
 		double reviewAVG = musicalDetaildao.getMusicalReviewAVG(m_code);
 		
 		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(paramMap);
+		List<MusicalReviewDTO> best_reviews = musicalDetaildao.getBestReviewsByMusical(paramMap);
 		
 		PartnerDTO pdto = musicalDetaildao.getPartnerInfoByMusical(m_code);
 		
 		MusicalHallDTO mhdto = musicalDetaildao.getMusicalHallInfo(m_code);
 		
 		List priceList = reservDAO.getMusicalPrice(m_code);
+		
+		List<MusicalOptionDTO> performList = musicalDetaildao.getRecentMusicalOption(m_code);
+		MusicalOptionDTO maxPerform = musicalDetaildao.getMaxMusicalOption(m_code);
+				
+		String jperformList = new Gson().toJson(performList);
+		String jmaxPerform = new Gson().toJson(maxPerform);
+		
+		
+		String pagingStr=com.muse.page.Paging.makePage("musicalDetail", countReview, listsize, pagesize, 1);
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
@@ -104,9 +130,16 @@ public class MusicalDetailController {
 		mav.addObject("countReview",countReview);
 		mav.addObject("reviewAVG",reviewAVG);
 		mav.addObject("reviews",reviews);
+		mav.addObject("best_reviews",best_reviews);
 		mav.addObject("pdto",pdto);
 		mav.addObject("mhdto",mhdto);
 		mav.addObject("priceList",priceList);
+		
+		mav.addObject("performList",jperformList);
+		mav.addObject("maxPerform",jmaxPerform);
+		
+		mav.addObject("pagingStr",pagingStr);
+		
 		
 		mav.setViewName("musicalDetail/musicalDetail");
 		
@@ -355,6 +388,62 @@ public class MusicalDetailController {
 	     result.put("seats", getRemainseats);
 	    
 	    return result;
+	}
+	
+	@RequestMapping("/moveMonthCalendar.do")
+	@ResponseBody
+	public List<MusicalOptionDTO> moveMonthCalendar(@RequestParam String m_code, 
+            @RequestParam String dateString) {
+		
+		System.out.println(m_code);
+		System.out.println(dateString);
+		
+		Map paramMap = new HashMap<String, String>();
+		paramMap.put("m_code", m_code);
+		paramMap.put("dateString", dateString);
+		
+		List<MusicalOptionDTO> performList =  musicalDetaildao.getNextMonthMusicalOption(paramMap);
+		
+		System.out.println(performList.size());
+		
+		return performList;
+	}
+
+	
+	@RequestMapping("reviewList.do")
+	public ModelAndView boardList(
+			@RequestParam(value="crpage", defaultValue="1")int crpage,
+			@RequestParam(value="m_code") String m_code,
+			HttpSession session
+			) {
+		
+		int totalCnt=musicalDetaildao.countMusicalReview(m_code);
+
+		
+		String pagingStr=com.muse.page.Paging.makePage("boardList", totalCnt, listsize, pagesize, crpage);
+		
+		Map paramMap = new HashMap<String, Object>();
+		
+		int startnum=(crpage-1)*listsize+1;
+		int endnum=crpage*listsize;
+		String s_id = (String) session.getAttribute("s_id")==null?"0":(String) session.getAttribute("s_id");
+
+		paramMap.put("m_code",m_code);
+		paramMap.put("u_id", s_id);
+		paramMap.put("startnum", startnum);
+		paramMap.put("endnum", endnum);
+		
+		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(paramMap);
+
+		
+		
+		ModelAndView mv=new ModelAndView();
+		
+		mv.addObject("reviews", reviews);
+		mv.addObject("pagingStr", pagingStr);
+		mv.setViewName("parkJson");
+		
+		return mv;
 	}
 	
 	

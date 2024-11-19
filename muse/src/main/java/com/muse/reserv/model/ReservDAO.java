@@ -39,5 +39,8 @@ public interface ReservDAO {
 	
 	// 포인트 사용
 	int usePoint(String s_id, Map<String,Object> params);
+	
+	// 세션으로 회원정보 가져오기
+	Map<String,Object> getMemberInfo(String s_id);
 
 }

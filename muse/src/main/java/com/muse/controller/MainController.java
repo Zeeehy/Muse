@@ -13,7 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.main.model.BestReviewDTO;
 import com.muse.main.model.MainDAO;
+import com.muse.main.model.MusicalActorDTO;
 import com.muse.main.model.MusicalDTO;
+import com.muse.main.model.MusicalHallDTO;
 import com.muse.main.model.TicketOpenDTO;
 
 
@@ -70,6 +72,39 @@ public class MainController {
 	@RequestMapping("/musepass.do")
 	public String musepass() {
 		return "/musepass";
+	}
+	
+	// 검색 결과 페이지로 이동
+	@RequestMapping("/mainSearch.do")
+	public ModelAndView searchResult(@RequestParam("searchWord") String searchWord) {
+	    ModelAndView mav = new ModelAndView();
+	    
+	    // 검색어의 길이에 따라 조건 분기
+	    List<MusicalHallDTO> search_musical_hall = null;
+	    List<MusicalActorDTO> search_musical_actor = null;
+	    List<MusicalDTO> search_musical = null;
+
+	    if (searchWord.length() >= 3) {
+	        // 3글자 이상이면 배우 검색
+	        search_musical_actor = mainDao.search_ma(searchWord);        
+	    }
+	    if (searchWord.length() >= 2) {
+	        // 2글자 이상이면 뮤지컬 홀 검색
+	        search_musical_hall = mainDao.search_mh(searchWord);        
+	    }
+	    if (searchWord.length() >= 1) {
+	        // 1글자 이상이면 뮤지컬 검색
+	        search_musical = mainDao.search_m(searchWord);
+	    }
+	    
+	    // 결과를 ModelAndView에 추가
+	    mav.addObject("search_mh", search_musical_hall);
+	    mav.addObject("search_ma", search_musical_actor);
+	    mav.addObject("search_m", search_musical);
+
+	    // 뷰 이름 설정
+	    mav.setViewName("search/searchResult"); 
+	    return mav;
 	}
 
 	

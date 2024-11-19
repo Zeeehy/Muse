@@ -7,6 +7,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,8 @@ public class AdminController {
 	
 	
 	@RequestMapping(value = "/adminLogin.do", method = RequestMethod.POST)
-	public ModelAndView adminLogin(@RequestParam("a_id") String a_id, @RequestParam("a_pwd") String a_pwd,HttpSession session) {
+	public ModelAndView adminLogin(@RequestParam("a_id") String a_id, @RequestParam("a_pwd") String a_pwd,HttpSession session
+			,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.goAdminLogin(a_id,a_pwd);
@@ -75,7 +78,7 @@ public class AdminController {
 	
 	
 	@RequestMapping("/adminLogout")
-	public ModelAndView adminLogout(HttpSession session) {
+	public ModelAndView requiredLogin_adminLogout(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		session.invalidate();  // 세션 무효화
@@ -90,7 +93,7 @@ public class AdminController {
 	/*공연등록 승인 시작*/
 	//오픈공지 리스트
 	@RequestMapping("addRequestList.do")
-	public ModelAndView addRequestList() {
+	public ModelAndView requiredLogin_addRequestList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		
@@ -102,7 +105,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping("addRequest.do")
-	public ModelAndView addRequest(@RequestParam("sr_code") String sr_code) {
+	public ModelAndView requiredLogin_addRequest(@RequestParam("sr_code") String sr_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		MusicalDTO dto = adminDao.addRequest(sr_code);
@@ -115,7 +118,8 @@ public class AdminController {
 	}
 	
 	@RequestMapping("addRequestEnd.do")
-	public ModelAndView addRequestEnd(@RequestParam("sr_code") String sr_code , @RequestParam("rs_code") int rs_code) {
+	public ModelAndView requiredLogin_addRequestEnd(@RequestParam("sr_code") String sr_code , @RequestParam("rs_code") int rs_code,HttpSession session
+			,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.addRequestEnd(sr_code, rs_code);
@@ -144,7 +148,7 @@ public class AdminController {
 	/*오픈공지 승인 시작*/
 	//오픈공지 리스트
 	@RequestMapping("openRequestList.do")
-	public ModelAndView openRequestList() {
+	public ModelAndView requiredLogin_openRequestList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		
@@ -157,7 +161,7 @@ public class AdminController {
 	
 	//오픈공지 상세
 	@RequestMapping("openRequest.do")
-	public ModelAndView openRequest(@RequestParam("on_code") String on_code) {
+	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
 		OpenNoticeDTO dto = adminDao.openRequest(on_code);
@@ -168,8 +172,8 @@ public class AdminController {
 	
 	//오픈공지 승인, 거절
 	@RequestMapping("openRequestEnd.do")
-	public ModelAndView openRequestEnd(@RequestParam("rs_code") int rs_code,
-			@RequestParam("on_code") String on_code) {
+	public ModelAndView requiredLogin_openRequestEnd(@RequestParam("rs_code") int rs_code,
+			@RequestParam("on_code") String on_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.openRequestEnd(on_code,rs_code);
@@ -203,7 +207,7 @@ public class AdminController {
 	/*공연등록 반영 시작*/
 	//공연등록 반영 리스트
 	@RequestMapping("addApplyList.do")
-	public ModelAndView addApplyList() {
+	public ModelAndView requiredLogin_addApplyList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		List<ServiceRequestDTO> lists = adminDao.addApplyList();
@@ -218,7 +222,7 @@ public class AdminController {
 	//공연등록 반영 홈페이지
 	//공연등록 상세
 	@RequestMapping("addApply.do")
-	public ModelAndView addApply(@RequestParam("sr_code") String sr_code) {
+	public ModelAndView addApply(@RequestParam("sr_code") String sr_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		MusicalDTO dto = adminDao.addApply(sr_code);
@@ -229,7 +233,7 @@ public class AdminController {
 	
 	//공연등록 반영
 	@RequestMapping("addApplyEnd.do")
-	public ModelAndView addApplyEnd(@RequestParam("m_code") String m_code) {
+	public ModelAndView addApplyEnd(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.addApplyEnd(m_code);
@@ -257,7 +261,7 @@ public class AdminController {
 	/*오픈공지 반영 시작*/
 	//오픈공지 반영 리스트
 	@RequestMapping("openApplyList.do")
-	public ModelAndView openApplyList() {
+	public ModelAndView requiredLogin_openApplyList(HttpServletRequest request,HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		
 		List<OpenNoticeDTO> lists = adminDao.openApplyList();
@@ -272,7 +276,7 @@ public class AdminController {
 	//오픈공지 반영 홈페이지
 	//오픈공지 상세
 	@RequestMapping("openApply.do")
-	public ModelAndView openApply(@RequestParam("on_code") String on_code) {
+	public ModelAndView requiredLogin_openApply(@RequestParam("on_code") String on_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		OpenNoticeDTO dto = adminDao.openApply(on_code);
@@ -283,7 +287,7 @@ public class AdminController {
 	
 	//오픈공지 반영
 	@RequestMapping("openApplyEnd.do")
-	public ModelAndView openApplyEnd(@RequestParam("on_code") String on_code) {
+	public ModelAndView requiredLogin_openApplyEnd(@RequestParam("on_code") String on_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.openApplyEnd(on_code);
@@ -313,7 +317,7 @@ public class AdminController {
 	/*배너 등록 삭제 시작*/
 	//배너 리스트 가져오기
 	@RequestMapping("/bannerList.do")
-	public ModelAndView bannerList() {
+	public ModelAndView requiredLogin_bannerList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/bannerList");
 		
@@ -327,7 +331,7 @@ public class AdminController {
 	
 	//추가할 배너리스트 가져오기
 	@RequestMapping("/addBannerList.do")
-	public ModelAndView addBannerList() {
+	public ModelAndView requiredLogin_addBannerList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/addBannerList");
 		
@@ -340,7 +344,7 @@ public class AdminController {
 	
 	//배너 추가하기
 	@RequestMapping("/addBanner.do")
-	public ModelAndView addBanner(@RequestParam("m_code") String m_code) {
+	public ModelAndView addBanner(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		//banner테이블에 추가하기
@@ -357,7 +361,7 @@ public class AdminController {
 	
 	//배너삭제
 	@RequestMapping("/deleteBanner.do")
-	public ModelAndView deleteBanner(@RequestParam("m_code") String m_code) {
+	public ModelAndView requiredLogin_deleteBanner(@RequestParam("m_code") String m_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		//배너삭제
@@ -381,7 +385,7 @@ public class AdminController {
 	/* 불량리뷰관리 시작 */
 	//리뷰리스트
 	@RequestMapping("/adminReviewList.do")
-	public ModelAndView adminReviewList() {
+	public ModelAndView adminReviewList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/adminReviewList");
 		
@@ -392,7 +396,8 @@ public class AdminController {
 	
 	//삭제, 상태 바꾸기
 	@RequestMapping("adminDeleteReview.do")
-	public ModelAndView adminDeleteReview(@RequestParam("mr_code") String mr_code,@RequestParam("mr_state") int mr_state) {
+	public ModelAndView adminDeleteReview(@RequestParam("mr_code") String mr_code,@RequestParam("mr_state") int mr_state,
+			HttpSession session,HttpServletRequest request) {
 		ModelAndView mav =new ModelAndView();
 		
 		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
@@ -413,7 +418,7 @@ public class AdminController {
 	
 	/* 파트너 리뷰관리 시작 */
 	@RequestMapping("pReviewList.do")
-	public ModelAndView pReviewList() {
+	public ModelAndView requiredLogin_pReviewList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav =new ModelAndView();
 		
 		List<RequestListDTO> lists = adminDao.pReviewList();
@@ -426,8 +431,8 @@ public class AdminController {
 	
 	//거절이면 bdr만 삭제
 	@RequestMapping("pReview.do")
-	public ModelAndView pReview(@RequestParam("bdr_code") String bdr_code,
-			@RequestParam("bdr_state") int bdr_state) {
+	public ModelAndView requiredLogin_pReview(@RequestParam("bdr_code") String bdr_code,
+			@RequestParam("bdr_state") int bdr_state,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav =new ModelAndView();
 		
 		int result;
@@ -477,7 +482,7 @@ public class AdminController {
 	/*제작사회원 리스트 시작*/
 	//제작사회원 리스트 가져오기
 	@RequestMapping("/partnerRequestList.do")
-	public ModelAndView partnerRequestList() {
+	public ModelAndView requiredLogin_partnerRequestList(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/partnerRequestList");
 		
@@ -491,7 +496,7 @@ public class AdminController {
 	
 	//제작사회원 상세
 	@RequestMapping("/partnerRequest.do")
-	public ModelAndView partnerRequest(@RequestParam("pr_code") String pr_code) {
+	public ModelAndView requiredLogin_partnerRequest(@RequestParam("pr_code") String pr_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		//기존 배너 있으면 들고오기
@@ -505,8 +510,8 @@ public class AdminController {
 	
 	//제작사회원 상태값 바꾸기
 	@RequestMapping("/partnerRequestEnd.do")
-	public ModelAndView partnerRequestEnd(@RequestParam("rs_code") int rs_code,
-											@RequestParam("pr_code") String pr_code) {
+	public ModelAndView requiredLogin_partnerRequestEnd(@RequestParam("rs_code") int rs_code,
+											@RequestParam("pr_code") String pr_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		int result = adminDao.partnerRequestEnd(rs_code,pr_code);
@@ -534,7 +539,7 @@ public class AdminController {
 	/* 통계 시작*/
 	// 회원 뮤즈패스 비율
 	@RequestMapping("/musePassStats.do")
-	public ModelAndView musePassStats() {
+	public ModelAndView requiredLogin_musePassStats(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/musePassStats");
 		
@@ -557,7 +562,7 @@ public class AdminController {
 	
 	//회원 증가량
 	@RequestMapping("/memberStats.do")
-	public ModelAndView memberStats() {
+	public ModelAndView requiredLogin_memberStats(HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		
