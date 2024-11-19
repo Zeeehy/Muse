@@ -56,7 +56,7 @@ public class ReservController {
 	    mav.addObject("m_code", m_code);
 	    
 	    // 뮤지컬 기본정보 조회
-	    Map<String,Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	    Map<String,Object> musicalInfo = reservDAO.getMusicalInfo(m_code);
 
 	    
 	    // 초기화

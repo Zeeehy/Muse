@@ -191,8 +191,8 @@
   	
   	<select id="getPartnerInfoByMusical" parameterType="String" resultType="com.muse.admin.model.PartnerDTO">
   		SELECT p.*
-		FROM MUSICAL_REVIEW MR, BOOKING B, MUSICAL_OPTION MO, MUSICAL M, PARTNER P
-		WHERE MR.B_CODE = B.B_CODE AND MO.MO_CODE = B.MO_CODE AND MO.M_CODE = M.M_CODE AND P.PR_CODE = M.PR_CODE
+		FROM MUSICAL M, PARTNER P
+		WHERE P.PR_CODE = M.PR_CODE
 		AND M.M_CODE = #{m_code}
   	</select>
   	

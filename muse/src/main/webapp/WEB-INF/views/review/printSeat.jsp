@@ -141,9 +141,9 @@ p {
 	background-color: green;
 }
 
-.score0{
-	background-color:pink;
-}
+ .score0{
+	/*background-color:pink;*/
+} 
 
 </style>
 

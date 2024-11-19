@@ -164,7 +164,7 @@ public class AdminController {
 	
 	//오픈공지 상세
 	@RequestMapping("openRequest.do")
-	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session) {
+	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		OpenNoticeDTO dto = adminDao.openRequest(on_code);
