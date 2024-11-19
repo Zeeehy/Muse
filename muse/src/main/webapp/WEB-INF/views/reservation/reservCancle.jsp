@@ -79,7 +79,7 @@
 					                <tbody>
 					                    <tr>
 					                        <td>미발권기간</td>
-					                        <td>2024.11.03 ~ 2024.11.10</td>
+					                        <td id="noDay"></td>
 					                        <td class="highlight">없음</td>
 					                    </tr>
 					                    <tr>
@@ -105,7 +105,7 @@
 					                </tbody>
 					            </table>
 							    <p class="warning">
-							     *취소기간: 2024년 12월 19일(목) 17:00<br>
+							     *취소기간: ${jcancelDeadline}<br>
 							     *예매취소는 예매일 이후 취소기한은 별도로 정하지 않습니다.<br>
 							     단, 예매 후 당일 12시 이전 취소 시에는 취소수수료 없음(취소기한 내에 한함)
 							   	</p>
@@ -169,7 +169,7 @@
                                         </tr>
                                          <tr>
 										    <th>티켓금액</th>
-										    <td id="ticketPrice">0원</td>
+										    <td id="ticketPrice">${ticketPrice}원</td>
 										</tr>
 										<tr>
 										    <th>포인트 사용</th>
@@ -190,7 +190,7 @@
                         <div class="s Choice">
                             <h2>총 결제 금액</h2>
                             <div>
-                                <span><b id="totalPrice">0원</b></span>
+                                <span><b id="totalPrice">${ticketPrice - (usePoint != null ? usePoint : 0)}원</b></span>
                             </div>
                         </div>
                         <div class="s Button"> 
@@ -209,6 +209,60 @@
 function goBack() {
     history.back();
 }
+
+// 취소 수수료 날짜
+function updateCancelDeadline() {
+    try {
+        console.log("updateCancelDeadline 함수 실행");
+        
+        // 현재 날짜 객체 생성
+        const today = new Date();
+        console.log("오늘 날짜:", today);
+        
+        // 미부과기간 날짜 계산(7일)
+        const noDay = new Date(today);
+        noDay.setDate(today.getDate() + 7);
+        //noDay.setHours(17, 0, 0);
+        console.log("미부과기간:", noDay);
+        
+        // 예매 후 8일 
+        
+        // 요일 배열
+        const days = ['일', '월', '화', '수', '목', '금', '토'];
+        const dayOfWeek = days[noDay.getDay()];
+        console.log("요일:", dayOfWeek);
+        
+        // 년, 월, 일 추출 및 로그 출력
+        const year = noDay.getFullYear();
+        const month = String(noDay.getMonth() + 1).padStart(2, '0');
+        const date = String(noDay.getDate()).padStart(2, '0');
+        
+        console.log("추출된 값:", {
+            year: year,
+            month: month,
+            date: date,
+            dayOfWeek: dayOfWeek
+        });
+        
+        // 날짜 포맷팅 - 일반 문자열 연결 사용
+        const formattedDate =" ~ "+ year + "년 " + month + "월 " + date + "일 까지";
+        console.log("포맷된 날짜:", formattedDate);
+        
+        const noDayElement  = document.getElementById('noDay');
+        if (noDayElement ) {
+        	noDayElement.textContent = formattedDate;
+            console.log("날짜 설정 완료:", noDayElement.textContent);
+        }
+        
+    } catch (error) {
+        console.error('취소기한 업데이트 중 오류:', error);
+    }
+}
+
+//페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', function() {
+    updateCancelDeadline();  // 페이지 로드 시 함수 실행
+});
 </script>
 </body>
 </html>

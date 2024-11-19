@@ -20,10 +20,10 @@
 	    <input type="hidden" name="selectedDate" value="${selectedDate}">
 	    <input type="hidden" name="selectedTime" value="${selectedTime}">
 		<input type="hidden" name="selectedSeats" value=""> 
-	
 		<input type="hidden" name="usePoint" id="jusePoint" value="${usePoint}">
-		<input type="hidden" name="ticketPrice" id="ticketPriceInput" value="0">
-		<input type="hidden" name="jcancelDeadline" id="jcancelDeadline" value="${cancelDeadline}">
+    	<input type="hidden" name="ticketPrice" value="${ticketPrice}">
+    	<input type="hidden" name="totalPrice" value="${ticketPrice - (usePoint != null ? usePoint : 0)}">
+		<input type="hidden" name="jcancelDeadline" id="jcancelDeadline" value="${jcancelDeadline}">
         <section class="reservWrap">
             <article class="contWrap">
                 <header class="step">
@@ -151,7 +151,7 @@
                         <div class="s Button"> 
                             <div class="subBtList">
                                 <button type="button" class="subBt" onclick="goBack()">이전단계</button>
-                                <button type="button" class="subBt" style="background: #FF3D32; color: #fff;" onclick="Next()">다음단계</button>
+                                <button type="submit" class="subBt" style="background: #FF3D32; color: #fff;" onclick="return Next()">다음단계</button>
                             </div>
                         </div>
                     </aside>
@@ -178,23 +178,27 @@ document.getElementById('pNum').addEventListener('input', function(e) {
     e.target.value = value;
 });
 
-//좌석 정보를 JSON 문자열로 변환하는 함수
 function prepareSeatsData() {
     const seatsData = [];
     const seatElements = document.querySelectorAll('.seatInf li');
     
     seatElements.forEach(seat => {
         const seatText = seat.textContent.trim();
-        const [grade, location] = seatText.split(',');
-        const [floor, section] = location.split('-');
-        const [row, number] = seat.querySelector('span')?.textContent.split(' ') || [];
+        // "VIP석, 1층-A블록, 1열 1번" 형식 파싱
+        const parts = seatText.split(',').map(part => part.trim());
+        
+        const grade = parts[0].replace('석', '');
+        const [floor, section] = parts[1].split('-');
+        const lastPart = parts[2].trim();
+        const [row, num] = lastPart.split('열');
+        const number = num.replace('번', '').trim();
         
         seatsData.push({
-            grade: grade.replace('석', '').trim(),
-            floor: floor.replace('층', '').trim(),
-            section: section.replace('블록', '').trim(),
-            row: row.replace('열', '').trim(),
-            number: number.replace('번', '').trim()
+            grade: grade,
+            floor: floor.replace('층', ''),
+            section: section.replace('블록', ''),
+            row: row.trim(),
+            number: number
         });
     });
     
@@ -202,50 +206,44 @@ function prepareSeatsData() {
 }
 
 function Next(){
-	const phoneInput = document.getElementById('pNum');
-	const phoneValue = phoneInput.value.trim();
-	const memberPnum = "${memberInfo.U_PNUM}"
-	
-	// 연락처 형식 검사
-	const pNumCheck = /^010-\d{4}-\d{4}$/;
-	
-	// 빈 값인지 체크
-	if(!phoneValue){
-		alert('연락처를 입력해주세요.');
-		return;
-	}
-	
-	// 회원정보 형식(test) 맞는지 체크
-	if(!pNumCheck.test(phoneValue)){
-		alert("연락처 형식이 올바르지 않습니다. (예시:010-0000-0000)");
-		return;
-	}
-	
-	// 회원정보와 일치하는지 체크
-	if(phoneValue !== memberPnum){
-		alert("회원정보와 일치하지 않은 연락처 입니다.");
-	} else {
-		alert("회원정보와 일치합니다!");
-        document.getElementById('reservationForm').submit();
-	}	
-	
-	// 좌석 데이터 준비
-    const seatsInput = document.querySelector('input[name="selectedSeats"]');
-    seatsInput.value = prepareSeatsData();
-
-    // 폼 데이터 검증
-    if (!validateFormData()) {
-        return;
+    const phoneInput = document.getElementById('pNum');
+    const phoneValue = phoneInput.value.trim();
+    const memberPnum = "${memberInfo.U_PNUM}"
+    
+    // 연락처 형식 검사
+    const pNumCheck = /^010-\d{4}-\d{4}$/;
+    
+    // 빈 값인지 체크
+    if(!phoneValue){
+        alert('연락처를 입력해주세요.');
+        return false;
     }
     
- 	// 모든 검증을 통과하면 폼 제출
+    // 회원정보 형식(test) 맞는지 체크
+    if(!pNumCheck.test(phoneValue)){
+        alert("연락처 형식이 올바르지 않습니다. (예시:010-0000-0000)");
+        return false;
+    }
+    
+    // 회원정보와 일치하는지 체크
+    if(phoneValue !== memberPnum){
+        alert("회원정보와 일치하지 않은 연락처 입니다.");
+        return false;
+    } 
+    
     try {
-        document.getElementById('reservationForm').submit();
+        // 좌석 데이터 설정
+        const seatsData = prepareSeatsData();
+        const seatsInput = document.querySelector('input[name="selectedSeats"]');
+        seatsInput.value = seatsData;
+        
+        alert("회원정보와 일치합니다!");
+        return true;  // true를 반환하면 form이 제출됨
     } catch (error) {
         console.error('폼 제출 중 오류 발생:', error);
         alert('예매 진행 중 오류가 발생했습니다. 다시 시도해주세요.');
+        return false;  // false를 반환하면 form 제출이 취소됨
     }
-
 }
 
 //페이지 로드 시 초기화
