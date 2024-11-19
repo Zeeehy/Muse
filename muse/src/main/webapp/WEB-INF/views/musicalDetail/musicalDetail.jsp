@@ -14,9 +14,32 @@
 <script src="/muse/resources/js/httpRequest.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2eeedad15b040c264a695f50e1505ff3&libraries=services"></script>
 
-
+<style>
+tr,th,td {
+    font-size: 16px;
+}
+thead th {color:#ddd; background:none; border:none;     font-weight: 400;}
+tbody td {
+	color:#3a3a3a; 
+	background:none; 
+	border:none;
+    padding:20px;
+    }
+td.selected {
+	color:#fff;
+    background: #ff3d32 !important;
+    border-radius: 100%;
+}
+.productWrapper .productSide {
+    width: auto !important;
+}
+.productWrapper .productSide .stickyWrap {
+    width: 100%;
+    margin: 0 !important; 
+}
+</style>
 </head>
-<body>
+<body style="    overflow-x: scroll;">
 	<%@include file="../header.jsp"%>
 	<!-- main 시작 -->
 	<div id="container">
@@ -568,21 +591,9 @@
 										</div>
 									</div>
 								</c:if>
-							<div class="bbsListWrap reviewAll">
-								<div class="bbsListHead">
-									<div class="leftSide">
-										<strong class="bbsTotal">총 <span class="num">${countReview }</span>개의 관람후기가 등록되었습니다.</strong>
-									</div>
-									<div class="rightSide">
-    									<a class="bbsWriteBtn" role="button" href="#">관람후기 작성</a>
-									</div>
-								</div>
-								<c:if test="${empty reviews }">
-											<div class="noResult">등록된 리뷰가 없습니다.</div>
-								</c:if>
-								<ul class="bbsList reviewList">
-								
-									<c:forEach items="${reviews }" var="review">
+							
+								<c:if test="${!empty best_reviews }">
+									<c:forEach items="${best_reviews }" var="review">
 										<li class="bbsItem">
 										    <div class="bbsContent">
 										        <div class="bbsItemHead">
@@ -613,7 +624,7 @@
 										                <div class="reviewInfo">
 										                	<span>${review.u_id } |</span> <span> ${review.mr_date } |</span>
 										                	<span class="like_review" data-code="${review.mr_code }">공감 ${review.like_count }</span>  
-										                	<span>
+										                	<span class="heartspan">
 											                <c:if test="${review.checkLike=='Y' }">
 											                	<img class="cast_icon" alt=""
 																			src="resources/img/muse_cast/full_heart.png" data-code = "${review.mr_code }"
@@ -625,34 +636,13 @@
 																			data-check-like = "${review.checkLike }">
 											                </c:if>
 										                	</span>
-										                
-										                <%-- <c:if test="${empty sessionScope.s_id}">
-														<img class="cast_icon" alt=""
-															src="resources/img/muse_cast/empty_heart.png">
-														</c:if>
-														<c:if test="${!empty sessionScope.s_id}">
-															<c:choose>
-																<c:when test="${checkLikeMusical == 1}">
-																	<img class="cast_icon" alt=""
-																		src="resources/img/muse_cast/full_heart.png">
-																</c:when>
-																<c:otherwise>
-																	<img class="cast_icon" alt=""
-																		src="resources/img/muse_cast/empty_heart.png">
-																</c:otherwise>
-															</c:choose>
-														</c:if> --%>
-										                
-										                
-										                
-										                
 										                </div>
 										            </div>
 										        </div>
 										        <div class="bbsItemBody">
 										            <div class="bbsBodyMain">
 										                <div class="bbsTitle">
-										                    <strong class="bbsTitleText">${review.mr_title }</strong>
+										                    <span class="bastBadge">BEST</span> <strong class="bbsTitleText">${review.mr_title }</strong>
 										                </div>
 										                <p class="bbsText">
 										                    ${review.mr_content }
@@ -661,8 +651,124 @@
 										        </div>
 										    </div>
 										</li>
+									</c:forEach>
+								</c:if>
+							<div class="bbsListWrap reviewAll">
+								<div class="bbsListHead">
+									<div class="leftSide">
+										<strong class="bbsTotal">총 <span class="num">${countReview }</span>개의 관람후기가 등록되었습니다.</strong>
+									</div>
+									<div class="rightSide">
+    									<a class="bbsWriteBtn" role="button" href="#">관람후기 작성</a>
+									</div>
+								</div>
+								<c:if test="${empty reviews }">
+											<div class="noResult">등록된 리뷰가 없습니다.</div>
+								</c:if>
+								<ul class="bbsList reviewList">
+								
+									<c:forEach items="${reviews }" var="review">
+										<c:if test="${review.mr_state!=2 }">
+									
+											<li class="bbsItem">
+											    <div class="bbsContent">
+											        <div class="bbsItemHead">
+											            <div class="leftSide">
+											                	<c:forEach begin="1" end="5" var="i">
+																	<c:choose>
+															            <%-- 완전한 별 --%>
+															            <c:when test="${i <= Math.floor(review.mr_score)}">
+															                <img src="/muse/resources/img/ystar.svg" >
+															            </c:when>
+															            
+															            <%-- 반 별 --%>
+															            <c:when test="${i == Math.ceil(review.mr_score) && review.mr_score % 1 >= 0.5}">
+															                <span class="ystarHalf"></span>
+															                <span class="gstarHalf"></span>
+															            </c:when>
+															            
+															            <%-- 빈 별 --%>
+															            <c:otherwise>
+															                <img src="/muse/resources/img/gstar.svg" >
+															            </c:otherwise>
+															        </c:choose>
+															   </c:forEach>
+											                
+											                
+											            </div>
+											            <div class="rightSide">
+											                <div class="reviewInfo">
+											                
+											                	
+											                	<span>${review.u_id } |</span> <span> ${review.mr_date } |</span>
+											                	<span class="like_review" data-code="${review.mr_code }">공감 ${review.like_count }</span>  
+											                	<span class="heartspan">
+												                <c:if test="${review.checkLike=='Y' }">
+												                	<img class="cast_icon" alt=""
+																				src="resources/img/muse_cast/full_heart.png" data-code = "${review.mr_code }"
+																				data-check-like = "${review.checkLike }">
+												                </c:if>
+												                <c:if test="${review.checkLike=='N' }">
+												                	<img class="cast_icon" alt=""
+																				src="resources/img/muse_cast/empty_heart.png" data-code = "${review.mr_code }"
+																				data-check-like = "${review.checkLike }">
+												                </c:if>
+												                
+											                	</span>
+											                
+											                <%-- <c:if test="${empty sessionScope.s_id}">
+															<img class="cast_icon" alt=""
+																src="resources/img/muse_cast/empty_heart.png">
+															</c:if>
+															<c:if test="${!empty sessionScope.s_id}">
+																<c:choose>
+																	<c:when test="${checkLikeMusical == 1}">
+																		<img class="cast_icon" alt=""
+																			src="resources/img/muse_cast/full_heart.png">
+																	</c:when>
+																	<c:otherwise>
+																		<img class="cast_icon" alt=""
+																			src="resources/img/muse_cast/empty_heart.png">
+																	</c:otherwise>
+																</c:choose>
+															</c:if> --%>
+											                
+											                
+											                
+											                
+											                </div>
+											            </div>
+											        </div>
+											        <div class="bbsItemBody">
+											            <div class="bbsBodyMain">
+											                <div class="bbsTitle">
+											                    <strong class="bbsTitleText">${review.mr_title }</strong>
+											                </div>
+											                <p class="bbsText">
+											                    ${review.mr_content }
+											                </p>
+											            </div>
+											        </div>
+											    </div>
+											</li>
+										</c:if>						
+										<c:if test="${review.mr_state==2 }">
+									
+											<li class="bbsItem">
+											    <div class="bbsContent">
+											        
+											        <div class="bbsItemBody">
+											            <div class="bbsBodyMain">
+											                <div class="bbsTitle">
+											                    <strong class="bbsTitleText">관리자에 의해 차단된 리뷰입니다.</strong>
+											                </div>
+
+											            </div>
+											        </div>
+											    </div>
+											</li>
+										</c:if>		
 									</c:forEach>		
-															
 								</ul>
 							</div>
 						</div>

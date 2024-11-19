@@ -25,11 +25,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.muse.admin.model.PartnerDTO;
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
 import com.muse.musicalDetail.model.MusicalDetailDAO;
 import com.muse.musicalDetail.model.MusicalDetailDTO;
 import com.muse.partner.model.MusicalHallDTO;
+import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.reserv.model.ReservDAO;
 import com.muse.review.model.MusicalReviewDTO;
 
@@ -86,12 +88,19 @@ public class MusicalDetailController {
 		double reviewAVG = musicalDetaildao.getMusicalReviewAVG(m_code);
 		
 		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(paramMap);
+		List<MusicalReviewDTO> best_reviews = musicalDetaildao.getBestReviewsByMusical(paramMap);
 		
 		PartnerDTO pdto = musicalDetaildao.getPartnerInfoByMusical(m_code);
 		
 		MusicalHallDTO mhdto = musicalDetaildao.getMusicalHallInfo(m_code);
 		
 		List priceList = reservDAO.getMusicalPrice(m_code);
+		
+		List<MusicalOptionDTO> performList = musicalDetaildao.getRecentMusicalOption(m_code);
+		MusicalOptionDTO maxPerform = musicalDetaildao.getMaxMusicalOption(m_code);
+				
+		String jperformList = new Gson().toJson(performList);
+		String jmaxPerform = new Gson().toJson(maxPerform);
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
@@ -104,9 +113,15 @@ public class MusicalDetailController {
 		mav.addObject("countReview",countReview);
 		mav.addObject("reviewAVG",reviewAVG);
 		mav.addObject("reviews",reviews);
+		mav.addObject("best_reviews",best_reviews);
 		mav.addObject("pdto",pdto);
 		mav.addObject("mhdto",mhdto);
 		mav.addObject("priceList",priceList);
+		
+		mav.addObject("performList",jperformList);
+		mav.addObject("maxPerform",jmaxPerform);
+
+		
 		
 		mav.setViewName("musicalDetail/musicalDetail");
 		
@@ -356,6 +371,26 @@ public class MusicalDetailController {
 	    
 	    return result;
 	}
+	
+	@RequestMapping("/moveMonthCalendar.do")
+	@ResponseBody
+	public List<MusicalOptionDTO> moveMonthCalendar(@RequestParam String m_code, 
+            @RequestParam String dateString) {
+		
+		System.out.println(m_code);
+		System.out.println(dateString);
+		
+		Map paramMap = new HashMap<String, String>();
+		paramMap.put("m_code", m_code);
+		paramMap.put("dateString", dateString);
+		
+		List<MusicalOptionDTO> performList =  musicalDetaildao.getNextMonthMusicalOption(paramMap);
+		
+		System.out.println(performList.size());
+		
+		return performList;
+	}
+
 	
 	
 	
