@@ -175,6 +175,16 @@ table button {
 	border-radius: 10%;
 }
 </style>
+<script>
+function openSeatReview(bd_code){
+	
+	location.href='srWrite.do?bd_code='+bd_code;
+}
+function openMusicalDetail(m_code){
+	
+	location.href='musicalDetail.do?m_code='+m_code;
+}
+</script>
 </head>
 <body>
 <%@include file="../header.jsp" %>
@@ -183,12 +193,12 @@ table button {
     <div class="sidebar">
         <h2>마이페이지</h2>
         <ul>
-            <li><a href="#">예약/취소내역</a></li>
-            <li><a href="#">나의 뮤즈캐스트</a></li>
-            <li><a href="#">나의 MUSEPASS</a></li>
+            <li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
+            <li><a href="myPageBooking.do">예약/취소내역</a></li>
+            <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
+            <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
             <li><a href="#">나의 후기</a></li>
-            <li><a href="#">뮤즈캘린더</a></li>
-            <li><a href="#">1:1 문의</a></li>
+            <li><a href="myPageMuseCalendar.do">뮤즈캘린더</a></li>
         </ul>
     </div>
 
@@ -255,8 +265,8 @@ table button {
                 </table>
             </div>
             
-            <a href="#" class="button">여기다간 뭐넣지(뮤즈캐스트 등록?)</a>
-            <a href="#" class="button cancel-button">예매 취소하지말아라(뮤지컬 상세보기?)</a>
+            <a href="#" class="button">(뮤즈캐스트 등록?)</a>
+            <a href="#" class="button cancel-button" onclick="">(뮤지컬 상세보기?)</a>
         </div>
 		 <h2>결제내역</h2>
 		<div class="ticket-info">
@@ -289,7 +299,7 @@ table button {
 								<c:if test="${bdlist.refund_state eq 0}">
 									<td>취소불가</td>
 									<c:if test="${bdlist.review_state eq 0}"><td>-</td></c:if>
-									<c:if test="${bdlist.review_state eq 1}"><td><button>리뷰작성</button></td></c:if>
+									<c:if test="${bdlist.review_state eq 1}"><td><button onclick="openSeatReview('${bdlist.bd_code}');">좌석리뷰</button></td></c:if>
 								</c:if>
 								<c:if test="${bdlist.refund_state eq 1}"><td>취소가능</td><td><button>취소하기</button></td></c:if>
 							</c:if>

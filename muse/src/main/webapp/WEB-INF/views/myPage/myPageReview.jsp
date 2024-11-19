@@ -73,17 +73,17 @@ body {
     margin-bottom: 20px;
 }
 
-.mypass-info {
+.myreview-info {
     margin-bottom: 20px;
 }
 
-.recent-history table {
+.review-history table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 }
 
-.recent-history th, .recent-history td {
+.review-history th, .review-history td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
@@ -112,26 +112,25 @@ footer {
     </div>
 
         <div class="main-content">
-            <h2>MY MUSEPASS</h2>
-            <div class="mypass-info">
-                <p>카테고리: Original | 남은 잔여 일수: ${mpRemainDays}일 | 유효기간: ${myMPass.mp_enddate}</p>
+            <h2>나의 후기</h2>
+            <div class="myreview-info">
+                <button>공연 리뷰</button>
+                <button>좌석 리뷰</button>
             </div>
 
-            <div class="recent-history">
-                <h2>최근 예매 내역</h2>
+            <div class="review-history">
+                <h2>공연 리뷰</h2>
                 <table>
                 <thead>
                     <tr>
-                        <th>예약일</th>
-                        <th>예약번호</th>
-                        <th>공연명</th>
-                        <th>관람일</th>
-                        <th>매수</th>
-                        <th>취소가능일</th>
-                        <th>상태</th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>별점</th>
+                        <th>작성일</th>
                     </tr>
                 </thead>
                 <tbody>
+                	<!-- 
 	           		<c:if test="${empty bookingList }">
 						<tr>
 							<td colspan="7" align="center">
@@ -153,7 +152,7 @@ footer {
 	                        </td>
 	                    </tr>
                 	</c:forEach>
-                    <!-- 반복행 -->
+                    -->
                 </tbody>
             </table>
             </div>

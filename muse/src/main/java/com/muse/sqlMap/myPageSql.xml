@@ -144,7 +144,16 @@
   <select id="calendarList"  resultType="com.muse.myPage.model.MuseCalendarDTO">
   	select * from calendar 
   </select>
-  
+  <!--
+  <select id="selectCalendarActor" parameterType="String" resultType="com.muse.myPage.model.MuseCalendarDTO">
+  	select ma.ma_name || m.m_title as calendar_title, mo.mo_date as calendar_start, mo.mo_date as calendar_end from like_actor la
+	left join musical_actor ma on la.ma_code=ma.ma_code
+	left join musical_casting mc on ma.ma_code=mc.ma_code
+	left join musical_option mo on mc.mo_code=mo.mo_code
+	left join musical m on mo.m_code=m.m_code
+	where la.u_id = #{u_id} 
+  </select>
+   -->
   <!-- 예매상세 -->
   <select id="selectMyBookingDetailList" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
 	select 
@@ -195,4 +204,5 @@
   <select id="selectSeatReviewCount" parameterType="String" resultType="Integer">
 	select count(*) from seat_review where bd_code=#{bd_code}
   </select> 
+	
   </mapper>
