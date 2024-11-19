@@ -1,5 +1,6 @@
 package com.muse.main.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,21 +54,28 @@ public class MainDAOImple implements MainDAO {
 	@Override
 	public List<MusicalHallDTO> search_mh(String searchWord) {
 		List<MusicalHallDTO> arr_mh = sqlMap.selectList("search_mh", searchWord);	
-		return arr_mh;
+		return arr_mh != null ? arr_mh : new ArrayList<>();
 	}
 
 	// 메인 검색바 - 뮤지컬 배우 검색
 	@Override
 	public List<MusicalActorDTO> search_ma(String searchWord) {
 		List<MusicalActorDTO> arr_ma = sqlMap.selectList("search_ma", searchWord);
-		return arr_ma;
+		return arr_ma != null ? arr_ma : new ArrayList<>();
 	}
 
 	// 메인 검색바 - 뮤지컬 검색
 	@Override
 	public List<MusicalDTO> search_m(String searchWord) {
 		List<MusicalDTO> arr_m = sqlMap.selectList("search_m", searchWord);
-		return arr_m;
+		return arr_m != null ? arr_m : new ArrayList<>();
 	}
+	
+	// 메인 검색바 - 뮤지컬 검색 카운트
+		@Override
+		public int search_m_count(String searchWord) {
+			int count = sqlMap.selectOne("search_m_count", searchWord);
+			return count;
+		}
 
 }
