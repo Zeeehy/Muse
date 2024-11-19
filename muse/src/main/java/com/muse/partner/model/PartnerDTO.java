@@ -8,8 +8,8 @@ public class PartnerDTO {
 	private String u_id;
 	private int rs_code;
 	private String pr_name;
-	private int pr_num;
-	private int pr_pnum;
+	private String pr_num;
+	private String pr_pnum;
 	private String pr_email;
 	
 	
@@ -18,7 +18,7 @@ public class PartnerDTO {
 	}
 
 
-	public PartnerDTO(String pr_code, String u_id, int rs_code, String pr_name, int pr_num, int pr_pnum,
+	public PartnerDTO(String pr_code, String u_id, int rs_code, String pr_name, String pr_num, String pr_pnum,
 			String pr_email) {
 		super();
 		this.pr_code = pr_code;
@@ -71,22 +71,22 @@ public class PartnerDTO {
 	}
 
 
-	public int getPr_num() {
+	public String getPr_num() {
 		return pr_num;
 	}
 
 
-	public void setPr_num(int pr_num) {
+	public void setPr_num(String pr_num) {
 		this.pr_num = pr_num;
 	}
 
 
-	public int getPr_pnum() {
+	public String getPr_pnum() {
 		return pr_pnum;
 	}
 
 
-	public void setPr_pnum(int pr_pnum) {
+	public void setPr_pnum(String pr_pnum) {
 		this.pr_pnum = pr_pnum;
 	}
 
@@ -99,6 +99,6 @@ public class PartnerDTO {
 	public void setPr_email(String pr_email) {
 		this.pr_email = pr_email;
 	}
-	
+
 	
 }
