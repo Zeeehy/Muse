@@ -164,7 +164,11 @@ public class AdminController {
 	
 	//오픈공지 상세
 	@RequestMapping("openRequest.do")
+<<<<<<< HEAD
 	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session, HttpServletRequest request) {
+=======
+	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session,HttpServletRequest request) {
+>>>>>>> refs/heads/LJH
 		ModelAndView mav = new ModelAndView();
 		
 		OpenNoticeDTO dto = adminDao.openRequest(on_code);
@@ -403,8 +407,20 @@ public class AdminController {
 			HttpSession session,HttpServletRequest request) {
 		ModelAndView mav =new ModelAndView();
 		
-		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
-		mav.addObject("lists",lists);
+		
+		int result = adminDao.adminDeleteReview(mr_code,mr_state);
+		
+		if(result ==1) {
+			mav.setViewName("/admin/adminMsg");
+			mav.addObject("goUrl","adminReviewList.do");
+			mav.addObject("msg","해당 리뷰 차단 완료!");
+		}else {
+			mav.setViewName("/admin/adminMsg");
+			mav.addObject("goUrl","adminReviewList.do");
+			mav.addObject("msg","해당 리뷰 차단 실패!");
+		}
+		
+		
 		
 		mav.addObject("goUrl", "adminReviewList.do");
 		

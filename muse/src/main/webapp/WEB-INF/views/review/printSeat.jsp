@@ -141,9 +141,15 @@ p {
 	background-color: green;
 }
 
+<<<<<<< HEAD
  .score0{
 	/*background-color:pink;*/
 } 
+=======
+.score0{
+	/* background-color:pink; */
+}
+>>>>>>> refs/heads/LJH
 
 </style>
 
