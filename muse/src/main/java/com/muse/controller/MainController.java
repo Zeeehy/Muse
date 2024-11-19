@@ -1,5 +1,6 @@
 package com.muse.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,29 +79,22 @@ public class MainController {
 	@RequestMapping("/mainSearch.do")
 	public ModelAndView searchResult(@RequestParam("searchWord") String searchWord) {
 	    ModelAndView mav = new ModelAndView();
-	    
-	    // 검색어의 길이에 따라 조건 분기
-	    List<MusicalHallDTO> search_musical_hall = null;
-	    List<MusicalActorDTO> search_musical_actor = null;
-	    List<MusicalDTO> search_musical = null;
 
-	    if (searchWord.length() >= 3) {
-	        // 3글자 이상이면 배우 검색
-	        search_musical_actor = mainDao.search_ma(searchWord);        
-	    }
-	    if (searchWord.length() >= 2) {
-	        // 2글자 이상이면 뮤지컬 홀 검색
-	        search_musical_hall = mainDao.search_mh(searchWord);        
-	    }
-	    if (searchWord.length() >= 1) {
-	        // 1글자 이상이면 뮤지컬 검색
-	        search_musical = mainDao.search_m(searchWord);
-	    }
+	    List<MusicalActorDTO> search_musical_actor = mainDao.search_ma(searchWord);        
+	    List<MusicalHallDTO> search_musical_hall = mainDao.search_mh(searchWord);        
+	    List<MusicalDTO> search_musical = mainDao.search_m(searchWord);
+	    int count = mainDao.search_m_count(searchWord);
+	  
+	    // 결과 리스트가 null일 경우 빈 리스트로 초기화
+	    if (search_musical_actor == null) search_musical_actor = new ArrayList<>();
+	    if (search_musical_hall == null) search_musical_hall = new ArrayList<>();
+	    if (search_musical == null) search_musical = new ArrayList<>();
 	    
 	    // 결과를 ModelAndView에 추가
 	    mav.addObject("search_mh", search_musical_hall);
 	    mav.addObject("search_ma", search_musical_actor);
 	    mav.addObject("search_m", search_musical);
+	    mav.addObject("count", count);
 
 	    // 뷰 이름 설정
 	    mav.setViewName("search/searchResult"); 

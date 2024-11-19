@@ -43,4 +43,12 @@ public interface PartnerDAO {
 	public String MaxMcode();
 	
 	public List<MusicalReviewDTO> seachMusicalReview(String pr_code,String m_code);
+	
+	public int updateBestReveiw(String mr_code);
+	
+	//public String mr_stateSelect(String mr_code, String pr_code);
+	
+	public int deleteReviewRe(BbsDeleteRequestDTO dto);
+	
+	public List<MusicalDTO> getMusicalList(String pr_code);
 }

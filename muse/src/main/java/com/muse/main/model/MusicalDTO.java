@@ -10,6 +10,7 @@ public class MusicalDTO  {
 	private String mh_name;
 	private Date m_startdate;
 	private Date m_enddate;
+	private int total_mcount;
 	
 	
 	public MusicalDTO() {
@@ -26,7 +27,6 @@ public class MusicalDTO  {
 		this.m_startdate = m_startdate;
 		this.m_enddate = m_enddate;
 	}
-
 	
 	public String getM_code() {
 		return m_code;
@@ -75,5 +75,14 @@ public class MusicalDTO  {
 	public void setM_enddate(Date m_enddate) {
 		this.m_enddate = m_enddate;
 	}
+
+	public int getTotal_mcount() {
+		return total_mcount;
+	}
+
+	public void setTotal_mcount(int total_mcount) {
+		this.total_mcount = total_mcount;
+	}
+		
 	
 }

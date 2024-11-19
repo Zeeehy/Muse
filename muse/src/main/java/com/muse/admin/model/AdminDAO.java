@@ -2,6 +2,7 @@ package com.muse.admin.model;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.muse.review.model.MusicalReviewDTO;
@@ -46,6 +47,7 @@ public interface AdminDAO {
 	
 	
 	HashMap<String,BigDecimal> musePassStats();
+	List<MemberStatsDTO> memberStats();
 }
 
 

@@ -52,14 +52,14 @@
 			<h1>뮤지컬 등록</h1>
 			<hr>
 		</div>
-		<form name="insertMusical" action="insertMusical.do">
+		<form name="insertMusical" action="insertMusical.do" method="post" enctype="multipart/form-data">
 		<div class="table-content">
 			<table>
 				<tr>
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
-					<td colspan="4"><input type="text" name="m_title"></td>
-					<td><input type="hidden" value="pr_1" name="pr_code"></td>
+					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***"></td>
+					<td><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
 				</tr>
 
 				<tr>
@@ -79,7 +79,7 @@
 				<tr>
 					<th>관람 등급</th>
 					<td colspan="3"></td>
-					<td colspan="4"><input type="text" name="m_age"></td>
+					<td colspan="4"><input type="text" name="m_age" placeholder="ex)15세"></td>
 				</tr>
 				<tr>
 					<th>공연장</th>
@@ -108,12 +108,14 @@
 				<tr>
 					<td colspan="4" style="text-align: center;"></td>
 					<th colspan="2" style="text-align: center;">공연 시간(인터미션 포함)</th>
-					<td><input type="text" name="m_time"></td>
+					<td><input type="number" name="m_time" placeholder="e150"></td>
+					<th><a>분</a></th>
 				</tr>
 				<tr>
 					<td colspan="4" style="text-align: center;"></td>
 					<th colspan="2" style="text-align: center;">인터 미션 시간</th>
-					<td><input type="text" name="m_inTime"></td>
+					<td><input type="number" name="m_inTime" placeholder="30"></td>
+					<th><a>분</a></th>
 				</tr>
 				<tr>
 					<th>매수 제한</th>
@@ -142,7 +144,7 @@
 					<td colspan="3"></td>
 					<td><label> 사용 <input type="radio" name="m_calender" value="1">
 					</label></td>
-					<td><label> 사용안함 <input type="radio" name="m_calender" value="0">
+					<td  colspan="3"><label> 사용안함 <input type="radio" name="m_calender" value="0">
 					</label></td>
 				</tr>
 
@@ -150,16 +152,16 @@
 				<tr>
 					<th>포스터 정보</th>
 					<td colspan="5" style="width: 60%"></td>
-					<td colspan="2"><input type="file" name="m_poster"></td>
+					<td colspan="2"><input type="file" name="m_posterfile" accept="image/*"></td>
 				</tr>
 				<tr>
 					<th>상세 이미지</th>
 					<td colspan="5" style="text-align: center;"></td>
-					<td colspan="2"><input type="file" name="m_detailImg"></td>
+					<td colspan="2"><input type="file" name="m_detailImgfile" accept="image/*"></td>
 				</tr>
 				<tr>
 					<th>공연 정보</th>
-						<td colspan="6"><textarea class="textarea-style" name="m_notice"></textarea></td>
+						<td colspan="6"><textarea class="textarea-style" name="m_notice" placeholder="공연 정보를 입력해주세요"></textarea></td>
 					</tr>
 				
 			</table>

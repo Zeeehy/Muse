@@ -18,5 +18,6 @@ public interface MainDAO {
 		public List<MusicalActorDTO> search_ma(String searchWord);
 		// 메인 검색바 - 뮤지컬 검색
 		public List<MusicalDTO> search_m(String searchWord);
+		public int search_m_count(String searchWord);
 
 }

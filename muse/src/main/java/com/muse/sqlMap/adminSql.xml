@@ -212,4 +212,50 @@
   update musical set m_viewstate = 1 where m_code = #{m_code}
   </update>
   
+  
+  
+
+	
+  <select id="memberStats" resultType="com.muse.admin.model.MemberStatsDTO">
+	<![CDATA[
+	WITH monthly_stats AS (
+	    SELECT 
+	        TO_CHAR(u_date, 'YYYY-MM') AS joinMonth,
+	        COUNT(*) AS new_members
+	    FROM users 
+	    WHERE u_date >= ADD_MONTHS(SYSDATE, -9)
+	    GROUP BY TO_CHAR(u_date, 'YYYY-MM')
+	),
+	initial_member_count AS (
+	    SELECT COUNT(*) AS initial_members
+	    FROM users
+	    WHERE u_date < ADD_MONTHS(SYSDATE, -9)
+	),
+	monthly_stats_muse AS (
+	    SELECT 
+	        TO_CHAR(u_date, 'YYYY-MM') AS joinMonth,
+	        COUNT(*) AS new_members
+	    FROM users 
+	    WHERE u_date >= ADD_MONTHS(SYSDATE, -9) and u_mpass = 1
+	    GROUP BY TO_CHAR(u_date, 'YYYY-MM')
+	),
+	initial_member_count_muse AS (
+	    SELECT COUNT(*) AS initial_members
+	    FROM users
+	    WHERE u_date < ADD_MONTHS(SYSDATE, -9) and u_mpass = 1
+	)
+	SELECT 
+	    ms.joinMonth,
+	    (SELECT initial_members FROM initial_member_count) + SUM(ms.new_members) OVER (ORDER BY ms.joinMonth ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS memberTotal,
+	    (SELECT initial_members FROM initial_member_count_muse) + SUM(ms_muse.new_members) OVER (ORDER BY ms_muse.joinMonth ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS museTotal
+	FROM monthly_stats ms
+	LEFT JOIN monthly_stats_muse ms_muse ON ms.joinMonth = ms_muse.joinMonth
+	ORDER BY ms.joinMonth
+	]]>
+  </select>
+  
+  
+  
+  
+  
   </mapper>

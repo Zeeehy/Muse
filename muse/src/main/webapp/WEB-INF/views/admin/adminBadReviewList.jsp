@@ -95,12 +95,12 @@ align-self: flex-start;
     border: 0px;
     background: lightblue;
 }   
-
 .tabButton:hover{
 background:#5794bf;
 cursor: pointer;
 color:white;
 }
+
 .clickedButton{
 background:#5794bf;
 }
@@ -127,12 +127,12 @@ background:#5794bf;
 
 	<div class="main-content">
 	
-		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 불량리뷰 관리</h1>
+		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 불량 단어 리뷰 관리</h1>
 		<hr id="hrLine">
 		
 		<div class="buttonContainer ">
-			<input type="button" class="tabButton clickedButton" value="전체보기" onclick="window.location.href='adminReviewList.do'">
-			<input type="button" class="tabButton" value="불량단어" onclick="window.location.href='adminBadReviewList.do'">
+			<input type="button" class="tabButton" value="전체보기" onclick="window.location.href='adminReviewList.do'">
+			<input type="button" class="tabButton clickedButton" value="불량단어" onclick="window.location.href='adminBadReviewList.do'">
 		</div>
 		
 		<table id="bannerListTable" border="1" cellspacing="0">

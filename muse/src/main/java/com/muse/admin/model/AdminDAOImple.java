@@ -2,6 +2,7 @@ package com.muse.admin.model;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -237,6 +238,13 @@ public class AdminDAOImple implements AdminDAO {
 		map.put("a_pwd", a_pwd);
 		
 		return sqlMap.selectOne("goAdminLogin",map);
+	}
+
+
+	@Override
+	public List<MemberStatsDTO> memberStats() {
+		List<MemberStatsDTO> lists = sqlMap.selectList("memberStats");
+		return lists;
 	}
 
 	

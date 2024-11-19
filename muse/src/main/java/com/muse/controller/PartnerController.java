@@ -1,10 +1,15 @@
 package com.muse.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.muse.partner.model.ActorDTO;
+import com.muse.partner.model.BbsDeleteRequestDTO;
 import com.muse.partner.model.MusicalDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
@@ -43,22 +50,25 @@ public class PartnerController {
 	
 	@RequestMapping("/partnerAddForm.do")
 	public ModelAndView partnerAddForm(
-			@RequestParam(value="s_pr_code",required = false, defaultValue = "no")String pr_code) {
+			@RequestParam(value="pr_code",required = false, defaultValue = "no")String pr_code,HttpSession session) {
 		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");
 		
 		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
-		//System.out.println(DTO.getRs_code()+"@###################");
 		ModelAndView mav = new ModelAndView();
 		String msg= "";
-		if(DTO ==null) {
+		
+		if(DTO == null) {
 			msg="파트너 신청을 해주세요";
-		}else if(DTO.getRs_code()==2) {
+			}else if(DTO.getRs_code()==2) {
+					
 					msg="관리자에게 문의하세요.";
 				}else if(DTO.getRs_code()==0) {
 					msg="승인 대기중입니다.";
+				}else if(DTO.getRs_code()==1) {
+					session.setAttribute("pr_name", DTO.getPr_name());
 				}
 
-
+		
 		mav.addObject("dto", DTO);
 		mav.setViewName("/partner/partnerAddForm");
 		mav.addObject("msg", msg);
@@ -96,9 +106,13 @@ public class PartnerController {
 	}
 	
 	@RequestMapping("/partnerMainForm.do")
-	public ModelAndView partnerMain(@RequestParam(value="s_pr_code", defaultValue = "no") String pr_code) {
+	public ModelAndView partnerMain(@RequestParam(value="pr_code", defaultValue = "no") String pr_code) {
+		List<MusicalDTO> list = partnerDao.getMusicalList(pr_code);
+	
+		System.out.println(pr_code+"@@@@@@@메인 pr코드");
 		ModelAndView mav =new ModelAndView();
 		mav.addObject("pr_code", pr_code);
+		mav.addObject("list", list);
 		mav.setViewName("/partner/partnerMainForm");
 		return mav;
 	}
@@ -160,6 +174,8 @@ public class PartnerController {
 			@RequestParam(defaultValue="")String seachMusical) {
 			List<MusicalDTO> list = partnerDao.SeachMusicalList(pr_code, seachMusical);
 			ModelAndView mav = new ModelAndView();
+			
+			System.out.println(list.size());
 			
 	    	mav.addObject("list",list);
 		    mav.setViewName("parkJson");
@@ -269,14 +285,12 @@ public class PartnerController {
 	    
 	    for(Object[] seatData : seats) {
 	    		//i++;
-		       System.out.println(seatData.toString());
-		       System.out.println(seatData[0]);
-		       System.out.println(seatData[1]);
-		       System.out.println(seatData[2]);
-		       System.out.println(seatData[3]);
-		       System.out.println(seatData[4]);
-		       System.out.println(seatData[5]);
-		       System.out.println(seatData[6]);
+				/*
+				 * System.out.println(seatData.toString()); System.out.println(seatData[0]);
+				 * System.out.println(seatData[1]); System.out.println(seatData[2]);
+				 * System.out.println(seatData[3]); System.out.println(seatData[4]);
+				 * System.out.println(seatData[5]); System.out.println(seatData[6]);
+				 */
 				
 				  SeatDTO seatDTO = new SeatDTO();
 				  seatDTO.setSg_code(String.valueOf(seatData[0])); // sg_code
@@ -297,26 +311,56 @@ public class PartnerController {
 	}
 	
 	@RequestMapping("/insertMusical.do")
-	public ModelAndView insertMusical(MusicalDTO dto) {
+	public ModelAndView insertMusical(MusicalDTO dto,
+			@RequestParam(value="m_posterfile")MultipartFile m_posterfile, 
+			@RequestParam(value="m_detailImgfile")MultipartFile m_detailImgfile,
+			HttpServletRequest req) {
 		
         System.out.println("mh_code: " + dto.getMh_code());
         System.out.println("pr_code: " + dto.getPr_code());
-        System.out.println("m_title: " + dto.getM_title());
         System.out.println("m_startDate: " + dto.getM_startDate());
         System.out.println("m_endDate: " + dto.getM_endDate());
         System.out.println("m_time: " + dto.getM_time());
         System.out.println("m_inTime: " + dto.getM_inTime());
-        System.out.println("m_maxTicet: " + dto.getm_maxTicket());
+        System.out.println("m_maxTicet: " + dto.getM_maxTicket());
         System.out.println("m_age: " + dto.getM_age());
         System.out.println("m_openDate: " + dto.getM_openDate());
         System.out.println("m_openTime: " + dto.getM_openTime());
         System.out.println("m_notice: " + dto.getM_notice());
-        System.out.println("m_poster: " + dto.getM_poster());
-        System.out.println("m_detailImg: " + dto.getM_detailImg());
-        System.out.println("m_calender: " + dto.getm_calendar());
+        System.out.println("m_calender: " + dto.getM_calendar());
         System.out.println("m_single: " + dto.getM_single());
         System.out.println("m_viewState: " + dto.getM_viewState());
         System.out.println("m_ref: " + dto.getM_ref());
+        
+        String savePath = req.getSession().getServletContext().getRealPath("/resources/img/musical/");
+        File dir = new File(savePath);//musical폴더
+        System.out.println(dir.getPath()+"경로@@@@@@@@@@@@@@@@@");
+        
+        try {
+        	 if(!m_posterfile.isEmpty()) {
+            	 String m_poster = m_posterfile.getOriginalFilename();
+                 String posterPath = dir + File.separator + m_poster;
+                 m_posterfile.transferTo(new File(posterPath));
+                 System.out.println("포스터 이미지 이름:"+m_poster);
+                 dto.setM_poster(m_poster);
+            }
+            
+            if(!m_detailImgfile.isEmpty()) {
+            	String m_detailImg = m_detailImgfile.getOriginalFilename();
+                String detailImgPath = dir + File.separator + m_detailImg;
+                m_detailImgfile.transferTo(new File(detailImgPath));
+                System.out.println("디테일 이미지 이름:"+m_detailImg);
+                dto.setM_detailImg(m_detailImg);
+            }
+		} catch (IOException e) {
+			e.printStackTrace();
+			
+		}
+       
+        System.out.println("m_poster: " + dto.getM_poster());
+        System.out.println("m_detailImg: " + dto.getM_detailImg());
+        
+        
         
         int result = partnerDao.insertMusical(dto);
         String m_code= partnerDao.MaxMcode();
@@ -349,10 +393,7 @@ public class PartnerController {
 		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
 		return DTO;
 	}
-	/*
-	 * @RequestMapping() public ModelAndView reviewDeleteForm() { ModelAndView mav =
-	 * new ModelAndView(); return mav; }
-	 */
+
 	@RequestMapping("/deleteReviewAction.do")
 	public ModelAndView deleteReviewAction(
 	        @RequestParam(value = "mr_code") String mr_code,
@@ -371,22 +412,47 @@ public class PartnerController {
 	}
 	@RequestMapping("/getmusicalReview.do")
 	public ModelAndView getmusicalReview(
-			@RequestParam(value="pr_code") String pr_code, 
+			@RequestParam(value="s_pr_code") String pr_code,
 			@RequestParam(value = "m_code",defaultValue="")String m_code) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println(m_code+"@@@@@@@@@@@@@@");
 		List<MusicalReviewDTO> list = partnerDao.seachMusicalReview(pr_code,m_code);
+		
 		System.out.println(pr_code);
 		System.out.println("해당 뮤지컬 리스트 사이즈"+list.size());
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
+		mav.addObject("dto", DTO);
 		mav.addObject("list", list);
 		mav.setViewName("parkJson");
 		return mav;
 	}
 	@RequestMapping("/deleteReviewForm.do")
-	public ModelAndView deleteReview() {
+	public ModelAndView deleteReview(MusicalReviewDTO DTO) {
 		ModelAndView mav = new ModelAndView();
-		
+		mav.setViewName("/partner/deleteReviewForm");
+		mav.addObject("dto", DTO);
 		return mav;
 	}
+	@RequestMapping("/bestViewOK.do")
+	public ModelAndView bestViewOK(@RequestParam(value="mr_code") String mr_code) {
 
+		ModelAndView mav = new ModelAndView();
+		int result = partnerDao.updateBestReveiw(mr_code);
+		if(result>=1)mav.addObject("result",result);
+		System.out.println(result+"뭔가 바뀜");
+		mav.addObject("mr_code",mr_code);
+
+		mav.setViewName("parkJson");
+		return mav;
+	}
+	@RequestMapping("/deleteReviewRe.do")
+	public ModelAndView deleteReviewRe(BbsDeleteRequestDTO dto,
+		@RequestParam(value="mr_code")String mr_code) {
+		dto.setBdr_key(mr_code);
+		int result = partnerDao.deleteReviewRe(dto);
+		System.out.println(result+"삭제 요청 결과");
+		ModelAndView mav =new ModelAndView();
+		mav.setViewName("/partner/partnerMainForm");
+		return mav;
+	}
 }

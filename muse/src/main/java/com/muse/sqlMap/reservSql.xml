@@ -15,7 +15,7 @@
         mh.mh_name AS MH_NAME
     FROM musical m
     JOIN musical_hall mh ON m.mh_code = mh.mh_code
-    WHERE m.mh_code = #{mh_code}
+    WHERE m.m_code = #{m_code}
 	</select>
 	<!-- 날짜 가져오기 -->
 	<select id="getMusicalDate" resultType="java.lang.String">
