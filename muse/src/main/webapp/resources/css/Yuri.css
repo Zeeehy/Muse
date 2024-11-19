@@ -156,6 +156,7 @@ article.whatsOn a.calender img {
     flex-direction: column;
     background: #fff;
     margin: 0 10px; /* Slide gap */
+    overflow: hidden;
 }
 
 .slick-slide:last-child {
@@ -180,6 +181,8 @@ article.whatsOn a.calender img {
     padding: 10px;
     text-align: center;
     border-top: 1px solid #000;
+    background: #fff;
+    z-index: 1;
 }
 
 .screening-item .meta {
@@ -357,6 +360,7 @@ article .reviewcont ul.cont li .reviewtxt .inf{
 
 .screening-item.all {
 	width: 250px;
+	overflow: hidden;
 }
 
 article.alltheMusical {
