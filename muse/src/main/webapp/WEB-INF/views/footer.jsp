@@ -49,7 +49,7 @@
 					<a href="partnerMainForm.do">제작사</a>
 				</li>
 				<li>
-					<a href="adminlogin.do">관리자</a>
+					<a href="adminLogin.do">관리자</a>
 				</li>
 			</ul>
 		</div>
