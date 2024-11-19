@@ -13,8 +13,17 @@
 </head>
 <body>
     <h1>가격/할인 페이지</h1>
-    <form id = "reservationForm" method="post" action="reservCheck.do">
-        <section class="reservWrap">
+	<form id="reservationForm" method="post" action="reservCheck.do">
+	    <input type="hidden" name="mh_code" value="${mh_code}">
+	    <input type="hidden" name="m_code" value="${m_code}">
+	    <input type="hidden" name="selectedDate" value="${selectedDate}">
+	    <input type="hidden" name="selectedTime" value="${selectedTime}">
+		<input type="hidden" name="selectedSeats" id="formSeats" value="${selectedSeats}">
+		<input type="hidden" name="jsonSeats" id="jsonSeats" value='${jsonSeats}'>
+		<input type="hidden" name="usePoint" id="jusePoint" value="${usePoint}">
+		<input type="hidden" name="ticketPrice" id="ticketPriceInput" value="0">
+		<input type="hidden" name="jcancelDeadline" id="jcancelDeadline" value="${cancelDeadline}">
+		<section class="reservWrap">
             <article class="contWrap">
                 <header class="step">
 				    <h2>02 가격/할인</h2>
@@ -181,18 +190,10 @@
 										    <th>티켓금액</th>
 										    <td id="ticketPrice">0원</td>
 										</tr>
-										<!-- <tr>
-										    <th>할인</th>
-										    <td id="discountAmount">0원</td>
-										</tr> -->
 										<tr>
 										    <th>포인트 사용</th>
 										    <td><b id="selectedPointAmount">0 P</b> 사용</td>
 										</tr>
-                                    </tbody>
-                                </table>
-                                <table>
-                                    <tbody>
                                         <tr>
                                             <th>취소기한</th>
                                             <td><b id="cancelDeadline"></b></td>
@@ -213,8 +214,8 @@
 						</div>
                         <div class="s Button"> 
                             <div class="subBtList">
-                                <button class="subBt bk">이전단계</button>
-                                <button class="subBt" style="background: #FF3D32; color: #fff;">다음단계</button>
+                                <button type="button" class="subBt bk" onclick="goBack()">이전단계</button>
+        						<button type="submit" class="subBt" style="background: #FF3D32; color: #fff;">다음단계</button>
                             </div>
                         </div>
                     </aside>
@@ -224,22 +225,107 @@
     </form>
 </body>
 <script>
+// 이전단계
+function goBack() {
+    history.back();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log("문서 로드 완료");
     updateCancelDeadline();
     checkMyPoint();
-    
-    // 이전단계
-	const prevButton = document.querySelector('.subBt.bk');    
-    
-    if (prevButton) {
-        prevButton.addEventListener('click', function(e) {
-            e.preventDefault(); 
-            history.back();
-        });
-    }
-}); 
 
+    const form = document.getElementById('reservationForm');
+    const submitButton = document.querySelector('button[type="submit"]');
+
+ 	// submit 버튼 클릭 시에만 이벤트 적용
+    submitButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        try {
+            let totalRequiredSeats = 0;    
+            let totalSelectedSeats = 0;     
+           
+            
+         	// 각 등급별로 처리
+            document.querySelectorAll('.priceT').forEach(priceTable => {
+                const seatInfo = priceTable.querySelector('.stit').textContent;
+                const gradeRequiredSeats = parseInt(seatInfo.match(/좌석\s*(\d+)매/)[1]);
+                totalRequiredSeats += gradeRequiredSeats;
+                console.log('seatInfo:', seatInfo);
+                
+                let gradeSelectedSeats = 0;
+                priceTable.querySelectorAll('select').forEach(select => {
+                    gradeSelectedSeats += parseInt(select.value || 0);
+                });
+                totalSelectedSeats += gradeSelectedSeats;
+            });
+            
+            if (totalSelectedSeats !== totalRequiredSeats) {
+                alert('선택하신 모든 좌석의 티켓 매수를 선택해주세요.');
+                return;
+            }
+            
+            // selectedSeats 값이 있는지 확인
+            const formSeats = document.getElementById('formSeats');
+            if (!formSeats.value) {
+                console.error('좌석 데이터가 없습니다');
+                console.log("formSeats:"+formSeats);
+                return;
+            }
+            
+         // 할인 정보를 좌석 데이터에 추가
+			
+			const seatsData = ${jsonSeats};
+			const updatedSeatsData = seatsData.map(seat => {
+			    // 해당 등급의 priceT div를 찾기
+			    const priceTables = document.querySelectorAll('.priceT');
+			    let matchingPriceTable = null;
+			    
+			    
+			    // 각 priceTable을 순회하면서 해당하는 등급 찾기
+			    priceTables.forEach(table => {
+			        const gradeSpan = table.querySelector('.stit span');
+			        if (gradeSpan && gradeSpan.textContent.replace('석', '') === seat.grade) {
+			            matchingPriceTable = table;
+			        }
+			    });
+			
+			    if (matchingPriceTable) {
+			        const discountInfo = {
+			            normal: parseInt(matchingPriceTable.querySelector('select[name="normalTickets_' + seat.grade + '"]').value || 0),
+			            veteran: parseInt(matchingPriceTable.querySelector('select[name="veteranTickets_' + seat.grade + '"]').value || 0),
+			            disability13: parseInt(matchingPriceTable.querySelector('select[name="disability13Tickets_' + seat.grade + '"]').value || 0),
+			            disability46: parseInt(matchingPriceTable.querySelector('select[name="disability46Tickets_' + seat.grade + '"]').value || 0)
+			        };
+			        return {...seat, discountInfo};
+			    }
+			    return seat;
+			});
+            // 업데이트된 데이터를 폼에 설정
+            formSeats.value = JSON.stringify(updatedSeatsData);
+            
+            alert(updatedSeatsData);
+            
+            const usePoint = document.getElementById('jusePoint').value;
+            const cancelDeadline = document.getElementById('jcancelDeadline').value;
+            
+            const ticketPriceText = document.getElementById('ticketPrice').textContent;
+            const ticketPrice = ticketPriceText.replace(/[^0-9]/g, '');
+            document.getElementById('ticketPriceInput').value = ticketPrice;
+            
+            console.log('전송될 포인트:', usePoint);
+            console.log('전송될 취소기한:', cancelDeadline);
+            alert(jcancelDeadline);
+            // 검증 통과시 폼 제출
+            form.submit();
+            
+        } catch (error) {
+            console.error('폼 제출 검증 중 오류:', error);
+            alert('티켓 선택을 확인하는 중 오류가 발생했습니다.');
+        }
+    });
+});
 
 
 document.querySelectorAll('.priceList select').forEach(select => {
@@ -304,6 +390,7 @@ function updateAllPrices() {
 
     if (ticketPriceElement) {
         ticketPriceElement.textContent = totalSum.toLocaleString() + '원';
+        document.getElementById('ticketPriceInput').value = totalSum;
     }
     if (totalPriceElement) {
         totalPriceElement.textContent = totalSum.toLocaleString() + '원';
@@ -583,11 +670,13 @@ function updateCancelDeadline() {
             cancelDeadlineElement.textContent = formattedDate;
             console.log("날짜 설정 완료:", cancelDeadlineElement.textContent);
         }
+        document.getElementById('jcancelDeadline').value = formattedDate;
+        console.log("폼 제출 직전 전송될 취소기한 값:", document.getElementById('jcancelDeadline').value);
+
     } catch (error) {
         console.error('취소기한 업데이트 중 오류:', error);
     }
 }
-
 
 </script>
 </html>

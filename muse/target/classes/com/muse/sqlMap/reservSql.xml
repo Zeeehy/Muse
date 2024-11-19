@@ -248,5 +248,10 @@
 	    u.U_ID = #{s_id}
 	</select>
 	
-	
+	<!-- 세션에 있는 아이디로 회원정보 불러오기 -->
+	<select id="getMemberInfo" parameterType="String" resultType="map">
+		SELECT U_NAME,U_PNUM,U_EMAIL
+		FROM USERS
+		WHERE U_ID = #{s_id, jdbcType=VARCHAR}
+	</select>
 </mapper>
