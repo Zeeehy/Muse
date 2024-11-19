@@ -142,7 +142,7 @@ p {
 }
 
 .score0{
-	background-color:pink;
+	/* background-color:pink; */
 }
 
 </style>
