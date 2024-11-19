@@ -95,7 +95,7 @@
         <div class="dropdown-container">
             <a href="addRequestList.do">공연 등록 승인</a>
     		<a href="openRequestList.do">오픈공지 승인</a>
-    		<a href="#">연장신청 승인</a>
+    		<!-- <a href="#">연장신청 승인</a> -->
         </div>
         
         <button class="dropdown-btn">반영
@@ -103,9 +103,9 @@
         </button>
         <div class="dropdown-container">
             <a href="addApplyList.do">공연 등록 반영</a>
-		    <a href="#">공연수정반영</a>
+		    <!-- <a href="#">공연수정반영</a> -->
 		    <a href="openApplyList.do">오픈공지 반영</a>
-		    <a href="#">연장신청반영</a>
+		   <!--  <a href="#">연장신청반영</a> -->
 		    <a href="bannerList.do">배너등록</a>
         </div>
         
@@ -115,7 +115,7 @@
         <div class="dropdown-container">
             <a href="adminReviewList.do">불량 리뷰 관리</a>
 		    <a href="pReviewList.do">파트너 리뷰 관리</a>
-		    <a href="pQnAList.do">파트너 QnA 관리</a>
+		   <!--  <a href="pQnAList.do">파트너 QnA 관리</a> -->
         </div>
         
         <button class="dropdown-btn">통계
