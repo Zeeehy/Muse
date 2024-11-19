@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -167,15 +168,12 @@ public class ReservController {
 	        @RequestParam(value = "jcancelDeadline", required = false) String jcancelDeadline,
 	        @RequestParam(value = "ticketPrice", required = false) String ticketPrice,
 	        HttpSession session
-
 	        ) {
 	    
 	    ModelAndView mav = new ModelAndView();
 	    
-	    
 	    try {
 	    	System.out.println("reservCheckController");
-	    	
 	    	System.out.println(mh_code);
 	    	System.out.println(m_code);
 	    	System.out.println(selectedDate);
@@ -223,6 +221,7 @@ public class ReservController {
 	        mav.addObject("ticketPrice", ticketPrice);
 	        mav.addObject("memberInfo",memberInfo);
 	        mav.setViewName("reservation/reservCheck");
+	        
 	        System.out.println("jsonSeats being sent: " + selectedSeats);
 
 	    } catch (Exception e) {
@@ -232,78 +231,82 @@ public class ReservController {
 	}
 
 	
-	@RequestMapping("/reservCancle.do")
+	@RequestMapping(value = "/reservCancle.do", method = RequestMethod.POST)
 	public ModelAndView ReservCancleForm(
-			@RequestParam(value = "mh_code" , required = false) String mh_code,
-	        @RequestParam(value = "m_code", required = false) String m_code,
-	        @RequestParam(value = "selectedDate", required = false) String selectedDate,
-	        @RequestParam(value = "selectedTime", required = false) String selectedTime,
-	        @RequestParam(value = "selectedSeats", required = false) String selectedSeats ,
-	        @RequestParam(value = "jcancelDeadline", required = false) String jcancelDeadline,
-	        @RequestParam(value = "ticketPrice", required = false) String ticketPrice,
-	        HttpSession session
+	       @RequestParam(value = "mh_code", required = false) String mh_code,
+	       @RequestParam(value = "m_code", required = false) String m_code,
+	       @RequestParam(value = "selectedDate", required = false) String selectedDate,
+	       @RequestParam(value = "selectedTime", required = false) String selectedTime,
+	       @RequestParam(value = "selectedSeats", required = false) String selectedSeats,
+	       @RequestParam(value = "jcancelDeadline", required = false) String jcancelDeadline,
+	       //@RequestParam(value = "cancelDeadline", required = false) String cancelDeadline,
+	       @RequestParam(value = "ticketPrice", required = false) String ticketPrice,
+	       @RequestParam(value = "totalPrice", required = false) String totalPrice,
+	       HttpSession session) {
+	   
+	   ModelAndView mav = new ModelAndView();
+	   
+	   try {
+	       // 로그 출력
+	       System.out.println("===== ReservCancleForm 시작 =====");
+	       System.out.println("Received parameters - ");
+	       System.out.println("mh_code: " + mh_code);
+	       System.out.println("m_code: " + m_code);
+	       System.out.println("selectedDate: " + selectedDate);  
+	       System.out.println("selectedTime: " + selectedTime);
+	       System.out.println("jcancelDeadline: " + jcancelDeadline);
+	       System.out.println("ticketPrice: " + ticketPrice);
+	       System.out.println("totalPrice: " + totalPrice);
+	       System.out.println("Received selectedSeats: " + selectedSeats);
+	       
+	       // 세션 체크
+	       String s_id = (String)session.getAttribute("s_id");
+	       if (s_id == null) {
+	           System.out.println("세션 없음 - 로그인 페이지로 리다이렉트");
+	           return new ModelAndView("redirect:/memberLogin.do");
+	       }
+	       
+	       // 필수 파라미터 검증
+	       if (StringUtils.isEmpty(mh_code) || StringUtils.isEmpty(m_code) || 
+	           StringUtils.isEmpty(selectedDate) || StringUtils.isEmpty(selectedTime)) {
+	           throw new IllegalArgumentException("Required parameters are missing");
+	       }
 
-	        ) {
-	    
-	    ModelAndView mav = new ModelAndView();
-	    
-	    ObjectMapper mapper = new ObjectMapper();
-	    try {
-	    	System.out.println("reservCheckController");
-	    	
-	    	System.out.println(mh_code);
-	    	System.out.println(m_code);
-	    	System.out.println(selectedDate);
-	    	System.out.println(selectedTime);
-	        System.out.println("취소기한: " + jcancelDeadline); // 값 확인
-	    
-		
-			selectedSeats = selectedSeats.replace("'", "\"") // 작은따옴표를 큰따옴표로
-			.replaceAll("([{,])\\s*(\\w+):", "$1\"$2\":"); // 프로퍼티 이름에 따옴표 추가
+	       // JSON 파싱
+	       ObjectMapper objectMapper = new ObjectMapper();
+	       List<Map<String, Object>> seatList = objectMapper.readValue(
+	           selectedSeats,
+	           new TypeReference<List<Map<String, Object>>>() {}
+	       );
+	       System.out.println("좌석 파싱 성공! 좌석 수: " + (seatList != null ? seatList.size() : 0));
 
-			try {
-				List<SeatDTO> seatList = mapper.readValue(selectedSeats, 
-			            mapper.getTypeFactory().constructCollectionType(List.class, SeatDTO.class));
-		        mav.addObject("selectedSeats", seatList);
-		        mav.setViewName("reservation/reservCancle"); // reservCheck가 아닌 reservCancle로 변경
-		       
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-    
-	        // 뮤지컬 정보 및 가격 정보 조회
-	    	Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
-	        List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
-	        System.out.println("musicalInfo"+musicalInfo);
-	        
-	        // 세션에서 s_id 가져오기
-	        String s_id = (String)session.getAttribute("s_id");
-	        Map<String,Object> memberInfo = reservDAO.getMemberInfo(s_id);
-	        System.out.println("memberInfo:"+memberInfo);
-	        // s_id가 null이면 로그인 페이지로 리다이렉트
-	        if (s_id == null) {
-	            mav.setViewName("redirect:/memberLogin.do");
-	            return mav;
-	        }
-	        
-	        // ModelAndView에 데이터 추가
-	        mav.addObject("mh_code", mh_code);
-	        mav.addObject("m_code", m_code);
-	        mav.addObject("selectedDate", selectedDate);
-	        mav.addObject("selectedTime", selectedTime);
-	        //mav.addObject("selectedSeats", seatList);
-	        
-	        mav.addObject("musicalInfo", musicalInfo);
-	        mav.addObject("musicalPrice", musicalPrice);
-	        mav.addObject("jcancelDeadline", jcancelDeadline); 
-	        mav.addObject("ticketPrice", ticketPrice);
-	        mav.addObject("memberInfo",memberInfo);
-	        mav.setViewName("reservation/reservCancle");
-	        System.out.println("Received selectedSeats: " + selectedSeats);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return mav;
+	       Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	       List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
+	       Map<String, Object> memberInfo = reservDAO.getMemberInfo(s_id);
+	       
+	       mav.addObject("mh_code", mh_code);
+	       mav.addObject("m_code", m_code);
+	       mav.addObject("selectedDate", selectedDate);
+	       mav.addObject("selectedTime", selectedTime);
+	       mav.addObject("selectedSeats", seatList);
+	       mav.addObject("musicalInfo", musicalInfo);
+	       mav.addObject("musicalPrice", musicalPrice);
+	       mav.addObject("jcancelDeadline", jcancelDeadline);	       
+	       mav.addObject("ticketPrice", ticketPrice);
+	       mav.addObject("totalPrice", totalPrice);
+	       mav.addObject("memberInfo", memberInfo);
+	       mav.addObject("seatCount", seatList != null ? seatList.size() : 0);
+	       
+	       mav.setViewName("reservation/reservCancle");
+	       
+	   } catch (Exception e) {
+	       System.out.println("에러 메시지: " + e.getMessage());
+	       e.printStackTrace();
+	       mav.setViewName("reservation/reservCancle");
+	       mav.addObject("errorMessage", "예매 진행 중 오류가 발생했습니다.");
+	   }
+
+	   return mav;
 	}
 	
 	
