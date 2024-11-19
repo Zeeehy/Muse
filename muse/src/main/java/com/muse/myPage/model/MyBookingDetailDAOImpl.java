@@ -21,4 +21,16 @@ public class MyBookingDetailDAOImpl implements MyBookingDetailDAO{
 	    
 		return bookingDetail;
 	}
+	
+	@Override
+	public int getRefundRemainDate(String b_code) {
+		int refundRemainDate = sqlMap.selectOne("selectRefundRemainDate",b_code);
+		return refundRemainDate;
+	}
+	
+	@Override
+	public int getSeatReviewCount(String bd_code) {
+		int seatReviewCount = sqlMap.selectOne("selectSeatReviewCount",bd_code);
+		return seatReviewCount;
+	}
 }

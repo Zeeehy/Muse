@@ -2,28 +2,21 @@
 
 /* 로그인 부분 */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-
-
 .login_flex1{
    display: flex;
 }
-
 .login_child1{
    display: flex;
-   width: 75%;
-   
+   width: 75%;  
 }
-
 .login_img{   
    width: 1370px;
    height: 1050px;
 }
-
 .login_logoimg{   
    width: 150px;
    height: 70px;
 }
-
 .login_child2{
    display: flex;
    justify-content:center;
@@ -31,7 +24,6 @@
    width: 43%;
    height: 1000px;
 }
-
 .login_btn {
     width:340px;
     height: 50px;
@@ -45,23 +37,18 @@
     transition: background-color 0.3s ease;
     margin-top: 15px;
 }
-
 .login_btn:hover {
     background-color: black;
 }
-
-
 .login_logodiv1{
    display: flex;
    justify-content: center;
    padding-bottom: 40px;
 }
-
 .join{
    padding-left: 35px;
    margin-top: 50px;
 }
-
 .input-container {
    display: flex;
    align-items: center; 
@@ -69,7 +56,6 @@
    border-radius: 10px; 
    padding-left: 10px;
 }
-
 .input-container-btn {
    width:340px;
    display: flex;
@@ -77,30 +63,27 @@
    border-radius: 10px; 
    margin-bottom: 0px;
 }
-
 .input-container img {
    width: 30px;  
    height: 30px; 
    object-fit: cover; 
    margin-right: 10px; 
 }
-
 .social_login {
 	margin-top:10px;
 	padding:20px;
 	display: flex;
 	justify-content: center;
 }
-
 .social_login img {
    width: 50px;  
    height: 50px; 
    object-fit: cover; 
 }
-
 .kakao {
    margin-right: 20px; 
 }
+
 
 /* 회원가입 부분 */
 .join_div1{
@@ -108,20 +91,17 @@
 	height:200px;	
 	width: 100%;
     border-bottom: 3px solid #b2b2b2;
-}	
-	
+}		
 .join_logo{
    display: flex;
    align-items:center;
    justify-content: center;
    width: 30%;
 }
-
 .join_logoimg{   
    width: 150px;
    height: 70px;
 }	
-
 .join_title{
 	display: flex;
 	width: 70%;
@@ -130,34 +110,29 @@
     padding-top:40px;
     padding-left: 520px;	
 }
-
 .join_title span{
 	font-family: 'Pretendard';
 	font-size: 33px;
 	font-weight: bold;
 }
-
 .join_div2{
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding-top: 30px;
 }
-
 .join_input-container {
    display: flex;
    align-items: center; 
    background-color: #F2F2F2; 
    border-radius: 10px;
 }
-
 .join_input-container label{
    font-family: 'Pretendard';
    font-weight: bold;
    padding-right: 10px;
    color: #6d6969;
 }
-
 .join_input-container-btn {
    width:420px;
    display: flex;
@@ -165,26 +140,22 @@
    border-radius: 10px; 
    margin-bottom: 0px;
 }
-
 .join_input-container img {
    width: 30px;  
    height: 30px; 
    object-fit: cover; 
    margin-right: 10px; 
 }
-
 .join_input-container-check{
    display: flex;
    align-items: left; 
    border-radius: 10px;	
 }
-
 .join_input-container-check label{
    font-family: 'Pretendard';
    padding-left: 4px;
    color: #858585;
 }
-
 .join_btn {
     width:420px;
     height: 50px;
@@ -199,11 +170,9 @@
     transition: background-color 0.3s ease;
     margin-top: 22px;
 }
-
 .join_btn:hover {
     background-color: black;
-}
-   
+}  
  .join_ajax,
  .join_ajax1,
  .join_ajax2,
@@ -215,7 +184,6 @@
     display: block; 
     text-align: left;
  }
- 
 .join_ajax label,
 .join_ajax1 label,
 .join_ajax2 label,
@@ -229,17 +197,362 @@
  } 
      
 
+/* 랭킹 부분 */
+.rank-content{
+	width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;	
+}
+.rank-title{
+	padding:30px;
+	padding-bottom:60px;
+	margin-top:100px;
+	margin-bottom:30px;
+	display: flex;
+	justify-content: center;
+	font-family: 'Pretendard';
+	font-size: 31px;
+	font-weight: bold;
+	border-bottom: 4px solid #d9d9d9;
+}
+.rank-category {
+  text-align: right; /* 오른쪽 정렬 */
+  padding-bottom: 30px;
+}
+.rank-category span {
+  font-family: 'Pretendard';
+  font-size: 18px;
+  font-weight: bold;
+  color: #858585;
+}
+.rank-category a {
+  font-family: 'Pretendard';
+  font-size: 18px;
+  font-weight: bold;
+  color: #858585;
+  text-decoration: none;  
+}
+.rank-category a:hover {
+  color: #ff3d32; 
+}
+.rank-category-link.active{
+  color: #ff3d32;
+}
+.rank-top3{
+  display: flex;
+  width: 100%;
+  margin-top: 15px;
+  padding-bottom: 50px;
+  border-bottom: 4px solid #d9d9d9;
+}
+.rank-number{
+  position: relative;
+  display: inline-block;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0; /* 크기가 축소되지 않도록 설정 */
+  width: 25%; /* rank-number의 너비 설정 */
+}
+.rank-number-label{
+  position: absolute;
+  top: 16px; /* 위치를 적절하게 조정 */
+  left: 30px;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px;
+  border-radius: 50%;
+}
+.rank-number-label2{
+  position: absolute;
+  top: 15px; /* 위치를 적절하게 조정 */
+  left: 30px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px;
+  border-radius: 50%;
+}
+.top3{
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  margin: 0 45px; /* Slide gap */
+  flex-wrap: wrap;
+  width: 33.33%;
+} 
+.rank-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 70%; /* rank-info의 너비 설정 */
+}
+.rank-poster{
+  width: 100%;
+  height: 330px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 20px;
+  
+}
+.rank-subtitle{
+  padding-bottom:10px;
+  font-family: 'Pretendard';
+  font-size: 21px;
+  font-weight: bold;
+  color: black;
+}
+.rank-subtitle a:hover {
+  color: #ff3d32;
+}
+.rank-place,
+.rank-salePercentage{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 19px;
+  color: black;
+}
+.rank-date{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 19px;
+  color: gray;
+}
+.rank-salePercentage span{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 20px;
+  font-weight: bold;
+  color: #9747FF;	 
+}
+.rank-others-div{
+  padding: 20px;
+  padding-bottom: 150px;
+  padding-top: 40px;
+}
+.rank-others{
+  display: flex;
+  padding: 10px;	
+  border-bottom: 2px solid #dbd8d8;
+}
+.rank-number-others{
+  padding:20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rank-number-label-others{
+  font-family: 'Pretendard';
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+}
+.rank-poster-others{
+	display: flex;
+	padding: 30px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+.rank-info-others{
+	display: flex;
+	padding: 30px;
+	width: 100%;
+}
+.rank-info-others-title{
+	display: flex;
+	padding:20px;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Pretendard';
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    width: 35%;
+}
+.rank-info-others-title a:hover {
+  color: #ff3d32;
+}
+.rank-info-others-place, 
+.rank-info-others-date{
+	display: flex;
+	padding:20px;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Pretendard';
+    font-size: 20px;
+    color: black;
+    width: 30%;
+}
+.rank-info-others-percentage{
+  display: flex;
+  padding:20px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Pretendard';
+  font-size: 20px;
+  font-weight: bold;
+  color: #9747FF;	
+  width: 10%;
+}
 
+/* 검색 결과 페이지 */
+.search-content{
+	width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;	
+    padding: 50px;
+}
+.search-word{
+	padding:22px;
+	padding-left:155px;
+	padding-bottom:50px;
+	font-family: 'Pretendard';
+	font-size: 23px;
+	color: #726f6f;
+	font-weight: bold;
+}
+.search-word span{
+	font-family: 'Pretendard';
+	font-size: 26px;
+	color: #ff3d32;
+	font-weight: bold;
+}
+.search-actor, .search-place{
+	max-width: 1200px;
+	padding: 20px;
+	background-color: #e6e2e2;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;  /* 가로 중앙 정렬 */
+    margin: 0 auto;  /* 부모 요소 내에서 가운데 정렬 */
+    margin-bottom: 80px;
+}
+.search-actor-img{
+	width: 18%;
+	padding: 20px;
+	padding-left: 30px;
+	height: 230px;
+	background-size: cover;
+	background-position: center;
+}
+.search-place-img{
+	width: 23%;
+	padding: 20px;
+	padding-left: 30px;
+	height: 230px;
+	background-size: cover;
+	background-position: center;
+}
+.search-actor-info{
+	width: 82%;
+	display: flex;
+	flex-direction: column;
+	padding: 10px;	
+	min-height: 230px; /* 최소 높이 설정 */
+}
+.search-place-info{
+	width: 77%;
+	display: flex;
+	flex-direction: column;
+	padding: 10px;	
+	min-height: 230px; /* 최소 높이 설정 */
+}
+.search-actor-name, .search-place-name{
+	padding: 15px;
+	padding-top: 50px;
+	font-family: 'Pretendard';
+	font-size: 21px;
+	color: #9b9b9b;
+	display: flex;
+	align-items: center;
+}
+.search-actor-name span, .search-place-name span{
+	font-family: 'Pretendard';
+	font-size: 24px;
+	font-weight: bold;
+	color: black;
+}
+.search-actor-birth, .search-place-addr{
+	padding-top: 38px;
+	padding-left: 15px;
+	font-family: 'Pretendard';
+	font-size: 19px;
+	color: #4b4b4b;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+}
+.search-actor-cast, .search-place-cast {
+	padding: 15px;
+	font-family: 'Pretendard';
+	font-size: 19px;
+	color: #4b4b4b;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+}
+.search-tickets-title{
+	padding: 35px;
+	font-family: 'Pretendard';	
+	font-size: 22px;
+	font-weight: bold;
+	color: #4b4b4b;
+	border-bottom: 3px solid #dbd8d8;
+}
+.search-tickets{
+	max-width: 1500px;
+    margin: 0 auto;	
+    padding: 30px;
+    padding-top: 70px;
+    display: flex;
+    flex-wrap: wrap;  
+    justify-content: space-between;
+}
+.search-ticket{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background: #fff;
+  margin-bottom: 30px; 
+  width: calc(25% - 20px); /* 4개의 항목이 한 줄에 배치되도록 조정, 양옆 간격을 뺀 값으로 설정 */
 
-
-
-
-
-
-
-
-
-
-
-
+} 
+.search-ticket-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.search-ticket-poster{
+  width: 100%;
+  height: 330px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 20px;
+  
+}
+.search-ticket-subtitle{
+  padding-bottom:10px;
+  font-family: 'Pretendard';
+  font-size: 21px;
+  font-weight: bold;
+  color: black;
+}
+.search-ticket a:hover {
+  color: #ff3d32;
+}
+.search-ticket-place{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 19px;
+  color: black;
+}
+.search-ticket-date{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 19px;
+  color: gray;
+}
 
