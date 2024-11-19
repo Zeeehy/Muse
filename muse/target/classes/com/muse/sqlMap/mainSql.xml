@@ -15,12 +15,13 @@
 	   <select id="main_ticketopen" resultType="com.muse.main.model.TicketOpenDTO">
 		    SELECT *
 		    FROM (
-		        SELECT m.m_poster, m.m_title, openn.on_open, openn.on_muse_open, openn.on_type, openn.on_code
+		    	SELECT m.m_poster, m.m_title, openn.on_open, openn.on_muse_open, openn.on_type, openn.on_code
 		        FROM musical m
 		        JOIN open_notice openn ON m.m_code = openn.m_code
-		        WHERE <![CDATA[TO_DATE(openn.on_open, 'YYYY-MM-DD HH24:MI:SS') >= SYSDATE ]]> and m.m_viewstate = 1
+		        JOIN request_state rs ON openn.rs_code = rs.rs_code
+		        WHERE rs.rs_code = 1 and <![CDATA[TO_DATE(openn.on_open, 'YYYY-MM-DD HH24:MI:SS') >= SYSDATE ]]> and m.m_viewstate = 1
 		        ORDER BY openn.on_open ASC, m.m_title ASC 
-		    	)
+		        )
 		    WHERE <![CDATA[ ROWNUM <= 10]]>
 		</select>
 	    

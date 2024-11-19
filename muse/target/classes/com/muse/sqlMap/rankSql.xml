@@ -30,11 +30,11 @@
 			                  FROM booking 
 			                  WHERE b_date BETWEEN TRUNC(SYSDATE, 'IW') 
 			                                   AND TRUNC(SYSDATE, 'IW') + 7) * 100, 2) AS booking_rate,
-			           RANK() OVER (ORDER BY ROUND(SUM(b_count) / 
-			                                       (SELECT SUM(b_count) 
-			                                        FROM booking 
-			                                        WHERE b_date BETWEEN TRUNC(SYSDATE, 'IW') 
-			                                                         AND TRUNC(SYSDATE, 'IW') + 7) * 100, 2) DESC) AS rank
+			           ROW_NUMBER() OVER (ORDER BY ROUND(SUM(b_count) / 
+                                       (SELECT SUM(b_count) 
+                                        FROM booking 
+                                        WHERE b_date BETWEEN TRUNC(SYSDATE, 'IW') 
+                                                         AND TRUNC(SYSDATE, 'IW') + 7) * 100, 2) DESC) AS rank
 			    FROM booking b 
 			    JOIN musical_option mo ON b.mo_code = mo.mo_code
 			    JOIN musical m ON m.m_code = mo.m_code
@@ -56,11 +56,15 @@
 			                   FROM booking 
 			                   WHERE b_date BETWEEN TRUNC(SYSDATE, 'MM') 
 			                         AND TRUNC(SYSDATE, 'MM') + INTERVAL '1' MONTH - INTERVAL '1' SECOND)) * 100, 2) AS booking_rate,
-			           RANK() OVER (ORDER BY ROUND((SUM(b_count) / 
-			                                        (SELECT SUM(b_count) 
-			                                         FROM booking 
-			                                         WHERE b_date BETWEEN TRUNC(SYSDATE, 'MM') 
-			                                               AND TRUNC(SYSDATE, 'MM') + INTERVAL '1' MONTH - INTERVAL '1' SECOND)) * 100, 2) DESC) AS rank
+			           ROW_NUMBER() OVER (
+				               ORDER BY ROUND(
+				                   (SUM(b_count) / 
+				                    (SELECT SUM(b_count) 
+				                     FROM booking 
+				                     WHERE b_date BETWEEN TRUNC(SYSDATE, 'MM') 
+				                                      AND TRUNC(SYSDATE, 'MM') + INTERVAL '1' MONTH - INTERVAL '1' SECOND)) 
+				                   * 100, 2) DESC
+				           ) AS rank
 			    FROM booking b 
 			    JOIN musical_option mo ON b.mo_code = mo.mo_code
 			    JOIN musical m ON m.m_code = mo.m_code

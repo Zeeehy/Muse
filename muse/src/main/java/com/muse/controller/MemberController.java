@@ -31,7 +31,7 @@ public class MemberController {
     public String memberLoginForm(HttpServletRequest request, HttpSession session) {
     	 // 로그인 전 사용자가 요청한 URL을 세션에 저장
         String referer = request.getHeader("Referer");  // 이전 페이지 URL을 가져옴
-        if (referer != null && !referer.contains("memberLogin.do")) {  // 로그인 페이지로 오는 URL은 제외
+        if (referer != null && !referer.contains("memberLogin.do") && !referer.contains("memberJoin.do")) { // 로그인 페이지나 회원가입 페이지로 오는 URL을 제외
             session.setAttribute("prevPage", referer);  // 세션에 이전 페이지 URL 저장
         }
         return "/member/memberLogin";
