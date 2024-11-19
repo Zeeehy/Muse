@@ -4,7 +4,7 @@
 <body>
    <div class="sidebar">
     <div class="sidebartop">
-      <a href="partnerAddForm.do">파트너 등록</a> | 
+      <a href="partnerMainForm.do?"${s_pr_code}>   메인</a> | 
       <span class="popup-container" style="position: relative;"> <!-- 팝업 위치를 상대적으로 설정 -->
         <a href="#" onclick="showPopup()">요청 현황</a>
         <!-- 레이어 팝업 -->
@@ -65,9 +65,8 @@
     <div class="dropdown-container">
       <a href="musicalSeatAddForm.do">시트 등록</a>
       <a href="castAddForm.do">캐스팅 등록</a>
-      <a href="#">커뮤니티</a>
       <!-- <a href="reviewDeleteForm.do?pr_code=${s_pr_code}">리뷰 삭제</a> -->
-      <a href="reviewDeleteForm.do?pr_code=pr_1">리뷰 삭제</a>
+      <a href="reviewDeleteForm.do?pr_code=pr_1">리뷰 관리</a>
     </div>
 
     <button class="dropdown-btn">

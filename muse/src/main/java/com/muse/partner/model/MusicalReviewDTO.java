@@ -9,6 +9,7 @@ public class MusicalReviewDTO {
 	private String mr_date;
 	private String u_id;
 	private String pr_code;
+	private String mr_state;
 	
 	
 	
@@ -20,8 +21,13 @@ public class MusicalReviewDTO {
 
 
 
+	
+
+
+
+
 	public MusicalReviewDTO(String mr_code, String mr_title, String mr_content, int mr_score, String mr_date,
-			String u_id, String pr_code) {
+			String u_id, String pr_code, String mr_state) {
 		super();
 		this.mr_code = mr_code;
 		this.mr_title = mr_title;
@@ -30,6 +36,26 @@ public class MusicalReviewDTO {
 		this.mr_date = mr_date;
 		this.u_id = u_id;
 		this.pr_code = pr_code;
+		this.mr_state = mr_state;
+	}
+
+
+
+
+
+
+
+
+
+	public String getMr_state() {
+		return mr_state;
+	}
+
+
+
+
+	public void setMr_state(String mr_state) {
+		this.mr_state = mr_state;
 	}
 
 

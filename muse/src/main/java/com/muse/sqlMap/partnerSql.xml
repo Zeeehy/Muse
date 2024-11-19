@@ -9,11 +9,19 @@
   </select>
 
 	<select id="selectMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
-    SELECT * FROM musical
-    WHERE pr_code = #{pr_code}
-    <if test="seachMusical != null and seachMusical != ''">
-    AND m_title LIKE '%' || #{seachMusical} || '%'
-	</if>
+
+	  SELECT *
+		FROM musical m
+	WHERE m.pr_code = #{pr_code}
+  AND EXISTS (
+    SELECT *
+    FROM service_request sr
+    WHERE sr.rs_code = 1
+    and sr.m_code = m.m_code
+  )
+  <if test="seachMusical != null and seachMusical != ''">
+  AND m.m_title LIKE '%' || #{seachMusical} || '%'
+  </if>
 </select>
 
 <select id="selectStartEndDate"  resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
@@ -167,12 +175,16 @@ m_code = #{m_code}),
 
 	</insert>
 	<select id="reviewList" resultType="com.muse.partner.model.MusicalReviewDTO" parameterType="String">
-	SELECT 
+SELECT 
     r.MR_CODE, 
     r.MR_TITLE, 
     r.MR_CONTENT, 
     r.MR_SCORE, 
     r.MR_DATE,
+    CASE 
+        WHEN bdr.bdr_key IS NOT NULL THEN 3 
+        ELSE r.mr_state
+    END AS MR_STATE,
     b.u_id
 FROM 
     musical_review r
@@ -182,6 +194,8 @@ JOIN
     musical_option mo ON b.MO_CODE = mo.MO_CODE
 JOIN 
     musical m ON mo.M_CODE = m.M_CODE 
+LEFT JOIN 
+    bbs_delete_request bdr ON r.MR_CODE = bdr.bdr_key AND bdr.pr_code = #{pr_code}
 WHERE 
     m.pr_code = #{pr_code}
 	</select>
@@ -197,7 +211,7 @@ WHERE
         SR_CODE, RT_CODE, RS_CODE, M_CODE, RS_DATE, RS_ETC, RS_REASON
     ) 
     VALUES (
-        'sr' || SERVICE_REQUEST_SR_CODE.NEXTVAL,
+        'sr_' || SERVICE_REQUEST_SR_CODE.NEXTVAL,
         #{rt_code},
         #{rs_code},
         #{m_code},
@@ -216,12 +230,16 @@ WHERE
 </select>
 
 <select id="reviewMuscialList" parameterType="map" resultType="com.muse.partner.model.MusicalReviewDTO">
-	SELECT 
+SELECT 
     r.MR_CODE, 
     r.MR_TITLE, 
     r.MR_CONTENT, 
     r.MR_SCORE, 
     r.MR_DATE,
+    CASE 
+        WHEN bdr.bdr_key IS NOT NULL THEN 3 
+        ELSE r.mr_state
+    END AS MR_STATE,
     b.u_id
 FROM 
     musical_review r
@@ -231,7 +249,47 @@ JOIN
     musical_option mo ON b.MO_CODE = mo.MO_CODE
 JOIN 
     musical m ON mo.M_CODE = m.M_CODE 
+LEFT JOIN 
+    bbs_delete_request bdr ON r.MR_CODE = bdr.bdr_key AND bdr.pr_code = #{pr_code}
 WHERE 
-    m.pr_code = #{pr_code} and m.m_code = #{m_code}
+    m.pr_code = #{pr_code}
+    AND m.m_code = #{m_code}
+</select>
+<update id="updateReview" parameterType="String">
+    UPDATE musical_review
+    SET mr_state = CASE
+                    WHEN mr_state = 0 THEN 1
+                    WHEN mr_state = 1 THEN 0
+                   END
+    WHERE mr_code = #{mr_code}
+</update>
+
+<insert id="reveiwDelRe" parameterType="com.muse.partner.model.BbsDeleteRequestDTO">
+insert into bbs_delete_request 
+    (bdr_code, 
+    pr_code, 
+    bdr_type, 
+    bdr_key, 
+    bdr_reason, 
+    bdr_state)
+values (
+    'bdr_' || BBS_DELETE_REQUEST_BDR_CODE.nextval,
+    #{pr_code}, 
+    1,
+    #{bdr_key},
+    #{bdr_reason},
+    0
+)
+
+
+</insert>
+
+<select id="getMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
+SELECT m.*, mh.mh_name
+FROM musical m
+JOIN musical_hall mh ON m.mh_code = mh.mh_code
+WHERE m.pr_code = #{pr_code}
+  AND SYSDATE BETWEEN m.m_startdate AND m.m_enddate
+ORDER BY m.m_startdate DESC;
 </select>
   </mapper>

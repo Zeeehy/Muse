@@ -18,7 +18,6 @@
     <div class="header">
         <div class="left-section">
             <input type="image" src="/muse/resources/img/museimage.png" class="header-image" onclick="window.location.href='partnerMainForm.do';">
-            
         </div>
     </div>
     <div class="sidebar">
@@ -50,7 +49,7 @@
                 <table>
                     <tr>
                         <th>아이디</th>
-                        <td><input type="text" required name="u_id" value="${dto.u_id} }"></td>
+                        <td><input type="text" required name="u_id" value="${dto.u_id }"></td>
                     </tr>
                     <tr>
                         <th>이름</th>
