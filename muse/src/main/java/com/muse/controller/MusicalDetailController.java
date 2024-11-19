@@ -48,6 +48,9 @@ public class MusicalDetailController {
 	private static final String[] DAY_NAMES = {
 	        "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"
 	    };
+	
+	private int listsize=2;
+	private int pagesize=3;
 
 	@RequestMapping("/musicalDetail.do")
 	public ModelAndView musicalDetail(@RequestParam String m_code,HttpSession session) {
@@ -73,8 +76,19 @@ public class MusicalDetailController {
 		List<String> allChar = musicalDetaildao.getAllChar(m_code);
 				
 		Map paramMap = new HashMap<String,String>();
+		
+		
 		paramMap.put("m_code", m_code);
+		
+		int crpage = 1;
+		
 		paramMap.put("u_id", s_id);
+		int startnum=(crpage-1)*listsize+1;
+		int endnum=crpage*listsize;
+
+		
+		paramMap.put("startnum", startnum);
+		paramMap.put("endnum", endnum);
 		List<MusicalDetailCastDTO> actorByRound = musicalDetaildao.getRoundActor(paramMap);
 		List<Date> getRoundDOW = musicalDetaildao.getRoundDOW(paramMap); 
 		
@@ -102,6 +116,9 @@ public class MusicalDetailController {
 		String jperformList = new Gson().toJson(performList);
 		String jmaxPerform = new Gson().toJson(maxPerform);
 		
+		
+		String pagingStr=com.muse.page.Paging.makePage("musicalDetail", countReview, listsize, pagesize, 1);
+		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
 		mav.addObject("countLike",countLike);
@@ -120,7 +137,8 @@ public class MusicalDetailController {
 		
 		mav.addObject("performList",jperformList);
 		mav.addObject("maxPerform",jmaxPerform);
-
+		
+		mav.addObject("pagingStr",pagingStr);
 		
 		
 		mav.setViewName("musicalDetail/musicalDetail");
@@ -391,6 +409,42 @@ public class MusicalDetailController {
 		return performList;
 	}
 
+	
+	@RequestMapping("reviewList.do")
+	public ModelAndView boardList(
+			@RequestParam(value="crpage", defaultValue="1")int crpage,
+			@RequestParam(value="m_code") String m_code,
+			HttpSession session
+			) {
+		
+		int totalCnt=musicalDetaildao.countMusicalReview(m_code);
+
+		
+		String pagingStr=com.muse.page.Paging.makePage("boardList", totalCnt, listsize, pagesize, crpage);
+		
+		Map paramMap = new HashMap<String, Object>();
+		
+		int startnum=(crpage-1)*listsize+1;
+		int endnum=crpage*listsize;
+		String s_id = (String) session.getAttribute("s_id")==null?"0":(String) session.getAttribute("s_id");
+
+		paramMap.put("m_code",m_code);
+		paramMap.put("u_id", s_id);
+		paramMap.put("startnum", startnum);
+		paramMap.put("endnum", endnum);
+		
+		List<MusicalReviewDTO> reviews = musicalDetaildao.getMusicalReviews(paramMap);
+
+		
+		
+		ModelAndView mv=new ModelAndView();
+		
+		mv.addObject("reviews", reviews);
+		mv.addObject("pagingStr", pagingStr);
+		mv.setViewName("parkJson");
+		
+		return mv;
+	}
 	
 	
 	

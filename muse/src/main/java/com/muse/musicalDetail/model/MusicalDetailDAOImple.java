@@ -201,5 +201,6 @@ public class MusicalDetailDAOImple implements MusicalDetailDAO{
 		// TODO Auto-generated method stub
 		return sqlMap.selectOne("getMaxMusicalOption",m_code);
 	}
+	
 
 }

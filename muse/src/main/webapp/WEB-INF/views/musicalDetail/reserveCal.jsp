@@ -171,7 +171,10 @@
     <script>
     
     //const startDate = new Date('2024-11-15');
+    	var s_id = '${sessionScope.s_id}';
+
     const maxPerform = ${maxPerform};
+    
     
     const endDate = new Date(maxPerform.mo_date);
 
@@ -569,6 +572,12 @@
                 alert('날짜를 선택해주세요.');
 				return;
             }
+            
+            if(!s_id){
+            	window.location.href = 'memberLogin.do';
+            	return;
+            }
+            
             console.log(selected);
             
             var time_sel = document.querySelector('.time-option.selected');
