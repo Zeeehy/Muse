@@ -49,4 +49,25 @@ public class MainDAOImple implements MainDAO {
 		return arr4;
 	}
 
+	// 메인 검색바 - 뮤지컬 홀 검색
+	@Override
+	public List<MusicalHallDTO> search_mh(String searchWord) {
+		List<MusicalHallDTO> arr_mh = sqlMap.selectList("search_mh", searchWord);	
+		return arr_mh;
+	}
+
+	// 메인 검색바 - 뮤지컬 배우 검색
+	@Override
+	public List<MusicalActorDTO> search_ma(String searchWord) {
+		List<MusicalActorDTO> arr_ma = sqlMap.selectList("search_ma", searchWord);
+		return arr_ma;
+	}
+
+	// 메인 검색바 - 뮤지컬 검색
+	@Override
+	public List<MusicalDTO> search_m(String searchWord) {
+		List<MusicalDTO> arr_m = sqlMap.selectList("search_m", searchWord);
+		return arr_m;
+	}
+
 }

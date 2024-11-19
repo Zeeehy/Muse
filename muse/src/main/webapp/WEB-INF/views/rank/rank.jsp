@@ -9,6 +9,25 @@
 <link href="/muse/resources/css/Yel.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 모든 링크를 변수에 저장
+    const rankingLinks = document.querySelectorAll('.rank-category-link');
+
+    // 링크 클릭 시 'active' 클래스 토글
+    rankingLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            // 모든 링크에서 'active' 클래스 제거
+            rankingLinks.forEach(l => l.classList.remove('active'));
+
+            // 클릭된 링크에 'active' 클래스 추가
+            link.classList.add('active');
+        });
+    });
+
+    // 기본적으로 첫 번째 링크에 'active' 클래스 추가
+    document.getElementById("daily").classList.add('active');
+});
+
 function formatDate(dateString) {
     const date = new Date(dateString); // 서버에서 받은 날짜 문자열을 Date 객체로 변환
     const year = date.getFullYear();
@@ -320,7 +339,7 @@ $(document).ready(function() {
         <h2>Ranking</h2>
     </div>
     <div class="rank-category">
-        <span>&nbsp;&nbsp;<a href="daily.do" id="daily">일간</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="weekly.do" id="weekly">주간</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="monthly.do" id="monthly">월간</a>&nbsp;&nbsp;</span>
+        <span>&nbsp;&nbsp;<a href="daily.do" id="daily" class="rank-category-link">일간</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="weekly.do" id="weekly" class="rank-category-link">주간</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="monthly.do" id="monthly" class="rank-category-link">월간</a>&nbsp;&nbsp;</span>
     </div>
 
     <!-- 랭킹 1위~3위 시작 -->

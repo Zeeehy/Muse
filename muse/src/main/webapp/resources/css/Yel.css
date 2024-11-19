@@ -2,8 +2,6 @@
 
 /* 로그인 부분 */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-
-
 .login_flex1{
    display: flex;
 }
@@ -237,6 +235,9 @@
 .rank-category a:hover {
   color: #ff3d32; 
 }
+.rank-category-link.active{
+  color: #ff3d32;
+}
 .rank-top3{
   display: flex;
   width: 100%;
@@ -396,9 +397,162 @@
   width: 10%;
 }
 
+/* 검색 결과 페이지 */
+.search-content{
+	width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;	
+    padding: 50px;
+}
+.search-word{
+	padding:22px;
+	padding-left:155px;
+	padding-bottom:50px;
+	font-family: 'Pretendard';
+	font-size: 23px;
+	color: #726f6f;
+	font-weight: bold;
+}
+.search-word span{
+	font-family: 'Pretendard';
+	font-size: 26px;
+	color: #ff3d32;
+	font-weight: bold;
+}
+.search-actor, .search-place{
+	max-width: 1200px;
+	padding: 20px;
+	background-color: #e6e2e2;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;  /* 가로 중앙 정렬 */
+    margin: 0 auto;  /* 부모 요소 내에서 가운데 정렬 */
+    margin-bottom: 80px;
+}
+.search-actor-img{
+	width: 18%;
+	padding: 20px;
+	padding-left: 30px;
+	height: 230px;
+	background-size: cover;
+	background-position: center;
+}
+.search-place-img{
+	width: 23%;
+	padding: 20px;
+	padding-left: 30px;
+	height: 230px;
+	background-size: cover;
+	background-position: center;
+}
+.search-actor-info{
+	width: 82%;
+	display: flex;
+	flex-direction: column;
+	padding: 10px;	
+	min-height: 230px; /* 최소 높이 설정 */
+}
+.search-place-info{
+	width: 77%;
+	display: flex;
+	flex-direction: column;
+	padding: 10px;	
+	min-height: 230px; /* 최소 높이 설정 */
+}
+.search-actor-name, .search-place-name{
+	padding: 15px;
+	padding-top: 50px;
+	font-family: 'Pretendard';
+	font-size: 21px;
+	color: #9b9b9b;
+	display: flex;
+	align-items: center;
+}
+.search-actor-name span, .search-place-name span{
+	font-family: 'Pretendard';
+	font-size: 24px;
+	font-weight: bold;
+	color: black;
+}
+.search-actor-birth, .search-place-addr{
+	padding-top: 38px;
+	padding-left: 15px;
+	font-family: 'Pretendard';
+	font-size: 19px;
+	color: #4b4b4b;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+}
+.search-actor-cast, .search-place-cast {
+	padding: 15px;
+	font-family: 'Pretendard';
+	font-size: 19px;
+	color: #4b4b4b;
+	display: flex;
+	align-items: center;
+	font-weight: 600;
+}
+.search-tickets-title{
+	padding: 35px;
+	font-family: 'Pretendard';	
+	font-size: 22px;
+	font-weight: bold;
+	color: #4b4b4b;
+	border-bottom: 3px solid #dbd8d8;
+}
+.search-tickets{
+	max-width: 1500px;
+    margin: 0 auto;	
+    padding: 30px;
+    padding-top: 70px;
+    display: flex;
+    flex-wrap: wrap;  
+    justify-content: space-between;
+}
+.search-ticket{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background: #fff;
+  margin-bottom: 30px; 
+  width: calc(25% - 20px); /* 4개의 항목이 한 줄에 배치되도록 조정, 양옆 간격을 뺀 값으로 설정 */
 
-
-
-
-
+} 
+.search-ticket-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.search-ticket-poster{
+  width: 100%;
+  height: 330px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 20px;
+  
+}
+.search-ticket-subtitle{
+  padding-bottom:10px;
+  font-family: 'Pretendard';
+  font-size: 21px;
+  font-weight: bold;
+  color: black;
+}
+.search-ticket a:hover {
+  color: #ff3d32;
+}
+.search-ticket-place{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 19px;
+  color: black;
+}
+.search-ticket-date{
+  padding-bottom:5px;
+  font-family: 'Pretendard';
+  font-size: 19px;
+  color: gray;
+}
 

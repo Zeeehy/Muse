@@ -99,9 +99,9 @@ Highcharts.chart('container', {
     },
 
     xAxis: {
-        accessibility: {
-            rangeDescription: 'Range: 2010 to 2020'
-        }
+    	 //categories: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"]
+        type: "datetime",
+        tickInterval: 30 * 24 * 3600 * 1000
     },
 
     legend: {
@@ -115,7 +115,13 @@ Highcharts.chart('container', {
             label: {
                 connectorAllowed: false
             },
-            pointStart: 2010
+            //pointStart: "1월"
+            pointStart: (function() {
+                const now = new Date(); // 현재 시간
+                now.setFullYear(now.getFullYear() - 1); // 1년 전
+                return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+            })(),
+			pointInterval: 30 * 24 * 3600 * 1000
         }
     },
 
@@ -145,6 +151,8 @@ Highcharts.chart('container', {
     }
 
 });
+
+
 		</script>
 </body>
 </html>
