@@ -175,4 +175,22 @@ public class PartnerDAOImple implements PartnerDAO {
 	System.out.println("뮤지컬 이름으로 리뷰 리스트 접근확인");
 	return list;
 	}
+
+@Override
+public int updateBestReveiw(String mr_code) {
+	int result = sqlMap.update("updateReview",mr_code);
+	return result;
+}
+@Override
+public int deleteReviewRe(BbsDeleteRequestDTO dto) {
+	int result = sqlMap.insert("reveiwDelRe",dto);
+	return result;
+}
+@Override
+public List<MusicalDTO> getMusicalList(String pr_code) {
+	Map<String, Object> params = new HashMap<>();
+	params.put("pr_code", pr_code);
+	List<MusicalDTO> list = sqlMap.selectList("getMusicalList",params);
+	return list;
+}
 }
