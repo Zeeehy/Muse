@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,14 +12,14 @@
 </head>
 <%@include file="header.jsp"%>
 <%@include file="sidebar.jsp"%>
-<%@include file="musicalNamePopup.jsp"%>
 <style>
 #seatGrade {
 	display: flex;
 	transform: scale(0.5); /* 예: 80% 크기로 줄이기 */
 	transform-origin: center; /* 축소 기준을 좌측 상단으로 */
-	width: calc(100%/ 0.8); /* 부모 컨테이너의 가로 크기를 유지 */
+	width: calc(100%/ 0.6); /* 부모 컨테이너의 가로 크기를 유지 */
 	overflow: hidden; /* 내부 내용이 넘치지 않도록 설정 */
+	margin-top:-350px;
 }
 
 #gradeTableDiv table {
@@ -52,6 +53,60 @@
     border: none;
     cursor: pointer;
 }
+.musicalNamePopup {
+        
+        
+        top: 0; 
+        left: 110%; 
+        margin-left: 10px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.2);
+        z-index: 100;
+        display: none;
+        width: 280px;
+    }
+
+    /* 닫기 버튼 스타일 */
+    .MusicalNameClose-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    /* 검색 입력 스타일 */
+    #searchInputMusicalName {
+        width: 85%;
+        padding-right: 30px;
+    }
+
+    /* 검색 아이콘 */
+    #searchIcon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+    }
+    #MusicalListTable {
+    	width:100%;
+    }
+.table-content input[value="찾기"] {
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 8px 20px;
+    background-color: #60c558;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 </style>
 <body>
 <!-- 좌석 -->
@@ -67,11 +122,15 @@
 					<tr>
 						<th>뮤지컬명</th>
 						<td colspan="3"><input type="text" name="m_title"
-							placeholder="뮤지컬을 선택하세요" readonly> <input type="hidden"
+							placeholder="뮤지컬을 선택하세요" value="${m_name }"> <input type="hidden"
 							name="m_code"></td>
 						<td class="button-container" style="text-align: right;"><input
 							type="button" value="찾기" onclick="showMusicalNamePopup(event)">
 						</td>
+						<th>공연장</th>
+						<td colspan="3"><input type="text" name="mh_code"></td>
+							
+						
 					</tr>
 					
 				</table>
@@ -110,7 +169,9 @@
 						</tr>
 					</table>
 				</div>
-				<%@include file="musicalSeatInsert.jsp"%>
+				<c:if test="${result!=''}">
+					<%@include file="musicalSeatInsert.jsp"%>
+				</c:if>
 				<input type="button" value="좌석입력" onclick="makeDummy();">
 			</div>
 
@@ -123,20 +184,136 @@
 			</form>
 		</div>
 	</div>
-
+    <div id="musicalNamePopup" class="musicalNamePopup">
+    <div class="musicalNameWrap">
+       
+        <button class="MusicalNameClose-btn" onclick="closeMusicalNamePopup()">X</button>
+          <div style="position: relative; width: 100%; max-width: 300px;">
+            <input type="text" id="searchInputMusicalName" placeholder="검색어를 입력하세요">
+            <i class="fas fa-search" id="searchIcon" onclick="SeachMusicalName()"></i>
+        </div>
+        <table id="MusicalListTable">
+            <thead>
+                <tr>
+                    <th>뮤지컬 목록</th>
+                </tr>
+            </thead>
+            	<tbody id="MusicalNameTableBody">
+            </tbody>
+        </table>
+    </div>
+	</div>
 			
 </body>
 <script>
+var MusicalHoleCode = '';
 var musical_code = '';
-function inputMusicalName(element) {
-    var MusicalName = element.textContent || element.innerText;  // 클릭된 항목의 텍스트 가져오기
-    
-    document.getElementsByName('m_title')[0].value = MusicalName;
-    
-    closeMusicalNamePopup();
+var musical_Name = '';
 
-    var MusicalM_code= element.id;
-    musical_code = MusicalM_code; //선택한 뮤지컬 idx값
-} 
+/* function selectHallTypeResult(){
+	 if (XHR.readyState === 4) {
+	        if (XHR.status === 200) {
+	        	var data = XHR.responseText;
+				alert(data);
+	        }
+	 }
+	        
+} */
+
+function SeachMusicalName(){
+	var param = 'pr_code=${s_pr_code}';
+	var searchInputMusicalName = document.getElementById("searchInputMusicalName").value;
+
+// 입력값이 null이 아닌 경우에만 param 수정
+if (searchInputMusicalName) {
+    param = param + '&searchMusical=' + encodeURIComponent(searchInputMusicalName);
+}
+
+
+	var searchInputMusicalName = sendRequest('getMusicalList.do',param,ResultSeachMusicalName,'GET');
+}
+function ResultSeachMusicalName(){
+	if(XHR.readyState==4){
+		if (XHR.status == 200) {
+		    var data = XHR.responseText;
+		    var MusicalList = JSON.parse(data);
+		    
+		    var tableBody = document.getElementById('MusicalNameTableBody');
+		    tableBody.innerHTML = '';
+		    // 결과가 없을 때
+		    if (MusicalList.list.length === 0) {
+		        var row = document.createElement('tr');
+		        var noResultCell = document.createElement('td');
+		        noResultCell.textContent = '검색된 결과가 없습니다.';
+		        noResultCell.colSpan = 3;  
+		        row.appendChild(noResultCell);
+		        tableBody.appendChild(row);
+		    } else {
+		        // 결과가 있을 때
+		        for (var i = 0; i < MusicalList.list.length; i++) {
+		            var dto = MusicalList.list[i];
+		            var MusicalName = dto.m_title;
+		            // 새 행 생성
+		            var row = document.createElement('tr');
+		            row.innerHTML = '<td style="text-align: center;"><a onclick="inputMusicalName(this)" data-mcode="'+dto.m_code+'" data-mhcode="'+dto.mh_code+'">' + MusicalName + '</a></td>'
+	                +'<td style="text-align: center;">' + dto.mh_code + '</td>';
+
+					tableBody.appendChild(row);
+		        }
+		        
+		    }
+		}
+	}
+}
+
+ function inputMusicalName(element) {
+    // 뮤지컬 제목 입력
+    var musicalName = element.textContent || element.innerText;
+    document.getElementsByName('m_title')[0].value = musicalName;
+    musicalName = musicalName;
+    // 공연장 코드 입력
+    var mhCode = element.getAttribute('data-mhcode');
+    document.getElementsByName('mh_code')[0].value = mhCode;
+    
+    // 뮤지컬 코드 저장
+    var mCode = element.getAttribute('data-mcode');
+    musical_code = mCode;
+    
+    // 공연장 코드 저장
+    MusicalHoleCode = mhCode;
+    
+    // 팝업 닫기
+    closeMusicalNamePopup();
+    
+    // 좌석 정보 요청
+    param = 'mh_code=' + MusicalHoleCode;
+
+    param += '&m_code='+musical_code;
+    param += '&m_name='+musicalName;
+	
+    window.location.href='musicalSeatAddForm.do?'+param;
+}
+
+function showMusicalNamePopup(button) {
+	SeachMusicalName();
+    var popup = document.getElementById('musicalNamePopup');
+    
+    
+    var buttonInfo=button.target;
+    var rect = buttonInfo.getBoundingClientRect(); 
+    
+    
+    popup.style.left = (rect.left + 100)+ 'px';
+    popup.style.top = (rect.top)+ 'px'; 
+	
+    popup.style.display = "block";
+    popup.style.position = "absolute";
+    
+}
+
+function closeMusicalNamePopup() {
+    const popup = document.getElementById('musicalNamePopup');
+    popup.style.display = 'none'; 
+}
 </script>
 </html>
