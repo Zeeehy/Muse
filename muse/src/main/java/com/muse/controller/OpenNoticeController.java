@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.openNotice.model.OpenNoticeDAO;
 import com.muse.openNotice.model.OpenNoticeDTO;
+import com.muse.partner.model.PartnerDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
@@ -99,7 +100,13 @@ public class OpenNoticeController {
 		
 		OpenNoticeDTO ondto = opendao.getNoticeDetail(on_code);
 		
+		opendao.increaseReadNum(on_code);
+		
+		PartnerDTO pdto =  opendao.getPartnerByOpenNotice(on_code);
+		
+		
 		mav.addObject("ondto",ondto);
+		mav.addObject("pdto",pdto);
 		mav.setViewName("openNotice/openNoticeView");
 		return mav;
 	}

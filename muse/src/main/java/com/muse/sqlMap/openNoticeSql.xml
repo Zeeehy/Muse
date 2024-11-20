@@ -27,13 +27,21 @@
    </select>
    
    <update id="increaseReadNum" parameterType="String">
-   	update open_notice set readnum = readnum+1 where on_code = #{on_code}
+   	update open_notice set on_readnum = on_readnum+1 where on_code = #{on_code}
    </update>
   	
   	<select id="getNoticeDetail" parameterType="String" resultType="com.muse.openNotice.model.OpenNoticeDTO">
   		select *
-  		from open_notice
-  		where on_code = #{on_code}
+  		from open_notice op, musical m
+  		where op.m_code = m.m_code and on_code = #{on_code}
+  	</select>
+  	
+  	<select id="getPartnerByOpenNotice" parameterType="String" resultType="com.muse.admin.model.PartnerDTO">
+  		
+  		select *
+  		from open_notice op, musical m, partner p
+  		where op.m_code = m.m_code and m.pr_code = p.pr_code
+  		and op.on_code = #{on_code}
   	</select>
   
   </mapper>

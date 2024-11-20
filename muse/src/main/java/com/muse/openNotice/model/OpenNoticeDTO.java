@@ -17,19 +17,16 @@ public class OpenNoticeDTO {
 	private String on_readnum;
 	private String on_viewstate;
 	private String m_title;
+	private String m_poster;
 	
 	
 	public OpenNoticeDTO() {
 		super();
 	}
 
-
-
-
-
 	public OpenNoticeDTO(String on_code, String m_code, int rs_code, String on_type, String on_open,
 			String on_muse_open, String on_info, String on_sale, String on_content, String on_casting, String on_img,
-			String on_etc, String on_readnum, String on_viewstate, String m_title) {
+			String on_etc, String on_readnum, String on_viewstate, String m_title, String m_poster) {
 		super();
 		this.on_code = on_code;
 		this.m_code = m_code;
@@ -46,11 +43,23 @@ public class OpenNoticeDTO {
 		this.on_readnum = on_readnum;
 		this.on_viewstate = on_viewstate;
 		this.m_title = m_title;
+		this.m_poster = m_poster;
 	}
 
 
 
 
+
+
+
+
+	public String getM_poster() {
+		return m_poster;
+	}
+
+	public void setM_poster(String m_poster) {
+		this.m_poster = m_poster;
+	}
 
 	public String getOn_code() {
 		return on_code;

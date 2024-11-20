@@ -518,6 +518,8 @@ td.selected {
 									<tr>
 										<th>사업자등록번호</th>
 										<td>${pdto.pr_num }</td>
+									</tr>
+									<tr>
 										<th>E-mail</th>
 										<td>${pdto.pr_email }</td>
 									</tr>

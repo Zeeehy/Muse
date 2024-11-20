@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.muse.partner.model.PartnerDTO;
+
 public class OpenNoticeDAOImple implements OpenNoticeDAO{
 
 	private SqlSessionTemplate sqlMap;
@@ -37,5 +39,11 @@ public class OpenNoticeDAOImple implements OpenNoticeDAO{
 	public OpenNoticeDTO getNoticeDetail(String on_code) {
 		// TODO Auto-generated method stub
 		return sqlMap.selectOne("getNoticeDetail", on_code);
+	}
+	
+	@Override
+	public PartnerDTO getPartnerByOpenNotice(String on_code) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectOne("getPartnerByOpenNotice",on_code);
 	}
 }

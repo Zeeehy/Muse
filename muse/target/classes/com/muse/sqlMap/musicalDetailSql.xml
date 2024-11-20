@@ -104,7 +104,7 @@
   	</select>
   	
   	<select id="getMusicalReviewAVG" parameterType="String" resultType="Double">
-  		select avg(mr_score)
+  		select round(avg(mr_score),1)
 		from musical_review mr, booking b, musical_option mo, musical m
 		where mr.b_code = b.b_code and b.mo_code = mo.mo_code and mo.m_code = m.m_code 
 		and m.m_code = #{m_code}
