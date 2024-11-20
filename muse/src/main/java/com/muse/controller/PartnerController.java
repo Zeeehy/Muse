@@ -24,8 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+
 import com.muse.member.model.MemberDAO;
 import com.muse.member.model.MemberDTO;
+
+
 import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.BbsDeleteRequestDTO;
 import com.muse.partner.model.MusicalDTO;
@@ -55,6 +58,7 @@ public class PartnerController {
 	
 	@RequestMapping("/partnerAddForm.do")
 	public ModelAndView partnerAddForm(
+
 			@RequestParam(value="pr_code",required = false, defaultValue = "no")String pr_code,
 			@RequestParam(value="u_id",defaultValue = "no")String u_id,
 			HttpSession session) {
@@ -68,6 +72,7 @@ public class PartnerController {
 		mav.addObject("mdto", MemberDto);
 		mav.addObject("dto", DTO);
 		mav.setViewName("/partner/partnerAddForm");
+
 		return mav;
 	}
 	
@@ -179,8 +184,6 @@ public class PartnerController {
 	public ModelAndView seachActorPopup(@RequestParam String ma_name) {
 		ModelAndView mav = new ModelAndView();
 	    List<ActorDTO> list = partnerDao.SeachActorList(ma_name);
-	    	
-
 	    	mav.addObject("list",list);
 		    mav.setViewName("parkJson");
 	    
@@ -188,7 +191,7 @@ public class PartnerController {
 	}
 	
 	@RequestMapping("/getMusicalList.do")
-	public ModelAndView getMusicalList(@RequestParam(defaultValue="") String pr_code, 
+	public ModelAndView getMusicalList(@RequestParam String pr_code, 
 			@RequestParam(defaultValue="")String seachMusical) {
 			List<MusicalDTO> list = partnerDao.SeachMusicalList(pr_code, seachMusical);
 			ModelAndView mav = new ModelAndView();
@@ -227,7 +230,7 @@ public class PartnerController {
 		int result = partnerDao.insertMusicalDate(m_code, mo_date, mo_time);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result",result);
-		mav.setViewName("parkJson");
+		mav.setViewName("/partner/castAddForm");
 	    return mav;
 	}
 	
@@ -243,12 +246,6 @@ public class PartnerController {
 	//나중에 메인 생기면 반환값 int로 바꾸기
 	@RequestMapping("/insertCast.do")
 	public ModelAndView insertCast(String ma_code,String mc_char,String m_code,String mo_date, String mo_time) {
-		System.out.println("@@@@@@@@@@@@@@@@@@");
-		System.out.println(ma_code);
-		System.out.println(mc_char);
-		System.out.println(mo_date);
-		System.out.println(m_code);
-		System.out.println(mo_time);
 		int result = partnerDao.insertCasting(ma_code, mc_char, m_code, mo_date, mo_time);
 		System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@@@");
 		ModelAndView mav = new ModelAndView();
@@ -411,6 +408,7 @@ public class PartnerController {
 
 		String goUrl ="index.do";
 		ModelAndView mav = new ModelAndView();
+
 		if(result>=1) {
 			msg = "파트너 등록 신청 완료";
 			mav.addObject("msg", msg);
@@ -422,6 +420,8 @@ public class PartnerController {
 			mav.addObject("goUrl", goUrl);
 		}
 		mav.setViewName("/member/memberMsg");
+
+
 		return mav;
 	}
 	

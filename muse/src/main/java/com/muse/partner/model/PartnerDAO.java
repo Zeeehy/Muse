@@ -3,7 +3,6 @@ package com.muse.partner.model;
 import java.util.List;
 import java.util.Map;
 
-import com.muse.member.model.MemberDTO;
 import com.muse.seat.model.SeatDTO;
 import com.muse.seat.model.SeatLayoutDTO;
 
@@ -54,6 +53,7 @@ public interface PartnerDAO {
 	public int deleteReviewRe(BbsDeleteRequestDTO dto);
 	
 	public List<MusicalDTO> getMusicalList(String pr_code);
+
 	
 	public MemberDTO getusersInfo(String u_id);
 	
@@ -65,4 +65,6 @@ public interface PartnerDAO {
 	public List<SeatDTO> getRealSeatPartner();
 	public void insertDummySeatsPartner(List<SeatDTO> seatList);
 	public SeatDTO selectLayout(String mh_cdoe);
+
+
 }

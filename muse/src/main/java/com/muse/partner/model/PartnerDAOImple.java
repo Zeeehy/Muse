@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.muse.member.model.MemberDTO;
 import com.muse.seat.model.SeatDTO;
 import com.muse.seat.model.SeatLayoutDTO;
 
@@ -183,6 +182,7 @@ public class PartnerDAOImple implements PartnerDAO {
 		return list;
 	}
 
+
 	@Override
 	public int updateBestReveiw(String mr_code) {
 		int result = sqlMap.update("updateReview", mr_code);
@@ -266,4 +266,23 @@ public class PartnerDAOImple implements PartnerDAO {
 		SeatDTO DTO = sqlMap.selectOne("selectLayout", mh_code);
 		return DTO;
 	}
+
+@Override
+public int updateBestReveiw(String mr_code) {
+	int result = sqlMap.update("updateReview",mr_code);
+	return result;
+}
+@Override
+public int deleteReviewRe(BbsDeleteRequestDTO dto) {
+	int result = sqlMap.insert("reveiwDelRe",dto);
+	return result;
+}
+@Override
+public List<MusicalDTO> getMusicalList(String pr_code) {
+	Map<String, Object> params = new HashMap<>();
+	params.put("pr_code", pr_code);
+	List<MusicalDTO> list = sqlMap.selectList("getMusicalList",params);
+	return list;
+}
+
 }

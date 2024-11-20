@@ -29,6 +29,7 @@
            // alert("u_id:" + u_id);
           //  alert("s_rs_code:" + s_rs_code); 
 
+
             // 로그인 상태 및 파트너 신청 상태 체크
             if (u_id == "" || u_id == null) {
                 alert("로그인을 해주세요");
@@ -61,5 +62,10 @@
                 }
             }
         }
-    </script>
+  
+
+	
+} 
+</script>
+
 </html>
