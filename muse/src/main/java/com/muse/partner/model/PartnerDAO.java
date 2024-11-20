@@ -2,6 +2,7 @@ package com.muse.partner.model;
 
 import java.util.List;
 
+import com.muse.member.model.MemberDTO;
 import com.muse.seat.model.SeatDTO;
 
 public interface PartnerDAO {
@@ -51,4 +52,6 @@ public interface PartnerDAO {
 	public int deleteReviewRe(BbsDeleteRequestDTO dto);
 	
 	public List<MusicalDTO> getMusicalList(String pr_code);
+	
+	public MemberDTO getusersInfo(String u_id);
 }
