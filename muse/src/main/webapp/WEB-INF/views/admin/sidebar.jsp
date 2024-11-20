@@ -124,8 +124,8 @@
         <div class="dropdown-container">
             <a href="musePassStats.do">일반 / 회원 멤버쉽 통계</a>
 		    <a href="memberStats.do">회원증가량</a>
-		    <a href="#">공연 랭킹</a>
-		    <a href="#">파트너 랭킹</a>
+		    <a href="partnerStats.do">파트너 판매 랭킹</a>
+		    <a href="rankingStats.do">공연 랭킹</a>
         </div>
         
         <button class="dropdown-btn">제작사 회원

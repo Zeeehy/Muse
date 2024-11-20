@@ -122,23 +122,23 @@ p {
 
 /* 1점 : 빨강, 주황, 노랑, 연초록, 초록  */
 .score1{
-	background-color: red;
+	background-color: #f22713;
 }
 
 .score2{
-	background-color: orange;
+	background-color: #ff9924;
 }
 
 .score3{
-	background-color: yellow;
+	background-color: #ffe647;
 }
 
 .score4{
-	background-color: lightgreen;
+	background-color: #87d37c;
 }
 
 .score5{
-	background-color: green;
+	background-color: #00b16a;
 }
 
 

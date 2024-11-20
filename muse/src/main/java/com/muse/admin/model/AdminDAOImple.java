@@ -123,12 +123,40 @@ public class AdminDAOImple implements AdminDAO {
 		return result;
 	}
 
-
+	
 	@Override
-	public List<MusicalReviewDTO> adminReviewList() {
-		List<MusicalReviewDTO> lists = sqlMap.selectList("adminReviewList");
+	public List<MusicalReviewDTO> adminReviewList( int cp,int listsize) {
+		
+		HashMap<String,Integer> map = new HashMap<String, Integer>();
+		int startnum=(cp-1)*listsize+1;
+		int endnum=cp*listsize;
+		
+		map.put("startnum", startnum);
+		map.put("endnum", endnum);
+		
+		List<MusicalReviewDTO> lists = sqlMap.selectList("adminReviewList",map);
 		return lists;
 	}
+	
+
+
+	@Override
+	public int getTotalCnt() {
+		int count = sqlMap.selectOne("getTotalCnt");
+		return count;
+	}
+
+	
+
+	@Override
+	public List<MusicalReviewDTO> adminSearchReviewList(String search_word) {
+
+		List<MusicalReviewDTO> lists = sqlMap.selectList("adminSearchReviewList", search_word);
+		return lists;
+	}
+	
+	
+
 
 
 	@Override
@@ -247,6 +275,18 @@ public class AdminDAOImple implements AdminDAO {
 		return lists;
 	}
 
-	
+
+	@Override
+	public List<StatsDTO> partnerStats() {
+		List<StatsDTO> lists = sqlMap.selectList("partnerStats");
+		return lists;
+	}
+
+
+	@Override
+	public List<StatsDTO> rankingStats() {
+		List<StatsDTO> lists = sqlMap.selectList("rankingStats");
+		return lists;
+	}
 	
 }

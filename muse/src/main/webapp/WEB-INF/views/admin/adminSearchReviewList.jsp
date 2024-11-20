@@ -104,6 +104,7 @@ color:white;
 .clickedButton{
 background:#5794bf;
 }
+
 </style>
 
 <style>
@@ -127,12 +128,18 @@ background:#5794bf;
 
 	<div class="main-content">
 	
-		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 불량 단어 리뷰 관리</h1>
+		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 불량 리뷰 검색</h1>
 		<hr id="hrLine">
 		
 		<div class="buttonContainer ">
 			<input type="button" class="tabButton" value="전체보기" onclick="window.location.href='adminReviewList.do'">
-			<input type="button" class="tabButton clickedButton" value="불량단어" onclick="window.location.href='adminBadReviewList.do'">
+			<input type="button" class="tabButton clickedButton" value="리뷰검색" onclick="window.location.href='adminSearchReviewList.do'">
+			
+			<form action="adminSearchReviewList.do" style="display:flex;" method="post">
+				<input type="text" placeholder="검색할 단어를 입력하세요" name="search_word" style=" margin-left: 50px;"   value="<c:if test='${not empty search_word}'>${search_word}</c:if>">	
+				<input type="submit" value="검색">	
+			</form>
+			
 		</div>
 		
 		<table id="bannerListTable" border="1" cellspacing="0">
@@ -165,7 +172,7 @@ background:#5794bf;
 			
 			<c:if test="${empty lists}">
 				<tr>
-					<td colspan="5" align="center">등록된 공연리뷰가 없습니다.</td>
+					<td colspan="6" align="center">등록된 공연리뷰가 없습니다.</td>
 				</tr>
 			</c:if>
 			

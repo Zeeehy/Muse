@@ -151,7 +151,7 @@ align-self: flex-start;
 			
 			<c:if test="${empty lists}">
 				<tr>
-					<td colspan="5" align="center">리뷰삭제 요청이 없습니다.</td>
+					<td colspan="6" align="center">리뷰삭제 요청이 없습니다.</td>
 				</tr>
 			</c:if>
 			

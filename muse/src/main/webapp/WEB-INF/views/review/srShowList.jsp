@@ -164,6 +164,10 @@
 		
 	</div>
 
+	<c:if test="${empty lists}">
+		<div style="margin-bottom: 400px;"> 해당 좌석에는 좌석리뷰가 작성되지 않았습니다.</div>
+	</c:if>
+
     
     <c:forEach var="dto" items="${lists}" varStatus="status">
         <div class="review">

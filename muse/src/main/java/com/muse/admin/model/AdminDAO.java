@@ -34,8 +34,11 @@ public interface AdminDAO {
 	int addBanner(String m_code);
 	int deleteBanner(String m_code);
 	
-	List<MusicalReviewDTO> adminReviewList();
+	List<MusicalReviewDTO> adminReviewList(int cp,int listsize);
+	int getTotalCnt();
 	int adminDeleteReview(String mr_code,int mr_state);
+	List<MusicalReviewDTO> adminSearchReviewList(String search_word);
+	
 	
 	List<RequestListDTO> pReviewList();
 	int pReview(String bdr_code,int bdr_state);
@@ -48,6 +51,8 @@ public interface AdminDAO {
 	
 	HashMap<String,BigDecimal> musePassStats();
 	List<MemberStatsDTO> memberStats();
+	List<StatsDTO> partnerStats();
+	List<StatsDTO> rankingStats();
 }
 
 
