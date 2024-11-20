@@ -11,4 +11,7 @@ public interface MemberDAO {
 	public int idCheck(String u_id);
 	public int pwdCheck(String u_pwd);
 	
+	// 비밀번호 찾기 
+	public int find_idCheck(String u_id);
+	
 }

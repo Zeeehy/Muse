@@ -581,3 +581,161 @@
   align-items: center;
 }
 
+/* 아이디 찾기 페이지 */
+.find_div1{
+	display: flex;
+	height:200px;	
+	width: 100%;
+    border-bottom: 3px solid #b2b2b2;
+}		
+.find_logo{
+   display: flex;
+   align-items:center;
+   justify-content: center;
+   width: 30%;
+}
+.find_logoimg{   
+   width: 150px;
+   height: 70px;
+}	
+.find_title{
+	display: flex;
+	width: 70%;
+	color:#7b7676;
+    align-items:center;
+    padding-top:40px;
+    padding-left: 520px;	
+}
+.find_title_pwd_email{
+	display: flex;
+	width: 70%;
+	color:#7b7676;
+    align-items:center;
+    padding-top:40px;
+    padding-left: 510px;	
+}
+.find_title_pwd_reset{
+	display: flex;
+	width: 70%;
+	color:#7b7676;
+    align-items:center;
+    padding-top:40px;
+    padding-left: 460px;	
+}
+.find_title span{
+	font-family: 'Pretendard';
+	font-size: 33px;
+	font-weight: bold;
+}
+.find_title_pwd_email span{
+	font-family: 'Pretendard';
+	font-size: 33px;
+	font-weight: bold;
+}
+.find_title_pwd_reset span{
+	font-family: 'Pretendard';
+	font-size: 33px;
+	font-weight: bold;
+}
+.find_div2{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding-top: 60px;
+}
+.find_input-container {
+   display: flex;
+   align-items: center; 
+   background-color: #F2F2F2; 
+   border-radius: 10px;
+}
+.find_input-container label{
+   font-family: 'Pretendard';
+   font-weight: bold;
+   padding-right: 10px;
+   color: #6d6969;
+}
+.find_input-container-btn {
+   width:420px;
+   display: flex;
+   align-items: center;  
+   border-radius: 10px; 
+   margin-bottom: 0px;
+   padding-top: 30px;
+}
+.find_input-container img {
+   width: 30px;  
+   height: 30px; 
+   object-fit: cover; 
+   margin-right: 10px; 
+}
+.find_btn {
+    width:420px;
+    height: 50px;
+    font-family: 'Pretendard';
+    font-size:16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: rgb(52, 61, 70);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 22px;
+}
+.find_btn:hover {
+    background-color: black;
+}  
+.find_ajax1,
+.find_ajax4,
+.find_ajax5 { 
+    margin-left: 5px;
+    display: block; 
+    text-align: left;
+ }
+.find_ajax1 label,
+.find_ajax4 label,
+.find_ajax5 label { 
+    font-family: 'Pretendard';
+    font-size:14px;
+    color: #6d6969;
+ } 
+ .find_sub_title{
+   display: flex;
+   padding-top: 50px;
+   padding-bottom: 20px;
+   width: 420px;
+ }
+ .find_id, .find_pwd {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    padding-bottom: 20px;
+}
+.find_id a, .find_pwd a {
+    text-decoration: none;
+    font-family: 'Pretendard';
+    font-size: 19px;
+    color: rgb(52, 61, 70);
+    font-weight: 600;
+}
+.find_id, .find_pwd {
+    cursor: pointer;
+    border-bottom: 3px solid #d9d9d9; 
+}
+.find_id.active {
+    border-bottom: 3px solid black;
+}
+.find_pwd.active {
+    border-bottom: 3px solid black;
+}
+.find-pwd-msg{
+	padding-left:15px;
+	margin-bottom:20px;
+	font-family: 'Pretendard';
+    font-size: 20px;
+	font-weight: bold;
+	color: black;
+}
+

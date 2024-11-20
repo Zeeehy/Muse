@@ -30,7 +30,7 @@ public class MainController {
 	@RequestMapping("/index.do")
 	public ModelAndView main(@RequestParam(defaultValue = "1") int page) {
 		
-		int size = 10;
+		int size = 12;
 		ModelAndView mav = new ModelAndView();
 				
 		List<MusicalDTO> main_banner = mainDao.main_banner();

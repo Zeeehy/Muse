@@ -31,7 +31,7 @@
         	<div class="search-actor-info">
         		<div class="search-actor-name"><span>${musicalActor.ma_name}</span>&nbsp;&nbsp;&nbsp;뮤지컬배우</div>
         		<div class="search-actor-birth">생년월일&nbsp;:&nbsp;${musicalActor.ma_birth}</div>
-        		<div class="search-actor-cast">출연&nbsp;:&nbsp;$   {musicalActor.ma_musicalList}</div>
+        		<div class="search-actor-cast">출연&nbsp;:&nbsp;${musicalActor.ma_musicalList}</div>
         	</div>
     	</div>
     	</c:forEach>
@@ -59,7 +59,7 @@
         	<div class="search-ticket">                     
                   <div class="search-ticket-info">
                         <div class="search-ticket-poster"><img src="resources/img/musical/${musicals.m_poster}" alt="공연 포스터" width="260px" height="330px" style="border-radius: 15px;"></div>
-                        <div class="search-ticket-subtitle"><a href="musicalDetail.do?m_code=${musicals.m_code}">뮤지컬 &lt;&nbsp;${musicals.m_title}&nbsp;&gt;</a></div>
+                        <div class="search-ticket-subtitle"><a href="musicalDetail.do?m_code=${musicals.m_code}">&lt;&nbsp;${musicals.m_title}&nbsp;&gt;</a></div>
                         <div class="search-ticket-place">${musicals.mh_name}</div>
                         <div class="search-ticket-date">${musicals.m_startdate} ~ ${musicals.m_enddate}</div>
                   </div>

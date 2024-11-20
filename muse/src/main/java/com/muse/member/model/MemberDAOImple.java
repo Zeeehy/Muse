@@ -72,5 +72,12 @@ public class MemberDAOImple implements MemberDAO {
 		// System.out.println(pwdResult);
 		return pwdResult;
 	}
+
+	// 비밀번호 찾기를 위한 아이디 확인
+	@Override
+	public int find_idCheck(String u_id) {
+		int findpwdResult = sqlMap.selectOne("findpwd_idCheck",u_id);
+		return findpwdResult;
+	}
 	
 }

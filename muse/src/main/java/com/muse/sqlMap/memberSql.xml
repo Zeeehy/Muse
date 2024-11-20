@@ -35,4 +35,9 @@
 	<select id="pwdCheck" resultType="int"> 
 		SELECT COUNT(*) FROM users WHERE u_pwd = #{u_pwd} 
 	</select>
+	
+	<!--  비밀번호 찾기 아이디 유무 확인 쿼리  -->
+	<select id="findpwd_idCheck" resultType="int"> 
+		SELECT COUNT(*) FROM users WHERE u_id = #{u_id} 
+	</select>
 </mapper>

@@ -190,5 +190,27 @@
     <artifactId>aspectjweaver</artifactId>
     <version>1.6.5</version>
 </dependency>
+
+  		<!-- email API start-->
+      <dependency>
+          <groupId>javax.activation</groupId>
+          <artifactId>activation</artifactId>
+          <version>1.1.1</version>
+      </dependency>
+      
+      <dependency>
+          <groupId>com.sun.mail</groupId>
+          <artifactId>javax.mail</artifactId>
+          <version>1.6.2</version>
+      </dependency>
+     
+      <dependency>
+          <groupId>javax.mail</groupId>
+          <artifactId>mail</artifactId>
+          <version>1.4.7</version>
+      </dependency>
+     
+   	<!-- email API end-->
+      
 	</dependencies>
 </project>
