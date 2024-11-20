@@ -20,9 +20,27 @@
 		<div class="list">
 			<div class="table">
 				<table>
-					<tr> <td>제목</td><td>오픈일시</td><td>조회수</td> </tr>
+					<thead>
+						<tr> <td>제목</td><td>오픈일시</td><td>조회수</td> </tr>
+					</thead>
+					<tbody>
+					<c:if test="${empty noticeList  }">
+						<tr> <td colspan="3"> 등록된 공지가 없습니다. </tr>
+					</c:if>
+					
+					<c:forEach items="${noticeList }" var="notice">
+					
+						<tr>
+							<td><a href="openNoticeView.do?on_code=${notice.on_code }">${notice.m_title }</a></td>
+							<td> ${notice.on_open } </td>
+							<td>${notice.on_readnum }</td>						
+						</tr>
+						
+					</c:forEach>
+					</tbody>
 				</table>
 			</div>
+			<div id="pageNav">${pagingStr }</div>
 		</div>
 	</div>
 </div>
@@ -30,5 +48,34 @@
 <%@include file="../footer.jsp"%>
 </body>
 <script type="text/javascript">
+
+function showNotice(cr){
+    var params = 'crpage='+cr+'&m_code=${mddto.m_code}';
+    sendRequest('noticeList.do', params, function(){
+        if (XHR.readyState === 4) {
+            if (XHR.status === 200) {
+                var data = JSON.parse(XHR.responseText);
+                var html = '';
+                
+                if(data.noticeList.length === 0) {
+                    html = '<tr><td colspan="3">등록된 공지가 없습니다.</td></tr>';
+                } else {
+                    data.noticeList.forEach(function(notice) {
+                        html += '<tr>';
+                        html += '<td><a href="openNoticeView.do?on_code=' + notice.on_code + '">' + notice.m_title + '</a></td>';
+                        html += '<td>' + notice.on_open + '</td>';
+                        html += '<td>' + notice.on_readnum + '</td>';
+                        html += '</tr>';
+                    });
+                }
+                
+                // tbody만 선택하여 업데이트
+                document.querySelector('.table table tbody').innerHTML = html;
+                document.getElementById('pageNav').innerHTML = data.pagingStr;
+            }
+        }
+    }, 'GET');
+}
+
 </script>
 </html>

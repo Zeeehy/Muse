@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.muse.member.model.MemberDTO;
 import com.muse.seat.model.SeatDTO;
 
 public class PartnerDAOImple implements PartnerDAO {
@@ -192,5 +193,10 @@ public List<MusicalDTO> getMusicalList(String pr_code) {
 	params.put("pr_code", pr_code);
 	List<MusicalDTO> list = sqlMap.selectList("getMusicalList",params);
 	return list;
+}
+@Override
+public MemberDTO getusersInfo(String u_id) {
+	MemberDTO dto = sqlMap.selectOne("getusersInfo",u_id);
+	return dto;
 }
 }

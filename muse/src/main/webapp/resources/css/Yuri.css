@@ -156,6 +156,7 @@ article.whatsOn a.calender img {
     flex-direction: column;
     background: #fff;
     margin: 0 10px; /* Slide gap */
+    overflow: hidden;
 }
 
 .slick-slide:last-child {
@@ -168,6 +169,11 @@ article.whatsOn a.calender img {
     background-size: cover;
     background-position: center;
     transition: transform 0.3s;
+    overflow: hidden;
+}
+
+.screening-item .thumbnail img{
+    width: 100%;
 }
 
 .screening-item .thumbnail:hover {
@@ -180,6 +186,9 @@ article.whatsOn a.calender img {
     padding: 10px;
     text-align: center;
     border-top: 1px solid #000;
+    background: #fff;
+    z-index: 1;
+    position: relative;
 }
 
 .screening-item .meta {
@@ -356,7 +365,9 @@ article .reviewcont ul.cont li .reviewtxt .inf{
 }
 
 .screening-item.all {
-	width: 250px;
+	width: 350px;
+	margin:0;
+	overflow: hidden;
 }
 
 article.alltheMusical {

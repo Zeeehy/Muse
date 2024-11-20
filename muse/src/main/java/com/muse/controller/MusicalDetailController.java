@@ -53,7 +53,9 @@ public class MusicalDetailController {
 	private int pagesize=3;
 
 	@RequestMapping("/musicalDetail.do")
-	public ModelAndView musicalDetail(@RequestParam String m_code,HttpSession session) {
+	public ModelAndView musicalDetail(@RequestParam String m_code,HttpSession session,
+			@RequestParam(value="crpage", defaultValue="1")int crpage
+) {
 		
 		
 		ModelAndView mav = new ModelAndView();
@@ -80,7 +82,6 @@ public class MusicalDetailController {
 		
 		paramMap.put("m_code", m_code);
 		
-		int crpage = 1;
 		
 		paramMap.put("u_id", s_id);
 		int startnum=(crpage-1)*listsize+1;
@@ -117,7 +118,7 @@ public class MusicalDetailController {
 		String jmaxPerform = new Gson().toJson(maxPerform);
 		
 		
-		String pagingStr=com.muse.page.Paging.makePage("musicalDetail", countReview, listsize, pagesize, 1);
+		String pagingStr=com.muse.page.Paging.makePage("musicalDetail", countReview, listsize, pagesize, crpage);
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);

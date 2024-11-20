@@ -34,6 +34,8 @@ import com.muse.seat.model.SeatLayoutDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 
 
 @Controller
@@ -58,11 +60,25 @@ public class ReservController {
 	    // 뮤지컬 기본정보 조회
 	    Map<String,Object> musicalInfo = reservDAO.getMusicalInfo(m_code);
 
-	    
 	    // 초기화
 	    List<String> playDate = new ArrayList<>();
 	    int maxTickets = 0;
 	    List<Map<String, Object>> musicalPrice = new ArrayList<>();  // price 리스트 초기화
+	    
+	    // 선택된 날짜에 요일 추가
+	    String dateWithDay  = null;
+	    if(selectedDate != null) {
+	        try {
+	            LocalDate date = LocalDate.parse(selectedDate);
+	            DayOfWeek dayOfWeek = date.getDayOfWeek();
+	            String koreanDayOfWeek = "(" + plusWeek(dayOfWeek) + ")";
+	            dateWithDay = selectedDate + " " + koreanDayOfWeek;
+	            selectedDate = dateWithDay; // selectedDate를 요일이 포함된 형식으로 업데이트
+	        } catch(Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
 
 	    if (m_code != null) {  
 	        playDate = reservDAO.getMusicalDate(m_code); 
@@ -75,6 +91,8 @@ public class ReservController {
 	    mav.addObject("musicalInfo", musicalInfo);
 	    mav.addObject("playDate", playDate);
 	    mav.addObject("maxTickets", maxTickets);
+	    mav.addObject("selectedDate", selectedDate);
+	    mav.addObject("selectedTime", selectedTime);
 
 	    // 선택된 날짜와 시간이 있다면 다시 설정
 	    if(selectedDate != null) {
@@ -101,6 +119,20 @@ public class ReservController {
 	    return mav;
 	}
 	
+	// 요일 변환
+	private String plusWeek(DayOfWeek dayOfWeek) {
+	    switch (dayOfWeek) {
+	        case MONDAY: return "월";
+	        case TUESDAY: return "화";
+	        case WEDNESDAY: return "수";
+	        case THURSDAY: return "목";
+	        case FRIDAY: return "금";
+	        case SATURDAY: return "토";
+	        case SUNDAY: return "일";
+	        default: return "";
+	    }
+	}
+	
 	@RequestMapping(value = "/reservSale.do", method = RequestMethod.POST)
 	public ModelAndView reservSale(
 	        @RequestParam String mh_code,
@@ -120,7 +152,7 @@ public class ReservController {
 	                selectedSeats, typeFactory.constructCollectionType(List.class, Map.class));
 	        
 	        // 뮤지컬 및 가격 정보 조회
-	        Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	        Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(m_code);
 	        List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
 	        System.out.println("가격 리스트: " + musicalPrice);
 
@@ -194,7 +226,7 @@ public class ReservController {
 	            );
     
 	        // 뮤지컬 정보 및 가격 정보 조회
-	    	Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	    	Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(m_code);
 	        List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
 	        System.out.println("musicalInfo"+musicalInfo);
 	        
@@ -280,7 +312,7 @@ public class ReservController {
 	       );
 	       System.out.println("좌석 파싱 성공! 좌석 수: " + (seatList != null ? seatList.size() : 0));
 
-	       Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(mh_code);
+	       Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(m_code);
 	       List<Map<String, Object>> musicalPrice = reservDAO.getMusicalPrice(m_code);
 	       Map<String, Object> memberInfo = reservDAO.getMemberInfo(s_id);
 	       

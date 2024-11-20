@@ -21,6 +21,12 @@ public class MPassDAOImpl implements MPassDAO{
 	}
 	
 	@Override
+	public int getMyUMPass(String u_id) {
+		int u_mpass = sqlMap.selectOne("selectMyUMpass", u_id);
+		return u_mpass;
+	}
+	
+	@Override
 	public int getMPassRemainDays(String u_id) {
 		int mpRemainDays = sqlMap.selectOne("selectMPassRemainDays", u_id);
 		
