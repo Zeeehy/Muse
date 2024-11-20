@@ -290,6 +290,10 @@ FROM musical m
 JOIN musical_hall mh ON m.mh_code = mh.mh_code
 WHERE m.pr_code = #{pr_code}
   AND SYSDATE BETWEEN m.m_startdate AND m.m_enddate
-ORDER BY m.m_startdate DESC;
+ORDER BY m.m_startdate DESC
+</select>
+
+<select id="getusersInfo" resultType="com.muse.member.model.MemberDTO" parameterType="String">
+select * from users where u_id = #{u_id}
 </select>
   </mapper>

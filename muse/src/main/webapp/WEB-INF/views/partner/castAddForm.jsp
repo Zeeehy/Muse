@@ -14,9 +14,10 @@
 
 <style>
 .table-content td input {
-    width: 95%;
-    padding: 5px;
+	width: 95%;
+	padding: 5px;
 }
+
 .main {
 	width: 100%;
 }
@@ -27,57 +28,62 @@
 	border-radius: 50%;
 	object-fit: cover;
 }
-.partnerInfo{
-	width:100%; 
+
+.partnerInfo {
+	width: 100%;
 }
 
-.table-content input[value="저장"]{
+.table-content input[value="저장"] {
 	width: 80px;
-    height: 40px;
-    border-radius: 10px; 
-    padding: 8px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
+	height: 40px;
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	cursor: pointer;
 }
-.table-content input[value="추가"]{
+
+.table-content input[value="추가"] {
 	width: 80px;
-    height: 40px;
-    border-radius: 10px; 
-    padding: 8px 20px;
-    background-color: #2d92f5;
-    color: white;
-    border: none;
-    cursor: pointer;
+	height: 40px;
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #2d92f5;
+	color: white;
+	border: none;
+	cursor: pointer;
 }
-.table-content input[value="찾기"]{
+
+.table-content input[value="찾기"] {
 	width: 80px;
-    height: 40px;
-    border-radius: 10px; 
-    padding: 8px 20px;
-    background-color: #60c558;
-    color: white;
-    border: none;
-    cursor: pointer;
+	height: 40px;
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #60c558;
+	color: white;
+	border: none;
+	cursor: pointer;
 }
+
 .table-content input[value="삭제"] {
-    border-radius: 10px;
-    padding: 8px 20px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    cursor: pointer;
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #f44336;
+	color: white;
+	border: none;
+	cursor: pointer;
 }
-.table-content input[value="스케줄 등록"]{
+
+.table-content input[value="스케줄 등록"] {
 	/* width: 80px;
     height: 40px; */
-    border-radius: 10px; 
-    padding: 8px 20px;
-    background-color: #2d92f5;
-    color: white;
-    border: none;
-    cursor: pointer;
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #2d92f5;
+	color: white;
+	border: none;
+	cursor: pointer;
 }
 
 /* .table-content table{
@@ -141,7 +147,7 @@
 					<td style="width: 10%; text-align: center"><input type="text"
 						id="roleInput"></td>
 					<td colspan="1"><input type="button" value="추가"
-						onclick="addRow()" ></td>
+						onclick="addRow()"></td>
 
 				</tr>
 			</table>
@@ -162,6 +168,8 @@ var musical_code = '';
 var dateList = []; //생성된 일자별 배우 등록 구분 배열
 var selectValue ='';
 var selectValueDate ='';
+var MusicalstartDate;
+var MusicalendDate;
 
 function show(){
 	var actorName = document.getElementsByName('ma_name')[0].value;
@@ -196,7 +204,7 @@ function showResult() {
                     var row = document.createElement('tr');  // 새로운 행 생성
                     var ma_code = dto.ma_code;
                     var ma_name = dto.ma_name;
-                    var ma_img = dto.ma_img;
+                    var ma_img = "/muse/resources/img/actor/"+dto.ma_img;
  					row.innerHTML = 
                     	    '<td style="text-align: center;">' +
                     	        '<a onclick="inputActorName()">' + ma_name + '</a>' +
@@ -242,7 +250,8 @@ function MusicalDateSelectResult(){
 			document.getElementById('startDate').setAttribute("max", endDate);
 			document.getElementById('endDate').setAttribute("min", startDate);
 			document.getElementById('endDate').setAttribute("max", endDate);
-
+			MusicalstartDate = startDate;
+			MusicalendDate = endDate;
 		}
 	}
 }
@@ -287,8 +296,9 @@ function insertCastResult(){
 		if (XHR.status == 200) {
 			var data = XHR.responseText;
 			var Jdata = JSON.parse(data);
+			var result =  parseInt(Jdata.result, 10);
 			console.log(Jdata.result+"@@@@@@@@@@@@@@@@@@@@@@");
-			if(Jdata.result>=1){
+			if(result>=1){
 				alert('성공');
 			}else{
 				alert('실패');
@@ -380,9 +390,10 @@ function addRow() {
 	            <input type="hidden" name="ma_code">
 	        </td>
 	        <td>
-        		<select value="날짜선택" id="ma_date" onchange="searchTime(event)">
-        		<option value="">날짜 선택</option>
-        		</select>
+	        <select id="ma_date" onchange="searchTime(event)">
+	        	<option value="" selected>날짜 선택</option>
+	    		</select>
+
         	</td>
         	<td>
     		<select value="시간선택" id="ma_time">
@@ -399,36 +410,43 @@ function addRow() {
         sendRequest('dateList.do',param,dateListResult,'GET');
 }
 
-function dateListResult(){
-	if (XHR.readyState === 4) {
+function dateListResult() {
+    if (XHR.readyState === 4) {
         if (XHR.status === 200) {
-	  //selectoption값 설정 시작
-	var data = XHR.responseText;
-var optionList = JSON.parse(data); 
-var optionMa_date = optionList.Datelist.mo_date;
-//for (var i = 0; i < actorListName.length; i++) {
-   // var trId = actorListName[i]; 
-   
-   var trElement = document.getElementById(selectValueDate); 
-    var ma_date = trElement.querySelector('#ma_date'); // #ma_date로 select 요소를 찾기
-	//var ma_date = document.getElementById('ma_date');
-  
-    console.log(ma_date); //
-    ma_date.innerHTML = '';
-    for (var j = 0; j < optionList.Datelist.length; j++) {
-        var item = optionList.Datelist[j];
-        var date = new Date(item.mo_date);
-        var formattedDate = formatDate(date); 
-        var option = document.createElement('option');
-        option.value = formattedDate;
-        option.textContent = formattedDate;
+            // selectoption 값 설정 시작
+            var data = XHR.responseText;
+            var optionList = JSON.parse(data); 
+            var optionMa_date = optionList.Datelist.mo_date;
 
-        ma_date.appendChild(option); // ma_date에 옵션을 추가
+            var trElement = document.getElementById(selectValueDate); 
+            var ma_date = trElement.querySelector('#ma_date'); // #ma_date로 select 요소를 찾기
+            console.log(ma_date); 
+
+            ma_date.innerHTML = ''; // 기존 옵션들 초기화
+
+            // 첫 번째 옵션을 기본값으로 설정 (선택된 상태로)
+            var defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = '날짜 선택';
+            defaultOption.selected = true; // 첫 번째 옵션을 기본값으로 선택
+
+            ma_date.appendChild(defaultOption); // 첫 번째 옵션 추가
+
+            // 데이터 목록을 반복하여 옵션 생성
+            for (var j = 0; j < optionList.Datelist.length; j++) {
+                var item = optionList.Datelist[j];
+                var date = new Date(item.mo_date);
+                var formattedDate = formatDate(date); 
+                var option = document.createElement('option');
+                option.value = formattedDate;
+                option.textContent = formattedDate;
+
+                ma_date.appendChild(option); // ma_date에 옵션을 추가
+            }
+        }
     }
-//}
 }
-}
-}
+
 
 function deleteRow(button) {
     const row = button.closest('tr');  // 'button'의 부모 요소인 tr을 찾아냄
@@ -444,64 +462,70 @@ function deleteRow(button) {
 	
 }
 function addDateRows() {
+    if (document.getElementsByName("m_title")[0].value == null || document.getElementsByName("m_title")[0].value == '') {
+        alert('뮤지컬을 선택해주세요');
+        return;
+    }
+
+    const startDateInput = document.getElementById("startDate").value; // 시작 날짜 입력
+    const endDateInput = document.getElementById("endDate").value;     // 종료 날짜 입력
 	
-	 if(document.getElementsByName("m_title")[0].value==null||document.getElementsByName("m_title")[0].value==''){
-		alert('뮤지컬을 선택해주세요');
-		return;
-	}
-	//seachMusicalOpenDate();
-	    const startDateInput = document.getElementById("startDate").value; // 시작 날짜 입력
-	    const endDateInput = document.getElementById("endDate").value;     // 종료 날짜 입력
-	    
-	 if (startDateInput ==''||startDateInput == null|| endDateInput==''||endDateInput==null) {
-	        alert('시작 날짜와 종료 날짜를 선택해주세요');
-	        return;
-	    }
-	
-	 
-		//입력했던 필드 초기화
-		const table = document.getElementById("dateTable");
-	
-		  document.getElementById('dateTable').innerHTML = `
-				<tr>
-					<th colspan="3" style="text-align: center;">공연 스케줄</th>
-					<td><input type="date" id="startDate"></td>
-					<td style="text-align: center;">~</td>
-					<td><input type="date" id="endDate"></td>
-					<td colspan="2"><input type="button" value="조회"
-						onclick="addDateRows()"></td>
-				</tr>
-				<tr>
-					<td colspan="4" style="text-align: center;">공연일</td>
-					<td colspan="3" style="text-align: center;">공연 시간</td>
-					<td colspan="2"></td>
-				</tr>
-				
-			</table>
-		    `;  
-		    
-		    
-		    //초기화끝
-		    
-		    
-	
-   
-    // Date 객체로 변환
+    if (startDateInput == '' || startDateInput == null || endDateInput == '' || endDateInput == null) {
+        alert('시작 날짜와 종료 날짜를 선택해주세요');
+        return;
+    }
+
+    const table = document.getElementById("dateTable");
+
+    // 테이블을 리셋하고 다시 날짜 입력 필드 및 버튼을 생성
+    document.getElementById('dateTable').innerHTML = `
+        <tr>
+            <th colspan="3" style="text-align: center;">공연 스케줄</th>
+            <td><input type="date" id="startDate"></td>
+            <td style="text-align: center;">~</td>
+            <td><input type="date" id="endDate"></td>
+            <td colspan="2"><input type="button" value="조회" onclick="addDateRows()"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="text-align: center;">공연일</td>
+            <td colspan="3" style="text-align: center;">공연 시간</td>
+            <td colspan="2"></td>
+        </tr>
+    `;
+    // 날짜 입력 필드들 다시 가져오기
+    const startDateElement = document.getElementById("startDate");
+    const endDateElement = document.getElementById("endDate");
+
+    // 기존의 min, max 속성을 초기화하고 새로운 값으로 설정
+    startDateElement.removeAttribute("min");
+    endDateElement.removeAttribute("max");
+    
+  
+    // 새롭게 설정
+    startDateElement.setAttribute("min", MusicalstartDate);
+    startDateElement.setAttribute("max", MusicalendDate);
+
+    // 종료 날짜의 min 설정 (시작 날짜보다 이후 날짜로 설정)
+    endDateElement.setAttribute("min", MusicalstartDate);
+    endDateElement.setAttribute("max", MusicalendDate);
+
+    // 새로운 날짜 계산
     let currentDate = new Date(startDateInput);
     const endDate = new Date(endDateInput);
 
     // startDate가 endDate보다 작거나 같은 동안 반복
     while (currentDate <= endDate) {
-    	countDate ++;
+        countDate++;
         const newRow = table.insertRow();
-		newRow.id="Date"+countDate;
-		dateList.push(newRow.id);
+        newRow.id = "Date" + countDate;
+        dateList.push(newRow.id);
+
         // 날짜 포맷 (yyyy-mm-dd 형식으로)
         const formattedDate = currentDate.toISOString().split("T")[0];
 
         // 행 내용 추가
-        	const formattedDateData=`
-            <td colspan="4" style="text-align: center;" id="mo_date">` +formattedDate+ `</td>
+        const formattedDateData = `
+            <td colspan="4" style="text-align: center;" id="mo_date">` + formattedDate + `</td>
             <td colspan="3" style="text-align: center;">
                 <input type="text" name="mo_time" value="14:00" required style="text-align: center;">
             </td>
@@ -509,11 +533,13 @@ function addDateRows() {
                 <input type="button" value="삭제" onclick="deleteRow(this)">
             </td>
         `;
-		newRow.innerHTML = formattedDateData;
+        newRow.innerHTML = formattedDateData;
+
         // 현재 날짜에 하루를 추가
         currentDate.setDate(currentDate.getDate() + 1);
     }
 }
+
 
 
 
@@ -544,26 +570,38 @@ function closeActorPopup() {
 
 //db인설트
 function insertMusicalDate(){
+	alert(dateList.length+"배열 길이 초기화 확이ㄴ");
+	alert(countDate+"데이트 카운터 크기");
+	
+	
 	for(var i=0; i<dateList.length;i++){
 		const trId = dateList[i];  // 배열에서 id 값을 가져옴
-		alert(trId);
+		alert(trId+"@@@@@@@@@@@@@@"+i+"번째 값");
 	    const trElement = document.getElementById(trId);
 	    var dateListTr = trElement.innerHTML;
 	    console.log(dateListTr);
 	    const insertMo_date = trElement.querySelector("#mo_date").textContent;//태그타입
 	    const insertMo_time = trElement.querySelector("input[name='mo_time']").value;
-	    console.log("날짜 :", insertMo_date);
+	    console.log("날짜 :", insertMo_date); 
 	    console.log("시간 :", insertMo_time);
 	    
 	    var params = 'm_code='+ musical_code +'&mo_date='+insertMo_date +'&mo_time='+insertMo_time;
 		sendRequest('insertMusicalDateList.do',params,insertMusicalDateResult(),'GET'); 
 	}
+	dateList= [];
+	countDate = 0;
+	alert(dateList.length);
+	alert(countDate+"#####################");
 }
 	
 function insertMusicalDateResult(){
 	if (XHR.readyState === 4) {
         if (XHR.status === 200) {
-            var result = parseInt(XHR.responseText);
+        	var data = JSON.parse(XHR.responseText);
+        	
+           
+            var result = parseInt(data);
+            
             if(result>=1){
             	alert('날짜 저장 완료');
             	
@@ -583,31 +621,35 @@ function searchTime(event){
 	sendRequest('searchTime1.do',param,searchTimeResult,'GET');
 }
 
-	function searchTimeResult() {
-	    if (XHR.readyState === 4) {
-	        if (XHR.status === 200) {
-	            var optionTimeList = JSON.parse(XHR.responseText);
-	            var timelist = optionTimeList.Timelist;
+function searchTimeResult() {
+    if (XHR.readyState === 4) {
+        if (XHR.status === 200) {
+            var optionTimeList = JSON.parse(XHR.responseText);
+            var timelist = optionTimeList.Timelist;
 
-	         
-	                var trElement = document.getElementById(selectValue);
-	                var ma_time = trElement.querySelector('#ma_time');
-	                ma_time.innerHTML = ''; //ma_time의 값 초기화.
-	                
-	                var defaultOption = document.createElement("option");
-	                defaultOption.value = "";
-	                
-	                for (var j = 0; j < timelist.length; j++) {
-	                    var item = timelist[j]; 
-	                    var optionElement = document.createElement("option");
-	                    optionElement.value = item.mo_time; //
-	                    optionElement.textContent = item.mo_time;
-	                    ma_time.appendChild(optionElement);
-	                }
-	         
-	        }
-	    }
-	}
+            var trElement = document.getElementById(selectValue);
+            var ma_time = trElement.querySelector('#ma_time');
+            ma_time.innerHTML = ''; // ma_time의 값 초기화.
+            
+            // 기본값으로 선택된 옵션 추가
+            var defaultOption = document.createElement("option");
+            defaultOption.value = ""; // 값은 비워두고
+            defaultOption.textContent = "선택하세요"; // 기본 텍스트 표시
+            defaultOption.selected = true; // 기본으로 선택되게 설정
+            ma_time.appendChild(defaultOption);
+
+            // timelist에 있는 시간 옵션 추가
+            for (var j = 0; j < timelist.length; j++) {
+                var item = timelist[j];
+                var optionElement = document.createElement("option");
+                optionElement.value = item.mo_time;
+                optionElement.textContent = item.mo_time;
+                ma_time.appendChild(optionElement);
+            }
+        }
+    }
+}
+
 	function resetTables() {
 	    // 입력 필드를 먼저 초기화
 	    document.getElementById('startDate').value = ''; // 시작 날짜 초기화

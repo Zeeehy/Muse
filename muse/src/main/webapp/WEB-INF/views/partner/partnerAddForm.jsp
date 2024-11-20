@@ -49,19 +49,19 @@
                 <table>
                     <tr>
                         <th>아이디</th>
-                        <td><input type="text" required name="u_id" value="${dto.u_id }"></td>
+                        <td><input type="text" required name="u_id" value="${mdto.u_id }" readonly></td>
                     </tr>
                     <tr>
                         <th>이름</th>
-                        <td><input type="text" required value="${dto.pr_name}"></td>
+                        <td><input type="text" required value="${mdto.u_name}" readonly></td>
                     </tr>
                     <tr>
                         <th>전화번호</th>
-                        <td><input type="text" required value="${dto.p_pnum}"></td>
+                        <td><input type="text" required value="${mdto.u_pnum}" readonly></td>
                     </tr>
                     <tr>
                         <th>이메일 주소</th>
-                        <td><input type="text" required value="${dto.pr_ }"></td>
+                        <td><input type="text" required value="${mdto.u_email}" readonly></td>
                     </tr>
                 </table>
                 <h2>파트너 정보</h2>

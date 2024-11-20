@@ -46,7 +46,7 @@
 		<div class="ft04">
 			<ul>
 				<li>
-					<a href="partnerMainForm.do">제작사</a>
+					<a href="partnerMainForm.do?pr_code=${s_pr_code}">제작사</a>
 				</li>
 				<li>
 					<a href="adminlogin.do">관리자</a>
