@@ -75,6 +75,7 @@ body {
 
 .mypass-info {
     margin-bottom: 20px;
+    text-align: center;/**/
 }
 
 .recent-history table {
@@ -93,6 +94,19 @@ footer {
 	bottom: 0;
 	width: 100%;
 }
+
+button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #d2322d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
 </style>
 </head>
 <body>
@@ -114,7 +128,12 @@ footer {
         <div class="main-content">
             <h2>MY MUSEPASS</h2>
             <div class="mypass-info">
-                <p>카테고리: Original | 남은 잔여 일수: ${mpRemainDays}일 | 유효기간: ${myMPass.mp_enddate}</p>
+            	<c:if test="${u_mpass eq 0}">
+            		<p><button>뮤즈패스 가입하기</button></p>
+            	</c:if>
+            	<c:if test="${u_mpass eq 1}">
+                	<p>카테고리: Original | 남은 잔여 일수: ${mpRemainDays}일 | 유효기간: ${myMPass.mp_enddate}</p>
+            	</c:if>
             </div>
 
             <div class="recent-history">

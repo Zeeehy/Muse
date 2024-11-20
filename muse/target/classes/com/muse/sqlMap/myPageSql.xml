@@ -5,9 +5,8 @@
   <mapper namespace="com.muse.myPage.mapper.myPageSQL">
   
   <!-- 마이페이지 메인-->
-  <select id="selectMPassRemainDays" resultType="Integer">
-        select mp_enddate-sysdate from mpass where u_id=#{u_id}
-  </select>  
+  
+
   
   <!--  회원정보수정 -->
     <select id="userInfo" resultType="com.muse.myPage.model.MyPageUserDTO">
@@ -104,7 +103,7 @@
   </select> 
   
   <select id="selectSearchActorList" parameterType="map" resultType="com.muse.partner.model.ActorDTO">
-    select ma.ma_code, ma.ma_name,ma.ma_img,ma.ma_birth from musical_actor ma
+    select ma.ma_code, ma.ma_name,ma.ma_img,to_char(ma.ma_birth,'YYYY-MM-DD') as ma_birth from musical_actor ma
 	left join like_actor la on la.ma_code=ma.ma_code and la.u_id=#{u_id}
 	where la.la_code is null 
 	and ma.ma_name like #{searchActor}
@@ -112,8 +111,8 @@
   </select> 
   
   <select id="selectSearchMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
-    select m.m_code, m.m_title,m.m_poster,m.m_age,m.m_startdate,m.m_enddate from musical m
-	left join like_musical lm on lm.m_code=m.m_code and lm.u_id=#{u_id}
+	select m.m_code, m.m_title,m.m_poster,m.m_age,to_char(m.m_startdate,'YYYY-MM-DD') as m_startdate,to_char(m.m_enddate,'YYYY-MM-DD') as m_enddate from musical m
+	left join like_musical lm on lm.m_code=m.m_code and lm.u_id='test'
 	where lm.lm_code is null 
 	and m.m_title like #{searchMusical}
 	order by m.m_code
@@ -136,6 +135,12 @@
   </delete>
   
   <!-- 뮤즈패스 -->
+  <select id="selectMyUMpass" parameterType="String" resultType="Integer">
+  	select u_mpass from users where u_id=#{u_id}
+  </select>
+  <select id="selectMPassRemainDays" resultType="Integer">
+        select mp_enddate-sysdate from mpass where u_id=#{u_id}
+  </select>  
   <select id="selectMPass" resultType="com.muse.myPage.model.MPassDTO">
         select * from mpass where u_id = #{u_id}
   </select>  

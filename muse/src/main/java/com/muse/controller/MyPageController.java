@@ -61,18 +61,16 @@ public class MyPageController {
 	public ModelAndView myPageMainForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
 		String u_id = (String) session.getAttribute("s_id");
-		//스크립트에서 처리하면 필요없을지도
-        if (u_id == null) {
-            System.out.println("잘못된 경로");
-            mav.setViewName("/myPage/");
-    		return mav;
-        }
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	
-		MPassDTO myMPass = mPassDao.getMPass(u_id);
-		int mpRemainDays= mPassDao.getMPassRemainDays(u_id);
-		mav.addObject("mpRemainDays",mpRemainDays);
+		int u_mpass=mPassDao.getMyUMPass(u_id);
+		mav.addObject("u_mpass",u_mpass);
+		if(u_mpass==1) {
+			MPassDTO myMPass = mPassDao.getMPass(u_id);
+			int mpRemainDays= mPassDao.getMPassRemainDays(u_id);	
+			mav.addObject("myMPass",myMPass);
+			mav.addObject("mpRemainDays",mpRemainDays);	
+		}
 		mav.addObject("bookingList",bookingList);
-		mav.addObject("myMPass",myMPass);
 		mav.setViewName("/myPage/myPageMain");
 		return mav;
 	}
@@ -382,7 +380,7 @@ public class MyPageController {
 		String u_id = (String) session.getAttribute("s_id");
 		Map<String, Object> params = new HashMap<>();
 		params.put("u_id", u_id);
-		params.put("searchActor", searchActor+"%");
+		params.put("searchActor", "%"+searchActor+"%");
 		List<ActorDTO> searchActorList = museCastDao.getSearchActor(params);
 	    
 	    StringBuilder responseHtml = new StringBuilder();
@@ -418,7 +416,7 @@ public class MyPageController {
 	        		+ "<div class='item-info'>"
 	        		+ "<h3>"+musical.getM_title() +"</h3>"
 	        		+ "<p>관람연령: "+musical.getM_age()+"</p>"
-	        		+ "<p>"+musical.getM_openDate()+"~"+musical.getM_endDate()+"</p>"
+	        		+ "<p>"+musical.getM_startDate()+"~"+musical.getM_endDate()+"</p>"
 	        		+ "</div>"
 	        		+ "</div>");
 	    }
@@ -575,10 +573,18 @@ public class MyPageController {
 	public ModelAndView myPageMusePassForm(HttpSession session) {
 		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
-		MPassDTO myMPass = mPassDao.getMPass(u_id);
-		int mpRemainDays= mPassDao.getMPassRemainDays(u_id);
-		mav.addObject("mpRemainDays",mpRemainDays);
-		mav.addObject("myMPass",myMPass);
+		int u_mpass=mPassDao.getMyUMPass(u_id);
+		mav.addObject("u_mpass",u_mpass);
+		if(u_mpass==1) {
+			MPassDTO myMPass = mPassDao.getMPass(u_id);
+			int mpRemainDays= mPassDao.getMPassRemainDays(u_id);
+			mav.addObject("mpRemainDays",mpRemainDays);
+			mav.addObject("myMPass",myMPass);
+		} else {
+			System.out.println("뮤즈패스 가입X");
+			mav.setViewName("/myPage/myPageMain");
+			return mav;
+		}
 		mav.setViewName("/myPage/myPageMusePass");
 		return mav;
 	}

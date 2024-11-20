@@ -8,20 +8,27 @@
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Jinu.css">
 <script src="/muse/resources/js/httpRequest.js"></script>
+<Style>
+
+</Style>
 </head>
 <body>
 <%@include file="../header.jsp"%>
-
 <div class="section_notice">
 	<div class="board">
-		<div class="top">
-			<h2 style="color:red;">티켓 공지</h2>
-		</div>
+
 		<div class="list">
+			<div class="top_title">
+				<h2>오픈 공지</h2>
+			</div>
 			<div class="table">
 				<table>
 					<thead>
-						<tr> <td>제목</td><td>오픈일시</td><td>조회수</td> </tr>
+						<tr class="title">
+							<td style="width:70%;">제목</td>
+							<td style="width:15%;">오픈일시</td>
+							<td style="width:15%;">조회수</td>
+						</tr>
 					</thead>
 					<tbody>
 					<c:if test="${empty noticeList  }">
@@ -30,7 +37,7 @@
 					
 					<c:forEach items="${noticeList }" var="notice">
 					
-						<tr>
+						<tr class="content">
 							<td><a href="openNoticeView.do?on_code=${notice.on_code }">${notice.m_title }</a></td>
 							<td> ${notice.on_open } </td>
 							<td>${notice.on_readnum }</td>						
@@ -39,8 +46,9 @@
 					</c:forEach>
 					</tbody>
 				</table>
+				<div id="pageNav">${pagingStr }</div>
 			</div>
-			<div id="pageNav">${pagingStr }</div>
+			
 		</div>
 	</div>
 </div>
@@ -61,7 +69,7 @@ function showNotice(cr){
                     html = '<tr><td colspan="3">등록된 공지가 없습니다.</td></tr>';
                 } else {
                     data.noticeList.forEach(function(notice) {
-                        html += '<tr>';
+                        html += '<tr class="content">';
                         html += '<td><a href="openNoticeView.do?on_code=' + notice.on_code + '">' + notice.m_title + '</a></td>';
                         html += '<td>' + notice.on_open + '</td>';
                         html += '<td>' + notice.on_readnum + '</td>';

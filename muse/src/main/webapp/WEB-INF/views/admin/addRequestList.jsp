@@ -117,7 +117,7 @@
 			
 			<c:if test="${empty lists}">
 				<tr>
-					<td colspan="4" align="center">공연등록 신청이 없습니다.</td>
+					<td colspan="5" align="center">공연등록 신청이 없습니다.</td>
 				</tr>
 			</c:if>
 			

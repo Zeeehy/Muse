@@ -183,7 +183,6 @@ function deleteLikeActor(){
 	for(var i=0; i<likeActorList.length;i++){
 		if(likeActorList[i].checked){
 			checkedValues.push(likeActorList[i].id);
-			alert(likeActorList[i].id);
 		}
 		
 	}
@@ -222,7 +221,6 @@ function deleteLikeMusical(){
 	for(var i=0; i<likeMusicalList.length;i++){
 		if(likeMusicalList[i].checked){
 			checkedValues.push(likeMusicalList[i].id);
-			alert(likeMusicalList[i].id);
 		}
 		
 	}

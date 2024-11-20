@@ -30,6 +30,7 @@ import com.muse.admin.model.OpenNoticeDTO;
 import com.muse.admin.model.PartnerDTO;
 import com.muse.admin.model.RequestListDTO;
 import com.muse.admin.model.ServiceRequestDTO;
+import com.muse.admin.model.StatsDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
@@ -164,8 +165,7 @@ public class AdminController {
 	
 	//오픈공지 상세
 	@RequestMapping("openRequest.do")
-	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session, HttpServletRequest request) {
-
+	public ModelAndView requiredLogin_openRequest(@RequestParam("on_code") String on_code,HttpSession session,HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		
 		OpenNoticeDTO dto = adminDao.openRequest(on_code);
@@ -389,14 +389,29 @@ public class AdminController {
 	/* 불량리뷰관리 시작 */
 	//리뷰리스트
 	@RequestMapping("/adminReviewList.do")
-	public ModelAndView requiredLogin_adminReviewList(HttpSession session,HttpServletRequest request) {
+	public ModelAndView requiredLogin_adminReviewList(HttpSession session,HttpServletRequest request
+			,@RequestParam(value="cp", defaultValue="1")int cp) {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("/admin/adminReviewList");
 		
-		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
+		int totalCnt=adminDao.getTotalCnt();
+		int listsize=2; //  페이지에 리뷰
+		int pagesize=3; // 이게 페이지의 페이징한
+		
+		String pagingStr=com.muse.admin.model.Paging.makePage("adminReviewList.do", totalCnt, listsize, pagesize, cp);
+
+		
+		List<MusicalReviewDTO> lists = adminDao.adminReviewList(cp, listsize);
 		mav.addObject("lists",lists);
+		mav.addObject("pagingStr",pagingStr);
 		return mav;
 	}
+	
+
+	
+	
+	
+	
 	
 	//삭제, 상태 바꾸기
 	@RequestMapping("adminDeleteReview.do")
@@ -425,16 +440,21 @@ public class AdminController {
 	}
 	
 	
-	// 불량단어 필터링 페이지
-	@RequestMapping("/adminBadReviewList.do")
-	public ModelAndView requiredLogin_adminBadReviewList(HttpSession session,HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/admin/adminBadReviewList");
+	// 불량리뷰 검색
+	@RequestMapping("/adminSearchReviewList.do")
+	public ModelAndView requiredLogin_adminSearchReviewList(HttpSession session,HttpServletRequest request,
+			@RequestParam(value = "search_word", defaultValue = "") String search_word	) {
 		
-		List<MusicalReviewDTO> lists = adminDao.adminReviewList();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("/admin/adminSearchReviewList");
+		
+		
+		List<MusicalReviewDTO> lists = adminDao.adminSearchReviewList(search_word);
 		mav.addObject("lists",lists);
+		mav.addObject("search_word",search_word);
 		return mav;
 	}
+
 	
 	/* 불량리뷰관리 끝 */
 	
@@ -610,6 +630,33 @@ public class AdminController {
 		
 		mav.addObject("lists",lists);
 		mav.setViewName("admin/memberStats");
+		return mav;
+	}
+	
+	// 파트너 통계
+	@RequestMapping("/partnerStats.do")
+	public ModelAndView requiredLogin_partnerStats(HttpSession session,HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		
+		List<StatsDTO> lists = adminDao.partnerStats();
+		
+		
+		mav.addObject("lists",lists);
+		mav.setViewName("admin/partnerStats");
+		return mav;
+	}
+	
+	
+	// 공연 랭킹
+	@RequestMapping("/rankingStats.do")
+	public ModelAndView requiredLogin_rankingStats(HttpSession session,HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		
+		List<StatsDTO> lists = adminDao.rankingStats();
+		
+		
+		mav.addObject("lists",lists);
+		mav.setViewName("admin/rankingStats");
 		return mav;
 	}
 	
