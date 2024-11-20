@@ -88,7 +88,7 @@ $(document).ready(function() {
 
     // 두 번째 슬라이더 (Ticket Open 섹션)
     $('.screening-container.open').slick({
-        slidesToShow: 5,       // 한 번에 보이는 슬라이드 개수
+        slidesToShow: 4,       // 한 번에 보이는 슬라이드 개수
         slidesToScroll: 1,     // 한 번에 스크롤되는 슬라이드 개수
         arrows: true,          // 좌우 탐색 버튼 활성화
         dots: false,           // 페이지네이션(하단 점) 비활성화
@@ -125,7 +125,7 @@ $(document).ready(function() {
 	                <div class="screening-item open">
 	                    <div class="thumbnail"><a href="openNoticeView.do?on_code=${ticketopen.on_code}"><img src="resources/img/musical/${ticketopen.m_poster}"alt="공연 포스터" width="277.78px" height="440px"></a></div>
 	                    <div class="title">${ticketopen.m_title}</div>
-	                    <div class="meta red">일반 오픈 : ${ticketopen.on_open}<br> 뮤즈패스 오픈 : ${ticketopen.on_muse_open}</div>
+	                    <div class="meta red"><p style="color:#444; margin-bottom: 5px;">일반 오픈 : ${ticketopen.on_open}</p>뮤즈패스 오픈 : ${ticketopen.on_muse_open}</div>
 	                    <div class="meta gray">${ticketopen.on_type}</div>
 	                </div>     
                 </c:forEach>      
@@ -169,7 +169,7 @@ $(document).ready(function() {
 	        							<li class="content">${bestreview.mr_content}</li>
 	        							<li class="inf">
 	        								<span>${bestreview.u_id}</span>
-	        								<span>별(할예정)</span>
+	        								<span>바보(할예정)</span>
 	        								<span>(${bestreview.mr_score})</span>
 	        							</li>
 	        						</ul>
@@ -190,7 +190,7 @@ $(document).ready(function() {
 	                <div class="screening-item all">
 	                     	<div class="thumbnail"><a href="musicalDetail.do?m_code=${musicallist.m_code}"><img src="resources/img/musical/${musicallist.m_poster}"alt="공연 포스터" width="250px" height="440px"></a></div>
 		                    <div class="title">${musicallist.m_title}</div>
-		                    <div class="meta">${musicallist.mh_name}  <br>  ${musicallist.m_startdate} ~ ${musicallist.m_enddate}</div>
+		                    <div class="meta red"><p style="color:#000; margin-bottom:5px;">${musicallist.mh_name}</p>  ${musicallist.m_startdate} ~ ${musicallist.m_enddate}</div>
 	                </div>
                 </c:forEach>               
             </div> 
