@@ -171,37 +171,55 @@
     <script>
     
     //const startDate = new Date('2024-11-15');
-    	var s_id = '${sessionScope.s_id}';
-
+   	const s_id = '${sessionScope.s_id}';
+    const m_code = '${mddto.m_code}';
     const maxPerform = ${maxPerform};
-    
-    
-    const endDate = new Date(maxPerform.mo_date);
+    var endDate = null;
+	var startDate = null;
+    let performList = ${performList};
+    let currentDate = new Date();
 
-    
-    //performList
-	let performList = ${performList};
+	var availableDates = [];
 	
-	
-    
-	let availableDates = performList.map(perform => {
-	    return new Date(perform.mo_date);
-	});
-	
-	const startDate = availableDates[0];
-	
+	function checkOption(){
+		if (!performList || performList.length === 0) {
+	        console.log('No performance data available');
+	        document.querySelector('.calendar-container').innerHTML = '<p>No available performances.</p>';
+	       	alert(1);
+	        return false;
+	    }
+		
+		 availableDates = performList.map(perform => {
+		        return new Date(perform.mo_date);
+		    });
+		 
+		 
+		endDate = new Date(maxPerform.mo_date);
+		startDate = availableDates[0];
+		
 
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(23, 59, 59, 999);
+		
+	    if (!startDate || !endDate) {
+	        console.log('Invalid date range');
+	        document.querySelector('.calendar-container').innerHTML = '<p>Invalid performance schedule.</p>';
+	        alert(2);
+	        return false;
+	    }
+	    startDate.setHours(0, 0, 0, 0);
+	    endDate.setHours(23, 59, 59, 999);
+	    currentDate = new Date(startDate);
+		
+	    return true;
+
+
+	}
 
 
 	var remainSeats =document.querySelector('#remainSeats');
 	var roundCastingList =document.querySelector('#roundCastingList');
-    let currentDate = new Date();
     let selectedDate = null;
-    var m_code = '${mddto.m_code}';
     	
-		var timeSelect = document.querySelector('#timeSelect');
+	var timeSelect = document.querySelector('#timeSelect');
 
         // 공연 가능한 날짜 (예시 데이터)
         
@@ -254,11 +272,17 @@
             // 가장 가까운 예매 가능일 선택
             selectNearestAvailableDate(currentDate); */
             
-        	if (availableDates.length > 0) {
+            if (!checkOption()) {
+            	
+            	alert('엥');
+                return; // Exit if initialization fails
+            }
+            
+/*         	if (availableDates.length > 0) {
                 currentDate = new Date(availableDates[0]);
             } else {
                 currentDate = new Date();
-            }
+            } */
             showCalendar(currentDate);
             selectNearestAvailableDate(currentDate);
         }

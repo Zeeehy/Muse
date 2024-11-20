@@ -741,4 +741,77 @@ img.castingImage{
     background-color: white;
 	
 }
-    
+
+/* ----------------- 오픈공지 리스트 ----------------- */
+.section_notice .list {
+	max-width: 1500px;
+	margin: 0 auto;
+	padding: 50px 0;
+}
+.section_notice .list .top_title h2 {
+	text-align: center;
+	font-size: 40px;
+    padding: 50px 0 50px;
+}
+.section_notice .list .table {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+	width: 80%;
+	margin: 0 auto;
+}
+.section_notice .list .table table{
+	width: 100%;
+}
+.section_notice .list .table td{
+	padding: 20px 0;
+	text-align: center;
+}
+.section_notice .list .table .title {
+	height: 49px;
+    line-height: 49px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    background: #f6f6f6;
+    border-top: 2px solid #333;
+}
+.section_notice .list .table .title td {
+	padding: 20px;
+	font-size: 18px;
+    font-weight: 500;
+    color: #000;
+}
+.section_notice .list .table .title td:first-child {
+	padding: 0 20px;
+}
+.section_notice .list .table td:first-child {
+	text-align: left;
+}
+.section_notice .list .table .content td:first-child {
+	padding: 0 20px;
+	font-size: 18px;
+    letter-spacing: 1px;
+    font-weight: 500;c
+    color: #000;
+}
+.section_notice .list .table tr{
+	border-bottom: 0.5px solid #f0f0f0;
+}
+.section_notice .list .table .content:hover {
+	background: #fafafa;
+}
+
+.section_notice .list .table .content td{
+	padding:25px;
+	    color: #444;
+}
+.section_notice .list #pageNav {
+	display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.section_notice .list #pageNav span {
+	font-size:15px;
+}
