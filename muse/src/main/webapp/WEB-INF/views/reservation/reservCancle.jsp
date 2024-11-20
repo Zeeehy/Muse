@@ -71,41 +71,35 @@
                     			<table>
 					                <thead>
 					                    <tr>
-					                        <th style="text-align: center;">내용</th>
 					                        <th style="text-align: center;">취소일</th>
 					                        <th style="text-align: center;">취소수수료</th>
 					                    </tr>
 					                </thead>
 					                <tbody>
 					                    <tr>
-					                        <td>미발권기간</td>
-					                        <td id="noDay"></td>
-					                        <td class="highlight">없음</td>
+					                        <td>예매 후 7일 이내</td>
+					                        <td>없음</td>
 					                    </tr>
 					                    <tr>
 					                        <td>예매 후 8일~관람일 10일 전까지</td>
-					                        <td>2024.11.11 ~ 2024.12.10</td>
 					                        <td class="highlight">장당 4,000원 (티켓금액의 10% 한도)</td>
 					                    </tr>
 					                    <tr>
 					                        <td>관람일 9일~7일 전까지</td>
-					                        <td>2024.12.11 ~ 2024.12.12</td>
 					                        <td class="highlight">티켓금액의 10%</td>
 					                    </tr>
 					                    <tr>
 					                        <td>관람일 6일~3일 전까지</td>
-					                        <td>2024.12.13 ~ 2024.12.17</td>
 					                        <td class="highlight">티켓금액의 20%</td>
 					                    </tr>
 					                    <tr>
 					                        <td>관람일 2일~1일 전까지</td>
-					                        <td>2024.12.18 ~ 2024.12.19</td>
 					                        <td class="highlight">티켓금액의 30%</td>
 					                    </tr>
 					                </tbody>
 					            </table>
 							    <p class="warning">
-							     *취소기간: ${jcancelDeadline}<br>
+							    <%--  *취소기간: ${jcancelDeadline}<br> --%>
 							     *예매취소는 예매일 이후 취소기한은 별도로 정하지 않습니다.<br>
 							     단, 예매 후 당일 12시 이전 취소 시에는 취소수수료 없음(취소기한 내에 한함)
 							   	</p>
@@ -116,8 +110,8 @@
 							     </p>
 							  </div>
 							  <div class="checkbox-group">
-							     <input type="checkbox" id="agree-all">
-							     <label for="agree-all">모두 동의합니다.</label><br>
+							     <!-- <input type="checkbox" id="agree-all">
+							     <label for="agree-all">모두 동의합니다.</label><br> -->
 							     <input type="checkbox" id="agree-fee">
 							     <label for="agree-fee">(필수) 취소수수료/취소기한을 확인하였으며, 동의합니다.</label><br>
 							     <input type="checkbox" id="agree-info">
@@ -196,7 +190,7 @@
                         <div class="s Button"> 
                             <div class="subBtList">
                                 <button type="button" class="subBt" onclick="goBack()">이전단계</button>
-                                <button class="subBt" style="background: #FF3D32; color: #fff;">다음단계</button>
+                                <button class="subBt pay">결제하기</button>
                             </div>
                         </div>
                     </aside>
@@ -260,8 +254,49 @@ function updateCancelDeadline() {
 }
 
 //페이지 로드 시 실행
+//document.addEventListener('DOMContentLoaded', function() {
+//    updateCancelDeadline();  // 페이지 로드 시 함수 실행
+//});
+
 document.addEventListener('DOMContentLoaded', function() {
-    updateCancelDeadline();  // 페이지 로드 시 함수 실행
+    updateCancelDeadline();
+
+    const nextButton = document.querySelector('.subBt.pay');
+    const agreeFee = document.getElementById('agree-fee');
+    const agreeInfo = document.getElementById('agree-info');
+    
+    // 버튼 상태 업데이트
+    function updateButtonState() {
+        if (agreeFee.checked && agreeInfo.checked) {
+            nextButton.style.background = '#ff3d32';
+            nextButton.style.color = '#fff';
+            nextButton.style.opacity = '1';
+            nextButton.style.cursor = 'pointer';
+        } else {
+            nextButton.style.background = '#f0f0f0';
+            nextButton.style.color = '#000';
+            nextButton.style.opacity = '0.5';
+            nextButton.style.cursor = 'not-allowed';
+        }
+    }
+
+    // 체크박스 클릭시
+    agreeFee.addEventListener('change', updateButtonState);
+    agreeInfo.addEventListener('change', updateButtonState);
+
+    // 초기 버튼 상태
+    updateButtonState();
+
+    // 결제하기 버튼 클릭 ~
+    nextButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (agreeFee.checked && agreeInfo.checked) {
+            document.querySelector('form').submit();
+        } else {
+            alert('필수 약관에 모두 동의해주세요.');
+        }
+    });
 });
 </script>
 </body>

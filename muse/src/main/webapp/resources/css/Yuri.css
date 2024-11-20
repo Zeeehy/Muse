@@ -169,6 +169,11 @@ article.whatsOn a.calender img {
     background-size: cover;
     background-position: center;
     transition: transform 0.3s;
+    overflow: hidden;
+}
+
+.screening-item .thumbnail img{
+    width: 100%;
 }
 
 .screening-item .thumbnail:hover {
@@ -183,6 +188,7 @@ article.whatsOn a.calender img {
     border-top: 1px solid #000;
     background: #fff;
     z-index: 1;
+    position: relative;
 }
 
 .screening-item .meta {
@@ -359,7 +365,8 @@ article .reviewcont ul.cont li .reviewtxt .inf{
 }
 
 .screening-item.all {
-	width: 250px;
+	width: 350px;
+	margin:0;
 	overflow: hidden;
 }
 
