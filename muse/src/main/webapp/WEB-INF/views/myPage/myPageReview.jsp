@@ -88,11 +88,6 @@ body {
     padding: 8px;
     text-align: center;
 }
-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-}
 button {
  	display: inline-block;
     padding: 8px 16px;
@@ -168,6 +163,7 @@ function openReviewList(seat_state) {
         <ul>
         	<li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
         	<li><a href="myPagePwdUpdate.do">비밀번호수정</a></li>
+        	<li><a href="myPagePoint.do">나의 포인트</a></li>
             <li><a href="myPageBooking.do">예약/취소내역</a></li>
             <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
             <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
@@ -190,7 +186,7 @@ function openReviewList(seat_state) {
 	                    <tr>
 	                        <th>번호</th>	                        
 	                        <th>공연이름</th>
-	                        <th>제목</th>	                        
+	                        <th>제목</th>                       
 	                        <th>별점</th>
 	                        <th>작성일</th>
 	                    </tr>   
