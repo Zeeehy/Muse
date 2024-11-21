@@ -103,21 +103,37 @@ public class PartnerController {
 	
 	@RequestMapping("/partnerMainForm.do")
 	public ModelAndView partnerMain(@RequestParam(value="pr_code", defaultValue = "no") String pr_code,
-			@RequestParam(value="u_id", defaultValue = "no") String u_id) {
-		List<MusicalDTO> list = partnerDao.getMusicalList(pr_code);
-	
+			@RequestParam(value="u_id", defaultValue = "no") String u_id,
+			@RequestParam(value="getMusicalList",defaultValue="0")String getMusicalList,
+			@RequestParam(value="isFutureDate",defaultValue="0")String isFutureDate) {
+		List<MusicalDTO> list = partnerDao.getMusicalList(pr_code,getMusicalList); //판매 현황
+		List<MusicalDTO> Statelist = partnerDao.getReqeustList(pr_code,isFutureDate); //요청 현황
 		System.out.println(pr_code+"@@@@@@@메인 pr코드");
+		System.out.println(isFutureDate+"요청 현황 상태값 확인");
 		ModelAndView mav =new ModelAndView();
 		mav.addObject("pr_code", pr_code);
 		mav.addObject("list", list);
+		System.out.println(isFutureDate+"@@@@@@@@@@@@@@@@@");
+		System.out.println(Statelist.size()+"배열 사이즈@@@@@@@@@@@@@@@@@@@@");
+		for(int i=0;i>Statelist.size();i++) {
+			Statelist.get(i).getRs_status();
+		}
+		System.out.println();
+		
+		
+		mav.addObject("statelist", Statelist);
+		
 		MemberDTO MemberDto = partnerDao.getusersInfo(u_id);
 		mav.addObject("mdto", MemberDto);
 		if(pr_code.equals("no")) {
 
 			mav.setViewName("/partner/partnerAddForm");
 		}else {
+			mav.addObject("getMusicalList", getMusicalList);
+			mav.addObject("isFutureDate", isFutureDate);
 			mav.setViewName("/partner/partnerMainForm");
 		};
+		
 		return mav;
 	}
 	
