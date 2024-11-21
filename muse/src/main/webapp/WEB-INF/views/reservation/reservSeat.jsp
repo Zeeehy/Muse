@@ -469,12 +469,26 @@ function testClick(rowLayout, event) {
         selectedSeats.add(seatInfo);
         seatElement.classList.add('selected');
         
+
+        
         const s_code = seatInfo.id;
         
         console.log('#############');
         console.log('#############');
         
-        const params = 's_code='+s_code+'&m_code=${m_code}';
+        const s_section = seatInfo.section
+        const s_row = seatInfo.row;
+		const s_position =seatInfo.number;
+		const s_floor = seatInfo.floor;
+        
+        //const params = 's_code='+s_code+'&m_code=${m_code}';
+        
+        const params = 's_code=' + s_code +
+				    '&mh_code=${mh_code}'+
+				    '&s_section=' + s_section +
+				    '&s_row=' + s_row +
+				    '&s_position=' + s_position +
+				    '&s_floor=' + s_floor;
         //alert(params);
         sendRequest('getSeatReviewAvg.do', params, function() {
             if (XHR.readyState === 4 && XHR.status === 200) {
@@ -489,7 +503,7 @@ function testClick(rowLayout, event) {
                     seatReviewDiv.style.display = 'block';
                     currentReviewSeat = seatElement;
                 }
-                updateSeatReview(avgScore, seatInfo);
+                //updateSeatReview(avgScore, seatInfo);
             }
         }, 'GET');
 

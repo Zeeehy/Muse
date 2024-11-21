@@ -21,6 +21,7 @@
 	    <input type="hidden" name="selectedTime" value="${selectedTime}">
 		<input type="hidden" name="selectedSeats" value=""> 
 		<input type="hidden" name="usePoint" id="jusePoint" value="${usePoint}">
+		<input type="hidden" name="discount" value="${discount}">
     	<input type="hidden" name="ticketPrice" value="${ticketPrice}">
     	<input type="hidden" name="totalPrice" value="${ticketPrice - (usePoint != null ? usePoint : 0)}">
 		<input type="hidden" name="jcancelDeadline" id="jcancelDeadline" value="${jcancelDeadline}">
