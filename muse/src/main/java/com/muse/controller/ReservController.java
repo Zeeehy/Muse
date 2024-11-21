@@ -70,7 +70,7 @@ public class ReservController {
 	    String dateWithDay  = null;
 	    if(selectedDate != null) {
 	        try {
-	            LocalDate date = LocalDate.parse(selectedDate);
+	            LocalDate date = LocalDate.parse(selectedDate.substring(0, 10));
 	            DayOfWeek dayOfWeek = date.getDayOfWeek();
 	            String koreanDayOfWeek = "(" + plusWeek(dayOfWeek) + ")";
 	            dateWithDay = selectedDate + " " + koreanDayOfWeek;
@@ -209,8 +209,8 @@ public class ReservController {
 	        @RequestParam(value="normalTickets_A", defaultValue = "0") int d_0_A,
 	        @RequestParam(value="veteranTickets_VIP", defaultValue = "0") int d_1_VIP,
 	        @RequestParam(value="veteranTickets_R", defaultValue = "0") int d_1_R,
-	        @RequestParam(value="veteranTickets_A", defaultValue = "0") int d_1_S,
-	        @RequestParam(value="veteranTickets_S", defaultValue = "0") int d_1_A,
+	        @RequestParam(value="veteranTickets_A", defaultValue = "0") int d_1_A,
+	        @RequestParam(value="veteranTickets_S", defaultValue = "0") int d_1_S,
 	        @RequestParam(value="disability13Tickets_VIP", defaultValue = "0") int d_2_VIP,
 	        @RequestParam(value="disability13Tickets_R", defaultValue = "0") int d_2_R,
 	        @RequestParam(value="disability13Tickets_S", defaultValue = "0") int d_2_S,
@@ -467,24 +467,28 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 		// discountMap ()
 		// selectedSeats ()
 		
-		Map<String,Map> rootMap = new HashMap<String, Map>();
+		Map<String, Map<String, Integer>> rootMap = new HashMap<String, Map<String, Integer>>();
 		
 		Iterator<String> disir =  discountMap.keySet().iterator();
-		
+		   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
 		while(disir.hasNext()) {
 			   String key = disir.next();  // d_1-VIP, d_2-R 형태
 			   String[] parts = key.split("-");  // ["d_1", "VIP"] 형태로 분리
 			   String grade = parts[1];  // VIP, R 등급만 추출
 			   
+			   System.out.println(grade);
+
 			   if(!rootMap.containsKey(grade)) {
 			       rootMap.put(grade, new HashMap<String,Integer>());
+			       System.out.println("생성");
 			   }
-			   
 			   // 해당 등급의 Map에 할인 타입과 매수 저장
 			   String discountType = parts[0];  // "d_1"에서 "1"만 추출
 			   rootMap.get(grade).put(discountType, discountMap.get(key));
 			}
-		
+		   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
 /*	
 		System.out.println("--- forEach 방식 ---");
 		rootMap.forEach((grade, discountInfo) -> {
@@ -552,8 +556,14 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 	                }
 	            });
 	            */
+	            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!");
+	            System.out.println(grade);
+	            System.out.println(rootMap.get(grade));
 	            
 	            rootMap.get(grade).forEach((key,value)->{
+	            	
+	            	
+	            	
 	            	
 	            	if((int)value>0) {
 	            		detailData.put("d_code", (String)key);
@@ -566,7 +576,7 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 	            });
 	            
 	            
-	            reservDAO.insertBookingDetail(detailData);
+	           reservDAO.insertBookingDetail(detailData);
 	        }
 	        
 	        
@@ -656,13 +666,15 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 	        @RequestParam("selectedDate") String selectedDate,
 	        @RequestParam("selectedTime") String selectedTime,
 	        @RequestParam("m_code") String m_code) {
+		 
 	        
 	        Map<String, Object> params = new HashMap<>();
 	        params.put("selectedDate", selectedDate);
 	        params.put("selectedTime", selectedTime);
 	        params.put("m_code", m_code);
+	        Map<String, Integer> map =  reservDAO.getRemainingSeat(params);
 	        
-	        return reservDAO.getRemainingSeat(params);
+	        return map;
 	    }
 	
 	@GetMapping("/getBookedSeats.do")

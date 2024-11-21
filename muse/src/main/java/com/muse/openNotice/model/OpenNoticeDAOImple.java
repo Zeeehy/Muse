@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
-import com.muse.partner.model.PartnerDTO;
+import com.muse.admin.model.PartnerDTO;
 
 public class OpenNoticeDAOImple implements OpenNoticeDAO{
 

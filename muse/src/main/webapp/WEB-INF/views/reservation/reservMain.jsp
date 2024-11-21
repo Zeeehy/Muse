@@ -339,7 +339,7 @@ function updateTimesResult() {
 }
 
 // 예약된 좌석 목록 다시 가져오는 함수
-function updateReservedSeat(){
+function updateReservedSeat(callback){
     const playDate = document.getElementById('playDate').value;
     const playTime = document.getElementById('playTime').value;
 	const param = 'm_code=${m_code}&selectedDate='+playDate+'&selectedTime='+playTime;
@@ -373,7 +373,7 @@ function updateReservedSeat(){
             	}
             	
             });
-            
+            if(callback) callback();
             
         }
     }, 'GET');
@@ -507,8 +507,9 @@ document.addEventListener('DOMContentLoaded', function() {
             resetSeatsAndCount();
         } else {
             checkSeatVisibility();
-            updateRemainingSeat();
-            updateReservedSeat();
+            updateReservedSeat(function() {  // 예약된 좌석 먼저 실행
+                updateRemainingSeat();        // 잔여석은 그 다음 실행
+            });
         }
     });
     
