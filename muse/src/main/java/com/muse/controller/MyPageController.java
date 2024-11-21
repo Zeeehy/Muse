@@ -33,8 +33,11 @@ import com.muse.myPage.model.MyBookingListDAO;
 import com.muse.myPage.model.MyBookingListDTO;
 import com.muse.myPage.model.MyLikeActorDTO;
 import com.muse.myPage.model.MyLikeMusicalDTO;
+import com.muse.myPage.model.MyMusicalReviewDTO;
 import com.muse.myPage.model.MyPageUserDAO;
 import com.muse.myPage.model.MyPageUserDTO;
+import com.muse.myPage.model.MyReviewListDAO;
+import com.muse.myPage.model.MySeatReviewDTO;
 import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.MusicalDTO;
 
@@ -53,7 +56,8 @@ public class MyPageController {
 	private MuseCastDAO museCastDao;
 	@Autowired
 	private MyBookingDetailDAO mybookingDetailDao;
-
+	@Autowired
+	private MyReviewListDAO myReviewListDao;
 	
 	/**메인페이지*/	
 	//메인페이지 폼
@@ -635,5 +639,25 @@ public class MyPageController {
 //		}
 		return mav;
 	}
+	
+	/**마이페이지 후기*/
+	@RequestMapping("/myPageReview.do")
+	public ModelAndView myPageReviewForm(HttpSession session,@RequestParam(defaultValue = "0") String seat_state) {
+		String u_id = (String) session.getAttribute("s_id");
+		ModelAndView mav = new ModelAndView();
+		if(seat_state.equals("0")) {
+			List<MyMusicalReviewDTO> musicalReviewList = myReviewListDao.getMusicalReviewList(u_id);
+			mav.addObject("musicalReviewList", musicalReviewList);
+		} else {
+			List<MySeatReviewDTO> seatReviewList = myReviewListDao.getSeatReviewList(u_id);
+			mav.addObject("seatReviewList", seatReviewList);
+		}
+		
+		
+		mav.addObject("seat_state", seat_state);
+		mav.setViewName("/myPage/myPageReview");
+		return mav;
+	}
+	
 
 }

@@ -1,47 +1,78 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>마이 페이지</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-main {
+body {
+    font-family: Arial, sans-serif; /* 원하는 폰트로 변경 가능 */
+    color: #333;
+    background-color: #f8f8f8;
+}
+
+/* 레이아웃 스타일 */
+.container {
     display: flex;
-    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
 }
 
+/* 사이드바 스타일 */
 .sidebar {
     width: 200px;
-    border-right: 1px solid #ddd;
-    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-right: 20px;
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    color: #d2322d; /* 빨간색 텍스트 */
+    margin-bottom: 10px;
 }
 
 .sidebar ul {
     list-style: none;
-    padding: 0;
 }
 
 .sidebar ul li {
-    padding: 8px 0;
-}
-
-.content {
-    flex: 1;
-    padding: 0 20px;
-}
-
-.content h1 {
-    font-size: 1.5em;
     margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
 }
+
+.sidebar ul li a {
+    color: #333;
+    text-decoration: none;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+/* 제목 스타일 */
+.main-content h2 {
+    font-size: 16px;
+    color: #d2322d; /* 빨간색 텍스트 */
+    border-bottom: 2px solid #d2322d;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
 
 footer {
 	position: absolute;
@@ -49,114 +80,54 @@ footer {
 	width: 100%;
 }
 
-
-
-
-
-form ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #d2322d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
-form ul li {
-    margin-bottom: 15px;
-}
-
-form ul li label {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
-    color: #333;
-    font-weight: bold;
-}
-
-form ul li input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1em;
-}
-
-form .buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-input[type="submit"], input[type="reset"] {
-    width: 48%;
-    padding: 10px;
-    font-size: 1em;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-input[type="submit"] {
-    background-color: #d9534f;
-    color: white;
-}
-
-input[type="reset"] {
-    background-color: #ddd;
-    color: #333;
-}
-
-input[type="submit"]:hover, input[type="reset"]:hover {
-    opacity: 0.9;
-}
 </style>
-<script>
-function pwdCheck(){
-	var u_pwd = document.getElementById('u_pwd').value;
-	var u_pwd2 = document.getElementById('u_pwd2').value;
-	
-	if (!u_pwd || !u_pwd2) { 
-        alert("입력좀");
-        return false;
-    } else if (u_pwd !== u_pwd2) { 
-        alert("비밀번호 틀림");
-        return false;
-    } else {
-        alert("굳");
-        return true;
-    }
-}
-</script>
 </head>
 <body>
     <%@include file="../header.jsp" %>
-
-    <main>
-        <aside class="sidebar">
-            <ul>
-                <li>예매/취소내역</li>
-                <li>내가 등록한 작품</li>
-                <li>나의 MUSEPASS</li>
-                <li>설정</li>
-                <li>1:1 문의</li>
-            </ul>
-        </aside>
-
-        <section class="content">
-            <h1>비밀번호 변경</h1>
-        <p>주기적인 <span style="color: #d9534f; font-weight: bold;">비밀번호 변경</span>을 통해 개인정보를 안전하게 보호하세요.</p>
-        <form name="myPagePwdUpdate" action="myPagePwdUpdate.do" method="post" onsubmit="return pwdCheck()">
-            <input type="hidden" name="u_id" value="test"> <!-- 세션에서 받아올 예정 -->
-            <ul>
-                <li><label>비밀번호</label><input type="password" name="u_pwd" id="u_pwd"></li>
-                <li><label>비밀번호 확인</label><input type="password" name="u_pwd2" id="u_pwd2"></li>
-            </ul>
-            <div class="buttons">
-                <input type="submit" value="변경">
-                <input type="reset" value="취소">
-            </div>
-        </form>
-        </section>
-    </main>
-    
+	<div class="container">
+    <!-- 사이드바 -->
+	    <div class="sidebar">
+	        <h2>마이페이지</h2>
+	        <ul>
+	        	<li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
+	        	<li><a href="myPagePwdUpdate.do">비밀번호수정</a></li>
+	            <li><a href="myPageBooking.do">예약/취소내역</a></li>
+	            <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
+	            <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
+	            <li><a href="myPageReview.do">나의 후기</a></li>
+	            <li><a href="myPageMuseCalendar.do">뮤즈캘린더</a></li>
+	        </ul>
+	    </div>
+	
+	    <div class="main-content">
+	        <h2>비밀번호수정</h2>
+	        <p>주기적인 <span style="color: #d9534f; font-weight: bold;">비밀번호 변경</span>을 통해 개인정보를 안전하게 보호하세요.</p>
+	        <form name="myPagePwdUpdate" action="myPagePwdUpdate.do" method="post" onsubmit="return pwdCheck()">
+	            <input type="hidden" name="u_id" value="test"> <!-- 세션에서 받아올 예정 -->
+	            <ul>
+	                <li><label>비밀번호</label><input type="password" name="u_pwd" id="u_pwd"></li>
+	                <li><label>비밀번호 확인</label><input type="password" name="u_pwd2" id="u_pwd2"></li>
+	            </ul>
+	            <div class="buttons">
+	                <input type="submit" value="변경">
+	                <input type="reset" value="취소">
+	            </div>
+	        </form>
+	   </div>
+   </div> 
     <%@include file="../footer.jsp" %>
 </body>
+
 </html>
