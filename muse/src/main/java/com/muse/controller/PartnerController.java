@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.muse.member.model.MemberDAO;
 import com.muse.member.model.MemberDTO;
 import com.muse.partner.model.ActorDTO;
 import com.muse.partner.model.BbsDeleteRequestDTO;
@@ -49,6 +50,9 @@ public class PartnerController {
 	@Autowired
 	private SeatLayoutDAO seatLayoutDAO;
 	
+@Autowired
+	MemberDAO memberDao;
+	
 	@RequestMapping("/partnerAddForm.do")
 	public ModelAndView partnerAddForm(
 			@RequestParam(value="pr_code",required = false, defaultValue = "no")String pr_code,
@@ -56,18 +60,14 @@ public class PartnerController {
 			HttpSession session) {
 		
 		MemberDTO MemberDto = partnerDao.getusersInfo(u_id);
+		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
 		
 		System.out.println(pr_code+"@@@@@@@@@@@@@@@@@");
-		PartnerDTO DTO = partnerDao.getPartnerInfo(pr_code);
 		ModelAndView mav = new ModelAndView();
-		//String msg= "";
 		
-		
-
 		mav.addObject("mdto", MemberDto);
 		mav.addObject("dto", DTO);
 		mav.setViewName("/partner/partnerAddForm");
-		//mav.addObject("msg", msg);
 		return mav;
 	}
 	
@@ -102,24 +102,42 @@ public class PartnerController {
 	}
 	
 	@RequestMapping("/partnerMainForm.do")
-	public ModelAndView partnerMain(@RequestParam(value="pr_code", defaultValue = "no") String pr_code) {
+	public ModelAndView partnerMain(@RequestParam(value="pr_code", defaultValue = "no") String pr_code,
+			@RequestParam(value="u_id", defaultValue = "no") String u_id) {
 		List<MusicalDTO> list = partnerDao.getMusicalList(pr_code);
 	
 		System.out.println(pr_code+"@@@@@@@메인 pr코드");
 		ModelAndView mav =new ModelAndView();
 		mav.addObject("pr_code", pr_code);
 		mav.addObject("list", list);
-		mav.setViewName("/partner/partnerMainForm");
+		MemberDTO MemberDto = partnerDao.getusersInfo(u_id);
+		mav.addObject("mdto", MemberDto);
+		if(pr_code.equals("no")) {
+
+			mav.setViewName("/partner/partnerAddForm");
+		}else {
+			mav.setViewName("/partner/partnerMainForm");
+		};
 		return mav;
 	}
+	
 	@RequestMapping("/musicalSeatAddForm.do")
-	public ModelAndView musicalSeatForm() {
+	public ModelAndView musicalSeatForm(
+			@RequestParam(value="mh_code", defaultValue = "") String mh_code,
+			@RequestParam(value="m_name",defaultValue = "")String m_name,
+			@RequestParam(value="m_code",defaultValue = "")String m_code) {
 		ModelAndView mav = new ModelAndView();
-		List<SeatLayoutDTO> layout = seatLayoutDAO.seatLayoutSelect();
-		List<String> section = seatLayoutDAO.sectionSelect();
-		List<Integer> floor = seatLayoutDAO.bindByallFloorSelect();
-		Map<Integer,Integer> max_rowMap= seatLayoutDAO.max_rowSelect(); 
-		List<SeatDTO> seatList = seatLayoutDAO.getRealSeat();
+		SeatDTO sDTO = partnerDao.selectLayout(mh_code);
+		System.out.println(m_name+"@#@#@#@#@#@#");
+		int mhl_code = 0;
+		if(sDTO!=null) {
+			mhl_code=sDTO.getMhl_code();
+		}
+		List<SeatLayoutDTO> layout = partnerDao.seatLayoutSelectPartner(mhl_code);
+		List<String> section = partnerDao.sectionSelectPartner(mhl_code);
+		List<Integer> floor = partnerDao.bindByallFloorSelectPartner(mhl_code);
+		Map<Integer,Integer> max_rowMap= partnerDao.max_rowSelectPartner(mhl_code); 
+		List<SeatDTO> seatList = partnerDao.getRealSeatPartner();
 		List<SeatGradeDTO> seatGradeList = partnerDao.selectSeatGrade();
 		
 		
@@ -130,14 +148,18 @@ public class PartnerController {
 		String jseatList =  new Gson().toJson(seatList);
 		String jseatGradeList = new Gson().toJson(seatGradeList);
 		
+		
 		mav.addObject("layouts",jsonLayout);
 		mav.addObject("section",jsonSection);
 		mav.addObject("floor",jsonFloor);
 		mav.addObject("max_rowMap",jsonMax_rowMap);
 		mav.addObject("seatList",jseatList);
-
 		mav.addObject("seatGradeList",jseatGradeList);//좌석 등급 가져오는 리스트
-		mav.setViewName("/partner/musicalSeatAddForm");
+		//mav.setViewName("parkJson");
+		mav.setViewName("partner/musicalSeatAddForm");
+		mav.addObject("m_name", m_name);
+		mav.addObject("m_code", m_code);
+		mav.addObject("result", mhl_code);
 		return mav;
 	}
 	
@@ -387,9 +409,21 @@ public class PartnerController {
 	public ModelAndView partnerInsert(PartnerDTO DTO) {
 		int result = partnerDao.partnerInsert(DTO);
 		System.out.println(result+"@@@@@@@@@@");
-		
+		String msg="";
+
+		String goUrl ="index.do";
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/index");
+		if(result>=1) {
+			msg = "파트너 등록 신청 완료";
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+			
+		}else {
+			msg = "파트너 등록 신청 실패";
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+		}
+		mav.setViewName("/member/memberMsg");
 		return mav;
 	}
 	
@@ -459,4 +493,101 @@ public class PartnerController {
 		mav.setViewName("/partner/partnerMainForm");
 		return mav;
 	}
+	@RequestMapping(value = "/partnerLogin.do", method = RequestMethod.POST)
+	public ModelAndView partnerLogin(@RequestParam("u_id") String u_id,
+									@RequestParam("u_pwd") String u_pwd,
+									HttpSession session) {
+		ModelAndView mav =new ModelAndView();
+		
+		  int loginResult = memberDao.loginCheck(u_id, u_pwd);
+
+		
+	        // 로그인 결과에 따라 처리
+	        if(loginResult==1 || loginResult==2) {
+				mav.addObject("goUrl", "partnerLogin.do");
+				mav.addObject("msg", "아이디 또는 비밀번호가 잘못되었습니다.");
+				mav.setViewName("member/memberMsg");
+			} else if(loginResult==3) {
+				MemberDTO s_info=memberDao.getUserInfo(u_id);		
+				session.setAttribute("s_id", u_id);
+			//	session.setAttribute("s_name", s_info.getU_name());			
+			//	session.setAttribute("s_mpass", s_info.getU_mpass());
+				session.setAttribute("s_pr_code", s_info.getPr_code());
+				session.setAttribute("s_rs_code", s_info.getRs_code());
+				PartnerDTO DTO = partnerDao.getPartnerInfo(s_info.getPr_code());
+				if(DTO!=null) {
+					if(DTO.getRs_code()==0||DTO.getRs_code()==2||DTO.getRs_code()==4){
+
+					session.setAttribute("pr_name", DTO.getPr_name());
+
+					mav.addObject("dto", DTO);
+					}
+				}
+		        mav.setViewName("partner/partnerMainForm");
+			}
+		return mav;
+	}
+	
+	 @RequestMapping(value = "/partnerLogin.do", 
+			 method = RequestMethod.GET)
+	    public String partnerLoginForm(HttpServletRequest request, HttpSession session) {
+
+		 
+	        return "/partner/partnerLogin";
+	    }
+	 
+	 @RequestMapping("/insertSeatPriceSeat.do")
+	 public ModelAndView insertSeatPriceSeat( 
+			 	@RequestParam("m_code") String m_code,
+			    @RequestParam("sg_code1") String sgCode1,
+			    @RequestParam("sp_price1") int spPrice1,
+			    @RequestParam("sg_code2") String sgCode2,
+			    @RequestParam("sp_price2") int spPrice2,
+			    @RequestParam("sg_code3") String sgCode3,
+			    @RequestParam("sp_price3") int spPrice3,
+			    @RequestParam("sg_code4") String sgCode4,
+			    @RequestParam("sp_price4") int spPrice4) {
+		 	sgCode1 = "sg_1";
+		 	sgCode2 = "sg_2";
+		 	sgCode3 = "sg_3";
+		 	sgCode4 = "sg_4";
+		 	
+		 	int result = 0;
+		 	String msg ="";
+		 	String goUrl="";
+		 	SeatGradeDTO DTO = new SeatGradeDTO();
+
+		 	DTO.setM_code(m_code);
+		 	
+		 	
+		 	DTO.setSg_code(sgCode1);
+		 	DTO.setSp_price(spPrice1);
+		 	result+= partnerDao.insertSeatPrice(DTO);
+		 	DTO.setSg_code(sgCode2);
+		 	DTO.setSp_price(spPrice2);
+
+		 	result+= partnerDao.insertSeatPrice(DTO);
+		 	DTO.setSg_code(sgCode3);
+		 	DTO.setSp_price(spPrice3);
+		 	result+= partnerDao.insertSeatPrice(DTO);
+		 	
+		 	DTO.setSg_code(sgCode4);
+		 	DTO.setSp_price(spPrice4);
+		 	result+= partnerDao.insertSeatPrice(DTO);
+		 	System.out.println(result+"insert값");
+		 	if(result==4) {
+		 		msg="좌석 등급별 가격 설정 완료";
+		 		goUrl = "partnerMainForm.do";
+		 	}else {
+		 		msg="가격 등록 오류";
+		 		goUrl = "musicalSeatAddForm.do";
+		 	}
+		 
+		 
+		 	ModelAndView mav =new ModelAndView();
+			mav.setViewName("/member/memberMsg");
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+			return mav;
+	 }
 }
