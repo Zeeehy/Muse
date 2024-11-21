@@ -149,16 +149,27 @@
   <select id="calendarList"  resultType="com.muse.myPage.model.MuseCalendarDTO">
   	select * from calendar 
   </select>
-  <!--
-  <select id="selectCalendarActor" parameterType="String" resultType="com.muse.myPage.model.MuseCalendarDTO">
-  	select ma.ma_name || m.m_title as calendar_title, mo.mo_date as calendar_start, mo.mo_date as calendar_end from like_actor la
+  <select id="selectCalendarActorList" parameterType="String" resultType="com.muse.myPage.model.MuseCalendarDTO">
+  	select ma.ma_name ||' - '|| m.m_title as calendar_title, mo.mo_date as calendar_start, mo.mo_date as calendar_end from like_actor la
 	left join musical_actor ma on la.ma_code=ma.ma_code
 	left join musical_casting mc on ma.ma_code=mc.ma_code
 	left join musical_option mo on mc.mo_code=mo.mo_code
 	left join musical m on mo.m_code=m.m_code
-	where la.u_id = #{u_id} 
+	where la.u_id=#{u_id} and mo.mo_date is not null
   </select>
-   -->
+  
+  <select id="selectCalendarBookingList" parameterType="String" resultType="com.muse.myPage.model.MuseCalendarDTO">
+  	select 
+    m.m_title || ' - ' || mo.mo_time as calendar_title, 
+    mo.mo_date as calendar_start, 
+    mo.mo_date as calendar_end
+	from booking b
+	join musical_option mo on mo.mo_code = b.mo_code
+	join musical m on mo.m_code = m.m_code
+	where b.u_id = #{u_id} and b.b_state = 1
+	group by m.m_title, mo.mo_date, mo.mo_time
+  </select>
+  
   <!-- 예매상세 -->
   <select id="selectMyBookingDetailList" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
 	select 
