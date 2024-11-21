@@ -109,6 +109,99 @@ $(document).ready(function() {
             event.preventDefault(); // 폼 제출 방지
         }
     });
+    
+    // 인증번호 받기 버튼 클릭 시
+    $("#get-auth-btn").click(function(event) {
+        event.preventDefault(); // 폼 제출 방지
+
+        var uName = $("input[name='u_name']").val().trim();
+        var uEmail = $("input[name='u_email']").val().trim();
+        var nameRegex = /^(?:(?:[b-df-hj-np-tv-zB-DF-HJ-NP-TV-Z][aeiouAEIOU])+(?:[b-df-hj-np-tv-zB-DF-HJ-NP-TV-Z])*)$|^[가-힣]{2,}$/;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!nameRegex.test(uName) || !emailRegex.test(uEmail)) {
+            alert("이름과 이메일을 올바르게 입력해주세요.");
+            return;
+        }
+
+        // 서버로 AJAX 요청 보내기
+        $.ajax({
+            url: "idcheckNameAndEmail.do",  // 서버의 이름과 이메일을 확인하는 URL
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                u_name: uName,
+                u_email: uEmail
+            }),
+            dataType: "json",
+            success: function(response) {
+                if (response.exists == 1) {
+                    // 이메일이 일치하면, 인증번호 발송 페이지로 이동
+                    $.ajax({
+                        url: "find_email.do",  // 서버로 이메일을 보내는 URL
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            u_email: uEmail  // 이메일을 서버로 전송
+                        }),
+                        success: function() {
+                            alert("인증번호가 발송되었습니다!");
+                         	// 인증번호 입력창을 readonly로 설정
+                            $("input[name='u_name']").prop("readonly", true);  // readonly 속성 추가
+                            $("input[name='u_email']").prop("readonly", true);  // readonly 속성 추가
+                            
+                            // 인증번호 입력창 표시
+                            $("#auth-number-container").show();
+                            $("#get-auth-btn").hide();
+                            $("#auth-btn").show();
+                        },
+                        error: function() {
+                            alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                } else {
+                    alert("해당 아이디의 이름과 이메일이 일치하지 않습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    });
+    
+	// 인증번호 입력 후 인증하기 버튼 클릭 시
+    $("#auth-btn").click(function(event) {
+        event.preventDefault(); // 폼 제출 방지
+
+        var uEmailnumber = $("input[name='u_emailnumber']").val().trim();
+        var uEmail = $("input[name='u_email']").val().trim();
+
+        if (!uEmailnumber) {  // 인증번호가 입력되지 않았을 경우
+            alert("인증번호를 입력해주세요.");
+            return;
+        }
+
+        // 인증번호 비교를 위한 서버로 요청 보내기
+        $.ajax({
+            url: "findID_emailcheck.do",  // 인증번호 비교를 위한 URL
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ u_emailnumber: uEmailnumber,
+            	 u_email: uEmail  }),  // 입력된 인증번호
+            success: function(response) {
+                if (response.exists == 1) {
+                    alert("인증 성공!");
+                    window.location.href = "/muse/idResult.do";  // 아이디 정보 출력 페이지로 이동
+                } else {
+                    alert("인증번호가 틀렸습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    });
+    
 });
 
 </script>
@@ -147,10 +240,20 @@ $(document).ready(function() {
 	                     	<label>이메일</label>
 	                        <input class="padding_label1" type="text" name="u_email" placeholder="[예시] hello@naver.com">
 	                     </li>
-	                     <li class="find_ajax5"><label></label></li> 	                     	          
-	                     <li class="find_input-container-btn">  
-	                     	<input class="find_btn" type="submit" value="인증번호 받기">         
-	                     </li>
+	                     <li class="find_ajax5"><label></label></li> 	
+	                     <li class="find_input-container" style="display: none;" id="auth-number-container">
+						    <img src="/muse/resources/img/member/email.png">
+						    <label>인증번호</label>
+						    <input class="padding_label2" type="text" name="u_emailnumber">
+						</li>                     	          
+	                     <li class="find_input-container-btn">
+						    <!-- 인증번호 받기 버튼 초기 상태로 보여짐 -->
+						    <input class="find_btn" type="button" value="인증번호 받기" id="get-auth-btn">         
+						</li>
+						<li class="find_input-container-btn">
+						    <!-- 인증하기 버튼, 처음에는 숨겨짐 -->
+						    <input class="find_btn" type="button" value="인증하기" id="auth-btn" style="display: none;">         
+						</li>
 	                     </ul>
 	                  </article>
 	                  </form>  

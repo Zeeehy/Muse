@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +30,11 @@ public class MainController {
 	
 	// 메인 화면 로딩
 	@RequestMapping("/index.do")
-	public ModelAndView main(@RequestParam(defaultValue = "1") int page) {
-		
+	public ModelAndView main(@RequestParam(defaultValue = "1") int page, HttpSession session) {
+		session.removeAttribute("idfind_s_id");
+		session.removeAttribute("pwdfind_s_id");
+		session.removeAttribute("idfind_s_authNumber");
+		session.removeAttribute("pwdfind_s_authNumber");
 		int size = 10;
 		ModelAndView mav = new ModelAndView();
 				

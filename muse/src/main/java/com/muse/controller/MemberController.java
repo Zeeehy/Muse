@@ -177,7 +177,8 @@ public class MemberController {
     }
 
     
-    // 아이디 비번 찾기 페이지 이동 
+    
+    // I1, P1. 아이디 비번 찾기 페이지 이동하기 
     @RequestMapping(value = "/findinfo.do")
     public ModelAndView findinfo() {
         ModelAndView mav = new ModelAndView();
@@ -185,12 +186,88 @@ public class MemberController {
         return mav;
     }
     
+    // I2. 아이디 찾기 - 이름 이메일 확인하기 
+    @RequestMapping(value = "/idcheckNameAndEmail.do", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, Integer>> checkIDNameAndEmail(@RequestBody Map<String, String> requestBody,HttpSession session) {
+    	
+    	int answer = 0;
+        String u_name = requestBody.get("u_name");  // 이름 받아오기
+        String u_email = requestBody.get("u_email");  // 이메일 받아오기
+        
+        String idcheckNameAndEmailResult = memberDao.idcheckNameAndEmail(u_email);  // 비밀번호 중복 체크
+        if (u_name.equals(idcheckNameAndEmailResult)) {
+			answer = 1;
+		}
+              
+        Map<String, Integer> response = new HashMap<>();
+        response.put("exists", answer);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
     
-    // 비밀번호 찾기 - 아이디 확인 
+    // I3, P5. 아이디 비밀번호 찾기 - 이메일 인증 보내기 
+    @RequestMapping(value = "/find_email.do", method = RequestMethod.POST)
+    @ResponseBody
+    public void sendEmail(@RequestBody Map<String, String> requestBody) {
+        String u_email = requestBody.get("u_email");  // 이메일 받아오기
+        // 이메일을 처리하고 인증 이메일을 발송하는 로직
+        mailSender.joinIdEmail(u_email);
+    }
+    
+    // I4. 아이디 찾기 - 이메일 인증번호 체크하기  
+    @RequestMapping(value = "/findID_emailcheck.do",method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Map<String, Integer>> findID_emailcheck(@RequestBody Map<String, String> requestBody,HttpSession session) {
+    	String idfind_s_authNumber = (String) session.getAttribute("authNumber"); // 세션에 저장된 이메일 인증 번호 
+    	String u_email = requestBody.get("u_email");  // 이메일 받아오기
+    	System.out.println(idfind_s_authNumber);   	
+    	int answer = 0;
+    	String u_emailnumber = requestBody.get("u_emailnumber");  // 입력받은 이메일 인증 번호
+        
+    	if (u_emailnumber.equals(idfind_s_authNumber)) {
+			answer = 1;
+			// 아이디 가져와서 세션에 저장 
+			String findid_id = memberDao.find_id(u_email);
+			session.setAttribute("idfind_s_id",findid_id);
+		}
+    	
+    	 Map<String, Integer> response = new HashMap<>();
+         response.put("exists", answer);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+    // I5. 아이디 찾기 - 아이디 결과 페이지 이동하기 
+    @RequestMapping(value = "/idResult.do")
+    public ModelAndView idResultForm(HttpSession session) {
+    	String idfind_s_id = (String) session.getAttribute("idfind_s_id"); // 세션에 저장된 아이디 
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("idfind_s_id", idfind_s_id);
+        mav.setViewName("member/idResult");
+        return mav;
+    }  
+    
+    // I6. 아이디 찾기 - 결과 페이지 벗어나면 아이디 찾기용 세션 없애기 
+    @RequestMapping(value = "/removeFindIdSession.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String removeFindIdSession(HttpSession session) {
+    	
+    	System.out.println("11");
+        // 세션에서 idfind_s_id 값을 제거
+        session.removeAttribute("idfind_s_id");
+        // 세션에서 idfind_s_authNumber 값을 제거
+        session.removeAttribute("idfind_s_authNumber");
+        
+        return "member/idResult";
+    }
+       
+    
+    // P2. 비밀번호 찾기 - 아이디 확인 
     @RequestMapping(value = "/findPwd_idcheck.do")
-    public ModelAndView findPwd_idcheck(@RequestParam("u_id") String u_id,HttpServletRequest request) {
+    public ModelAndView findPwd_idcheck(@RequestParam("u_id") String u_id,HttpServletRequest request,HttpSession session) {
     	String refererUrl = request.getHeader("Referer"); // 이전 페이지 URL 가져오기
         ModelAndView mav = new ModelAndView();
+        session.setAttribute("pwdfind_s_id", u_id);
         
         int isFindIdSuccess = memberDao.find_idCheck(u_id);
         if (isFindIdSuccess == 1) {
@@ -205,36 +282,102 @@ public class MemberController {
         return mav;
     }
     
-    // 비밀번호 찾기 - 비밀번호 재설정 페이지 이동 
-    @RequestMapping(value = "/pwdemail.do")
-    public ModelAndView pwdEmailForm() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("member/pwdEmail");
-        return mav;
-    }  
     
-
-    // 비밀번호 찾기 - 이메일 인증 
-    @RequestMapping(value = "/findPwd_emailcheck.do")
-    public ModelAndView findPwd_emailcheck() {
-        ModelAndView mav = new ModelAndView();
-        	
-        mailSender.joinIdEmail("wlskrkflfk333@gmail.com");
+     // P3. 비밀번호 찾기 - 이메일 페이지로 이동
+	 @RequestMapping(value = "/pwdemail.do") public ModelAndView pwdEmailForm() {
+	 ModelAndView mav = new ModelAndView(); 
+	 mav.setViewName("member/pwdEmail");
+	  return mav; 
+	 }
+    
+    // P4. 비밀번호 찾기 - 이름 이메일 확인 
+    @RequestMapping(value = "/pwdcheckNameAndEmail.do", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<Map<String, Integer>> checkPwdNameAndEmail(@RequestBody Map<String, String> requestBody,HttpSession session) {
+    	String pwdfind_s_id = (String) session.getAttribute("pwdfind_s_id"); // 세션에 저장된 아이디 
+    	System.out.println(pwdfind_s_id);
+    	
+    	int answer = 0;
+        String u_name = requestBody.get("u_name");  // 이름 받아오기
+        String u_email = requestBody.get("u_email");  // 이메일 받아오기
         
-        mav.addObject("goUrl", "pwdReset.do");
-        mav.addObject("msg", "인증 되었습니다!");
-        mav.setViewName("member/memberMsg");
+        Map<String, Object> params = new HashMap<>();
+        params.put("u_name", u_name);
+        params.put("u_email", u_email);      
+        String checkNameAndEmailResult = memberDao.checkNameAndEmail(params);  
+        if (pwdfind_s_id.equals(checkNameAndEmailResult)) {
+			answer = 1;
+		}
+              
+        Map<String, Integer> response = new HashMap<>();
+        response.put("exists", answer);
 
-        return mav;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-   
-    
-    // 비밀번호 찾기 - 비밀번호 재설정 페이지 이동 
+
+    // P6. 비밀번호 찾기 - 이메일 인증번호 체크  
+    @RequestMapping(value = "/findPwd_emailcheck.do",method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Map<String, Integer>> findPwd_emailcheck(@RequestBody Map<String, String> requestBody,HttpSession session) {
+    	String pwdfind_s_authNumber = (String) session.getAttribute("authNumber"); // 세션에 저장된 이메일 인증 번호 
+    	System.out.println(pwdfind_s_authNumber);
+    	
+    	int answer = 0;
+    	String u_emailnumber = requestBody.get("u_emailnumber");  // 입력받은 이메일 인증 번호
+        
+    	if (u_emailnumber.equals(pwdfind_s_authNumber)) {
+			answer = 1;
+		}
+    	
+    	 Map<String, Integer> response = new HashMap<>();
+         response.put("exists", answer);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+          
+    // P7. 비밀번호 찾기 - 비밀번호 재설정 페이지 이동 
     @RequestMapping(value = "/pwdReset.do")
     public ModelAndView pwdResetForm() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("member/pwdReset");
         return mav;
     }  
+    
+    // P8. 비밀번호 찾기 - 비밀번호 재설정
+    @RequestMapping(value = "/pwdUpdate.do", method = RequestMethod.POST)
+    public ModelAndView pwdUpdate(@RequestParam("u_pwd") String u_pwd,HttpSession session) {
+    	String pwdfind_s_id = (String) session.getAttribute("pwdfind_s_id");
+    	ModelAndView mav = new ModelAndView();
+    	
+    	Map<String, Object> params = new HashMap<>();
+        params.put("u_id", pwdfind_s_id);
+        params.put("u_pwd", u_pwd);      
+
+        // 비밀번호 재설정 메서드 호출
+        int pwdUpdateSuccess = memberDao.UpdatePwd(params);
+
+        if (pwdUpdateSuccess == 1) {
+        	session.removeAttribute("pwdfind_s_id");
+        	mav.addObject("goUrl", "index.do");
+            mav.addObject("msg", "비밀번호가 성공적으로 재설정 되었습니다!");
+            mav.setViewName("member/memberMsg");
+        } else {
+        	mav.addObject("goUrl", "pwdReset.do");
+            mav.addObject("msg", "비밀번호 재설정에 실패하셨습니다.");
+            mav.setViewName("member/memberMsg");
+        }
+
+        return mav;
+    }
+    
+    // P9. 비밀번호 찾기 - 페이지 벗어나면 비밀번호 찾기용 세션 없애기 
+    @RequestMapping(value = "/removeFindPwdSession.do", method = RequestMethod.POST)
+    @ResponseBody
+    public void removeFindPwdSession(HttpSession session) {
+        // 세션에서 pwdfind_s_id 값을 제거
+        session.removeAttribute("pwdfind_s_id");
+        // 세션에서 pwdfind_s_authNumber 값을 제거
+        session.removeAttribute("pwdfind_s_authNumber");
+    }
+ 
     
 }

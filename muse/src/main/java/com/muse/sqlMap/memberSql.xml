@@ -26,17 +26,40 @@
         VALUES (#{u_id}, #{u_pwd}, #{u_name}, #{u_email}, #{u_pnum}, #{u_age}, 0, SYSDATE, 0)
     </insert>
     
-    <!--  회원가입 아이디 중복 체크 쿼리  -->
+    <!-- 회원가입 아이디 중복 체크 쿼리 -->
 	<select id="idCheck" resultType="int"> 
 		SELECT COUNT(*) FROM users WHERE u_id = #{u_id} 
 	</select>
 	
-	<!--  회원가입 비밀번호 중복 체크 쿼리  -->
+	<!-- 회원가입 비밀번호 중복 체크 쿼리 -->
 	<select id="pwdCheck" resultType="int"> 
 		SELECT COUNT(*) FROM users WHERE u_pwd = #{u_pwd} 
 	</select>
-	<!--   비밀번호 찾기 아이디 유무 확인 쿼리   -->
+	
+	<!-- 비밀번호 찾기 아이디 유무 확인 쿼리 -->
 	<select id="findpwd_idCheck" resultType="int"> 
 		SELECT COUNT(*) FROM users WHERE u_id = #{u_id} 
 	</select>
+	
+	<!-- 비밀번호 찾기 아이디 유무 확인 쿼리 -->
+	<select id="findpwd_emailCheck" parameterType="map" resultType="string"> 
+		SELECT u_id FROM users WHERE u_name = #{u_name} and u_email = #{u_email}
+	</select>
+	
+	<!-- 아이디 찾기 이름 확인 쿼리 -->
+	<select id="findid_emailCheck"  resultType="string"> 
+		SELECT u_name FROM users WHERE u_email = #{u_email}
+	</select>
+	
+	<!-- 아이디 찾기 아이디 확인 쿼리 -->
+	<select id="findid_id"  resultType="string"> 
+		SELECT u_id FROM users WHERE u_email = #{u_email}
+	</select>
+	
+	<!-- 비밀번호 찾기 비밀번호 재설정 -->
+	<update id="findpwd_update" parameterType="map"> 
+		UPDATE users SET u_pwd = #{u_pwd} where u_id = #{u_id}
+	</update>
+	 
+	
 </mapper>

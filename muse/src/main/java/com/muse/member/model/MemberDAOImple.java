@@ -1,5 +1,7 @@
 package com.muse.member.model;
 
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 
 public class MemberDAOImple implements MemberDAO {
@@ -78,6 +80,34 @@ public class MemberDAOImple implements MemberDAO {
 	public int find_idCheck(String u_id) {
 		int findpwdResult = sqlMap.selectOne("findpwd_idCheck",u_id);
 		return findpwdResult;
+	}
+
+	// 비밀번호 찾기를 위한 이메일 및 이름 확인 
+	@Override
+	public String checkNameAndEmail(Map<String, Object> params) {
+		String findpwdName = sqlMap.selectOne("findpwd_emailCheck",params);
+		return  findpwdName;
+	}
+
+	// 비밀번호 찾기 최종 : 비밀번호 재설정  
+	@Override
+	public int UpdatePwd(Map<String, Object> params) {
+		int check = sqlMap.update("findpwd_update",params);		
+		return check;
+	}
+
+	// 아이디 찾기를 위한 이메일 및 이름 확인 
+	@Override
+	public String idcheckNameAndEmail(String email) {
+		String findidName = sqlMap.selectOne("findid_emailCheck",email);
+		return findidName;
+	}
+
+	// 아이디 찾기를 위한 아이디 저장  
+	@Override
+	public String find_id(String email) {
+		String find_id = sqlMap.selectOne("findid_id",email);
+		return find_id;
 	}
 	
 }
