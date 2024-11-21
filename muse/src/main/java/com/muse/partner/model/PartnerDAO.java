@@ -53,7 +53,7 @@ public interface PartnerDAO {
 	
 	public int deleteReviewRe(BbsDeleteRequestDTO dto);
 	
-	public List<MusicalDTO> getMusicalList(String pr_code);
+	public List<MusicalDTO> getMusicalList(String pr_code,String performanceStatus);
 	
 	public MemberDTO getusersInfo(String u_id);
 	
@@ -67,4 +67,6 @@ public interface PartnerDAO {
 	public SeatDTO selectLayout(String mh_cdoe);
 	
 	public int insertSeatPrice(SeatGradeDTO DTO);
+	
+	public List<MusicalDTO> getReqeustList(String pr_code,String isFutureDate);
 }

@@ -7,7 +7,7 @@
 		<div class="left-section">
 			<input type="image" src="/muse/resources/img/museimage.png"
 				class="header-image"
-				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}+&u_id=${u_id }'">
+				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }&isFutureDate=${isFutureDate }'">
 			
 		</div>
 		<div class="right-section">
