@@ -16,7 +16,7 @@
 <%@include file="../header.jsp"%>
 <div class="section_notice">
 	<div class="board">
-
+ 
 		<div class="list">
 			<div class="top_title">
 				<h2>오픈 공지</h2>
