@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.muse.common.MailSendService;
 import com.muse.member.model.MemberDAO;
 import com.muse.member.model.MemberDTO;
 
@@ -25,6 +26,10 @@ public class MemberController {
 	
 	@Autowired
 	MemberDAO memberDao;
+	@Autowired
+	private MailSendService mailSender;
+	
+	
 	
 	// GET 요청 처리: 로그인 폼을 반환
     @RequestMapping(value = "/memberLogin.do", method = RequestMethod.GET)
@@ -170,5 +175,66 @@ public class MemberController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    
+    // 아이디 비번 찾기 페이지 이동 
+    @RequestMapping(value = "/findinfo.do")
+    public ModelAndView findinfo() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("member/findIdPwd");
+        return mav;
+    }
+    
+    
+    // 비밀번호 찾기 - 아이디 확인 
+    @RequestMapping(value = "/findPwd_idcheck.do")
+    public ModelAndView findPwd_idcheck(@RequestParam("u_id") String u_id,HttpServletRequest request) {
+    	String refererUrl = request.getHeader("Referer"); // 이전 페이지 URL 가져오기
+        ModelAndView mav = new ModelAndView();
+        
+        int isFindIdSuccess = memberDao.find_idCheck(u_id);
+        if (isFindIdSuccess == 1) {
+        	mav.addObject("goUrl", "pwdemail.do");
+            mav.addObject("msg", "유효한 아이디입니다!");
+            mav.setViewName("member/memberMsg");
+        } else {
+        	mav.addObject("goUrl",  refererUrl);
+            mav.addObject("msg", "아이디가 유효하지 않습니다.");
+            mav.setViewName("member/memberMsg");
+        }
+        return mav;
+    }
+    
+    // 비밀번호 찾기 - 비밀번호 재설정 페이지 이동 
+    @RequestMapping(value = "/pwdemail.do")
+    public ModelAndView pwdEmailForm() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("member/pwdEmail");
+        return mav;
+    }  
+    
+
+    // 비밀번호 찾기 - 이메일 인증 
+    @RequestMapping(value = "/findPwd_emailcheck.do")
+    public ModelAndView findPwd_emailcheck() {
+        ModelAndView mav = new ModelAndView();
+        	
+        mailSender.joinIdEmail("wlskrkflfk333@gmail.com");
+        
+        mav.addObject("goUrl", "pwdReset.do");
+        mav.addObject("msg", "인증 되었습니다!");
+        mav.setViewName("member/memberMsg");
+
+        return mav;
+    }
+   
+    
+    // 비밀번호 찾기 - 비밀번호 재설정 페이지 이동 
+    @RequestMapping(value = "/pwdReset.do")
+    public ModelAndView pwdResetForm() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("member/pwdReset");
+        return mav;
+    }  
     
 }

@@ -52,7 +52,7 @@ ul li input[type="text"]::placeholder, ul li input[type="password"]::placeholder
 	               </form>
 	            </div>
 	            <div class="pwdforget">
-	                <a href="#" style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
+	                <a href="findinfo.do" style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">아이디/비밀번호를 잊으셨나요?</a>
 	            </div>
 	            <div class="join">
 	                <span style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">회원이 아니신가요?</span>
