@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,11 +78,34 @@
 					</div>
 				</div>
 				 <div class="bt musepass">
-		            <a href="#">뮤즈패스 가입하기 <i class="fa-solid fa-angle-right"></i></a>
+				 	
+					<a href="">뮤즈패스 가입하기 <i class="fa-solid fa-angle-right"></i></a>
 		         </div> 
 			</div>
 		</article>
 	</div>
 <%@include file="footer.jsp" %>
 </body>
+<script type="text/javascript">
+var s_id = ${sessionScope.s_id != null ? 'true' : 'false'};
+var s_mpass = ${sessionScope.s_mpass != null ? sessionScope.s_mpass : 0};
+
+
+
+var tagA = document.querySelector('.bt.musepass a');
+tagA.addEventListener("click", function(event) {
+    // 기본 동작을 막기 위해 preventDefault 사용
+    event.preventDefault();
+
+    // 세션 정보 확인
+    if (s_id && s_mpass == 0) {
+        // 세션에 s_id가 존재하고 s_mpass가 0일 때
+        window.location.href = 'musePassTermForm.do';
+    } else if(s_mpass == 1){
+       alert('이미 MusePass에 가입하셨습니다');
+    } else {
+        window.location.href = 'memberLogin.do';
+    }
+});
+</script>
 </html>

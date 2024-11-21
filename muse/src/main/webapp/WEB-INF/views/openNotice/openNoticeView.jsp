@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="resources/css/Main.css">
+<link rel="stylesheet" type="text/css" href="resources/css/Jinu.css">
 </head>
 <body>
 <%@include file="../header.jsp"%>
@@ -13,31 +15,32 @@
 
 
 <div class="board">
+	<div class="content">
 	<div class="detail_top">
 		<h2>티켓 공지</h2>
 		<div class="btn_top"> <a>목록보기</a> </div>
 	</div>
 	<div class="info">
 		<span class="poster bgMusical">
-			<img src="resources/img/musical/${ondto.m_poster }" alt="${ondto.m_title } 포스터" style="width:130px; height:175px;">
+			<img src="resources/img/musical/${ondto.m_poster }" alt="${ondto.m_title } 포스터">
 		</span>
-		<div>
-			<h3>${ondto.m_title }</h3>
-			<ul>
-				<li class="open"><strong>티켓오픈일</strong>${ondto.on_open }  <!--2013년 6월 12일(수) 오후 8시--></li>
-				<li class="tiki">
-					<strong>뮤즈패스 선예매</strong>${ondto.on_muse_open } 
-						<span>
-							<a href="http://ticket.interpark.com/Contents/Toping/TopingPreBook"><img src="//ticketimage.interpark.com/TicketImage/subDir/notice/v2013/img/btn_tiki2.gif" alt="선예매란?"></a>
-							<a href="http://ticket.interpark.com/Contents/Toping/JoinGrade"><img src="//ticketimage.interpark.com/TicketImage/subDir/notice/v2013/img/btn_tiki1_new.gif" alt="TiKi 가입"></a>
-						</span>
-				</li>
-			</ul>
-			<div class="btn">
-				<span class="count">조회 : <span>${ondto.on_readnum }</span></span>
-				<a href="http://tickets.interpark.com/contents/bridge/24016697" class="btn_book">
-					<img src="//ticketimage.interpark.com/TicketImage/subDir/notice/v2013/img/btn_book.gif" alt="예매하기">
-				</a>
+		<div class="infTxt"style="width:100%; position: relative;">
+			<div>
+				<h3>${ondto.m_title }</h3>
+				<ul>
+					<li class="open"><strong>티켓오픈일</strong>${ondto.on_open }  <!--2013년 6월 12일(수) 오후 8시--></li>
+					<li class="tiki">
+						<strong>뮤즈패스 선예매</strong>${ondto.on_muse_open } 
+							<span>
+								<a href="http://ticket.interpark.com/Contents/Toping/JoinGrade">뮤즈패스 가입</a>
+							</span>
+					</li>
+				</ul>
+			</div>
+			<span class="count">조회수 : <span>${ondto.on_readnum }</span></span>
+			<div class="Pbtn">
+				
+				<a href="musicalDetail.do?m_code=${ondto.m_code }" class="btn_book">예매하기</a>
 			</div>
 		</div>
 	</div>
@@ -98,6 +101,7 @@
 	</div>
 	<div class="txt_guide">
 		<p>티켓오픈일정은 인터파크 또는 기획사의 사정에 의해 사전예고 없이 변경 또는 취소 될 수 있습니다.</p>
+	</div>
 	</div>
 </div>
 
