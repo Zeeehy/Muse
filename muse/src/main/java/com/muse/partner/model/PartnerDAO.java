@@ -1,9 +1,11 @@
 package com.muse.partner.model;
 
 import java.util.List;
+import java.util.Map;
 
 import com.muse.member.model.MemberDTO;
 import com.muse.seat.model.SeatDTO;
+import com.muse.seat.model.SeatLayoutDTO;
 
 public interface PartnerDAO {
 
@@ -54,4 +56,15 @@ public interface PartnerDAO {
 	public List<MusicalDTO> getMusicalList(String pr_code);
 	
 	public MemberDTO getusersInfo(String u_id);
+	
+	//좌석관련
+	public List<SeatLayoutDTO> seatLayoutSelectPartner(int mhl_code);
+	public List<String> sectionSelectPartner(int mhl_code);
+	public List<Integer> bindByallFloorSelectPartner(int mhl_code);
+	public Map<Integer, Integer> max_rowSelectPartner(int mhl_code);
+	public List<SeatDTO> getRealSeatPartner();
+	public void insertDummySeatsPartner(List<SeatDTO> seatList);
+	public SeatDTO selectLayout(String mh_cdoe);
+	
+	public int insertSeatPrice(SeatGradeDTO DTO);
 }

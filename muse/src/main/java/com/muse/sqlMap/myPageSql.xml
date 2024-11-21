@@ -209,5 +209,27 @@
   <select id="selectSeatReviewCount" parameterType="String" resultType="Integer">
 	select count(*) from seat_review where bd_code=#{bd_code}
   </select> 
+
+  <!-- 나의 후기 -->
+  <select id="selectMusicalReviewList" parameterType="String" resultType="com.muse.myPage.model.MyMusicalReviewDTO">
+  	select mr.mr_code,mr.b_code,mr.mr_score,mr.mr_title,mr.mr_content,to_char(mr.mr_date,'YYYY-MM-DD') as mr_date, m.m_title
+	from musical_review mr
+	left join booking b on b.b_code=mr.b_code
+	left join musical_option mo on b.mo_code=mo.mo_code
+	left join musical m on mo.m_code=m.m_code
+	where b.u_id=#{u_id}
+	order by mr_date desc
+	</select>
 	
+	<select id="selectSeatReviewList" parameterType="String" resultType="com.muse.myPage.model.MySeatReviewDTO">
+  	select sr.sr_code, sr.bd_code, sr.sr_score, sr.sr_content, to_char(sr.sr_date,'YYYY-MM-DD') as sr_date, s.s_section, s.s_position, s.s_row, s.s_floor,mh.mh_name,mh.mh_addr
+	from seat_review sr
+	left join booking_detail bd on bd.bd_code=sr.bd_code
+	left join booking b on b.b_code=bd.b_code
+	left join seat s on s.s_code=bd.s_code
+	left join musical_hall_layout mhl on mhl.mhl_code=s.mhl_code
+	left join musical_hall mh on mh.mh_code=mhl.mh_code
+	where b.u_id=#{u_id}
+	order by sr_date desc
+	</select>
   </mapper>

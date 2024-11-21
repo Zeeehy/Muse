@@ -93,7 +93,71 @@ footer {
 	bottom: 0;
 	width: 100%;
 }
+button {
+ 	display: inline-block;
+    padding: 8px 16px;
+    background-color: #d2322d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* 채운 별과 빈 별을 나란히 배치 */
+.ystarHalf, .gstarHalf {
+    width: 12px;
+    height: 24px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+}
+
+/* 채워진 별 */
+.ystarHalf {
+    background-image: url("/muse/resources/img/ystar.svg");
+    background-position: left;
+}
+
+/* 빈 별 */
+.gstarHalf {
+    background-image: url("/muse/resources/img/gstar.svg");
+    background-position: right;
+}
+
+/* 별 이미지 */
+.review-stars img {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+}
+
+.ystarHalf, .gstarHalf {
+    width: 12px; /* 원본 사이즈/2 */
+    height: 24px;
+    display: inline-block; /* 나란히 배치 */
+    background-repeat: no-repeat;
+    background-size: 24px 24px; /* 이미지 크기를 24px로 설정 */
+}
+
+.ystarHalf {
+    background-image: url("/muse/resources/img/ystar.svg");
+    background-position: left; /* 왼쪽 반만 채워지게 */
+    
+}
+
+.gstarHalf {
+    background-image: url("/muse/resources/img/gstar.svg");
+    background-position: right; /* 오른쪽 반만 빈 별로 */
+            margin-left: -4px;
+    
+}
 </style>
+<script>
+function openReviewList(seat_state) {
+	location.href='myPageReview.do?seat_state='+seat_state;
+}
+</script>
 </head>
 <body>
     <%@include file="../header.jsp" %>
@@ -103,10 +167,11 @@ footer {
         <h2>마이페이지</h2>
         <ul>
         	<li><a href="myPageInfoUpdate.do">회원정보수정</a></li>
+        	<li><a href="myPagePwdUpdate.do">비밀번호수정</a></li>
             <li><a href="myPageBooking.do">예약/취소내역</a></li>
             <li><a href="myPageMuseCast.do">나의 뮤즈캐스트</a></li>
             <li><a href="myPageMusePass.do">나의 MUSEPASS</a></li>
-            <li><a href="#">나의 후기</a></li>
+            <li><a href="myPageReview.do">나의 후기</a></li>
             <li><a href="myPageMuseCalendar.do">뮤즈캘린더</a></li>
         </ul>
     </div>
@@ -114,46 +179,111 @@ footer {
         <div class="main-content">
             <h2>나의 후기</h2>
             <div class="myreview-info">
-                <button>공연 리뷰</button>
-                <button>좌석 리뷰</button>
+                <button onclick="openReviewList(0)">공연 리뷰</button>
+                <button onclick="openReviewList(1)">좌석 리뷰</button>
             </div>
 
             <div class="review-history">
-                <h2>공연 리뷰</h2>
-                <table>
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>별점</th>
-                        <th>작성일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                	<!-- 
-	           		<c:if test="${empty bookingList }">
-						<tr>
-							<td colspan="7" align="center">
-								모든 리스트를 통합한 검색결과가 없습니다
-							</td>
-						</tr>
-					</c:if>
-                	<c:forEach var="blist" items="${bookingList}">
-	                	<tr>
-	                        <td>${blist.b_date}</td>
-	                        <td>${blist.b_code}</td>
-	                        <td>${blist.m_title}</td>
-	                        <td>${blist.mo_date} | ${blist.mo_time}</td>
-	                        <td>${blist.b_count}</td>
-	                        <td>${blist.b_date}</td>
-	                        <td>
-	                        	<c:if test="${blist.b_state eq 0}">취소</c:if>
-	                        	<c:if test="${blist.b_state eq 1}">예매</c:if>
-	                        </td>
-	                    </tr>
-                	</c:forEach>
-                    -->
-                </tbody>
+                <table>                
+                <c:if test="${seat_state eq 0}">
+	                <thead>
+	                    <tr>
+	                        <th>번호</th>	                        
+	                        <th>공연이름</th>
+	                        <th>제목</th>	                        
+	                        <th>별점</th>
+	                        <th>작성일</th>
+	                    </tr>   
+	                </thead>
+	                <tbody>
+	                <c:if test="${empty musicalReviewList }">
+							<tr>
+								<td colspan="5" align="center">
+									작성한 공연 후기가 존재하지 않습니다
+								</td>
+							</tr>
+						</c:if>
+	                	<c:forEach var="mrlist" items="${musicalReviewList}" varStatus="vs">
+		                	<tr>
+		                        <td>${vs.count}</td>                        
+		                        <td>${mrlist.m_title}</td>
+		                        <td>${mrlist.mr_title}</td>
+		                        <td>
+									<c:forEach begin="1" end="5" var="i">
+								        <c:choose>
+								            <%-- 완전한 별 --%>
+								            <c:when test="${i <= Math.floor(mrlist.mr_score)}">
+								                <img src="/muse/resources/img/ystar.svg" >
+								            </c:when>
+								            
+								            <%-- 반 별 --%>
+								            <c:when test="${i == Math.ceil(mrlist.mr_score) && mrlist.mr_score % 1 >= 0.5}">
+								                <span class="ystarHalf"></span>
+								                <span class="gstarHalf"></span>
+								            </c:when>
+								            
+								            <%-- 빈 별 --%>
+								            <c:otherwise>
+								                <img src="/muse/resources/img/gstar.svg" >
+								            </c:otherwise>
+								        </c:choose> 
+								    </c:forEach>
+								</td>
+		                        <td>${mrlist.mr_date}</td>
+		                    </tr>
+	                	</c:forEach>
+	                </tbody>     
+                </c:if>
+                <c:if test="${seat_state eq 1}">
+                	<thead>
+	                    <tr>
+	                        <th>번호</th>	                        
+	                        <th>좌석위치</th>
+	                        <th>후기내용</th>	                        
+	                        <th>별점</th>
+	                        <th>작성일</th>
+	                    </tr>   
+	                </thead>
+	                <tbody>
+	                <c:if test="${empty seatReviewList }">
+							<tr>
+								<td colspan="5" align="center">
+									작성한 좌석 후기가 존재하지 않습니다
+								</td>
+							</tr>
+						</c:if>
+	                	<c:forEach var="srlist" items="${seatReviewList}" varStatus="vs">
+		                	<tr>
+		                        <td>${vs.count}</td>                        
+		                        <td>${srlist.s_floor}층 ${srlist.s_section}구역 ${srlist.s_row}열 ${srlist.s_position}번</td>
+		                        <td>${srlist.sr_content}</td>
+		                        <td>
+								    <c:forEach begin="1" end="5" var="i">
+								        <c:choose>
+								            <%-- 완전한 별 --%>
+								            <c:when test="${i <= Math.floor(srlist.sr_score)}">
+								                <img src="/muse/resources/img/ystar.svg" >
+								            </c:when>
+								            
+								            <%-- 반 별 --%>
+								            <c:when test="${i == Math.ceil(srlist.sr_score) && srlist.sr_score % 1 >= 0.5}">
+								                <span class="ystarHalf"></span>
+								                <span class="gstarHalf"></span>
+								            </c:when>
+								            
+								            <%-- 빈 별 --%>
+								            <c:otherwise>
+								                <img src="/muse/resources/img/gstar.svg" >
+								            </c:otherwise>
+								        </c:choose>
+								        
+								    </c:forEach>
+								</td>
+		                        <td>${srlist.sr_date}</td>
+		                    </tr>
+	                	</c:forEach>
+	                </tbody>     
+                </c:if>             
             </table>
             </div>
         </div>

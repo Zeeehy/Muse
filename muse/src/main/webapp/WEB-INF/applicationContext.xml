@@ -62,6 +62,9 @@
 	<bean id="openNoticeDao" class="com.muse.openNotice.model.OpenNoticeDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="myReviewListDao" class="com.muse.myPage.model.MyReviewListDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	
