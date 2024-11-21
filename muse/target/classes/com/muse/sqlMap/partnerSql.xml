@@ -159,7 +159,7 @@ m_code = #{m_code}),
 	</insert>
 	
 	<select id="selectPartner" resultType="com.muse.partner.model.PartnerDTO" parameterType="String">
-	select * from partner where pr_code = #{pr_code}
+	select * from partner where pr_code = #{pr_code} and rs_code = 1
 	</select>
 	
 	<insert id="partnerInsert" parameterType="com.muse.partner.model.PartnerDTO">
@@ -296,4 +296,82 @@ ORDER BY m.m_startdate DESC
 <select id="getusersInfo" resultType="com.muse.member.model.MemberDTO" parameterType="String">
 select * from users where u_id = #{u_id}
 </select>
+
+<!-- 시트관련 sql -->
+
+
+
+
+  <select id="seatLayoutSelectPartner" resultType="com.muse.seat.model.SeatLayoutDTO" parameterType="com.muse.seat.model.SeatDTO">
+		SELECT *
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where <!-- sl_bind=2 AND --> MHL_CODE = #{mhl_code}
+	</select>
+	
+	<select id="sectionSelectPartner" resultType="java.lang.String" parameterType="com.muse.seat.model.SeatDTO">
+		SELECT distinct sl_section
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where <!-- sl_bind=2 AND --> MHL_CODE = #{mhl_code}
+		
+	</select>
+	
+	<select id="bindByallFloorSelectPartner" resultType="Integer" parameterType="com.muse.seat.model.SeatDTO">
+		SELECT distinct sl_floor
+		FROM musical_hall_layout hl
+		JOIN seat_layout sl ON hl.lt_code = sl.lt_code
+		where <!-- sl_bind=2 AND --> MHL_CODE = #{mhl_code}
+	</select>
+	
+	<resultMap id="MaxRowResultMapPartner" type="java.util.HashMap">
+	    <result property="sl_floor_key" column="sl_floor_key"/>
+	    <result property="max_row" column="max_row"/>
+	</resultMap>
+	
+	<!-- select 태그에서 resultMap 사용 -->
+	<select id="max_rowSelectPartner" resultMap="MaxRowResultMapPartner" parameterType="com.muse.seat.model.SeatDTO">
+	      SELECT sl_floor AS sl_floor_key, MAX(sl_row) AS max_row
+	    FROM seat_layout sl, MUSICAL_HALL_LAYOUT mhl
+	    WHERE 
+            sl.lt_code = mhl.mhl_code and
+        MHL_CODE = #{mhl_code}
+	    GROUP BY sl_floor
+	    ORDER BY sl_floor
+	</select>
+	
+	<select id="getRealSeatPartner" resultType="com.muse.seat.model.SeatDTO">
+		select *
+		from seat
+		where m_code = 'm_2'
+	</select>
+	
+	<!-- batch insert -->
+	<insert id="insertSeatListPartner" parameterType="com.muse.seat.model.SeatDTO">
+    INSERT INTO SEAT (
+            S_CODE, SG_CODE, M_CODE, MHL_CODE, 
+            S_SECTION, S_POSITION, S_ROW, S_FLOOR
+        ) 
+        VALUES (
+            seat_s_code.nextval,
+            #{sg_code},
+            #{m_code},
+            #{mhl_code},
+            #{s_section},
+            #{s_position},
+            #{s_row},
+            #{s_floor}
+        )
+	</insert>
+	<select id="selectLayout" resultType="com.muse.seat.model.SeatDTO" parameterType="String">
+		select * from musical_hall_layout 
+		where mh_code = #{mh_code}
+	</select>
+	<insert id="insertSeatPrice" parameterType="com.muse.partner.model.SeatGradeDTO">
+	insert into seat_price values
+	('sp_'||SEAT_PRICE_SP_CODE.nextval,
+	#{m_code},
+	#{sg_code},
+	#{sp_price})
+	</insert>
   </mapper>

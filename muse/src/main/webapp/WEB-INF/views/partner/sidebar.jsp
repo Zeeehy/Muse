@@ -4,7 +4,7 @@
 <body>
    <div class="sidebar">
     <div class="sidebartop">
-      <a href="partnerMainForm.do?"${s_pr_code}>   메인</a> | 
+      <a href='partnerMainForm.do?pr_code=${s_pr_code}+&u_id=${u_id }'>   메인</a> | 
       <span class="popup-container" style="position: relative;"> <!-- 팝업 위치를 상대적으로 설정 -->
         <a href="#" onclick="showPopup()">요청 현황</a>
         <!-- 레이어 팝업 -->
