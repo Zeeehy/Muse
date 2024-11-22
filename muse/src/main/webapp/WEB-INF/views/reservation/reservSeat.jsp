@@ -94,16 +94,16 @@
 	margin:3px;}
 
 .VIP{
-	background-color: red;
+	background-color: #CE3B3B;
 }
 .R{
-	background-color: blue;
+	background-color: #1CA814;
 }
 .S{
-	background-color: green;
+	background-color: #17B3FF;
 }
 .A{
-	background-color: yellow;
+	background-color: #F2EA1C;
 }
 .disabled {
     cursor: not-allowed; /* 비활성화 상태 커서 */
