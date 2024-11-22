@@ -49,18 +49,14 @@ font-size:20px;
             var pr_code = "${s_pr_code}";
             var u_id = "${s_id}";
             var s_rs_code = "${s_rs_code}";
-
+			var pr_name = '${pr_name}';
            // alert("pr_code:" + pr_code);
            // alert("u_id:" + u_id);
           //  alert("s_rs_code:" + s_rs_code); 
 
             // 로그인 상태 및 파트너 신청 상태 체크
-             if (pr_name == "" || pr_name == null) {
-                alert("로그인을 해주세요");
-                window.location.href = 'partnerLogin.do';
-                return;
-            }
-            else if (s_rs_code == "4") {
+             
+            if (s_rs_code == "4") {
             	window.location.href = 'partnerAddForm.do?u_id='+u_id;
                 return;
             } else if (s_rs_code == "2") {
@@ -74,6 +70,10 @@ font-size:20px;
             } else if (pr_code == "no"&&u_id!="") {
                 alert("다시 로그인해주세요");
                 window.location.href = 'memberLogout.do';
+                return;
+            }else if (pr_name == "" || pr_name == null) {
+                alert("승인되지 않은 아이디입니다.");
+                window.location.href = 'partnerLogin.do';
                 return;
             }
             // rs_code가 1이고, 처음 접속 시에만 알림을 띄우기

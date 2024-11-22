@@ -245,7 +245,7 @@ function inputMusicalName(element) {
 		on_muse_openTime = document.getElementById("on_muse_open_time").value;
 	}
 	
-	alert(document.getElementById("disable_member_open").checked);
+	//alert(document.getElementById("disable_member_open").checked);
 	
 	var on_info= document.getElementsByName('performance_info')[0].value;
 	var on_sale = document.getElementsByName('discount_info')[0].value;

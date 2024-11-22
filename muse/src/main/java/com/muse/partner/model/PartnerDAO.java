@@ -69,4 +69,5 @@ public interface PartnerDAO {
 	public int insertSeatPrice(SeatGradeDTO DTO);
 	
 	public List<MusicalDTO> getReqeustList(String pr_code,String isFutureDate);
+	public MusicalDTO selectAllMusical(String m_code);
 }
