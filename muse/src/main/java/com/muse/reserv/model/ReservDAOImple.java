@@ -186,6 +186,13 @@ public class ReservDAOImple implements ReservDAO {
 			return sqlMap.update("updatePoint", params);
 	    }
 		
+		// 사용한 포인트 insert
+		@Override
+		public Map<String, Object> insertUsePoint(Map<String, Object> pointInfo) {
+			sqlMap.insert("insertUsePoint",pointInfo);
+			return pointInfo;
+		}
+		
 		@Override
 		public Map<String, Object> getMemberInfo(String s_id) {
 			return sqlMap.selectOne("getMemberInfo",s_id);
