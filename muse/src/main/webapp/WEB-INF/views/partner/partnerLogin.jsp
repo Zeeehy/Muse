@@ -30,6 +30,7 @@ ul li input[type="text"]::placeholder, ul li input[type="password"]::placeholder
             	<div class="login_logodiv1">
                   <div class="login_logodiv2">
                         <a href="index.do"><img class="login_logoimg" alt=""  src="/muse/resources/img/member/logo.png"></a>
+                         <h3 style="margin-top: 20px;">제작사 로그인</h3>
                   </div>        
                 </div>         
 	            <div>

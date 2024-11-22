@@ -113,11 +113,11 @@
 						value="찾기" onclick="showMusicalNamePopup(event)"></td>
 				</tr>
 
-				<tr>
+				<!-- <tr>
 					<th colspan="3">접수번호 / 상태</th>
 					<td colspan="3"><input type="text"></td>
 					<td colspan="2"><input type="button" value="찾기"></td>
-				</tr>
+				</tr> -->
 			</table>
 			<table id="dateTable">
 				<tr>
@@ -372,7 +372,7 @@ function addRow() {
     
     roleArray.push(roleInput);
     
-    const newRow = table.insertRow();
+    const newRow = table.insertRow(-1);
     
     newRow.id="actor"+count;
     selectValueDate = newRow.id;
@@ -404,7 +404,7 @@ function addRow() {
 	        <td colspan="3"><input type="button" value="삭제" onclick="deleteRow(this)"></td>`;
     	newRow.innerHTML = end;
     
-        document.getElementById("roleInput").value = ""; 
+       // document.getElementById("roleInput").value = ""; 
         //행추가 함수 끝나고 그 안의 날짜 선택값 입력 함수
         var param = 'm_code='+musical_code;
         sendRequest('dateList.do',param,dateListResult,'GET');

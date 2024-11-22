@@ -106,6 +106,7 @@ public class PartnerController {
 			@RequestParam(value="u_id", defaultValue = "no") String u_id,
 			@RequestParam(value="getMusicalList",defaultValue="0")String getMusicalList,
 			@RequestParam(value="isFutureDate",defaultValue="0")String isFutureDate) {
+		
 		List<MusicalDTO> list = partnerDao.getMusicalList(pr_code,getMusicalList); //판매 현황
 		List<MusicalDTO> Statelist = partnerDao.getReqeustList(pr_code,isFutureDate); //요청 현황
 		System.out.println(pr_code+"@@@@@@@메인 pr코드");
@@ -114,9 +115,6 @@ public class PartnerController {
 		mav.addObject("pr_code", pr_code);
 		mav.addObject("list", list);
 		System.out.println(Statelist.size()+"배열 사이즈@@@@@@@@@@@@@@@@@@@@");
-		for(int i=0;i>Statelist.size();i++) {
-			Statelist.get(i).getRs_status();
-		}
 		
 		
 		mav.addObject("statelist", Statelist);
@@ -311,8 +309,22 @@ public class PartnerController {
 	    int result = partnerDao.insertTicketNotice(m_code, rs_code, on_type, open, museOpen, on_info, on_sale, on_content, on_casting, on_etc);
 	    System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@");
 	    // ModelAndView 객체 생성 후 반환
-	    ModelAndView mav = new ModelAndView();
-	    mav.setViewName("/partner/castAddForm");
+	    String msg="";
+		String goUrl ="";
+		ModelAndView mav = new ModelAndView();
+		if(result>=1) {
+			msg = "오픈 등록 신청 완료";
+			goUrl = "partnerMainForm.do";
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+			
+		}else {
+			msg = "오픈 등록 신청 실패";
+			goUrl = "insertOpenNotice.do";
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+		}
+		mav.setViewName("/member/memberMsg");
 	    return mav;
 	}
 	
@@ -542,8 +554,9 @@ public class PartnerController {
 				session.setAttribute("s_pr_code", s_info.getPr_code());
 				session.setAttribute("s_rs_code", s_info.getRs_code());
 				PartnerDTO DTO = partnerDao.getPartnerInfo(s_info.getPr_code());
+				System.out.println(DTO.getRs_code()+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				if(DTO!=null) {
-					if(DTO.getRs_code()==0||DTO.getRs_code()==2||DTO.getRs_code()==4){
+					if(DTO.getRs_code()==1){
 
 					session.setAttribute("pr_name", DTO.getPr_name());
 
