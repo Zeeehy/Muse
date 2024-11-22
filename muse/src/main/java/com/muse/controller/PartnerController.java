@@ -113,12 +113,10 @@ public class PartnerController {
 		ModelAndView mav =new ModelAndView();
 		mav.addObject("pr_code", pr_code);
 		mav.addObject("list", list);
-		System.out.println(isFutureDate+"@@@@@@@@@@@@@@@@@");
 		System.out.println(Statelist.size()+"배열 사이즈@@@@@@@@@@@@@@@@@@@@");
 		for(int i=0;i>Statelist.size();i++) {
 			Statelist.get(i).getRs_status();
 		}
-		System.out.println();
 		
 		
 		mav.addObject("statelist", Statelist);
@@ -412,12 +410,25 @@ public class PartnerController {
         Srdto.setRt_code(0);
         
         int sr_result = partnerDao.InsertServiceRequest(Srdto);
-        System.out.println(m_code+"@@@@@@@@@@@@@@");
         
-        
-        System.out.println("결과@@@@@@@@@@@@@@@"+result);
-        System.out.println("결과@@@@@@@@@@@@@@@"+sr_result+"@@@@@@@@@@@@@@@@@한번에가자");
+        System.out.println(m_code+"파라미터로 넘겨온 m_cdoe");
+        System.out.println("뮤지컬 테이블 인설트"+result);
+        System.out.println("서비스 리퀘스트 테이블 인설트"+sr_result);
+        String msg = "";
+        String goUrl = "";
 		ModelAndView mav = new ModelAndView();
+		if(result==1||sr_result==1) {
+			msg="뮤지컬 등록 완료";
+			goUrl = "partnerMainForm.do";
+			mav.addObject("goUrl", goUrl);
+			mav.addObject("msg", msg);
+		}else if(sr_result==0||result==0) {
+			msg="뮤지컬 등록 오류";
+			goUrl = "partnerMainForm.do";
+			mav.addObject("goUrl", goUrl);
+			mav.addObject("msg",msg);
+		}
+		
 		mav.setViewName("/partner/partnerMainForm");
 		return mav;
 	}
@@ -525,7 +536,7 @@ public class PartnerController {
 				mav.setViewName("member/memberMsg");
 			} else if(loginResult==3) {
 				MemberDTO s_info=memberDao.getUserInfo(u_id);		
-				session.setAttribute("s_id", u_id);
+			//	session.setAttribute("s_id", u_id);
 			//	session.setAttribute("s_name", s_info.getU_name());			
 			//	session.setAttribute("s_mpass", s_info.getU_mpass());
 				session.setAttribute("s_pr_code", s_info.getPr_code());
