@@ -66,7 +66,7 @@ span .bestBadge{
 				</tr>
 				<c:forEach var="dto" items="${list}">
     <tr>
-        <td name="mr_code">${dto.mr_code}</td>
+        <td name="mr_code" class="mr_code">${dto.mr_code}</td>
         <td onclick="toggleContentRowFirst(this, '${dto.mr_content}')">${dto.mr_title}</td>
         <td>${dto.u_id}</td>
         <td>${dto.mr_date}</td>
@@ -341,10 +341,13 @@ function deleteReviewAction(){
 }
 
 function bestReviewAction(event){
-  var selectedRow = event.target.closest('tr');  
-   var mr_code = selectedRow.querySelector('td[name="mr_code"]').textContent; // mr_code 값
-   var param = "mr_code="+mr_code;
-   sendRequest('bestViewOK.do', param, bestReviewActionResult,'GET');
+	alert("클릭됨");
+	
+  	var selectedRow = event.target.closest('tr');  
+    var mr_code = selectedRow.children[0].textContent; // mr_code 값
+    var param = "mr_code="+mr_code;
+    alert(mr_code);
+    sendRequest('bestViewOK.do', param, bestReviewActionResult,'GET');
 }
 
 function bestReviewActionResult() {
