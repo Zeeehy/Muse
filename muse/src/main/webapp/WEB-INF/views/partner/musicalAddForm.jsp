@@ -58,7 +58,7 @@
 				<tr>
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
-					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***"></td>
+					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***" readonly></td>
 					<td><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
 				</tr>
 
@@ -108,7 +108,7 @@
 				<tr>
 					<td colspan="4" style="text-align: center;"></td>
 					<th colspan="2" style="text-align: center;">공연 시간(인터미션 포함)</th>
-					<td><input type="number" name="m_time" placeholder="e150"></td>
+					<td><input type="number" name="m_time" placeholder="150"></td>
 					<th><a>분</a></th>
 				</tr>
 				<tr>
@@ -171,7 +171,7 @@
 			</table>
 			<%@include file="partnerInfo.jsp" %>
 			<div class="buttondiv">
-				<input type="submit" value="신청" onclick="insertCast()"> <input
+				<input type="submit" value="신청"> <input
 					type="reset" value="취소">
 					
 			</div>

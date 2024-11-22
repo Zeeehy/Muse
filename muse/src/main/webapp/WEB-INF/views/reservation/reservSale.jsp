@@ -138,7 +138,10 @@
 					            <input type="text" id="usePoint" value="0">
 					            <button type="button" onclick="useMyPoint()">사용하기</button>
 					        </div>
+					        		
 					    </div>
+					    <p>* 포인트 환불은 좌석 전체 취소시에만 전체 환불이 가능합니다.(부분 포인트 환불X)</p>
+								
 					</div>
                     </aside>
                     <aside class="seatR">

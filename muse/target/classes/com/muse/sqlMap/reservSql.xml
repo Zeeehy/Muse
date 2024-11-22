@@ -32,7 +32,7 @@
 	<select id="getMusicalTimeByDate" parameterType="map" resultType="java.lang.String">
 	    SELECT DISTINCT mo_time AS Time
 	    FROM musical_option
-	    WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD')
+	    WHERE mo_date = TO_DATE(#{selectedDate}, 'YYYY-MM-DD') and m_code = #{m_code}
 	    ORDER BY mo_time ASC
 	</select>
 	<!-- 공연별 최대 매수 가져오기(파라미터) -->
@@ -165,30 +165,30 @@
 	
 	<!-- 해당날짜와 시간에 따른 잔여좌석 가져오기 -->
 	<select id="getRemainingSeat" parameterType="map" resultType="map">
-SELECT 
-    sg.sg_name AS grade,
-    COUNT(DISTINCT s.s_code) - COUNT(DISTINCT bd.s_code) AS count
-FROM 
-    musical m
-JOIN 
-    musical_option mo ON m.m_code = mo.m_code
-JOIN 
-    seat s ON m.m_code = s.m_code
-JOIN 
-    seat_grade sg ON s.sg_code = sg.sg_code
-LEFT JOIN 
-    booking b ON mo.mo_code = b.mo_code
-LEFT JOIN 
-    booking_detail bd ON b.b_code = bd.b_code
-                     AND s.s_code = bd.s_code
-WHERE 
-    m.m_code = #{m_code}
-    AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
-    AND mo.mo_time = #{selectedTime}
-GROUP BY 
-    sg.sg_name
-ORDER BY 
-    sg.sg_name
+	SELECT 
+	    sg.sg_name AS grade,
+	    COUNT(DISTINCT s.s_code) - COUNT(DISTINCT bd.s_code) AS count
+	FROM 
+	    musical m
+	JOIN 
+	    musical_option mo ON m.m_code = mo.m_code
+	JOIN 
+	    seat s ON m.m_code = s.m_code
+	JOIN 
+	    seat_grade sg ON s.sg_code = sg.sg_code
+	LEFT JOIN 
+	    booking b ON mo.mo_code = b.mo_code
+	LEFT JOIN 
+	    booking_detail bd ON b.b_code = bd.b_code
+	                     AND s.s_code = bd.s_code
+	WHERE 
+	    m.m_code = #{m_code}
+	    AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
+	    AND mo.mo_time = #{selectedTime}
+	GROUP BY 
+	    sg.sg_name
+	ORDER BY 
+	    sg.sg_name
 	</select>
 	
 	<!-- 예매된 좌석 가져오기 
@@ -263,6 +263,23 @@ ORDER BY
 	WHERE
 	    u.U_ID = #{s_id}
 	</select>
+	
+	<!-- 사용한 포인트 인서트 -->
+	<insert id="insertUsePoint" parameterType="map">
+	INSERT INTO POINT (
+        PT_CODE,      <!-- 포인트 코드 (시퀀스) -->
+        U_ID,        <!-- 사용자 ID -->
+        PT_CATEGORY,      <!-- 구분유형 -->
+        PT_CATEGORYCODE,<!-- 관련코드 (예매코드) -->
+        PT_POINT      <!-- 변동포인트 -->
+    ) VALUES (
+        POINT_PT_CODE.NEXTVAL,
+        #{u_id},
+        #{pt_category},
+        #{pt_categorycode},
+        #{pt_point}
+    )
+	</insert>
 	
 	<!-- 세션에 있는 아이디로 회원정보 불러오기 -->
 	<select id="getMemberInfo" parameterType="String" resultType="map">

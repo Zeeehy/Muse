@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,7 +84,7 @@
                 <section class="allSeat">
                     <aside class="seatL" style="display: flex; flex-direction: column;">
                         <div class="reserv-container">
-                            <p class="reserv-header">예약번호 | TJKDSKLF87 (총 2매)</p>
+                            <p class="reserv-header">예약번호 | TJKDSKLF87 (총 ${seatList.size()}매)</p>
                             <div class="reservImg">
                                 <img src="#" alt="Musical Image">
                             </div>
@@ -90,19 +92,27 @@
                                 <table class="reserv-table">
                                     <tr>
                                         <td class="label">공연명</td>
-                                        <td class="value">뮤지컬이프</td>
+                                        <td class="value">${musicalInfo.M_TITLE}</td>
                                     </tr>
                                     <tr>
                                         <td class="label">장소</td>
-                                        <td class="value">한전아트센터 대극장</td>
+                                        <td class="value">${musicalInfo.MH_NAME}</td>
                                     </tr>
                                     <tr>
                                         <td class="label">좌석</td>
-                                        <td class="value">일반석 1층 1열<br>일반석 1층 2열</td>
+                                        <td class="value">
+                                        <ul class="seatInf">
+                                           <c:forEach items="${seatList}" var="seat">
+                                              <li>
+											  ${seat.grade}석, ${seat.floor}층-${seat.section}블록, ${seat.row}열 ${seat.number}번
+											  </li>
+                                           </c:forEach>
+                                        </ul>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="label">일시</td>
-                                        <td class="value">2024년 12월 1일 (일) 19:30-11시</td>
+                                        <td class="value">${selectedDate} ${selectedTime}</td>
                                     </tr>
                                 </table>
 
@@ -112,11 +122,11 @@
                                     </tr>
                                     <tr>
                                         <td class="label">예매자</td>
-                                        <td class="value">고유리</td>
+                                        <td class="value">${memberInfo.U_NAME}</td>
                                     </tr>
                                     <tr>
                                         <td class="label">예매자 연락처</td>
-                                        <td class="value">010-0000-0000</td>
+                                        <td class="value">${memberInfo.U_PNUM}</td>
                                     </tr>
                                     <tr>
                                         <td class="label">티켓수령방법</td>
@@ -131,19 +141,19 @@
                                         </tr>
                                         <tr>
                                             <td class="label">티켓 금액</td>
-                                            <td class="value">310,000원</td>
+                                            <td class="value">${ticketPrice}</td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td class="label">할인</td>
                                             <td class="value">0원</td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <td class="label">포인트</td>
-                                            <td class="value"><b>0P 사용</b></td>
+                                            <td class="value"><b>${usePoint} P 사용</b></td>
                                         </tr>
                                         <tr>
                                             <td class="label">총 결제금액</td>
-                                            <td class="value"><b>309,800원</b></td>
+                                            <td class="value"><b>${ticketPrice - (usePoint != null ? usePoint : 0)} 원</b></td>
                                         </tr>
                                     </table>
 
@@ -157,7 +167,7 @@
                                         </tr>
                                         <tr>
                                             <td class="label">취소기한</td>
-                                            <td class="value"><b>2024년 11월 19일 오후 17시 00분</b></td>
+                                            <td class="value"><b>${jcancelDeadline}</b></td>
                                         </tr>
                                         <tr>
                                             <td class="label">취소수수료</td>

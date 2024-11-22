@@ -106,6 +106,7 @@ public class PartnerController {
 			@RequestParam(value="u_id", defaultValue = "no") String u_id,
 			@RequestParam(value="getMusicalList",defaultValue="0")String getMusicalList,
 			@RequestParam(value="isFutureDate",defaultValue="0")String isFutureDate) {
+		
 		List<MusicalDTO> list = partnerDao.getMusicalList(pr_code,getMusicalList); //판매 현황
 		List<MusicalDTO> Statelist = partnerDao.getReqeustList(pr_code,isFutureDate); //요청 현황
 		System.out.println(pr_code+"@@@@@@@메인 pr코드");
@@ -113,12 +114,7 @@ public class PartnerController {
 		ModelAndView mav =new ModelAndView();
 		mav.addObject("pr_code", pr_code);
 		mav.addObject("list", list);
-		System.out.println(isFutureDate+"@@@@@@@@@@@@@@@@@");
 		System.out.println(Statelist.size()+"배열 사이즈@@@@@@@@@@@@@@@@@@@@");
-		for(int i=0;i>Statelist.size();i++) {
-			Statelist.get(i).getRs_status();
-		}
-		System.out.println();
 		
 		
 		mav.addObject("statelist", Statelist);
@@ -313,8 +309,22 @@ public class PartnerController {
 	    int result = partnerDao.insertTicketNotice(m_code, rs_code, on_type, open, museOpen, on_info, on_sale, on_content, on_casting, on_etc);
 	    System.out.println(result+"@@@@@@@@@@@@@@@@@@@@@@");
 	    // ModelAndView 객체 생성 후 반환
-	    ModelAndView mav = new ModelAndView();
-	    mav.setViewName("/partner/castAddForm");
+	    String msg="";
+		String goUrl ="";
+		ModelAndView mav = new ModelAndView();
+		if(result>=1) {
+			msg = "오픈 등록 신청 완료";
+			goUrl = "partnerMainForm.do";
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+			
+		}else {
+			msg = "오픈 등록 신청 실패";
+			goUrl = "insertOpenNotice.do";
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+		}
+		mav.setViewName("/member/memberMsg");
 	    return mav;
 	}
 	
@@ -412,12 +422,25 @@ public class PartnerController {
         Srdto.setRt_code(0);
         
         int sr_result = partnerDao.InsertServiceRequest(Srdto);
-        System.out.println(m_code+"@@@@@@@@@@@@@@");
         
-        
-        System.out.println("결과@@@@@@@@@@@@@@@"+result);
-        System.out.println("결과@@@@@@@@@@@@@@@"+sr_result+"@@@@@@@@@@@@@@@@@한번에가자");
+        System.out.println(m_code+"파라미터로 넘겨온 m_cdoe");
+        System.out.println("뮤지컬 테이블 인설트"+result);
+        System.out.println("서비스 리퀘스트 테이블 인설트"+sr_result);
+        String msg = "";
+        String goUrl = "";
 		ModelAndView mav = new ModelAndView();
+		if(result==1||sr_result==1) {
+			msg="뮤지컬 등록 완료";
+			goUrl = "partnerMainForm.do";
+			mav.addObject("goUrl", goUrl);
+			mav.addObject("msg", msg);
+		}else if(sr_result==0||result==0) {
+			msg="뮤지컬 등록 오류";
+			goUrl = "partnerMainForm.do";
+			mav.addObject("goUrl", goUrl);
+			mav.addObject("msg",msg);
+		}
+		
 		mav.setViewName("/partner/partnerMainForm");
 		return mav;
 	}
@@ -525,14 +548,15 @@ public class PartnerController {
 				mav.setViewName("member/memberMsg");
 			} else if(loginResult==3) {
 				MemberDTO s_info=memberDao.getUserInfo(u_id);		
-				session.setAttribute("s_id", u_id);
+			//	session.setAttribute("s_id", u_id);
 			//	session.setAttribute("s_name", s_info.getU_name());			
 			//	session.setAttribute("s_mpass", s_info.getU_mpass());
 				session.setAttribute("s_pr_code", s_info.getPr_code());
 				session.setAttribute("s_rs_code", s_info.getRs_code());
 				PartnerDTO DTO = partnerDao.getPartnerInfo(s_info.getPr_code());
+				System.out.println(DTO.getRs_code()+"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				if(DTO!=null) {
-					if(DTO.getRs_code()==0||DTO.getRs_code()==2||DTO.getRs_code()==4){
+					if(DTO.getRs_code()==1){
 
 					session.setAttribute("pr_name", DTO.getPr_name());
 
