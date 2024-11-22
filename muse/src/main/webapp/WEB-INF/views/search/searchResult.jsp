@@ -31,7 +31,7 @@
         	<div class="search-actor-info">
         		<div class="search-actor-name"><span>${musicalActor.ma_name}</span>&nbsp;&nbsp;&nbsp;뮤지컬배우</div>
         		<div class="search-actor-birth">생년월일&nbsp;:&nbsp;${musicalActor.ma_birth}</div>
-        		<div class="search-actor-cast">출연&nbsp;:&nbsp;$   {musicalActor.ma_musicalList}</div>
+        		<div class="search-actor-cast">출연&nbsp;:&nbsp;${musicalActor.ma_musicalList}</div>
         	</div>
     	</div>
     	</c:forEach>
