@@ -189,7 +189,7 @@
 							<td>${dto2.rt_name}</td>
 							<td>${dto2.m_title}</td>
 							<td>${dto2.rs_date}</td>
-							<td>${dto2.rs_status}</td>
+							<td class="status-cell">${dto2.rs_status}</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -197,4 +197,25 @@
 		</div>
 	</div>
 </body>
+<script>
+function chageColor() {
+    const statusCells = document.querySelectorAll('.status-cell'); // 클래스 선택
+    statusCells.forEach(cell => {
+        const status = cell.textContent.trim(); // 텍스트 가져오기
+        if (status === '승인') {
+            cell.style.color = 'green'; // 글씨 색 초록색
+            cell.style.fontWeight = 'bold'; // 글씨 굵게
+        } else if (status === '반려') {
+            cell.style.color = 'red'; // 글씨 색 파란색
+            cell.style.fontWeight = 'bold';
+        } else {
+            cell.style.color = 'gray'; // 기본값 회색
+            cell.style.fontWeight = 'bold';
+        }
+    });
+}
+
+window.onload = chageColor;
+
+</script>
 </html>

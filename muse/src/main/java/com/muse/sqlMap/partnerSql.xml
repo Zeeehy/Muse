@@ -309,8 +309,10 @@ values (
         ON m.m_code = sr.m_code
     WHERE m.pr_code = #{pr_code}
       AND sr.rs_code = 1
+      
 <if test="performanceStatus == 0">
     AND sysdate BETWEEN m.m_startdate AND m.m_enddate
+    AND m.m_viewState = 1
 </if>
 <if test="performanceStatus == 1">
     AND sysdate <![CDATA[>]]> m.m_enddate
@@ -428,10 +430,10 @@ select * from users where u_id = #{u_id}
     JOIN request_type rt ON sr.rt_code = rt.rt_code 
     LEFT JOIN open_notice op ON op.m_code = m.m_code
     WHERE m.pr_code = #{pr_code}
-    <if test="isFutureDate == '0'">
+    <if test="isFutureDate == 0">
         AND m.m_startdate <![CDATA[>]]> sysdate
     </if>
-    <if test="isFutureDate == '1'">
+    <if test="isFutureDate == 1">
         AND m.m_startdate <![CDATA[<]]> sysdate
     </if>
 	</select>
