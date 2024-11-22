@@ -165,30 +165,30 @@
 	
 	<!-- 해당날짜와 시간에 따른 잔여좌석 가져오기 -->
 	<select id="getRemainingSeat" parameterType="map" resultType="map">
-	    SELECT 
-	        sg.sg_name AS grade,
-	        COUNT(s.s_code) - COALESCE(SUM(CASE WHEN bd.s_code IS NOT NULL THEN 1 ELSE 0 END), 0) AS count
-	    FROM 
-	        musical m
-	    JOIN 
-	        musical_option mo ON m.m_code = mo.m_code
-	    JOIN 
-	        seat s ON m.m_code = s.m_code
-	    JOIN 
-	        seat_grade sg ON s.sg_code = sg.sg_code
-	    LEFT JOIN 
-	        booking b ON mo.mo_code = b.mo_code
-	    LEFT JOIN 
-	        booking_detail bd ON b.b_code = bd.b_code
-	                         AND s.s_code = bd.s_code
-	    WHERE 
-	        m.m_code = #{m_code}
-	        AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
-	        AND mo.mo_time = #{selectedTime}
-	    GROUP BY 
-	        sg.sg_name
-	    ORDER BY 
-	        sg.sg_name
+SELECT 
+    sg.sg_name AS grade,
+    COUNT(DISTINCT s.s_code) - COUNT(DISTINCT bd.s_code) AS count
+FROM 
+    musical m
+JOIN 
+    musical_option mo ON m.m_code = mo.m_code
+JOIN 
+    seat s ON m.m_code = s.m_code
+JOIN 
+    seat_grade sg ON s.sg_code = sg.sg_code
+LEFT JOIN 
+    booking b ON mo.mo_code = b.mo_code
+LEFT JOIN 
+    booking_detail bd ON b.b_code = bd.b_code
+                     AND s.s_code = bd.s_code
+WHERE 
+    m.m_code = #{m_code}
+    AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
+    AND mo.mo_time = #{selectedTime}
+GROUP BY 
+    sg.sg_name
+ORDER BY 
+    sg.sg_name
 	</select>
 	
 	<!-- 예매된 좌석 가져오기 

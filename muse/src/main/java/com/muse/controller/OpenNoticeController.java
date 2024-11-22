@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.openNotice.model.OpenNoticeDAO;
 import com.muse.openNotice.model.OpenNoticeDTO;
-import com.muse.partner.model.PartnerDTO;
+import com.muse.admin.model.PartnerDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
