@@ -125,9 +125,9 @@
 					<span class="category"
 						onclick="location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id}&getMusicalList=0'">공연중</span>
 					<span class="category"
-						onclick="location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id}&getMusicalList=1'">공연
-						예정</span> <span class="category"
 						onclick="location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id}&getMusicalList=2'">공연
+						예정</span> <span class="category"
+						onclick="location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id}&getMusicalList=1'">공연
 						완료</span>
 
 				</legend>
