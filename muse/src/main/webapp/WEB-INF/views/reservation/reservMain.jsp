@@ -419,9 +419,19 @@ function handleRemainingSeatResponse() {
 }
 
 // 체크박스 처리 함수
+// 체크박스 처리 함수
 function handleCheck(checkbox) {
-    var checkboxes = document.getElementsByName('floor');
-    checkboxes.forEach(function(item) {
+    // 현재 선택된 날짜에서 요일 부분을 제거
+    let selectedDate = document.getElementById('playDate').value;
+    const selectedTime = document.getElementById('playTime').value;
+    
+    // 날짜에서 요일 부분 제거
+    if (selectedDate && selectedDate !== '선택하세요!') {
+        selectedDate = selectedDate.split(' ')[0];
+    }
+    
+    // 체크박스 UI 업데이트
+    document.getElementsByName('floor').forEach(function(item) {
         if (item === checkbox) {
             item.checked = true;
             item.closest('li').classList.add('checked');
@@ -431,20 +441,65 @@ function handleCheck(checkbox) {
         }
     });
 
-    const sl_bind = checkbox.value;
-    const selectedDate = document.getElementById('playDate').value;
-    const selectedTime = document.getElementById('playTime').value;
+    // URL 파라미터 구성
+    const url = new URL('/muse/reservMain.do', window.location.origin);
+    url.searchParams.set('mh_code', '${mh_code}');
+    url.searchParams.set('m_code', '${m_code}');
+    url.searchParams.set('sl_bind', checkbox.value);
 
-    // URL 구성 - 유효한 선택일 때만 날짜와 시간 포함
-    let url = '/muse/reservMain.do?mh_code=${mh_code}&m_code=${m_code}&sl_bind=' + sl_bind;
-    
+    // 날짜와 시간이 유효한 경우에만 파라미터 추가
     if (isValidSelection()) {
-        url += '&selectedDate=' + encodeURIComponent(selectedDate);
-        url += '&selectedTime=' + encodeURIComponent(selectedTime);
+        url.searchParams.set('selectedDate', selectedDate);
+        url.searchParams.set('selectedTime', selectedTime);
     }
 
-    window.location.href = url;
+    // 페이지 이동 및 좌석 표시
+    window.location.href = url.toString();
 }
+
+// DOM 로드 시 초기 설정
+document.addEventListener('DOMContentLoaded', function() {
+    // 초기 상태 설정
+    const seatL = document.querySelector('.seatL');
+    const selectedDate = '${selectedDate}';
+    const selectedTime = '${selectedTime}';
+    
+    // 층수 체크박스 초기 설정 - URL에서 sl_bind 값을 가져오거나 기본값 1 사용
+    const sl_bind = new URLSearchParams(window.location.search).get('sl_bind') || "1";
+    const checkboxes = document.querySelectorAll('input[name="floor"]');
+    
+    // 체크박스 상태 설정
+    checkboxes.forEach(checkbox => {
+        if (checkbox.value === sl_bind) {
+            checkbox.checked = true;
+            checkbox.closest('li').classList.add('checked');
+        } else {
+            checkbox.checked = false;
+            checkbox.closest('li').classList.remove('checked');
+        }
+    });
+
+    // 날짜와 시간이 모두 선택되어 있으면 좌석 표시
+    if (isValidSelection()) {
+        seatL.style.display = 'block';
+        // 예약된 좌석과 잔여석 정보 업데이트
+        updateReservedSeat(function() {
+            updateRemainingSeat();
+        });
+    } else {
+        seatL.style.display = 'none';
+    }
+    
+    // 날짜가 선택되어 있으면 시간 옵션 가져오기
+    if (selectedDate && selectedDate !== '선택하세요!') {
+        var event = {
+            target: {
+                value: selectedDate.split(' ')[0] // 요일 제거
+            }
+        };
+        updateTimes(event);
+    }
+});
 
 //DOM 로드 후 이벤트 리스너 등록
 document.addEventListener('DOMContentLoaded', function() {
