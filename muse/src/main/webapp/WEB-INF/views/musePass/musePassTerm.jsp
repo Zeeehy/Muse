@@ -48,23 +48,21 @@
 							자세한 서비스 내용은 TOPING 클럽 내 FAQ 참조하시거나 아래의 이용약관을 확인해 주시기 바랍니다.</p>
 						</div>
 						<div class="joinClause">
-							<h3>
-								<input type="checkbox" id="selectAllCheck" name="seatCheck" class="checkAll">
-								<label for="selectAllCheck">전체 동의하기</label>
-							</h3>
-							
-							<h4>
-								<input type="checkbox" id="termsService" name="seatCheck" class="checkSet">
-								<label for="termsService">Toping 이용약관에 동의 합니다.</label>
-							</h4>
-							
-							<h4>
-								<input type="checkbox" id="Privacy" name="seatCheck" class="checkSet">
-								<label for="Privacy">개인정보 수집에 동의합니다.</label>
-							</h4>
-							
+							<ul>
+								<li>
+									<input type="checkbox" id="selectAllCheck" name="seatCheck" class="checkAll">
+									<label for="selectAllCheck">전체 동의하기</label>
+								</li>
+								<li>
+									<input type="checkbox" id="termsService" name="seatCheck" class="checkSet">
+									<label for="termsService">Toping 이용약관에 동의 합니다.</label>
+								</li>
+								<li>
+									<input type="checkbox" id="Privacy" name="seatCheck" class="checkSet">
+									<label for="Privacy">개인정보 수집에 동의합니다.</label>
+								</li>
+							</ul>
 							<div class="joinBt"><a href="javascript:;"  id="join">가입하기</a></div>
-							
 						</div>
 					</div>
 					
