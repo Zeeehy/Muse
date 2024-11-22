@@ -97,10 +97,10 @@ public class OpenNoticeController {
 	@RequestMapping("/openNoticeView.do")
 	public ModelAndView openNoticeDetail(@RequestParam String on_code) {
 		ModelAndView mav = new ModelAndView();
-		
+		opendao.increaseReadNum(on_code);
+
 		OpenNoticeDTO ondto = opendao.getNoticeDetail(on_code);
 		
-		opendao.increaseReadNum(on_code);
 		
 		PartnerDTO pdto =  opendao.getPartnerByOpenNotice(on_code);
 		
@@ -112,25 +112,34 @@ public class OpenNoticeController {
 	}
 	
 	
-	public List<OpenNoticeDTO> setDY(List<OpenNoticeDTO> list){
-		for(OpenNoticeDTO dto : list) {
-			String dateStr = dto.getOn_open();
+	public List<OpenNoticeDTO> setDY(List<OpenNoticeDTO> list) {
+	    // 처리할 수 있는 입력 날짜 형식들
+	    SimpleDateFormat[] parsers = {
+	        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"),
+	        new SimpleDateFormat("yyyy/MM/dd HH:mm")
+	    };
+	    
+	    // 출력 형식
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd (E)", new Locale("ko", "KR"));
 
-			SimpleDateFormat parser = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd (E)", new Locale("ko", "KR"));
-			
-			String on_open="";
-			try {
-				on_open = formatter.format(parser.parse(dateStr));
-			} catch (ParseException e) {
-				on_open = dto.getOn_open();
-				e.printStackTrace();
-			}
-			
-			dto.setOn_open(on_open);
-		}
-		
-		return list;
+	    for(OpenNoticeDTO dto : list) {
+	        String dateStr = dto.getOn_open();
+	        String on_open = dateStr; // 기본값으로 원본 문자열 설정
+	        
+	        // 각 파서로 파싱 시도
+	        for(SimpleDateFormat parser : parsers) {
+	            try {
+	                on_open = formatter.format(parser.parse(dateStr));
+	                break; // 성공하면 반복 중단
+	            } catch (ParseException e) {
+	                continue; // 실패하면 다음 포맷으로 시도
+	            }
+	        }
+	        
+	        dto.setOn_open(on_open);
+	    }
+	    
+	    return list;
 	}
 	
 }

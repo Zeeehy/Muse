@@ -81,19 +81,19 @@
 <!-- 										<th>상호</th>
 										<td>클립서비스주식회사</td> -->
 										<th>대표자명</th>
-										<td>${pdto.pr_name }aaaa</td>
+										<td>${pdto.pr_name }</td>
 									</tr>
 									<tr>
 										<th>사업자등록번호</th>
-										<td>${pdto.pr_num }11111111111</td>
+										<td>${pdto.pr_num }</td>
 									</tr>
 									<tr>
 										<th>E-mail</th>
-										<td>${pdto.pr_email }aaaaa@naver.com</td>
+										<td>${pdto.pr_email }</td>
 									</tr>
 									<tr>
 										<th>연락처</th>
-										<td colspan="3">${pdto.pr_pnum }010-0001-1000</td>
+										<td colspan="3">${pdto.pr_pnum }</td>
 									</tr>
 								</tbody>
 							</table>
