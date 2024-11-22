@@ -35,6 +35,7 @@ import com.muse.seat.model.SeatLayoutDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -209,21 +210,21 @@ public class ReservController {
 	        @RequestParam(value="normalTickets_A", defaultValue = "0") int d_0_A,
 	        @RequestParam(value="veteranTickets_VIP", defaultValue = "0") int d_1_VIP,
 	        @RequestParam(value="veteranTickets_R", defaultValue = "0") int d_1_R,
-	        @RequestParam(value="veteranTickets_A", defaultValue = "0") int d_1_A,
 	        @RequestParam(value="veteranTickets_S", defaultValue = "0") int d_1_S,
+	        @RequestParam(value="veteranTickets_A", defaultValue = "0") int d_1_A,
 	        @RequestParam(value="disability13Tickets_VIP", defaultValue = "0") int d_2_VIP,
 	        @RequestParam(value="disability13Tickets_R", defaultValue = "0") int d_2_R,
 	        @RequestParam(value="disability13Tickets_S", defaultValue = "0") int d_2_S,
 	        @RequestParam(value="disability13Tickets_A", defaultValue = "0") int d_2_A,
 	        @RequestParam(value="disability46Tickets_VIP", defaultValue = "0") int d_3_VIP,
 	        @RequestParam(value="disability46Tickets_R", defaultValue = "0") int d_3_R,
-	        @RequestParam(value="disability46Tickets_A", defaultValue = "0") int d_3_S,
-	        @RequestParam(value="disability46Tickets_S", defaultValue = "0") int d_3_A
+	        @RequestParam(value="disability46Tickets_S", defaultValue = "0") int d_3_S,
+	        @RequestParam(value="disability46Tickets_A", defaultValue = "0") int d_3_A
 	        ) {
 	    
 	    ModelAndView mav = new ModelAndView();
 	    
-HashMap<String, Integer> map = new HashMap<String, Integer>();
+	    HashMap<String, Integer> map = new HashMap<String, Integer>();
 	    
 	    map.put("d_0-VIP", d_0_VIP);
 	    map.put("d_0-R", d_0_R);
@@ -426,88 +427,82 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 	
 	@RequestMapping("/reservSuccess.do")
 	public ModelAndView ReservSuccesForm(
-			@RequestParam(value = "m_code") String m_code,
-		    @RequestParam(value = "selectedSeats") String selectedSeats,
-		    @RequestParam(value = "ticketPrice") String ticketPrice,
-		    @RequestParam(value = "totalPrice") String totalPrice,
-		    @RequestParam(value = "discount") String discount,
-		    @RequestParam(value = "s_id") String s_id,
-		    @RequestParam(value = "selectedDate", required = false) String selectedDate,
-		    @RequestParam(value = "selectedTime", required = false) String selectedTime
-			) {
-		
-		ModelAndView mav = new ModelAndView();
-		//System.out.println("성공페이지에 discount가 잘 들어왔을까요?"+discount);
-		Map<String, Integer> discountMap = new HashMap<>();
+	        @RequestParam(value = "m_code") String m_code,
+	        @RequestParam(value = "selectedSeats") String selectedSeats,
+	        @RequestParam(value = "ticketPrice") String ticketPrice,
+	        @RequestParam(value = "totalPrice") String totalPrice,
+	        @RequestParam(value = "discount") String discount,
+	        @RequestParam(value = "s_id") String s_id,
+		    @RequestParam(value = "jcancelDeadline", required = false) String jcancelDeadline,
+	        @RequestParam(value = "selectedDate", required = false) String selectedDate,
+	        @RequestParam(value = "selectedTime", required = false) String selectedTime,
+	        @RequestParam(value = "usePoint", required = false) Integer usePoint  // 포인트 사용 정보 추가
+	        ) {
+	    
+	    ModelAndView mav = new ModelAndView();
+	    Map<String, Integer> discountMap = new HashMap<>();
+	    System.out.println("== 전달받은 selectedSeats ==");
+	    System.out.println(selectedSeats);
+	    
+	    // 할인 정보 파싱
+	    String[] pairs = discount.split(",");
+	    for(String pair : pairs) {
+	        String[] keyValue = pair.trim().split(":");
+	        discountMap.put(keyValue[0], Integer.parseInt(keyValue[1]));
+	    }
+	    
+	    // 공연 옵션 코드 조회를 위한 파라미터 설정
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    String dateOnly = selectedDate.split(" ")[0];
+	    params.put("m_code", m_code);
+	    params.put("mo_date", dateOnly);
+	    params.put("mo_time", selectedTime);
+	    
+	    // 공연 옵션 코드 조회
+	    String mo_code = reservDAO.getOptionCode(params);
+	    
+	    // 공연 정보 조회
+    	Map<String, Object> musicalInfo = reservDAO.getMusicalInfo(m_code);
+	    
+	    // 회원 정보 조회
+	    Map<String, Object> memberInfo = reservDAO.getMemberInfo(s_id);
+	    
+	    // 할인 정보 정리
+	    Map<String, Map<String, Integer>> rootMap = new HashMap<String, Map<String, Integer>>();
+	    
+        // 등급을 담는 맵
+	    List<Map<String,Object>> temp = reservDAO.getMusicalPrice(m_code);
+	    Map<String,Object> gradePrice = new HashMap<String, Object>(); 
+	    		
+	    for(int i=0; i<temp.size(); i++) {
+	        String gradeName = (String)temp.get(i).get("SG_NAME");  // 등급명
+	        BigDecimal price = (BigDecimal)temp.get(i).get("SP_PRICE"); // 가격
+	        
+	        gradePrice.put(gradeName, price);
+	    }
 
-		// 방법 1: split() 사용
-		String[] pairs = discount.split(",");
-		for(String pair : pairs) {
-		    String[] keyValue = pair.trim().split(":");
-		    discountMap.put(keyValue[0], Integer.parseInt(keyValue[1]));
-		}
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		
-		String dateOnly = selectedDate.split(" ")[0];
-		params.put("m_code", m_code);
-		params.put("mo_date", dateOnly);
-		params.put("mo_time", selectedTime);
-		
-		
-		System.out.println(dateOnly);
-		System.out.println(selectedTime);
-		System.out.println(m_code);
-		String mo_code = reservDAO.getOptionCode(params);
-		
-		System.out.println(mo_code);
-		
-		
-		
-		// discountMap ()
-		// selectedSeats ()
-		
-		Map<String, Map<String, Integer>> rootMap = new HashMap<String, Map<String, Integer>>();
-		
-		Iterator<String> disir =  discountMap.keySet().iterator();
-		   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-		while(disir.hasNext()) {
-			   String key = disir.next();  // d_1-VIP, d_2-R 형태
-			   String[] parts = key.split("-");  // ["d_1", "VIP"] 형태로 분리
-			   String grade = parts[1];  // VIP, R 등급만 추출
-			   
-			   System.out.println(grade);
-
-			   if(!rootMap.containsKey(grade)) {
-			       rootMap.put(grade, new HashMap<String,Integer>());
-			       System.out.println("생성");
-			   }
-			   // 해당 등급의 Map에 할인 타입과 매수 저장
-			   String discountType = parts[0];  // "d_1"에서 "1"만 추출
-			   rootMap.get(grade).put(discountType, discountMap.get(key));
-			}
-		   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-/*	
-		System.out.println("--- forEach 방식 ---");
-		rootMap.forEach((grade, discountInfo) -> {
-		   System.out.println("등급: " + grade);
-		   discountInfo.forEach((type, count) -> {
-		       System.out.println("  할인타입: " + type + ", 매수: " + count);
-		   });
-		});
-*/		
-
-		
-		
-		try {
-			Map<String,Object> bookingData = new HashMap<>();
-			bookingData.put("u_id", s_id);
-			bookingData.put("mo_code",mo_code);
-			bookingData.put("b_total_price",totalPrice);
-			
-			// selectedSeats JSON 파싱
+	    
+	    Iterator<String> disir = discountMap.keySet().iterator();
+	    while(disir.hasNext()) {
+	        String key = disir.next();
+	        String[] parts = key.split("-");
+	        String grade = parts[1];
+	        
+	        if(!rootMap.containsKey(grade)) {
+	            rootMap.put(grade, new HashMap<String,Integer>());
+	        }
+	        String discountType = parts[0];
+	        rootMap.get(grade).put(discountType, discountMap.get(key));
+	    }
+	    
+	    try {
+	        // 예매 정보 저장
+	        Map<String,Object> bookingData = new HashMap<>();
+	        bookingData.put("u_id", s_id);
+	        bookingData.put("mo_code", mo_code);
+	        bookingData.put("b_total_price", totalPrice);
+	        
+	        // 좌석 정보 파싱
 	        ObjectMapper objectMapper = new ObjectMapper();
 	        List<Map<String, Object>> seatList = objectMapper.readValue(
 	            selectedSeats,
@@ -516,82 +511,97 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 	        bookingData.put("b_count", seatList.size());
 	        bookingData.put("b_state", 1);
 	        
+	        System.out.println("== 파싱된 좌석정보 ==");
+		    System.out.println("총 좌석 수"+seatList.size());
+	        
+	        // 예매 정보 삽입 및 예매 코드 받기
 	        String b_code = reservDAO.insertBooking(bookingData);
 	        
+	        // 포인트 사용처리
+	        if(usePoint != null && usePoint > 0) {
+	        	Map<String,Object> pointInfo = new HashMap<>();
+	            System.out.println("s_id 값: " + s_id); 
+	        	pointInfo.put("u_id", s_id);
+	        	pointInfo.put("pt_category", 1);
+	        	pointInfo.put("pt_categorycode", b_code);
+	        	pointInfo.put("pt_point", -usePoint);
+	        	
+	        	Map<String, Object> result = reservDAO.insertUsePoint(pointInfo);
+	        }  
 	        
-	        
+	        // 각 좌석별 상세 정보 저장
 	        for(int i=0; i<seatList.size(); i++) {
 	            Map<String, Object> detailData = new HashMap<String, Object>();
+	            Map<String,Object> sMap = new HashMap<String, Object>();
 	            
-	            
-	            Map <String,Object> sMap = new HashMap<String, Object>();
-	            
+	            // 좌석 정보 설정
 	            sMap.put("s_floor", seatList.get(i).get("floor"));
 	            sMap.put("s_section", seatList.get(i).get("section"));
 	            sMap.put("s_row", seatList.get(i).get("row"));
 	            sMap.put("s_position", seatList.get(i).get("number"));
 	            sMap.put("m_code", m_code);
 	            
-	            sMap.forEach((key,value)->{
-	            	System.out.println(key+" aaa    "+value);
-	            });
-	            
+	            // 좌석 코드 조회
 	            int s_code = reservDAO.getSeatCodeForReserv(sMap);
-	            
-	            
 	            String grade = (String) seatList.get(i).get("grade");
 	            
-	            // Map<String, Object> currentSeat = seatList.get(i).get();
-	            //String grade = (String) currentSeat.get("grade");
-	            
+	            // 예매 상세 정보 설정
 	            detailData.put("b_code", b_code);
 	            detailData.put("s_code", s_code);
-	            detailData.put("ticket_price", ticketPrice);
+//	            detailData.put("ticket_price", ticketPrice);
 	            
-	            // discount 키를 순회하면서 현재 좌석 등급과 매칭되는 할인 찾기
-	            /*
-	            rootMap.forEach((key, value) -> {
-	                if(key.endsWith(grade)) {
-	                    detailData.put("d_code", key.split("_")[1]);
-	                }
-	            });
-	            */
-	            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!");
-	            System.out.println(grade);
-	            System.out.println(rootMap.get(grade));
+
 	            
-	            rootMap.get(grade).forEach((key,value)->{
-	            	
-	            	
-	            	
-	            	
-	            	if((int)value>0) {
-	            		detailData.put("d_code", (String)key);
-	            	}
-	            	
-	            });
+	            // 할인 정보 설정
+	            Map<String, Integer> gradeDiscounts = rootMap.get(grade);
+	            if (gradeDiscounts != null) {
+	                gradeDiscounts.forEach((key, value) -> {
+	                    if(value > 0) {
+	                        detailData.put("d_code", key);
+	                        
+	                        if(!((String)key).equals("d_0")) {
+	                        	System.out.println("111");
+	                            double b = ((BigDecimal)gradePrice.get(grade)).doubleValue() / 2.0;
+		                        detailData.put("ticket_price",b);
+
+	                        } else {
+		                        detailData.put("ticket_price",gradePrice.get(grade));
+
+	                        }
+	                        
+	                    }
+	                });
+	            }
 	            
-	            detailData.forEach((key,value)->{
-	            	System.out.println(key+"     "+value);
-	            });
-	            
-	            
-	           reservDAO.insertBookingDetail(detailData);
+	            // 예매 상세 정보 저장
+	            reservDAO.insertBookingDetail(detailData);
 	        }
 	        
+	        // JSP에 전달할 데이터 설정
+	        mav.addObject("seatList", seatList);
+	        System.out.println("=== ModelAndView에 추가된 좌석 리스트 ===");
+	        System.out.println("좌석 리스트: " + seatList);
+	        mav.addObject("musicalInfo", musicalInfo);
+	        mav.addObject("memberInfo", memberInfo);
+	        mav.addObject("selectedDate", selectedDate);
+	        mav.addObject("selectedTime", selectedTime);
+	        mav.addObject("ticketPrice", ticketPrice);
+	        mav.addObject("totalPrice", totalPrice);
+	        mav.addObject("jcancelDeadline", jcancelDeadline);
+	        mav.addObject("usePoint", usePoint);
+	        mav.addObject("bookingNumber", b_code);  // 예매번호 추가
+	        mav.addObject("discount", discountMap);   // 할인 정보 추가
 	        
-	        mav.addObject("seatList",seatList);
+	        // 뷰 설정
 	        mav.setViewName("reservation/reservSuccess");
 	        
-	       // System.out.println("예매 완료: b_code=" + insertBooking.get("b_code"));
-
-		} catch(Exception e) {
-			e.printStackTrace();
-			mav.setViewName("reservation/reservSuccess");
-			System.out.println("예매 실패");
-		}
-		
-		return mav;
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        mav.setViewName("reservation/reservError");  // 에러 페이지로 변경
+	        mav.addObject("errorMessage", "예매 처리 중 오류가 발생했습니다.");
+	    }
+	    
+	    return mav;
 	}
 
 	
@@ -624,7 +634,7 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 
 	
 	@RequestMapping("/searchTime.do")
-	public ModelAndView searchTime(@RequestParam String selectedDate, String mh_code) {
+	public ModelAndView searchTime(@RequestParam String selectedDate, String m_code) {
 	   try {
 	       String formattedDate = selectedDate;
 	       String dayOfWeek = "";
@@ -638,7 +648,7 @@ HashMap<String, Integer> map = new HashMap<String, Integer>();
 	           }
 	       }
 
-	       List<String> playTime = reservDAO.getMusicalTimeByDate(formattedDate, mh_code);
+	       List<String> playTime = reservDAO.getMusicalTimeByDate(formattedDate, m_code);
 
 	       ModelAndView mav = new ModelAndView();
 	       mav.setViewName("goJson");

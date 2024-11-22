@@ -294,7 +294,7 @@ function updateTimes(event) {
     resetSeatSelections();
     
     // 새로운 날짜의 시간 옵션을 가져오기
-    const param = 'selectedDate=' + selectedDate;
+    const param = 'selectedDate=' + selectedDate+'&m_code=${m_code}';
     sendRequest('searchTime.do', param, updateTimesResult, 'GET');
 }
 
@@ -329,8 +329,9 @@ function updateTimesResult() {
             // 날짜와 시간이 모두 유효하면 좌석과 잔여석 표시
             if (isValidSelection()) {
                 checkSeatVisibility();
-                updateRemainingSeat();
-                updateReservedSeat();
+                updateReservedSeat(function() {  // 예약된 좌석 먼저 실행
+                    updateRemainingSeat();        // 잔여석은 그 다음 실행
+                });
             }
         } else {
             resetSeatsAndCount();
@@ -480,8 +481,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // 날짜와 시간이 모두 선택되어 있으면 좌석 보이기
     if(isValidSelection()) {
         seatL.style.display = 'block';
-        updateRemainingSeat();
-        updateReservedSeat();
+        updateReservedSeat(function() {  // 예약된 좌석 먼저 실행
+            updateRemainingSeat();        // 잔여석은 그 다음 실행
+        });
     } else {
         seatL.style.display = 'none';
     }
