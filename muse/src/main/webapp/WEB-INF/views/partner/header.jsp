@@ -1,20 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
+
 <html>
+<style>
+.right-section{
+display:flex;
+}
+.right-section a{
+width:100%;
+text-align: center;
+font-size:20px;
+}
+</style>
 <body onload="onloadSession()">
 	<div class="header">
 		<div class="left-section">
 			<input type="image" src="/muse/resources/img/museimage.png"
 				class="header-image"
 				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }&isFutureDate=${isFutureDate }'">
-			
+
 		</div>
+		<c:if test="${!empty pr_name }">
+		
 		<div class="right-section">
-			<a>${pr_name}</a>|<a href="memberLogout.do">로그아웃</a> 
+			<a>${pr_name}</a>|<a href="memberLogout.do">로그아웃</a>
+			<input type="text" value="${s_pr_code}" name="pr_code">
+			 <input type="hidden" value="${pr_code}" name="pr_code"> 
+	</div>
+	</c:if>
+	<c:if test="${empty pr_name }">
+		
+		<div class="right-section">
+			<a href="partnerLogin.do">로그인</a>
 			<input type="text" value="${s_pr_code}" name="pr_code">
 			<!-- <input type="hidden" value="${pr_code}" name="pr_code"> -->
-		</div>
+	</div>
+	</c:if>
+	
 	</div>
 </body>
 <script>
@@ -30,12 +55,12 @@
           //  alert("s_rs_code:" + s_rs_code); 
 
             // 로그인 상태 및 파트너 신청 상태 체크
-           /*  if (u_id == "" || u_id == null) {
+             if (pr_name == "" || pr_name == null) {
                 alert("로그인을 해주세요");
                 window.location.href = 'partnerLogin.do';
                 return;
             }
-            else */ if (s_rs_code == "4") {
+            else if (s_rs_code == "4") {
             	window.location.href = 'partnerAddForm.do?u_id='+u_id;
                 return;
             } else if (s_rs_code == "2") {

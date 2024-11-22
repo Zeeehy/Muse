@@ -953,3 +953,17 @@ h5 {
     letter-spacing: 1px;
     font-size: 20px;
 }
+.joinClause ul {
+	display: flex;
+	flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 30px 0;
+}
+.musepass ul.next li {
+	width: 150px;
+	border-top: 2px solid #000;
+}
+.musepass ul.next li h5{
+	padding-top:10px;
+}

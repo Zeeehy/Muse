@@ -27,6 +27,7 @@ public class MainDAOImple implements MainDAO {
 	@Override
 	public List<TicketOpenDTO> main_ticketopen() {
 		List<TicketOpenDTO> arr2 = sqlMap.selectList("main_ticketopen");
+		// System.out.println("뮤즈패스 오픈:"+arr2.get(0).getOn_muse_open());	
 		return arr2;
 	}
 
@@ -72,10 +73,18 @@ public class MainDAOImple implements MainDAO {
 	}
 	
 	// 메인 검색바 - 뮤지컬 검색 카운트
-		@Override
-		public int search_m_count(String searchWord) {
-			int count = sqlMap.selectOne("search_m_count", searchWord);
-			return count;
-		}
+	@Override
+	public int search_m_count(String searchWord) {
+		int count = sqlMap.selectOne("search_m_count", searchWord);
+		return count;
+	}
+		
+	// 메인 티켓 오픈 부분
+	@Override
+	public List<TicketOpenDTO> musepass_ticketopen() {
+		List<TicketOpenDTO> arr = sqlMap.selectList("musepass_ticketopen");
+		return arr;
+		}		
+		
 
 }

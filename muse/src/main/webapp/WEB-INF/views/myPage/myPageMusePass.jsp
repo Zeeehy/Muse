@@ -99,24 +99,31 @@ body {
 }
 
 .show-item {
-    width: 150px;
     border: 1px solid #ddd;
     background-color: #fff;
     padding: 10px;
     text-align: center;
     border-radius: 4px;
+    display: flex;
+    gap: 20px;
 }
 
 .show-item img {
-    width: 100%;
+    width: 100px;
     height: auto;
     border-radius: 4px;
 }
+
 
 .show-details p {
     margin: 5px 0;
     font-size: 0.85em;
     color: #333;
+}
+.show-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 footer {
@@ -158,7 +165,7 @@ footer {
             <h4>뮤즈패스 선예매</h4>
             <div class="show-list">
                 <div class="show-item">
-                    <img src="show1.jpg" alt="공연 포스터">
+                    <img src="/muse/resources/img/musical/aladinPoster.PNG" alt="공연 포스터">
                     <div class="show-details">
                         <p>뮤지컬 지킬앤하이드 - 20주년</p>
                         <p>2024.11.05 13:00 OPEN</p>

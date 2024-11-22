@@ -76,8 +76,13 @@ public class MainController {
 	
 	// 뮤즈패스 페이지로 이동
 	@RequestMapping("/musepass.do")
-	public String musepass() {
-		return "/musepass";
+	public ModelAndView musepass() {
+		 ModelAndView mav = new ModelAndView();
+		 List<TicketOpenDTO> musepass = mainDao.musepass_ticketopen();
+		 mav.addObject("musepass", musepass);
+		 mav.setViewName("musepass");
+		 
+		return mav;
 	}
 	
 	// 검색 결과 페이지로 이동

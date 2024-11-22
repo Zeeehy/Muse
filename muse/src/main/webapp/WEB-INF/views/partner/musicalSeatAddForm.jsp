@@ -17,7 +17,7 @@
 	display: flex;
 	transform: scale(0.5); /* 예: 80% 크기로 줄이기 */
 	transform-origin: center; /* 축소 기준을 좌측 상단으로 */
-	width: calc(100%/ 0.6); /* 부모 컨테이너의 가로 크기를 유지 */
+	width: calc(100%/ 0.5); /* 부모 컨테이너의 가로 크기를 유지 */
 	overflow: hidden; /* 내부 내용이 넘치지 않도록 설정 */
 }
 

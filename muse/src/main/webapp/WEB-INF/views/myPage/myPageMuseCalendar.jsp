@@ -118,11 +118,6 @@ body {
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			initialView : 'dayGridMonth',
 			locale : 'ko', 
-/* 			headerToolbar : {
-	        	start : "",
-	            center : "prev title next",
-	            end : 'dayGridMonth,dayGridWeek,dayGridDay'
-	            }, */
             headerToolbar: {
                 start: "prev,next", // 이전/다음 버튼 왼쪽 정렬
                 center: "title",    // 제목 중앙 정렬
