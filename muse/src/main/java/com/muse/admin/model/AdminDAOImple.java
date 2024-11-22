@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import com.muse.rank.model.RankDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 public class AdminDAOImple implements AdminDAO {
@@ -288,5 +289,65 @@ public class AdminDAOImple implements AdminDAO {
 		List<StatsDTO> lists = sqlMap.selectList("rankingStats");
 		return lists;
 	}
+
+
+	@Override
+	public List<StatsDTO> rankingStatsTime(int time) {
+		
+		List<StatsDTO> lists = sqlMap.selectList("rankingStatsTime",time);
+		return lists;
+	}
+	
+	
+	
+
+	@Override
+	public List<RankDTO> getWeekRank() {
+		List<RankDTO> lists = sqlMap.selectList("getWeekRank");
+		return lists;
+	}
+
+
+	@Override
+	public int getTodayTicket() {
+		int count = sqlMap.selectOne("getTodayTicket");
+		return count;
+	}
+
+
+	@Override
+	public int getTodayPrice() {
+		int count = sqlMap.selectOne("getTodayPrice");
+		return count;
+	}
+
+
+	@Override
+	public int getInsertCount() {
+		int count = sqlMap.selectOne("getInsertCount");
+		return count;
+	}
+
+
+	@Override
+	public int getOpenCount() {
+		int count = sqlMap.selectOne("getOpenCount");
+		return count;
+	}
+
+
+	@Override
+	public int getOpenApply() {
+		int count = sqlMap.selectOne("getOpenApply");
+		return count;
+	}
+
+
+	@Override
+	public int getInsertApply() {
+		int count = sqlMap.selectOne("getInsertApply");
+		return count;
+	}
+
 	
 }

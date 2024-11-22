@@ -5,11 +5,21 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import com.muse.rank.model.RankDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 public interface AdminDAO {
 
 	int goAdminLogin(String a_id,String a_pwd);
+	
+	List<RankDTO> getWeekRank();
+	int getTodayTicket();
+	int getTodayPrice();
+	int getInsertCount();
+	int getOpenCount();
+	int getOpenApply();
+	int getInsertApply();
+	
 	
 	List<ServiceRequestDTO> addRequestList(int rt_code);
 	MusicalDTO addRequest(String sr_code);
@@ -53,6 +63,7 @@ public interface AdminDAO {
 	List<MemberStatsDTO> memberStats();
 	List<StatsDTO> partnerStats();
 	List<StatsDTO> rankingStats();
+	List<StatsDTO> rankingStatsTime(int time);
 }
 
 

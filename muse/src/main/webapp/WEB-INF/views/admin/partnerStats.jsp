@@ -6,7 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>파트너 판매 랭킹</title>
-
+<link rel="stylesheet" href="/muse/resources/css/Ljh.css" type="text/css">
 		<style type="text/css">
 #container {
     height: 400px;

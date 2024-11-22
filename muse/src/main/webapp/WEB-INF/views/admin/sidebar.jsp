@@ -34,6 +34,11 @@
     color:white;
 }
 
+.sidebar a:hover{
+    background-color: #B0DFFF !important;
+    color:white;
+}
+
 .sidebar .dropdown-btn:hover {
     background-color: #B0DFFF;
 }
@@ -89,6 +94,7 @@
 <div class="sidebar">
         
         <!-- 드롭다운 버튼과 하위 메뉴들 -->
+        <a class="hovA" href="adminMain.do">메인</a>
         <button class="dropdown-btn">공연관리
             <i class="fa fa-caret-down"></i>
         </button>

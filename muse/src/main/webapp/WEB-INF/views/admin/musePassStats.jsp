@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 
 
-
+<link rel="stylesheet" href="/muse/resources/css/Ljh.css" type="text/css">
 <style type="text/css">
 .highcharts-figure,
 .highcharts-data-table table {
