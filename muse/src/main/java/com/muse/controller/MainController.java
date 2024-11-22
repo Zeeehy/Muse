@@ -35,7 +35,7 @@ public class MainController {
 		session.removeAttribute("pwdfind_s_id");
 		session.removeAttribute("idfind_s_authNumber");
 		session.removeAttribute("pwdfind_s_authNumber");
-		int size = 10;
+		int size = 12;
 		ModelAndView mav = new ModelAndView();
 				
 		List<MusicalDTO> main_banner = mainDao.main_banner();
