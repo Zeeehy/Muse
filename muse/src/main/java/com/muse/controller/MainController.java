@@ -61,7 +61,7 @@ public class MainController {
 	@RequestMapping("/loadMoreMusicals.do")
 	@ResponseBody
 	public Map<String, Object> loadMoreMusicals(@RequestParam int page) {
-	    int size = 10;
+	    int size = 12;
 	    
 	    // 추가 데이터를 가져옴
 	    List<MusicalDTO> main_musicallist = mainDao.main_musicallist(page, size);
