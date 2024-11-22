@@ -456,7 +456,14 @@ function makeDummy(){
 		console.log(list.classList+"!!!!!!!!!!!!!!!!!!!!");
 		  var lastClass = list.classList[list.classList.length - 3];
 	       //등급 코드, 뮤지컬 코드,뮤지컬 홀 레이아웃, 섹션,왼쪽 몇번째에서 시작하는지, 열번호, 층번호
+
 	     selectedSeats.push([lastClass, musical_code, musicalHLayoutCode, data.section, list.textContent, data.row, data.floor]);
+
+	       
+	       alert(musical_code);
+	       
+
+
 		
 	});
 	

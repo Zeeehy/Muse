@@ -58,8 +58,10 @@
 				<tr>
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
-					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***"></td>
-					<td><input type="button" value="검색"><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
+
+					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***" ></td>
+					<td><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
+
 				</tr>
 
 				<tr>

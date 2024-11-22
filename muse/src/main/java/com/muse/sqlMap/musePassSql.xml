@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muse.musePass.mapper.MusePassMapper">
+    <insert id="insertMusePass" parameterType="com.muse.musePass.model.MusePassDTO">
+    	insert into mpass values(MPASS_MP_CODE.nextval,#{u_id},sysdate,ADD_MONTHS(SYSDATE, 12),1,30000)
+    </insert>
+    
+    <update id="updateMusePassOn" parameterType="String">
+    	update users set u_mpass = 1 where u_id = #{u_id}
+    </update>
+
+</mapper>

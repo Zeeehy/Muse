@@ -355,7 +355,6 @@ function goInsertOrder(){
 	frm.action = "reservSuccess.do"; 
     frm.method = "post";
     frm.submit();
-
 }
 </script>
 </body>

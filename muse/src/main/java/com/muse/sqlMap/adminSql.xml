@@ -4,6 +4,89 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.muse.admin.mapper.adminSQL">
   
+  
+  <select id="getWeekRank" resultType="com.muse.rank.model.RankDTO">
+	SELECT * FROM (
+	    SELECT m.m_code, m.m_poster, m.m_title, mh.mh_name, m.m_startdate, m.m_enddate,
+	           ROUND(SUM(b_count) / 
+	                 (SELECT SUM(b_count) 
+	                  FROM booking 
+	                  WHERE b_date BETWEEN TRUNC(SYSDATE, 'IW') 
+	                                   AND TRUNC(SYSDATE, 'IW') + 7) * 100, 2) AS booking_rate,
+	           ROW_NUMBER() OVER (ORDER BY ROUND(SUM(b_count) / 
+	                           (SELECT SUM(b_count) 
+	                            FROM booking 
+	                            WHERE b_date BETWEEN TRUNC(SYSDATE, 'IW') 
+	                                             AND TRUNC(SYSDATE, 'IW') + 7) * 100, 2) DESC) AS rank
+	    FROM booking b 
+	    JOIN musical_option mo ON b.mo_code = mo.mo_code
+	    JOIN musical m ON m.m_code = mo.m_code
+	    JOIN musical_hall mh ON m.mh_code = mh.mh_code
+	    WHERE b.b_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 7
+	    AND m.m_viewstate = 1
+	    GROUP BY m.m_code, m.m_poster, m.m_title, mh.mh_name, m.m_startdate, m.m_enddate
+	)
+	WHERE <![CDATA[rank <=5]]>
+	ORDER BY rank
+  </select>
+  
+  
+  <select id="getTodayTicket" resultType="int">
+	<![CDATA[
+SELECT SUM(b_count) AS count
+FROM booking
+WHERE b_state = 1 
+  AND b_date >= TRUNC(SYSDATE)
+  AND b_date < TRUNC(SYSDATE + 1)
+]]>
+  </select>
+  
+  
+  <select id="getTodayPrice" resultType="int">
+<![CDATA[
+SELECT SUM(b_total_price) AS count
+FROM booking
+WHERE b_state = 1 
+  AND b_date >= TRUNC(SYSDATE)
+  AND b_date < TRUNC(SYSDATE + 1)
+]]>
+  </select>
+  
+  <select id="getInsertCount" resultType="int">
+select count(*) as cnt
+from 
+service_request
+where rt_code=0 and rs_code=0
+  </select>
+  
+  <select id="getOpenCount" resultType="int">
+select count(*) as cnt
+from 
+open_notice o
+where o.rs_code=0
+  </select>
+  
+  
+<select id="getOpenApply" resultType="int">
+select count(*) as cnt
+from open_notice 
+where on_viewstate=0 and rs_code=1
+and <![CDATA[TO_DATE(on_open, 'YYYY-MM-DD HH24:MI:SS') <=  SYSDATE +7]]>
+  </select> 
+ 
+ 
+<select id="getInsertApply" resultType="int">
+<![CDATA[
+select count(*) as cnt
+from 
+service_request sr, musical m 
+where rt_code=0 and rs_code=1 and m_viewstate=0
+and m.m_code = sr.m_code
+and m_opendate <= SYSDATE + 7
+]]>
+  </select>   
+  
+  
   <select id="goAdminLogin" resultType="Int" parameterType="map">
 	select count(*)
 	from admin
@@ -80,22 +163,6 @@
   
 
 
-
-<!-- 페이징...귀찮음	
-	
-		select *
-	from
-	(
-		select rownum as rnum, a.*
-		from
-		(
-			select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
-			from partner p, users u
-			where rs_code=0 and p.u_id = u.u_id
-		)a
-	)b
-	where rnum <![CDATA[>]]> =#{start} and rnum <![CDATA[<]]>=#{end}
-	 -->
 
    <select id="partnerRequestList"  resultType="com.muse.admin.model.PartnerDTO">
 	select u.u_id,u_name,u_pnum,u_email, pr_code,pr_name,pr_num,pr_pnum,pr_email,rs_code
@@ -296,21 +363,56 @@
   
   <select id="partnerStats" resultType="com.muse.admin.model.StatsDTO">
 	select p.pr_code, p.pr_name, sum(bd_price) as count
-	from booking_detail bd, seat s ,musical m, partner p
+	from booking_detail bd, seat s ,musical m, partner p, booking b
 	where bd_state = 1 and 
-	bd.s_code = s.s_code and m.m_code = s.m_code and m.pr_code = p.pr_code
-	group by p.pr_code, p.pr_name
+	bd.s_code = s.s_code and m.m_code = s.m_code and m.pr_code = p.pr_code and b.b_code = bd.b_code
+	group by p.pr_code, p.pr_name 
+	order by count desc
+
   </select>
   
   
   
   <select id="rankingStats" resultType="com.muse.admin.model.StatsDTO">
 	select m.m_code,m.m_title,count(*) as count
-	from booking_detail bd, seat s ,musical m
+	from booking_detail bd, seat s ,musical m, booking b 
 	where bd_state = 1 and 
-	bd.s_code = s.s_code and m.m_code = s.m_code 
+	bd.s_code = s.s_code and m.m_code = s.m_code  and b.b_code= bd.b_code
 	group by m.m_code,m.m_title
+	order by count desc
   </select>
+  
+
+    
+    
+  <select id="rankingStatsTime" resultType="com.muse.admin.model.StatsDTO">
+
+	select m.m_code,m.m_title,count(*) as count
+	from booking_detail bd, seat s ,musical m, booking b 
+	where bd_state = 1 and 
+	bd.s_code = s.s_code and m.m_code = s.m_code  and b.b_code= bd.b_code
+    <if test="time == 1">
+        <![CDATA[ 
+            AND b_date >= TRUNC(SYSDATE) 
+            AND b_date < TRUNC(SYSDATE) + 1
+        ]]>   
+    </if>
+    <if test="time == 7">
+        <![CDATA[ 
+            AND b_date >= TRUNC(SYSDATE) - 7 
+            AND b_date < TRUNC(SYSDATE) + 1
+        ]]>  
+    </if>
+    <if test="time == 30">
+        <![CDATA[ 
+            AND b_date >= TRUNC(SYSDATE) - 30
+            AND b_date < TRUNC(SYSDATE) + 1
+        ]]>  
+    </if>
+	group by m.m_code,m.m_title
+	order by count desc
+  </select>
+  
   
   
   

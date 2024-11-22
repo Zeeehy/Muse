@@ -550,8 +550,6 @@ public class ReservController {
 	            detailData.put("s_code", s_code);
 //	            detailData.put("ticket_price", ticketPrice);
 	            
-
-	            
 	            // 할인 정보 설정
 	            Map<String, Integer> gradeDiscounts = rootMap.get(grade);
 	            if (gradeDiscounts != null) {
@@ -563,16 +561,12 @@ public class ReservController {
 	                        	System.out.println("111");
 	                            double b = ((BigDecimal)gradePrice.get(grade)).doubleValue() / 2.0;
 		                        detailData.put("ticket_price",b);
-
 	                        } else {
 		                        detailData.put("ticket_price",gradePrice.get(grade));
-
 	                        }
-	                        
 	                    }
 	                });
 	            }
-	            
 	            // 예매 상세 정보 저장
 	            reservDAO.insertBookingDetail(detailData);
 	        }

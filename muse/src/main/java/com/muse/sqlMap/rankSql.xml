@@ -8,13 +8,14 @@
 	    <select id="daily_rank" resultType="com.muse.rank.model.RankDTO">
 			SELECT * FROM (
 			    SELECT m.m_code,m.m_poster,m.m_title,mh.mh_name,m.m_startdate, m.m_enddate,
-			           ROUND(SUM(b_count) / (SELECT SUM(b_count) FROM booking WHERE b_date = TRUNC(SYSDATE)) * 100, 2) AS booking_rate,
-			           RANK() OVER (ORDER BY ROUND(SUM(b_count) / (SELECT SUM(b_count) FROM booking WHERE b_date = TRUNC(SYSDATE)) * 100, 2) DESC) AS rank
+			           ROUND(SUM(b_count) / (SELECT SUM(b_count) FROM booking WHERE TRUNC(b_date) = TRUNC(SYSDATE)) * 100, 2) AS booking_rate,
+			           ROW_NUMBER() OVER (ORDER BY ROUND(SUM(b_count) / 
+			           (SELECT SUM(b_count) FROM booking WHERE TRUNC(b_date) = TRUNC(SYSDATE)) * 100, 2) DESC) AS rank 
 			    FROM booking b 
 			    JOIN musical_option mo ON b.mo_code = mo.mo_code
 			    JOIN musical m ON m.m_code = mo.m_code
 			    JOIN musical_hall mh ON m.mh_code = mh.mh_code
-			    WHERE b.b_date = TRUNC(SYSDATE) and m.m_viewstate = 1
+			    WHERE TRUNC(b.b_date) = TRUNC(SYSDATE) and m.m_viewstate = 1
 			    GROUP BY  m.m_code, m.m_poster, m.m_title, mh.mh_name, m.m_startdate, m.m_enddate
 			) 
 			WHERE <![CDATA[rank <= 10]]>

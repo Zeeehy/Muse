@@ -122,10 +122,15 @@ $(document).ready(function() {
         	<div class="screening-container open">
         	  	<!-- main_ticketopen 데이터 반복문으로 출력 -->
         		<c:forEach var="ticketopen" items="${main_ticketopen}">
-	                <div class="screening-item open">
+	                <div class="screening-item open" >
 	                    <div class="thumbnail"><a href="openNoticeView.do?on_code=${ticketopen.on_code}"><img src="resources/img/musical/${ticketopen.m_poster}"alt="공연 포스터" width="277.78px" height="440px"></a></div>
 	                    <div class="title">${ticketopen.m_title}</div>
-	                    <div class="meta red"><p style="color:#444; margin-bottom: 5px;">일반 오픈 : ${ticketopen.on_open}</p>뮤즈패스 오픈 : ${ticketopen.on_muse_open}</div>
+
+	                    <div class="meta red" style="height: 32px;"><p style="color:#444; margin-bottom: 5px;">일반 오픈 : ${ticketopen.on_open}</p>	                    
+						   <c:if test="${ticketopen.on_muse_open != '없음'}">
+						   <p> 뮤즈패스 오픈 : ${ticketopen.on_muse_open}</p>
+						   </c:if>
+	                    </div>
 	                    <div class="meta gray">${ticketopen.on_type}</div>
 	                </div>     
                 </c:forEach>      
@@ -169,7 +174,7 @@ $(document).ready(function() {
 	        							<li class="content">${bestreview.mr_content}</li>
 	        							<li class="inf">
 	        								<span>${bestreview.u_id}</span>
-	        								<span>바보(할예정)</span>
+	        								<span><img src="resources/img/ystar.svg"alt="별" width="12px" height="12px"></span>
 	        								<span>(${bestreview.mr_score})</span>
 	        							</li>
 	        						</ul>

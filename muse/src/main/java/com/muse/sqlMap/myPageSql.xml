@@ -202,7 +202,7 @@
 	left join discount d on d.d_code=bd.d_code		
 	left join seat s on s.s_code=bd.s_code
 	left join seat_grade sg on sg.sg_code=s.sg_code
-	left join seat_price sp on sp.sg_code=s.sg_code
+	left join seat_price sp on sp.sg_code=s.sg_code and m.m_code=sp.m_code
 	left join users u on u.u_id=b.u_id
 	where b.b_code=#{b_code}
 	order by bd.bd_code

@@ -28,8 +28,8 @@ public class MusicalDTO {
 	
 	//파트너정보
 	private String pr_name; //파트너 명	
-	private int pr_num; //사업자 번호	
-	private int pr_pnum; // 폰번호
+	private String pr_num; //사업자 번호	
+	private String pr_pnum; // 폰번호
 	private String pr_email; //대표자 이메일
 	
 	private String sr_code;
@@ -250,22 +250,22 @@ public class MusicalDTO {
 	}
 
 
-	public int getPr_num() {
+	public String getPr_num() {
 		return pr_num;
 	}
 
 
-	public void setPr_num(int pr_num) {
+	public void setPr_num(String pr_num) {
 		this.pr_num = pr_num;
 	}
 
 
-	public int getPr_pnum() {
+	public String getPr_pnum() {
 		return pr_pnum;
 	}
 
 
-	public void setPr_pnum(int pr_pnum) {
+	public void setPr_pnum(String pr_pnum) {
 		this.pr_pnum = pr_pnum;
 	}
 

@@ -17,5 +17,6 @@
   		<mapper resource="com/muse/sqlMap/reservSql.xml"/>
   		<mapper resource="com/muse/sqlMap/musicalDetailSql.xml"/>
   		<mapper resource="com/muse/sqlMap/openNoticeSql.xml"/>
+  		<mapper resource="com/muse/sqlMap/musePassSql.xml"/>
   	</mappers>
   </configuration>
