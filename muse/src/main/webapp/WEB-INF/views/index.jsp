@@ -102,7 +102,7 @@ $(document).ready(function() {
 	<!-- main 시작 -->
 	 <div class="content">
         <article class="whatsOn">
-        <a href="myPageMuseCalendar.do" class="calender"><img src="resources/img/main/calender.png">공연일정 전체보기</a> <!-- 캘린더 -->            
+        <!--<a href="myPageMuseCalendar.do" class="calender"><img src="resources/img/main/calender.png">공연일정 전체보기</a> <!-- 캘린더 -->          
             <h2>What's on</h2>
             <div class="screening-container">           
 	            <!-- main_banner 데이터 반복문으로 출력 -->

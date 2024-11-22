@@ -93,6 +93,29 @@
     background: url(../img/main/search.png) center no-repeat;
 }
 
+
+ a.calender {
+    width: 250px;
+    display: flex;
+    position: absolute;
+    right: 248px;
+    color: #fff;
+    background: #000;
+    height: 60px;
+    border-radius: 0 0 25px 25px;
+    line-height: 60px;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+ a.calender img {
+	width:20px;
+}
+
+
+
 .hide, caption, legend, .hidden {
     position: absolute;
     left: -300px;
@@ -120,27 +143,6 @@
 article.whatsOn {
 	position: relative;
     
-}
-
-
-article.whatsOn a.calender {
-    width: 250px;
-    display: flex;
-    position: absolute;
-    right: 45px;
-    color: #fff;
-    background: #000;
-    height: 60px;
-    border-radius: 0 0 25px 25px;
-    line-height: 60px;
-    font-size: 18px;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-article.whatsOn a.calender img {
-	width:20px;
 }
 
 
