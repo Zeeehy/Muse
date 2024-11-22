@@ -124,7 +124,7 @@
 					<tr>
 						<th>뮤지컬명</th>
 						<td colspan="3"><input type="text" name="m_title"
-							placeholder="뮤지컬을 선택하세요" value="${m_name }"> <input type="hidden"
+							placeholder="뮤지컬을 선택하세요" value="${m_name }" readonly> <input type="hidden"
 							name="m_code" value="${m_code }"></td>
 						<td class="button-container" style="text-align: right;"><input
 							type="button" value="찾기" onclick="showMusicalNamePopup(event)">
@@ -212,6 +212,7 @@
 var MusicalHoleCode = '';
 var musical_code = '${m_code}';
 var musical_Name = '';
+var musicalHLayoutCode = '${mhl_code}';
 
 function insertTicketOpen(){
 	var vipgradePrice = document.getElementsByName("vipgradePrice")[0].value;
@@ -245,7 +246,9 @@ function insertTicketOpen(){
                 '&sg_code4=sg_4&sp_price4=' + agradePrice;
                 
     window.location.href = 'insertSeatPriceSeat.do?' + param;
+    alert(2);
     makeDummy();
+    alert(3);
 }
 
 

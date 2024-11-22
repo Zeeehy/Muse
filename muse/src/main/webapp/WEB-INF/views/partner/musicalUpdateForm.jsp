@@ -49,7 +49,7 @@
 <body>
 	<div class="main-content">
 		<div class="main-contenttop">
-			<h1>뮤지컬 등록</h1>
+			<h1>뮤지컬 수정</h1>
 			<hr>
 		</div>
 		<form name="insertMusical" action="insertMusical.do" method="post" enctype="multipart/form-data">
@@ -59,7 +59,7 @@
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
 					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***"></td>
-					<td><input type="button" value="검색"><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
+					<td><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
 				</tr>
 
 				<tr>
@@ -67,13 +67,13 @@
 						<td colspan="5"></td>
 						<td class="radio-container" style="width: 25%; text-align: right">
 							<label> <input type="radio" name="registration_type" 
-							 class="radio-btn" checked> 신규 등록
+							 class="radio-btn"> 신규 등록
 						</label>
 						</td>
 						<td class="radio-container" colspan="2"
 							style="width: 25%; text-align: left;"><label> <input
 								type="radio" name="registration_type" value="update"
-								class="radio-btn" disabled> 수정
+								class="radio-btn" disabled checked> 수정
 						</label></td>
 					</tr>
 				<tr>

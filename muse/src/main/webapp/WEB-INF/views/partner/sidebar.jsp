@@ -4,7 +4,7 @@
 <body>
    <div class="sidebar">
     <div class="sidebartop">
-      <a href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }+&getMusicalList=${getMusicalList }'>   메인</a> | 
+      <a href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }'>   메인</a> | 
       <span class="popup-container" style="position: relative;"> <!-- 팝업 위치를 상대적으로 설정 -->
         <a href="#" onclick="showPopup()">요청 현황</a>
         <!-- 레이어 팝업 -->
@@ -73,9 +73,9 @@
       수정 요청
     </button>
     <div class="dropdown-container">
-      <a href="#">회원 정보 수정</a>
+   	  <a href="musicalUpdate.do">뮤지컬 등록 수정</a>
       <a href="#">티켓 오픈 공지 수정</a>
-      <a href="#">공연 수정</a>
+      
     </div>
 
     <button class="dropdown-btn">
