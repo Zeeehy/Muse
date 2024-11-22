@@ -20,4 +20,7 @@ public interface MainDAO {
 		public List<MusicalDTO> search_m(String searchWord);
 		public int search_m_count(String searchWord);
 
+		
+		// 뮤즈패스 페이지 티켓 오픈 부분
+		public List<TicketOpenDTO> musepass_ticketopen();
 }
