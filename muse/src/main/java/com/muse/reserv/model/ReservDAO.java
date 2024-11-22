@@ -32,7 +32,7 @@ public interface ReservDAO {
     List<String> getBookedSeats(Map<String, Object> params);
 
     // 좌석리뷰
-	double getMusicalSeatByHall(String s_code, String mh_code);
+	double getMusicalSeatByHall(String s_code, String mh_code, String s_section, String s_row, String s_position, String s_floor);
 	
 	// 포인트 조회
 	int getPoint(String s_id);
@@ -42,5 +42,17 @@ public interface ReservDAO {
 	
 	// 세션으로 회원정보 가져오기
 	Map<String,Object> getMemberInfo(String s_id);
-
+	
+	// 예매
+	String insertBooking(Map<String, Object> params);
+	
+	// 예매상세를 위한 b_code
+	String getBookingCode();
+	
+	// 예매상세
+	int insertBookingDetail(Map<String, Object> params);
+	
+	String getOptionCode(Map<String, Object> params);
+	
+	Integer getSeatCodeForReserv(Map<String, Object>params);
 }

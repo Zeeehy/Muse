@@ -9,19 +9,19 @@
   </select>
 
 	<select id="selectMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
-	  SELECT *
-			FROM musical m
-		WHERE m.pr_code = #{pr_code}
-	  AND EXISTS (
-	    SELECT *
-	    FROM service_request sr
-	    JOIN musical m ON m.m_code= sr.m_code
-	    WHERE sr.rs_code = 1
-	    and sr.m_code = m.m_code
-	  )
-	  <if test="seachMusical != null and seachMusical != ''">
-	  AND m.m_title LIKE '%' || #{seachMusical} || '%'
-	  </if>
+	     SELECT *
+    FROM musical m
+    WHERE m.pr_code = #{pr_code}
+    AND EXISTS (
+        SELECT 1
+        FROM service_request sr
+        WHERE sr.rs_code = 1
+        AND sr.m_code = m.m_code
+        AND m.m_startdate <![CDATA[>]]> sysdate
+    )
+    <if test="seachMusical != null and seachMusical != ''">
+        AND m.m_title LIKE '%' || #{seachMusical} || '%'
+    </if>
 </select>
 
 <select id="selectStartEndDate"  resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
@@ -284,14 +284,48 @@ values (
 
 </insert>
 
+
 <select id="getMusicalList" parameterType="map" resultType="com.muse.partner.model.MusicalDTO">
-SELECT m.*, mh.mh_name
-FROM musical m
-JOIN musical_hall mh ON m.mh_code = mh.mh_code
-WHERE m.pr_code = #{pr_code}
-  AND SYSDATE BETWEEN m.m_startdate AND m.m_enddate
-ORDER BY m.m_startdate DESC
+    SELECT DISTINCT 
+        m.m_title,
+        m.m_poster,
+        m.m_time,
+        m.m_age,
+        m.m_notice,
+       TO_CHAR(m.m_startdate, 'YYYY-MM-DD') AS m_startdate,
+   		TO_CHAR(m.m_enddate, 'YYYY-MM-DD') AS m_enddate,
+        mh.mh_name,
+        NVL(LISTAGG(ma.ma_name, ', ') WITHIN GROUP (ORDER BY ma.ma_name), '배우 정보 없음') AS ma_name
+    FROM musical m
+    LEFT JOIN musical_option mo 
+        ON m.m_code = mo.m_code
+    LEFT JOIN musical_casting mc
+        ON mc.mo_code = mo.mo_code
+    LEFT JOIN musical_actor ma
+        ON mc.ma_code = ma.ma_code
+    JOIN musical_hall mh
+        ON m.mh_code = mh.mh_code
+    JOIN service_request sr
+        ON m.m_code = sr.m_code
+    WHERE m.pr_code = #{pr_code}
+      AND sr.rs_code = 1
+<if test="performanceStatus == 0">
+    AND sysdate BETWEEN m.m_startdate AND m.m_enddate
+</if>
+<if test="performanceStatus == 1">
+    AND sysdate <![CDATA[>]]> m.m_enddate
+</if>
+<if test="performanceStatus == 2">
+    AND sysdate <![CDATA[<]]> m.m_startdate
+</if>
+<if test="performanceStatus == null or performanceStatus == ''">
+    AND sysdate BETWEEN m.m_startdate AND m.m_enddate
+</if>
+
+    GROUP BY 
+        m.m_time, m.m_age, m.m_notice, m.m_startdate, m.m_enddate, mh.mh_name, m.m_title, m.m_poster
 </select>
+
 
 <select id="getusersInfo" resultType="com.muse.member.model.MemberDTO" parameterType="String">
 select * from users where u_id = #{u_id}
@@ -374,4 +408,31 @@ select * from users where u_id = #{u_id}
 	#{sg_code},
 	#{sp_price})
 	</insert>
+	<select id="getReqeustList" resultType="com.muse.partner.model.MusicalDTO" parameterType="map">
+	    SELECT 
+        m.m_code,
+        rt.rt_name,
+        CASE 
+            WHEN op.on_type IS NOT NULL THEN m.m_title || ' 티켓 ' || op.on_type
+            ELSE m.m_title
+        END AS m_title,
+        TO_CHAR(sr.rs_date, 'YYYY-MM-DD') AS rs_date,
+        CASE 
+            WHEN sr.rs_code = 0 THEN '대기중'
+            WHEN sr.rs_code = 1 THEN '승인'
+            WHEN sr.rs_code = 2 THEN '반려'
+        END AS rs_status,
+        op.on_code  
+    FROM service_request sr 
+    JOIN musical m ON sr.m_code = m.m_code
+    JOIN request_type rt ON sr.rt_code = rt.rt_code 
+    LEFT JOIN open_notice op ON op.m_code = m.m_code
+    WHERE m.pr_code = #{pr_code}
+    <if test="isFutureDate == '0'">
+        AND m.m_startdate <![CDATA[>]]> sysdate
+    </if>
+    <if test="isFutureDate == '1'">
+        AND m.m_startdate <![CDATA[<]]> sysdate
+    </if>
+	</select>
   </mapper>

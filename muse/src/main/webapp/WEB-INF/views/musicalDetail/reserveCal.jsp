@@ -161,11 +161,13 @@
             </div>
            </div>
     </div>
-	<button onclick="makeReservation()" style="    width: 100%;
+	<button id="resBtn" 
+	onclick="makeReservation()" style="    width: 100%;
     padding: 20px;
     background: #ff3d32;
     color: #fff;
     font-size: 20px;
+    display: none;
 	">예매하기</button>
         
     <script>
@@ -184,8 +186,7 @@
 	function checkOption(){
 		if (!performList || performList.length === 0) {
 	        console.log('No performance data available');
-	        document.querySelector('.calendar-container').innerHTML = '<p>No available performances.</p>';
-	       	alert(1);
+	        document.querySelector('.calendar-container').innerHTML = '<p>해당 공연은 일정이 없습니다.</p>';
 	        return false;
 	    }
 		
@@ -205,6 +206,9 @@
 	        alert(2);
 	        return false;
 	    }
+	    
+	    var resBtn = document.querySelector('#resBtn').style.display = 'block';
+	    
 	    startDate.setHours(0, 0, 0, 0);
 	    endDate.setHours(23, 59, 59, 999);
 	    currentDate = new Date(startDate);
@@ -274,7 +278,6 @@
             
             if (!checkOption()) {
             	
-            	alert('엥');
                 return; // Exit if initialization fails
             }
             

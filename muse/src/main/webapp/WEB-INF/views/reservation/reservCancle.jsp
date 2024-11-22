@@ -2,6 +2,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!-- 아임포트 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +49,18 @@
 </head>
 <body>
     <h1>취소수수료 페이지</h1>
-    <form>
+    <form name="reservationForm" action="#" method="post">
+   		<input type="hidden" name="mh_code" value="${mh_code}">
+	    <input type="hidden" name="m_code" value="${m_code}">
+	    <input type="hidden" name="selectedDate" value="${selectedDate}">
+	    <input type="hidden" name="selectedTime" value="${selectedTime}">
+		<input type="hidden" name="selectedSeats" value=""> 
+		<input type="hidden" name="usePoint" id="jusePoint" value="${usePoint}">
+		<input type="hidden" name="discount" value="${discount}">
+    	<input type="hidden" name="ticketPrice" value="${ticketPrice}">
+    	<input type="hidden" name="totalPrice" value="${ticketPrice - (usePoint != null ? usePoint : 0)}">
+		<input type="hidden" name="jcancelDeadline" id="jcancelDeadline" value="${jcancelDeadline}">
+		<input type="hidden" name="s_id" value="${s_id}">
         <section class="reservWrap">
             <article class="contWrap">
                 <header class="step">
@@ -184,13 +199,13 @@
                         <div class="s Choice">
                             <h2>총 결제 금액</h2>
                             <div>
-                                <span><b id="totalPrice">${ticketPrice - (usePoint != null ? usePoint : 0)}원</b></span>
+                                <span><b id="totalPrice">${ticketPrice - (usePoint != null ? usePoint : 0)}</b></span>
                             </div>
                         </div>
                         <div class="s Button"> 
                             <div class="subBtList">
                                 <button type="button" class="subBt" onclick="goBack()">이전단계</button>
-                                <button class="subBt pay">결제하기</button>
+                                <button id="check_module" class="subBt pay" onclick="goPurchase()">결제하기</button>
                             </div>
                         </div>
                     </aside>
@@ -298,6 +313,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+//페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', function() {
+    // 서버에서 받아온 좌석 데이터를 hidden input에 설정
+    const selectedSeats = [
+        <c:forEach items="${selectedSeats}" var="seat" varStatus="status">
+            {
+                grade: "${seat.grade}",
+                floor: "${seat.floor}",
+                section: "${seat.section}",
+                row: "${seat.row}",
+                number: "${seat.number}"
+            }<c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+    
+    document.querySelector('input[name="selectedSeats"]').value = JSON.stringify(selectedSeats);
+});
+
+//결제해주러 가는 함수 //
+function goPurchase(){
+
+	const price = $("b#totalPrice").text();
+	const user_id_pk = "${sessionScope.s_id}";
+	const musical_mtitle = "${musicalInfo.M_TITLE}";
+	
+	const url = 'reservPay.do?s_id='+user_id_pk+'&price='+price+'&m_title='+musical_mtitle; 
+
+     // 견적서번호 넘기기 
+     window.open(url, "reservPay",
+             "left=350px, top=100px, width=1000px height=600px");
+               
+} 
+
+
+
+//결제하고나서 실행할 함수
+function goInsertOrder(){
+	const frm = document.reservationForm;
+	frm.action = "reservSuccess.do"; 
+    frm.method = "post";
+    frm.submit();
+
+}
 </script>
 </body>
 </html>

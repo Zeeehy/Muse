@@ -196,9 +196,11 @@ public class PartnerDAOImple implements PartnerDAO {
 	}
 
 	@Override
-	public List<MusicalDTO> getMusicalList(String pr_code) {
+	public List<MusicalDTO> getMusicalList(String pr_code,String performanceStatus) {
 		Map<String, Object> params = new HashMap<>();
 		params.put("pr_code", pr_code);
+		params.put("performanceStatus", performanceStatus);
+		
 		List<MusicalDTO> list = sqlMap.selectList("getMusicalList", params);
 		return list;
 	}
@@ -271,5 +273,13 @@ public class PartnerDAOImple implements PartnerDAO {
 
 		int result = sqlMap.insert("insertSeatPrice",DTO);
 		return result;
+	}
+	@Override
+	public List<MusicalDTO> getReqeustList(String pr_code, String isFutureDate) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("pr_code", pr_code);
+		params.put("isFutureDate", isFutureDate);
+		List<MusicalDTO> list = sqlMap.selectList("getReqeustList",params);
+		return list;
 	}
 }

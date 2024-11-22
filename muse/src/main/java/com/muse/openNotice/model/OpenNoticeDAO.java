@@ -3,7 +3,7 @@ package com.muse.openNotice.model;
 import java.util.List;
 import java.util.Map;
 
-import com.muse.partner.model.PartnerDTO;
+import com.muse.admin.model.PartnerDTO;
 
 public interface OpenNoticeDAO {
 

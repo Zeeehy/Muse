@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,7 +70,7 @@ public class ReservController {
 	    String dateWithDay  = null;
 	    if(selectedDate != null) {
 	        try {
-	            LocalDate date = LocalDate.parse(selectedDate);
+	            LocalDate date = LocalDate.parse(selectedDate.substring(0, 10));
 	            DayOfWeek dayOfWeek = date.getDayOfWeek();
 	            String koreanDayOfWeek = "(" + plusWeek(dayOfWeek) + ")";
 	            dateWithDay = selectedDate + " " + koreanDayOfWeek;
@@ -141,9 +142,11 @@ public class ReservController {
 	        @RequestParam String selectedTime,
 	        @RequestParam String selectedSeats,
 	        @RequestParam(required = false) String jcancleDeadline
+
 			) {
 	    ModelAndView mav = new ModelAndView();
 	    
+
 	    try {
 
 	        ObjectMapper objectMapper = new ObjectMapper();
@@ -199,10 +202,67 @@ public class ReservController {
 	        @RequestParam(value = "selectedSeats", required = false) String selectedSeats ,
 	        @RequestParam(value = "jcancelDeadline", required = false) String jcancelDeadline,
 	        @RequestParam(value = "ticketPrice", required = false) String ticketPrice,
-	        HttpSession session
+	        HttpSession session,
+	        @RequestParam(value="normalTickets_VIP", defaultValue = "0") int d_0_VIP,
+	        @RequestParam(value="normalTickets_R", defaultValue = "0") int d_0_R,
+	        @RequestParam(value="normalTickets_S", defaultValue = "0") int d_0_S,
+	        @RequestParam(value="normalTickets_A", defaultValue = "0") int d_0_A,
+	        @RequestParam(value="veteranTickets_VIP", defaultValue = "0") int d_1_VIP,
+	        @RequestParam(value="veteranTickets_R", defaultValue = "0") int d_1_R,
+	        @RequestParam(value="veteranTickets_A", defaultValue = "0") int d_1_A,
+	        @RequestParam(value="veteranTickets_S", defaultValue = "0") int d_1_S,
+	        @RequestParam(value="disability13Tickets_VIP", defaultValue = "0") int d_2_VIP,
+	        @RequestParam(value="disability13Tickets_R", defaultValue = "0") int d_2_R,
+	        @RequestParam(value="disability13Tickets_S", defaultValue = "0") int d_2_S,
+	        @RequestParam(value="disability13Tickets_A", defaultValue = "0") int d_2_A,
+	        @RequestParam(value="disability46Tickets_VIP", defaultValue = "0") int d_3_VIP,
+	        @RequestParam(value="disability46Tickets_R", defaultValue = "0") int d_3_R,
+	        @RequestParam(value="disability46Tickets_A", defaultValue = "0") int d_3_S,
+	        @RequestParam(value="disability46Tickets_S", defaultValue = "0") int d_3_A
 	        ) {
 	    
 	    ModelAndView mav = new ModelAndView();
+	    
+HashMap<String, Integer> map = new HashMap<String, Integer>();
+	    
+	    map.put("d_0-VIP", d_0_VIP);
+	    map.put("d_0-R", d_0_R);
+	    map.put("d_0-S", d_0_S);
+	    map.put("d_0-A", d_0_A);
+	    
+	    map.put("d_1-VIP", d_1_VIP);
+	    map.put("d_1-R", d_1_R);
+	    map.put("d_1-S", d_1_S);
+	    map.put("d_1-A", d_1_A);
+	    
+	    map.put("d_2-VIP", d_2_VIP);
+	    map.put("d_2-R", d_2_R);
+	    map.put("d_2-S", d_2_S);
+	    map.put("d_2-A", d_2_A);
+	    
+	    map.put("d_3-VIP", d_3_VIP);
+	    map.put("d_3-R", d_3_R);
+	    map.put("d_3-S", d_3_S);
+	    map.put("d_3-A", d_3_A);
+	    
+	    StringBuilder discount = new StringBuilder();  // String 대신 StringBuilder 사용
+
+	 // 방법 1: Iterator 사용
+		 Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator();
+		 while(it.hasNext()) {
+		     Map.Entry<String, Integer> entry = it.next();
+		     if(entry.getValue() == 0) {
+		         it.remove();  // Iterator의 remove 메서드 사용
+		     } else {
+		         discount.append(entry.getKey()).append(":").append(entry.getValue());
+		         discount.append(",");
+		     }
+		 }
+		 
+		 
+		 System.out.println("######################################");
+	    System.out.println(discount.toString());
+		 System.out.println("######################################");
 	    
 	    try {
 	    	System.out.println("reservCheckController");
@@ -252,7 +312,10 @@ public class ReservController {
 	        mav.addObject("jcancelDeadline", jcancelDeadline); 
 	        mav.addObject("ticketPrice", ticketPrice);
 	        mav.addObject("memberInfo",memberInfo);
+	        mav.addObject("discount",discount.toString());
+	        
 	        mav.setViewName("reservation/reservCheck");
+	        
 	        
 	        System.out.println("jsonSeats being sent: " + selectedSeats);
 
@@ -274,6 +337,7 @@ public class ReservController {
 	       //@RequestParam(value = "cancelDeadline", required = false) String cancelDeadline,
 	       @RequestParam(value = "ticketPrice", required = false) String ticketPrice,
 	       @RequestParam(value = "totalPrice", required = false) String totalPrice,
+	       @RequestParam(value = "discount", required = false) String discount,
 	       HttpSession session) {
 	   
 	   ModelAndView mav = new ModelAndView();
@@ -327,6 +391,7 @@ public class ReservController {
 	       mav.addObject("ticketPrice", ticketPrice);
 	       mav.addObject("totalPrice", totalPrice);
 	       mav.addObject("memberInfo", memberInfo);
+	       mav.addObject("discount", discount);
 	       mav.addObject("seatCount", seatList != null ? seatList.size() : 0);
 	       
 	       mav.setViewName("reservation/reservCancle");
@@ -341,10 +406,192 @@ public class ReservController {
 	   return mav;
 	}
 	
+	@RequestMapping("/reservPay.do")
+	public ModelAndView ReservPayForm(
+		   @RequestParam(value = "price") int price,
+		   @RequestParam(value = "s_id") String s_id,
+		   @RequestParam(value = "m_title") String m_title
+			) {
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("reservation/reservPay");
+		mav.addObject("price",price);
+		mav.addObject("s_id",s_id);
+		mav.addObject("m_title", m_title);
+		
+		return mav;
+		
+	}
+	
 	
 	@RequestMapping("/reservSuccess.do")
-	public String ReservSuccesForm() {
-		return "reservation/reservSuccess";
+	public ModelAndView ReservSuccesForm(
+			@RequestParam(value = "m_code") String m_code,
+		    @RequestParam(value = "selectedSeats") String selectedSeats,
+		    @RequestParam(value = "ticketPrice") String ticketPrice,
+		    @RequestParam(value = "totalPrice") String totalPrice,
+		    @RequestParam(value = "discount") String discount,
+		    @RequestParam(value = "s_id") String s_id,
+		    @RequestParam(value = "selectedDate", required = false) String selectedDate,
+		    @RequestParam(value = "selectedTime", required = false) String selectedTime
+			) {
+		
+		ModelAndView mav = new ModelAndView();
+		//System.out.println("성공페이지에 discount가 잘 들어왔을까요?"+discount);
+		Map<String, Integer> discountMap = new HashMap<>();
+
+		// 방법 1: split() 사용
+		String[] pairs = discount.split(",");
+		for(String pair : pairs) {
+		    String[] keyValue = pair.trim().split(":");
+		    discountMap.put(keyValue[0], Integer.parseInt(keyValue[1]));
+		}
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		String dateOnly = selectedDate.split(" ")[0];
+		params.put("m_code", m_code);
+		params.put("mo_date", dateOnly);
+		params.put("mo_time", selectedTime);
+		
+		
+		System.out.println(dateOnly);
+		System.out.println(selectedTime);
+		System.out.println(m_code);
+		String mo_code = reservDAO.getOptionCode(params);
+		
+		System.out.println(mo_code);
+		
+		
+		
+		// discountMap ()
+		// selectedSeats ()
+		
+		Map<String, Map<String, Integer>> rootMap = new HashMap<String, Map<String, Integer>>();
+		
+		Iterator<String> disir =  discountMap.keySet().iterator();
+		   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+		while(disir.hasNext()) {
+			   String key = disir.next();  // d_1-VIP, d_2-R 형태
+			   String[] parts = key.split("-");  // ["d_1", "VIP"] 형태로 분리
+			   String grade = parts[1];  // VIP, R 등급만 추출
+			   
+			   System.out.println(grade);
+
+			   if(!rootMap.containsKey(grade)) {
+			       rootMap.put(grade, new HashMap<String,Integer>());
+			       System.out.println("생성");
+			   }
+			   // 해당 등급의 Map에 할인 타입과 매수 저장
+			   String discountType = parts[0];  // "d_1"에서 "1"만 추출
+			   rootMap.get(grade).put(discountType, discountMap.get(key));
+			}
+		   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+/*	
+		System.out.println("--- forEach 방식 ---");
+		rootMap.forEach((grade, discountInfo) -> {
+		   System.out.println("등급: " + grade);
+		   discountInfo.forEach((type, count) -> {
+		       System.out.println("  할인타입: " + type + ", 매수: " + count);
+		   });
+		});
+*/		
+
+		
+		
+		try {
+			Map<String,Object> bookingData = new HashMap<>();
+			bookingData.put("u_id", s_id);
+			bookingData.put("mo_code",mo_code);
+			bookingData.put("b_total_price",totalPrice);
+			
+			// selectedSeats JSON 파싱
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        List<Map<String, Object>> seatList = objectMapper.readValue(
+	            selectedSeats,
+	            new TypeReference<List<Map<String, Object>>>() {}
+	        );
+	        bookingData.put("b_count", seatList.size());
+	        bookingData.put("b_state", 1);
+	        
+	        String b_code = reservDAO.insertBooking(bookingData);
+	        
+	        
+	        
+	        for(int i=0; i<seatList.size(); i++) {
+	            Map<String, Object> detailData = new HashMap<String, Object>();
+	            
+	            
+	            Map <String,Object> sMap = new HashMap<String, Object>();
+	            
+	            sMap.put("s_floor", seatList.get(i).get("floor"));
+	            sMap.put("s_section", seatList.get(i).get("section"));
+	            sMap.put("s_row", seatList.get(i).get("row"));
+	            sMap.put("s_position", seatList.get(i).get("number"));
+	            sMap.put("m_code", m_code);
+	            
+	            sMap.forEach((key,value)->{
+	            	System.out.println(key+" aaa    "+value);
+	            });
+	            
+	            int s_code = reservDAO.getSeatCodeForReserv(sMap);
+	            
+	            
+	            String grade = (String) seatList.get(i).get("grade");
+	            
+	            // Map<String, Object> currentSeat = seatList.get(i).get();
+	            //String grade = (String) currentSeat.get("grade");
+	            
+	            detailData.put("b_code", b_code);
+	            detailData.put("s_code", s_code);
+	            detailData.put("ticket_price", ticketPrice);
+	            
+	            // discount 키를 순회하면서 현재 좌석 등급과 매칭되는 할인 찾기
+	            /*
+	            rootMap.forEach((key, value) -> {
+	                if(key.endsWith(grade)) {
+	                    detailData.put("d_code", key.split("_")[1]);
+	                }
+	            });
+	            */
+	            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!");
+	            System.out.println(grade);
+	            System.out.println(rootMap.get(grade));
+	            
+	            rootMap.get(grade).forEach((key,value)->{
+	            	
+	            	
+	            	
+	            	
+	            	if((int)value>0) {
+	            		detailData.put("d_code", (String)key);
+	            	}
+	            	
+	            });
+	            
+	            detailData.forEach((key,value)->{
+	            	System.out.println(key+"     "+value);
+	            });
+	            
+	            
+	           reservDAO.insertBookingDetail(detailData);
+	        }
+	        
+	        
+	        mav.addObject("seatList",seatList);
+	        mav.setViewName("reservation/reservSuccess");
+	        
+	       // System.out.println("예매 완료: b_code=" + insertBooking.get("b_code"));
+
+		} catch(Exception e) {
+			e.printStackTrace();
+			mav.setViewName("reservation/reservSuccess");
+			System.out.println("예매 실패");
+		}
+		
+		return mav;
 	}
 
 	
@@ -360,11 +607,6 @@ public class ReservController {
 			
 			List<SeatDTO> seatList = reservDAO.getRealSeat(m_code);
 			
-			//System.out.println(section);
-			//System.out.println(floor);
-			//System.out.println(max_rowMap);
-			//System.out.println(seatList);
-			
 			String jsonLayout = new Gson().toJson(layout);
 			String jsonSection =  new Gson().toJson(section); 
 			String jsonFloor = new Gson().toJson(floor);
@@ -376,14 +618,7 @@ public class ReservController {
 			map.put("floor",jsonFloor);
 			map.put("max_rowMap",jsonMax_rowMap);
 			map.put("seatList",jseatList);
-			
-			//System.out.println(jsonLayout);
-			//System.out.println(jsonSection);
-			//System.out.println(jsonFloor);
-			//System.out.println(jsonMax_rowMap);
-			//System.out.println(jseatList);
 					
-			
 			return map;
 		}
 
@@ -431,13 +666,15 @@ public class ReservController {
 	        @RequestParam("selectedDate") String selectedDate,
 	        @RequestParam("selectedTime") String selectedTime,
 	        @RequestParam("m_code") String m_code) {
+		 
 	        
 	        Map<String, Object> params = new HashMap<>();
 	        params.put("selectedDate", selectedDate);
 	        params.put("selectedTime", selectedTime);
 	        params.put("m_code", m_code);
+	        Map<String, Integer> map =  reservDAO.getRemainingSeat(params);
 	        
-	        return reservDAO.getRemainingSeat(params);
+	        return map;
 	    }
 	
 	@GetMapping("/getBookedSeats.do")
@@ -481,15 +718,18 @@ public class ReservController {
 	@GetMapping("/getSeatReviewAvg.do")
 	@ResponseBody
 	public double getSeatReviewAvg(
-	        @RequestParam("s_code") String s_code,
-	        @RequestParam("m_code") String m_code) {
+			@RequestParam("s_code") String s_code,
+            @RequestParam("mh_code") String mh_code,
+            @RequestParam("s_section") String s_section,
+            @RequestParam("s_row") String s_row,
+            @RequestParam("s_position") String s_position,
+            @RequestParam("s_floor") String s_floor) {
 
 	    System.out.println("Received Parameters:");
 	    System.out.println("s_code: "+s_code);
-	    System.out.println("m_code: " + m_code);
 	    
 	    
-	    Double avg = reservDAO.getMusicalSeatByHall(s_code, m_code);
+	    Double avg = reservDAO.getMusicalSeatByHall(s_code, mh_code,s_section, s_row, s_position, s_floor);
 	    System.out.println(avg);
 	    // 평균 평점 계산
 	    //return reservDAO.getMusicalSeatByHall(s_section, Integer.parseInt(s_row), Integer.parseInt(s_floor), Integer.parseInt(s_position), mh_code);

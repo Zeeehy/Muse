@@ -162,21 +162,19 @@ public class ReservDAOImple implements ReservDAO {
 		}
 		
 		@Override
-		public double getMusicalSeatByHall(String s_code, String m_code) {
+		public double getMusicalSeatByHall(String s_code, String mh_code, String s_section, String s_row, String s_position, String s_floor) {
 			Map<String,Object> map = new HashMap<>();
 			map.put("s_code", s_code);
-			map.put("m_code", m_code);
+			map.put("mh_code", mh_code);
+			map.put("s_section", s_section);
+			map.put("s_row", s_row);
+			map.put("s_position", s_position);
+			map.put("s_floor", s_floor);
 			
 			Double avg = sqlMap.selectOne("getMusicalSeatByHall",map);
 			System.out.println("nullCheck"+avg);
 			return avg==null?0.0:avg;
 		}
-		
-		/*
-		 * @Override public List<Map<String, Object>> getMusicalSeatPrice(String mCode)
-		 * { return sqlMap.selectList("getMusicalSeatPrice", mCode); }
-		 */
-		
 		
 		@Override
 		public int getPoint(String s_id) {
@@ -191,6 +189,37 @@ public class ReservDAOImple implements ReservDAO {
 		@Override
 		public Map<String, Object> getMemberInfo(String s_id) {
 			return sqlMap.selectOne("getMemberInfo",s_id);
+		}
+		
+		@Override
+		public String insertBooking(Map<String, Object> params) {
+			sqlMap.insert("insertBooking",params);
+			
+			String b_code = getBookingCode(); // 생성된 b_code 조회해서
+			
+			return b_code;
+		}
+		
+		@Override
+		public String getBookingCode() {
+			return sqlMap.selectOne("getBookingCode");
+		}
+		
+		@Override
+		public int insertBookingDetail(Map<String, Object> params) {
+			return sqlMap.insert("insertBookingDetail",params);
+		}
+		
+		@Override
+		public String getOptionCode(Map<String, Object> params) {
+			// TODO Auto-generated method stub
+			return sqlMap.selectOne("getOptionCode",params);
+		}
+		
+		@Override
+		public Integer getSeatCodeForReserv(Map<String, Object> params) {
+			// TODO Auto-generated method stub
+			return sqlMap.selectOne("getSeatCodeForReserv",params);
 		}
 
 }

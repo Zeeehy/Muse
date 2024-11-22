@@ -3,6 +3,7 @@ package com.muse.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -603,14 +604,15 @@ public class MyPageController {
 		ModelAndView mav=new ModelAndView();
 		List<MuseCalendarDTO> calendarList = new ArrayList<>();
 		
-		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	// 수정예정
+		List<MuseCalendarDTO> bookingList = museCalendarDao.getCalendarBooking(u_id);
 		List<MyLikeMusicalDTO> musicalList = museCastDao.getLikeMusicalList(u_id);
+		List<MuseCalendarDTO> actorList = museCalendarDao.getCalendarActorCast(u_id);
 		
-		for (MyBookingListDTO booking : bookingList) {
+		for (MuseCalendarDTO booking : bookingList) {
 			MuseCalendarDTO calendar = new MuseCalendarDTO();
-			calendar.setCalendar_title(booking.getM_title());
-			calendar.setCalendar_start(booking.getMo_date());
-			calendar.setCalendar_end(booking.getMo_date());
+			calendar.setCalendar_title(booking.getCalendar_title());
+			calendar.setCalendar_start(booking.getCalendar_start());
+			calendar.setCalendar_end(booking.getCalendar_end());
 			calendar.setCalendar_color("#3498db");
 			calendarList.add(calendar);
 		}
@@ -621,6 +623,15 @@ public class MyPageController {
 			calendar.setCalendar_start(musical.getM_startdate());
 			calendar.setCalendar_end(musical.getM_enddate());
 			calendar.setCalendar_color("#e67e22");
+			calendarList.add(calendar);
+		}
+		
+		for(MuseCalendarDTO actor : actorList) {
+			MuseCalendarDTO calendar = new MuseCalendarDTO();
+			calendar.setCalendar_title(actor.getCalendar_title());
+			calendar.setCalendar_start(actor.getCalendar_start());
+			calendar.setCalendar_end(actor.getCalendar_end());
+			calendar.setCalendar_color("#9b59b6");
 			calendarList.add(calendar);
 		}
 		
@@ -659,5 +670,12 @@ public class MyPageController {
 		return mav;
 	}
 	
+	/**마이페이지 포인트*/
+	@RequestMapping("/myPagePoint.do")
+	public ModelAndView myPagePointForm() {
+		ModelAndView mav = new ModelAndView();
 
+		mav.setViewName("/myPage/myPagePoint");
+		return mav;
+	}
 }
