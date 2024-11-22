@@ -52,10 +52,10 @@
 				<div class="bene_list">
 				<c:forEach var="ms" items="${musepass}">
 					<div class="bene_res_inf">
-						<a href="#" class="ref_inf_img"><img src="resources/img/musical/${ms.m_poster}" width="300px" height="412.22px"></a>
+						<a href="openNoticeView.do?on_code=${ms.on_code}" class="ref_inf_img"><img src="resources/img/musical/${ms.m_poster}" width="300px" height="412.22px"></a>
 						<div class="pos_inf">
 							<a href="openNoticeView.do?on_code=${ms.on_code}" class="ref_inf_txt">
-								<p class="name">${ms.m_title}]</p>
+								<p class="name">[${ms.m_title}]</p>
 								<img src="resources/img/main/muselogo.png">
 								<p class="musename">뮤즈패스</p>
 								<p class="muse_day">${ms.on_muse_open} OPEN</p>
