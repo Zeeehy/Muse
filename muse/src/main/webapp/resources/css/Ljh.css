@@ -1,6 +1,35 @@
 @charset "UTF-8";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 styles.css
+
+
+
+@font-face {
+    font-family: 'MV Boli';
+    font-weight: normal;
+    font-style: normal;
+}
+
+.highcharts-figure {
+    font-family: 'Pretendard';
+    font-size: 16px; /* 글자 크기 조정 */
+    color: #333; /* 글자 색상 */
+}
+
+.highcharts-description, .highcharts-title {
+    font-family: 'Pretendard';
+}
+
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
+    overflow-x: hidden;
+}
+
+p, span, li, label, input, button, textarea, select, option, h1, h2, h3, tr, th, td {
+    font-family: 'Pretendard';
+}
+
 
 
 /* 공통 */

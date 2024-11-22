@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.admin.model.AdminDAO;
@@ -31,6 +33,7 @@ import com.muse.admin.model.PartnerDTO;
 import com.muse.admin.model.RequestListDTO;
 import com.muse.admin.model.ServiceRequestDTO;
 import com.muse.admin.model.StatsDTO;
+import com.muse.rank.model.RankDTO;
 import com.muse.review.model.MusicalReviewDTO;
 
 @Controller
@@ -66,7 +69,7 @@ public class AdminController {
 		
 		if(result==1) {
 			mav.addObject("msg","관리자님 환영합니다.");
-			mav.addObject("goUrl","addRequestList.do");
+			mav.addObject("goUrl","adminMain.do");
 			mav.setViewName("admin/adminMsg");
 			
 			session.setAttribute("s_aid", a_id);
@@ -92,6 +95,35 @@ public class AdminController {
 		
 		return mav;
 	}
+	
+	
+	@RequestMapping("adminMain.do")
+	public ModelAndView requiredLogin_adminMain(HttpSession session,HttpServletRequest request) {
+		
+		ModelAndView mav = new ModelAndView();
+		
+		List<RankDTO> rankWeekly = adminDao.getWeekRank();
+		
+		int ticketCount = adminDao.getTodayTicket();
+		int ticketPrice = adminDao.getTodayPrice();
+		int insertCount = adminDao.getInsertCount();
+		int openCount = adminDao.getOpenCount();
+		int openApply = adminDao.getOpenApply();
+		int insertApply = adminDao.getInsertApply();
+		
+		mav.addObject("lists", rankWeekly);
+		mav.addObject("cnt", ticketCount);
+		mav.addObject("insertCnt", insertCount);
+		mav.addObject("openCnt", openCount);
+		mav.addObject("openApply", openApply);
+		mav.addObject("insertApply", insertApply);
+		mav.addObject("price", NumberFormat.getInstance().format(ticketPrice));
+		mav.addObject("ticketPrice", ticketPrice);
+		mav.setViewName("/admin/adminMain");
+		return mav;
+	}
+	
+	
 	
 	
 	/*공연등록 승인 시작*/
@@ -395,8 +427,8 @@ public class AdminController {
 		mav.setViewName("/admin/adminReviewList");
 		
 		int totalCnt=adminDao.getTotalCnt();
-		int listsize=2; //  페이지에 리뷰
-		int pagesize=3; // 이게 페이지의 페이징한
+		int listsize=10; //  페이지에 리뷰
+		int pagesize=5; // 이게 페이지의 페이징한
 		
 		String pagingStr=com.muse.admin.model.Paging.makePage("adminReviewList.do", totalCnt, listsize, pagesize, cp);
 
@@ -660,11 +692,33 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping("/rankingStatsTime.do")
+	@ResponseBody
+	public Map<String, Object> rankingStatsTime(@RequestParam String page) {
+	    
+		
+		List<StatsDTO> lists  =null; 
+
+		if(page.equals("oneday")) {
+			lists = adminDao.rankingStatsTime(1);
+		}else if(page.equals("oneweek")) {
+			lists = adminDao.rankingStatsTime(7);
+		}else if(page.equals("onemonth")) {
+			lists = adminDao.rankingStatsTime(30);
+		}else if(page.equals("all")) {
+			lists = adminDao.rankingStats();
+		}else {
+			
+		}
+	    
+	    // JSON 응답을 위한 Map 설정
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("lists", lists);
+	    
+	    return response; // 반환되는 객체는 자동으로 JSON 형태로 변환됨
+	}
+	
 	
 	/* 통계 끝 */
 	
 }
-
-
-
-
