@@ -38,7 +38,14 @@
 					<c:forEach items="${noticeList }" var="notice">
 					
 						<tr class="content">
-							<td><a href="openNoticeView.do?on_code=${notice.on_code }&crpage=${crpage}">${notice.m_title } ${notice.on_type } <c:if test="${!empty notice.on_muse_open }"> <span class="passText">MusePass 선예매</span> </c:if></a></td>
+							<td>
+								<a href="openNoticeView.do?on_code=${notice.on_code}&crpage=${crpage}">
+							        ${notice.m_title} ${notice.on_type}
+							        <c:if test="${not empty notice.on_muse_open and notice.on_muse_open ne ' '}">
+							            <span class="passText">MusePass 선예매</span>
+							        </c:if>
+							    </a>
+							</td>
 							<td> ${notice.on_open }  </td>
 							<td>${notice.on_readnum }</td>						
 						</tr>
@@ -74,9 +81,9 @@ function showNotice(cr){
                         + notice.m_title + ' ' + notice.on_type;
 
 	                    // MusePass 선예매 조건 추가
-	                    if (notice.on_muse_open) {
-	                        html += ' <span class="passText">MusePass 선예매</span>';
-	                    }
+                        if (notice.on_muse_open && notice.on_muse_open.trim() !== '') {
+                            html += ' <span class="passText">MusePass 선예매</span>';
+                        }
 
                     	html += '</a></td>';
                     	html += '<td>' + notice.on_open + '</td>';
