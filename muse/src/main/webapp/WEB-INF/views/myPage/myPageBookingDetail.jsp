@@ -175,6 +175,7 @@ table button {
 	border-radius: 10%;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 function openSeatReview(bd_code){
 	
@@ -184,6 +185,25 @@ function openMusicalDetail(m_code){
 	
 	location.href='musicalDetail.do?m_code='+m_code;
 }
+function openRefund(bd_code){
+	
+	location.href='reservRefund.do?bd_code='+bd_code;
+	location.reload();
+}
+/* function openRefund(bd_code) {
+    $.ajax({
+        url: 'reservRefund.do',
+        type: 'GET',
+        data: { bd_code: bd_code },
+        success: function(response) {
+            // 환불 처리가 성공하면 페이지 새로 고침
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.log("Error: " + error);
+        }
+    });
+} */
 </script>
 </head>
 <body>
@@ -287,7 +307,7 @@ function openMusicalDetail(m_code){
                     </tr>
                 </thead>
                 <tbody>
-                	<c:forEach var="bdlist" items="${bookingDetailList}">
+                	<c:forEach var="bdlist" items="${bookingDetailList}" varStatus="varStat">
 	                	<tr>
 	                        <td>${bdlist.bd_code}</td>
 	                        <td>${bdlist.sg_name}</td>
@@ -303,7 +323,7 @@ function openMusicalDetail(m_code){
 									<c:if test="${bdlist.review_state eq 0}"><td>-</td></c:if>
 									<c:if test="${bdlist.review_state eq 1}"><td><button onclick="openSeatReview('${bdlist.bd_code}');">좌석리뷰</button></td></c:if>
 								</c:if>
-								<c:if test="${bdlist.refund_state eq 1}"><td>취소가능</td><td><button>취소하기</button></td></c:if>
+								<c:if test="${bdlist.refund_state eq 1}"><td>취소가능</td><td><button onclick="openRefund('${bdlist.bd_code}');">취소하기</button></td></c:if>
 							</c:if>
 	                        	
 	                                              

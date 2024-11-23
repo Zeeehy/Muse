@@ -220,7 +220,47 @@
   <select id="selectSeatReviewCount" parameterType="String" resultType="Integer">
 	select count(*) from seat_review where bd_code=#{bd_code}
   </select> 
-
+  
+  <!-- 환불 -->
+  <select id="selectBookingDetail" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
+	select 
+	bd.*,			
+	sp.sp_price
+	from booking b
+	left join musical_option mo on mo.mo_code=b.mo_code
+	left join musical m on m.m_code=mo.m_code
+	left join musical_hall mh on mh.mh_code=m.mh_code
+	left join booking_detail bd on bd.b_code=b.b_code
+	left join discount d on d.d_code=bd.d_code		
+	left join seat s on s.s_code=bd.s_code
+	left join seat_grade sg on sg.sg_code=s.sg_code
+	left join seat_price sp on sp.sg_code=s.sg_code and m.m_code=sp.m_code
+	where bd.bd_code=#{bd_code}
+  </select>
+	
+  <insert id="insertBookingRefund" parameterType="String">
+  	insert into refund values ('r_'||REFUND_R_CODE.nextval,sysdate,1,#{bd_code})
+  </insert>
+  
+  <insert id="insertBookingRefundDetail" parameterType="map">
+  	insert into refund_detail values ('rd_'||REFUND_DETAIL_RD_CODE.nextval,#{r_code},sysdate,#{rd_price})
+  </insert>
+  
+  <select id="selectRefundRCode" parameterType="String" resultType="String">
+	select r_code from refund where bd_code = #{bd_code}
+  </select>
+  
+  <update id="updateBookingDetailState" parameterType="String">
+  	update booking_detail set bd_state=0 where bd_code=#{bd_code}
+  </update>
+  
+  <update id="updateBookingState" parameterType="String">
+  	update booking set b_state=0 where b_code=#{b_code}
+  </update>
+  
+  <select id="selectBookingStates" parameterType="String" resultType="Integer">
+	select bd_state from booking_detail where b_code=#{b_code}
+  </select>
   <!-- 나의 후기 -->
   <select id="selectMusicalReviewList" parameterType="String" resultType="com.muse.myPage.model.MyMusicalReviewDTO">
   	select mr.mr_code,mr.b_code,mr.mr_score,mr.mr_title,mr.mr_content,to_char(mr.mr_date,'YYYY-MM-DD') as mr_date, m.m_title

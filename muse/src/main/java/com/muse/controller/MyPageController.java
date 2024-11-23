@@ -3,7 +3,6 @@ package com.muse.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -350,6 +349,61 @@ public class MyPageController {
 		return mav;
 	}		
 	
+	/**예매취소*/
+	@RequestMapping("/reservRefund.do")
+	public ModelAndView reservRefund(@RequestParam String bd_code) {
+		ModelAndView mav = new ModelAndView();
+
+		MyBookingDetailDTO bookingDetail=mybookingDetailDao.getBookingDetail(bd_code);	//test와 마찬가지로 바꿔야함
+		
+		String b_code=bookingDetail.getB_code();
+		int selectRefundRemainDate=mybookingDetailDao.getRefundRemainDate(b_code);
+		int fee=0;
+		//System.out.println(bookingDetail.getSp_price());
+		//관람 이틀전
+		if(selectRefundRemainDate>-2) {
+			fee=bookingDetail.getSp_price()/30;
+		} else if(selectRefundRemainDate>-6){
+			System.out.println(bookingDetail.getSp_price()+"bookingDetail.getSp_price()");
+			fee=bookingDetail.getSp_price()/20;
+		} else if(selectRefundRemainDate>-9){
+			fee=bookingDetail.getSp_price()/10;
+		} else if(selectRefundRemainDate>-10) {
+			if(bookingDetail.getSp_price()/10<4000) {
+				fee=bookingDetail.getSp_price()/10;
+			} else {
+				fee=4000;
+			}
+		} 
+		
+		int rd_price=bookingDetail.getBd_price()-fee;
+		//환불
+		String r_code=mybookingDetailDao.insertBookingRefund(bd_code);
+		
+		//환불상세
+		Map<String, Object> params = new HashMap<>();
+		params.put("r_code", r_code);
+		params.put("rd_price", rd_price);
+		int rd_result=mybookingDetailDao.insertBookingRefundDetail(params);
+		if(rd_result<=0) {
+			System.out.println("환불상세X");
+		}
+		//예매상세
+		int bd_result=mybookingDetailDao.updateBookingDetailState(bd_code);
+		if(bd_result<=0) {
+			System.out.println("환불상세X");
+		}
+		
+		//예매+포인트
+		if(mybookingDetailDao.getBookingStates(b_code)==0) {
+			mybookingDetailDao.updateBookingState(b_code);
+			//포인트돌려주기 일단 테이블고치고
+			System.out.println("포인트돌려줫어용");
+		}
+		mav.setViewName("redirect:/myPage/myPageBookingDetail.do?b_code="+b_code);
+		return mav;
+	}
+	
 	/**마이페이지 뮤즈캐스트*/
 	//뮤즈캐스트 폼
 	@RequestMapping("/myPageMuseCast.do")
@@ -678,4 +732,6 @@ public class MyPageController {
 		mav.setViewName("/myPage/myPagePoint");
 		return mav;
 	}
+	
+	
 }
