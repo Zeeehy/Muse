@@ -29,12 +29,21 @@ td.selected {
     background: #ff3d32 !important;
     border-radius: 100%;
 }
+.productMain{
+	width:900px;
+}
+.productSide {
+	width: 450px;	
+}
 .productWrapper .productSide {
     width: auto !important;
 }
 .productWrapper .productSide .stickyWrap {
     width: 100%;
     margin: 0 !important; 
+}
+.prdTitle {
+	margin-bottom: 10px;
 }
 </style>
 </head>
@@ -512,15 +521,15 @@ td.selected {
 <!-- 										<th>상호</th>
 										<td>클립서비스주식회사</td> -->
 										<th>대표자명</th>
-										<td>${pdto.pr_name }</td>
+										<td colspan="3">${pdto.pr_name }</td>
 									</tr>
 									<tr>
 										<th>사업자등록번호</th>
-										<td>${pdto.pr_num }</td>
+										<td colspan="3">${pdto.pr_num }</td>
 									</tr>
 									<tr>
 										<th>E-mail</th>
-										<td>${pdto.pr_email }</td>
+										<td colspan="3">${pdto.pr_email }</td>
 									</tr>
 									<tr>
 										<th>연락처</th>
