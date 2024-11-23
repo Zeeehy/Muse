@@ -58,8 +58,10 @@
 				<tr>
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
+
 					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***" ></td>
 					<td><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
+
 				</tr>
 
 				<tr>
@@ -126,10 +128,6 @@
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
 					</select></td>
 				</tr>
 				<tr>

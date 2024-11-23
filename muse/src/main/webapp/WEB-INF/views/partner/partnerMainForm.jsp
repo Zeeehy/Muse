@@ -175,11 +175,12 @@
 						<th>요청 명</th>
 						<th>요청일</th>
 						<th>상태</th>
+						<th>요청</th>
 					</tr>
 
 					<c:if test="${empty statelist}">
 						<tr>
-							<td colspan="5" style="text-align: center">등록된 공연이 없습니다.</td>
+							<td colspan="6" style="text-align: center">등록된 공연이 없습니다.</td>
 						</tr>
 					</c:if>
 
@@ -190,6 +191,7 @@
 							<td>${dto2.m_title}</td>
 							<td>${dto2.rs_date}</td>
 							<td class="status-cell">${dto2.rs_status}</td>
+							<td><input type="button" value="수정" onclick="window.location.href='musicalUpdateForm.do?m_code=${dto2.m_code}&pr_code=${s_pr_code }'"><input type="button" value="삭제"></td>
 						</tr>
 					</c:forEach>
 				</table>

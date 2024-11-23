@@ -282,4 +282,15 @@ public class PartnerDAOImple implements PartnerDAO {
 		List<MusicalDTO> list = sqlMap.selectList("getReqeustList",params);
 		return list;
 	}
+	@Override
+	public MusicalDTO selectAllMusical(String m_code) {
+		MusicalDTO dto = sqlMap.selectOne("selectAllMusical",m_code);
+		return dto;
+	}
+	@Override
+	public List<MusicalDTO> selectAllmh() {
+		List<MusicalDTO> list = sqlMap.selectList("selectAllmh");
+		return list;
+	}
+
 }

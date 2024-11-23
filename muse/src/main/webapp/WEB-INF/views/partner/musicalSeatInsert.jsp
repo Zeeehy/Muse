@@ -73,7 +73,7 @@
 }
 .seats{
 	margin : 5px;
-	background: yellow;
+	background: #d9d9d9;
 }
 .seat {
     width: 25px;
@@ -337,7 +337,7 @@ function setSeats(section_div,rowLayout){
 			//console.log(floorMap);
 
 			// 층별 접근
-			if (floorMap) {
+			 if (floorMap) {
 			    const sectionMap = floorMap.get(rowLayout.sl_section);
 			    // 섹션별 접근
 			    if (sectionMap) {
@@ -357,7 +357,7 @@ function setSeats(section_div,rowLayout){
 			            }
 			        }
 			    }
-			}
+			} 
 
 			
 			
@@ -448,6 +448,7 @@ function testClick(rowLayout, event,seatNum) {
 
 function makeDummy(){
 	alert('makeDummy'+musical_code)
+	alert('mhl_code는 !!!!${result}');
 	var lists = document.querySelectorAll('.select');
 	
 	lists.forEach(function(list){
@@ -455,10 +456,14 @@ function makeDummy(){
 		console.log(list.classList+"!!!!!!!!!!!!!!!!!!!!");
 		  var lastClass = list.classList[list.classList.length - 3];
 	       //등급 코드, 뮤지컬 코드,뮤지컬 홀 레이아웃, 섹션,왼쪽 몇번째에서 시작하는지, 열번호, 층번호
+
+	     selectedSeats.push([lastClass, musical_code, musicalHLayoutCode, data.section, list.textContent, data.row, data.floor]);
+
 	       
 	       alert(musical_code);
 	       
-	     selectedSeats.push([lastClass, musical_code, '1', data.section, list.textContent, data.row, data.floor]);
+
+
 		
 	});
 	
