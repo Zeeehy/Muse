@@ -351,7 +351,7 @@ function updateReservedSeat(callback){
             seatList = JSON.parse(data);
             
             //초기화
-            var disablearr = document.querySelectorAll('.disabled');
+			var disablearr = document.querySelectorAll('.seats.disabled.VIP, .seats.disabled.R, .seats.disabled.S, .seats.disabled.A');
             
             disablearr.forEach(function(dis){
             	dis.classList.remove('disabled');
@@ -368,9 +368,23 @@ function updateReservedSeat(callback){
             	if(r_seat.reservation_status==0){
             		const seatElement = document.getElementById(r_seat.s_code);
             		
-                    seatElement.classList.add('disabled'); // 비활성화 스타일 추가
-                    seatElement.style.pointerEvents = 'none'; // 클릭 막기
-                    seatElement.style.opacity = '0.5';
+            		/*  const seatParent = seat.parentElement;
+                     if (seatParent) {
+                         const newSeat = seatParent.cloneNode(true);
+                         seatParent.parentNode.replaceChild(newSeat, seatParent);
+                     }
+            		 */
+ 					console.log(1111111111111111111111111111111111111111111);
+
+					console.log(seatElement);
+            		
+					if(seatElement){
+	                    seatElement.classList.add('disabled'); // 비활성화 스타일 추가
+	                    seatElement.style.pointerEvents = 'none'; // 클릭 막기
+	                    seatElement.style.opacity = '0.5';
+					}
+					
+
             	}
             	
             });

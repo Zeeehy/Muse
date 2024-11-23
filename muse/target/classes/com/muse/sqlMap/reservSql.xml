@@ -25,6 +25,8 @@
 		    FROM musical m
 		    JOIN musical_option mo ON m.m_code = mo.m_code
 		    WHERE m.m_code = #{m_code}
+		    AND mo.mo_date >= TRUNC(SYSDATE)
+		    
 		)
 		ORDER BY mo_date_with_day
 	</select>
@@ -99,6 +101,8 @@
 	           JOIN booking b ON bd.b_code = b.b_code
 	           JOIN musical_option mo ON b.mo_code = mo.mo_code
 	           WHERE mo.m_code = #{m_code}
+	           AND bd.bd_state = 1
+	           
 	           <if test="selectedDate != null and selectedDate != '' and selectedTime != null and selectedTime != ''">
 	               AND mo.mo_date = TO_DATE(SUBSTR(#{selectedDate}, 1, 10), 'YYYY-MM-DD')
 	               AND mo.mo_time = #{selectedTime}

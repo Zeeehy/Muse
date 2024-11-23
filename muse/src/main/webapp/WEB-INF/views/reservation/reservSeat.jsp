@@ -296,11 +296,11 @@ function setSeats(section_div,rowLayout){
 			seats_div.appendChild(seat_div);
 			
 			// 모든 좌석에 click 이벤트 활용하는 예시
-			seat_div.addEventListener("click",function(event){
-				testClick(rowLayout,event);
-			});
+
 			
-			
+			seat_div.classList.add('disabled'); // 비활성화 스타일 추가
+			seat_div.style.pointerEvents = 'none'; // 클릭 막기
+			seat_div.style.opacity = '0.5'; // 시각적으로 비활성화 표시 (선택적)
 	 		
 /* 			
   			배열을 활용한 특정 좌석에 접근하는 법 (성능 낮음)
@@ -357,6 +357,14 @@ function setSeats(section_div,rowLayout){
 							            // 기본 스타일
 							            seat_div.classList.add('default');
 							    }
+							    
+								seat_div.addEventListener("click",function(event){
+									testClick(rowLayout,event);
+								});
+								
+								seat_div.classList.remove('disabled'); // 비활성화 스타일 추가
+								seat_div.style.pointerEvents = 'auto'; // 클릭 막기
+								seat_div.style.opacity = '1.0';
 							    
 							    //// `reservation_status`가 0인 경우 비활성화 처리
 						        if (real_seat.reservation_status === '0') {
