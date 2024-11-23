@@ -18,11 +18,10 @@
 tr,th,td {
     font-size: 16px;
 }
-thead th {color:#ddd; background:none; border:none;     font-weight: 400;}
+thead th {color:#ddd; background:none; border:none;  font-weight: 400;}
 tbody td {
 	color:#3a3a3a; 
 	background:none; 
-	border:none;
     padding:20px;
     }
 td.selected {
@@ -39,7 +38,7 @@ td.selected {
 }
 </style>
 </head>
-<body style="    overflow-x: scroll;">
+<body>
 	<%@include file="../header.jsp"%>
 	<!-- main 시작 -->
 	<div id="container">

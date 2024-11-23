@@ -125,7 +125,6 @@ $(document).ready(function() {
 	                <div class="screening-item open" >
 	                    <div class="thumbnail"><a href="openNoticeView.do?on_code=${ticketopen.on_code}"><img src="resources/img/musical/${ticketopen.m_poster}"alt="공연 포스터" width="277.78px" height="440px"></a></div>
 	                    <div class="title">${ticketopen.m_title}</div>
-
 	                    <div class="meta red" style="height: 32px;"><p style="color:#444; margin-bottom: 5px;">일반 오픈 : ${ticketopen.on_open}</p>	                    
 						   <c:if test="${ticketopen.on_muse_open != '없음'}">
 						   <p> 뮤즈패스 오픈 : ${ticketopen.on_muse_open}</p>

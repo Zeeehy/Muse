@@ -64,6 +64,7 @@
         .disabled {
             color: #ccc;
             cursor: not-allowed;
+            border-radius: 100%;
         }
         .reservation-form {
             margin-top: 20px;
@@ -110,7 +111,7 @@
 		.flex .time-option.selected {
 			padding-top:15px;
 		}
-		.flex .time-option.selected span{
+		.flex .time-option span{
 			margin-left:15px;
 		}
 		#roundCasting {
@@ -120,6 +121,11 @@
 		#remainSeats{
 			padding: 0 15px 15px;
     		color: #bbb;
+		}
+		#timeSelect {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 50px;
 		}
     </style>
 </head>
@@ -392,7 +398,7 @@
 	    				musicalOption.forEach((time, index) => {
 	    				    var div = document.createElement('div');
 	    				    div.className = 'time-option';  // 스타일 적용을 위한 클래스
-	    				    div.innerHTML = index+1+'회차<span>'+time+'</span>';
+	    				    div.innerHTML = index+1+'회차 <span>'+time+'</span>';
 	    				    div.setAttribute('data-time', time);
 
 	    				    

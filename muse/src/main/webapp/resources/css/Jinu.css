@@ -67,6 +67,11 @@ li, label, input, tr, th, td {
     display: flex;
     flex-wrap: wrap; /* 콘텐츠가 필요에 따라 감싸도록 설정 */
 }
+.summaryBody .info {
+	display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
 
 
@@ -123,14 +128,15 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper .summary .info .infoLabel {
-    display: inline-block;
-    width: 6rem; /* 일정 너비를 주어 항목들이 맞춰서 정렬되도록 함 */
+   	display: inline-block;
+    width: 7rem;
     padding-right: 0.5rem;
     color: #000;
-    font-weight: normal;
+    font-weight: bold;
     line-height: 160%;
     vertical-align: top;
     box-sizing: border-box;
+    font-size: 20px;
 }
 
 .productWrapper .summary .info .infoDesc {
@@ -138,6 +144,14 @@ li, label, input, tr, th, td {
     max-width: 39rem;
     vertical-align: top;
     flex: 1; /* 남은 공간을 차지하도록 설정 */
+}
+
+.productWrapper .summary .info .infoDesc a , .infoDesc p, .infoDesc ul li span {
+    font-size: 17px;
+}
+
+.productWrapper .summary .info .infoDesc ul li {
+	margin-bottom: 10px;
 }
 
 .productWrapper .productSide {
@@ -177,7 +191,9 @@ li, label, input, tr, th, td {
 .productWrapper .nav .navItem.is-active {
     color: #000;
 }
-
+.productWrapper .nav .navItem a {
+    font-size: 18px;
+}
 .productWrapper .nav .navItem.is-active:before {
     display: block;
 }
@@ -312,6 +328,10 @@ img.castingImage{
     text-align: center;
     background: #f0f0f0;
     border-radius: 10px;
+}
+.castingDetailFilter .filterItem .filterSearchBtn span.blind{
+	font-size: 15px;
+	font-weight: normal;
 }
 .productWrapper .castingDetail .castingDetailFilter .filterTitle {
     display: inline-block;
@@ -909,7 +929,7 @@ img.castingImage{
 	font-size: 18px;
     padding-bottom: 30px;
 }
-.moreInfoTable tbody {
+.desc .moreInfoContainer .moreInfoTable tbody {
 	display: flex;
     flex-direction: column;
     gap: 10px;
