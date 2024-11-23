@@ -275,8 +275,9 @@ function deleteLikeMusical(){
                     <c:if test="${empty likeActorList }">
 							등록한 관심배우가 없습니다
 					</c:if>
-                	<c:forEach var="lalist" items="${likeActorList}">
-	                	<div class="item">
+					<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+					    <c:forEach var="lalist" items="${likeActorList}">
+	                	<div class="item" style="flex: 0 1 calc(33.333% - 10px); box-sizing: border-box;">
                         <input type="checkbox" name="actorCheck" id="${lalist.la_code}">
                         <img src=" /muse/resources/img/actor/${lalist.ma_img}" alt="Actor Image">
                         <div class="item-info">
@@ -286,6 +287,10 @@ function deleteLikeMusical(){
                         </div>
                     </div>
                 	</c:forEach>
+					</div>
+					
+                	
+                	
                 </div>
                
                 <div class="interest-category">
@@ -296,28 +301,19 @@ function deleteLikeMusical(){
                     <c:if test="${empty likeMusicalList }">
 						등록한 관심공연이 없습니다
 					</c:if>
-                	<c:forEach var="lmlist" items="${likeMusicalList}">
-	                	<div class="item">
-                        <input type="checkbox" name="musicalCheck" id="${lmlist.lm_code}">
-                        <img src="/muse/resources/img/musical/${lmlist.m_poster}" alt="Musical Image">
-                        <div class="item-info">
-                            <p>${lmlist.m_title}</p>
-                            <p>${lmlist.m_startdate}</p><p>~${lmlist.m_enddate}</p>
-                            <p>${lmlist.lm_date} 등록</p>
-                        </div>
-                    </div>
-                	</c:forEach>
-                    <!--
-                    <div class="item">
-                        <input type="checkbox">
-                        <div class="item-info">
-                            <p>뮤지컬 &lt;시카고&gt;</p>
-                            <p>2024.05.22 ~ 2024.06.22</p>
-                            <p>2024.10.28 등록</p>
-                        </div>
-                    </div>
-                    -->
-                    <!-- 관심 공연 항목을 반복해서 추가 -->
+					<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+					    <c:forEach var="lmlist" items="${likeMusicalList}">
+					        <div class="item" style="flex: 0 1 calc(33.333% - 10px); box-sizing: border-box;">
+					            <input type="checkbox" name="musicalCheck" id="${lmlist.lm_code}">
+					            <img src="/muse/resources/img/musical/${lmlist.m_poster}" alt="Musical Image">
+					            <div class="item-info">
+					                <p>${lmlist.m_title}</p>
+					                <p>${lmlist.m_startdate}</p><p>~${lmlist.m_enddate}</p>
+					                <p>${lmlist.lm_date} 등록</p>
+					            </div>
+					        </div>
+					    </c:forEach>
+					</div>
                 </div>
             </div>
         </div>
