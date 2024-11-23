@@ -37,23 +37,26 @@
         .calendar-header button:hover {
             color: #000;
         }
-        table {
+        table.moreInfoTable {
             width: 100%;
             border-collapse: collapse;
+                border-right: 1px solid #dfe5ed;
         }
         th, td {
-            border: 1px solid #ddd;
+            /*border: 1px solid #ddd;*/
             padding: 15px;
             text-align: center;
         }
         th {
             background: #f5f5f5;
         }
-        td {
+        #calendarBody td {
             cursor: pointer;
+            
         }
-        td:hover {
+        #calendarBody td:hover {
             background: #f0f0f0;
+            border-radius: 100%;
         }
         .today {
             background: #e3f2fd;
@@ -85,6 +88,12 @@
         .calendar-header {
 		    padding: 20px 20px 30px;
 		}
+		.calendar-header button {
+			cursor: pointer;
+		    border: none;
+		    background: none;
+		    color: #ff3e32;
+		}
 		.calendar-header h2 {
 			font-size: 1.2rem;
 	    	word-spacing: 0.5rem;
@@ -93,7 +102,7 @@
 		.flex {
 		    display: flex;
 		    flex-direction: column;
-		    gap: 10px;
+		    gap: 30px;
 		    margin-bottom: 20px;
 		    color: #444;
 		    font-weight: 700;
@@ -109,7 +118,7 @@
 		    color: #ff3d32;
 		}
 		.flex .time-option.selected {
-			padding-top:15px;
+			/* padding-top:15px; */
 		}
 		.flex .time-option span{
 			margin-left:15px;
