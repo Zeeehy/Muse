@@ -28,16 +28,17 @@ public class MusicalDTO {
 	private String rs_status;
 	private String rs_date;
 	private String rt_name;
+	private String u_id;
 	
 	public MusicalDTO() {
 		// TODO Auto-generated constructor stub
 	}
-
+  
 	public MusicalDTO(String m_code, String mh_code, String pr_code, String m_title, String m_startDate,
 			String m_endDate, int m_time, int m_inTime, int m_maxTicket, String m_age, String m_openDate,
 			String m_openTime, String m_notice, String m_poster, String m_detailImg, int m_calendar, int m_single,
 			int m_viewState, int m_ref, String mh_name, String ma_name, String rs_status, String rs_date,
-			String rt_name) {
+			String rt_name, String u_id) {
 		super();
 		this.m_code = m_code;
 		this.mh_code = mh_code;
@@ -63,6 +64,7 @@ public class MusicalDTO {
 		this.rs_status = rs_status;
 		this.rs_date = rs_date;
 		this.rt_name = rt_name;
+		this.u_id = u_id;
 	}
 
 	public String getM_code() {
@@ -256,7 +258,14 @@ public class MusicalDTO {
 	public void setRt_name(String rt_name) {
 		this.rt_name = rt_name;
 	}
+
+	public String getU_id() {
+		return u_id;
+	}
+
+	public void setU_id(String u_id) {
+		this.u_id = u_id;
+	}
+
 	
-	
-					
 }

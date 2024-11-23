@@ -70,4 +70,6 @@ public interface PartnerDAO {
 	
 	public List<MusicalDTO> getReqeustList(String pr_code,String isFutureDate);
 	public MusicalDTO selectAllMusical(String m_code);
+
+	public List<MusicalDTO> selectAllmh();
 }

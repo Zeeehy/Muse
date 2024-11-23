@@ -177,7 +177,7 @@
 		#{m_calendar},
 		#{m_single},
 		0,
-		0
+		#{m_ref}
 		)
 
 	</insert>
@@ -253,10 +253,11 @@
 		#{rs_code},
 		#{m_code},
 		TRUNC(sysdate),
-		'0',
+		#{rs_etc},
 		'0'
 		)
 	</insert>
+	
 
 	<select id="maxMcode" resultType="String">
     <![CDATA[
@@ -273,7 +274,7 @@
 		r.MR_TITLE,
 		r.MR_CONTENT,
 		r.MR_SCORE,
-		r.MR_DATE,
+		TO_CHAR(r.MR_DATE, 'YYYY-MM-DD') AS MR_DATE,
 		CASE
 		WHEN bdr.bdr_key IS NOT NULL THEN 3
 		ELSE r.mr_state
@@ -519,7 +520,33 @@
 		</if>
 	</select>
 	
+	
 	<select id="selectAllMusical" resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
-	select * from musical where m_code = #{m_code}
+    SELECT 
+        m_code,
+        m_title,
+        TO_CHAR(m_startDate, 'YYYY-MM-DD') AS m_startDate,
+        TO_CHAR(m_endDate, 'YYYY-MM-DD') AS m_endDate,
+        m_time,
+        m_inTime,
+        m_maxTicket,
+        m_age,
+        TO_CHAR(m_openDate, 'YYYY-MM-DD') AS m_openDate,
+        m_openTime,
+        m_notice,
+        m_calendar,
+        m_single,
+        m_viewState,
+        m_ref,
+        m_poster,
+        m_detailImg
+    FROM musical 
+    WHERE m_code = #{m_code}
+</select>
+
+
+	
+	<select id="selectAllmh" resultType="com.muse.partner.model.MusicalDTO">
+	select * from musical_hall
 	</select>
 </mapper>

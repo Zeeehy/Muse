@@ -66,7 +66,7 @@
       <a href="musicalSeatAddForm.do">시트 등록</a>
       <a href="castAddForm.do">캐스팅 등록</a>
       <!-- <a href="reviewDeleteForm.do?pr_code=${s_pr_code}">리뷰 삭제</a> -->
-      <a href="reviewDeleteForm.do?pr_code=pr_1">리뷰 관리</a>
+      <a href="reviewDeleteForm.do?pr_code=${s_pr_code }">리뷰 관리</a>
     </div>
 
     <button class="dropdown-btn">
@@ -74,7 +74,7 @@
     </button>
     <div class="dropdown-container">
    	  <a href="musicalUpdate.do">뮤지컬 등록 수정</a>
-      <a href="#">티켓 오픈 공지 수정</a>
+      <a href="#">티켓 오픈 공지 수정(정리중)</a>
       
     </div>
 

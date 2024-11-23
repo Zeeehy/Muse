@@ -20,7 +20,7 @@ font-size:20px;
 		<div class="left-section">
 			<input type="image" src="/muse/resources/img/museimage.png"
 				class="header-image"
-				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }&isFutureDate=${isFutureDate }'">
+				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&getMusicalList=${getMusicalList }&isFutureDate=${isFutureDate }'">
 
 		</div>
 		<c:if test="${!empty pr_name }">
@@ -47,7 +47,7 @@ font-size:20px;
 
         function onloadSession(){
             var pr_code = "${s_pr_code}";
-            var u_id = "${s_id}";
+            var u_id = "${p_s_id}";
             var s_rs_code = "${s_rs_code}";
 			var pr_name = '${pr_name}';
            // alert("pr_code:" + pr_code);
@@ -71,18 +71,18 @@ font-size:20px;
                 alert("다시 로그인해주세요");
                 window.location.href = 'memberLogout.do';
                 return;
-            }else if (pr_name == "" || pr_name == null) {
+            } else if (pr_name == "" || pr_name == null) {
                 alert("승인되지 않은 아이디입니다.");
                 window.location.href = 'partnerLogin.do';
                 return;
-            }
+            } 
             // rs_code가 1이고, 처음 접속 시에만 알림을 띄우기
             else if (s_rs_code == "1") {
                 var check = sessionStorage.getItem("check") || 0;  // 새로고침 후에는 check 값 초기화
                 if (check == 0) {
-                    alert(u_id + " 님 환영합니다.");
+                    alert(pr_name + " 님 환영합니다.");
                     sessionStorage.setItem("check", 1);  // check 값을 1로 설정하여 이후에는 알림이 뜨지 않도록 함
-                    window.location.href = 'partnerAddForm.do?pr_code=' + pr_code;
+                    window.location.href = 'partnerMainForm.do?pr_code=' + pr_code;
                 }
             }
         }
