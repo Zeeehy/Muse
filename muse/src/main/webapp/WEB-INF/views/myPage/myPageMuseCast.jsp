@@ -74,14 +74,7 @@ body {
     margin-bottom: 20px;
 }
 
-.news-section {
-    background-color: #f7f7f7;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    font-size: 0.9em;
-    color: #777;
-}
+
 
 .interest-section h4 {
     font-size: 1.2em;
@@ -268,9 +261,6 @@ function deleteLikeMusical(){
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
         <h2>나의 뮤즈캐스트</h2>
-        <div class="news-section">
-            <p>뮤즈캐스트에 등록된 공연/인물의 최근 업데이트 소식이 없습니다</p>
-        </div>
 
         <div class="interest-section">
             <h4>뮤즈캐스트 등록 / 수정</h4>
