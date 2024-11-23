@@ -32,14 +32,14 @@
 				<div class="contents">
 					
 					<div class="notification">
-						<h2>가입비</h2>
+						<h3>가입비</h2>
 						30,000원
 						
 					</div>
 					
 					<div class="joinClause">
 						<h3>
-							유지기간
+							유지기간 <br>
 							<span id="range"> 2024-11-21~2025-11-21</span>
 						</h3>
 						
@@ -62,6 +62,8 @@ var end = new Date(start); // start의 값을 복사하여 end 생성
 
 end.setFullYear(start.getFullYear() + 1);
 
+var s_id = '${s_id}';
+
 function formatDate(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -73,11 +75,17 @@ document.querySelector('#range').textContent = formatDate(start)+'~'+formatDate(
 
 function goPurchase(){
     
-      const url = "musePassPayOut.do";
-      // 견적서번호 넘기기 
-      
-      window.open(url, "musePassPayOut",
-              "left=350px, top=100px, width=1000px height=600px");
+	if(s_id){
+	      const url = "musePassPayOut.do";
+	      // 견적서번호 넘기기 
+	      
+	      window.open(url, "musePassPayOut",
+	              "left=350px, top=100px, width=1000px height=600px");
+	} else {
+		alert('로그인 후 진행해주세요.');
+        window.location.href = 'memberLogin.do';
+	}
+
       
  }
  
