@@ -22,7 +22,7 @@
 #bannerListTable th {
     background-color: #f2f2f2;
     color: #333;
-    padding: 10px;
+    padding: 15px;
     text-align: center;
     font-weight: bold;
     border-bottom: 2px solid #ddd;
@@ -88,7 +88,6 @@
 	<div class="main-content">
 	
 		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 공연 등록 승인</h1>
-		<hr id="hrLine">
 		<table id="bannerListTable" border="1" cellspacing="0">
 			<tr >
 				<th>공연명</th>

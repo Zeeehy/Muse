@@ -111,6 +111,7 @@ public class AdminController {
 		int openApply = adminDao.getOpenApply();
 		int insertApply = adminDao.getInsertApply();
 		
+		
 		mav.addObject("lists", rankWeekly);
 		mav.addObject("cnt", ticketCount);
 		mav.addObject("insertCnt", insertCount);
