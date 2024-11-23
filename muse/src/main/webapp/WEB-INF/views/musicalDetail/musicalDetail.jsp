@@ -64,8 +64,8 @@ td.selected {
 								<h2 class="prdTitle">${mddto.m_title }</h2>
 								<div class="prdSection">
 									<div class="tagText">
-										<span>뮤지컬</span>
-										<span> 주간 1위 <c:if test="${!empty reviews }"> : </c:if> </span>
+										<span>뮤지컬&nbsp;</span>
+										<span> <c:if test="${!empty rank }">주간 ${rank }위</c:if> <c:if test="${!empty reviews}"> : </c:if> </span>
 										<span> 
 											<c:if test="${!empty reviews }">
 												<div class="reviewStarTotal">

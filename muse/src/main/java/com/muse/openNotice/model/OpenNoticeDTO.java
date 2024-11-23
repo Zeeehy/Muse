@@ -18,7 +18,7 @@ public class OpenNoticeDTO {
 	private String on_viewstate;
 	private String m_title;
 	private String m_poster;
-	
+	private String m_viewstate;
 	
 	public OpenNoticeDTO() {
 		super();
@@ -210,7 +210,16 @@ public class OpenNoticeDTO {
 	public void setM_title(String m_title) {
 		this.m_title = m_title;
 	}
+	
+	
 
+	public String getM_viewstate() {
+		return m_viewstate;
+	}
+
+	public void setM_viewstate(String m_viewstate) {
+		this.m_viewstate = m_viewstate;
+	}
 
 	@Override
 	public String toString() {
@@ -218,10 +227,11 @@ public class OpenNoticeDTO {
 				+ on_type + ", on_open=" + on_open + ", on_muse_open=" + on_muse_open + ", on_info=" + on_info
 				+ ", on_sale=" + on_sale + ", on_content=" + on_content + ", on_casting=" + on_casting + ", on_img="
 				+ on_img + ", on_etc=" + on_etc + ", on_readnum=" + on_readnum + ", on_viewstate=" + on_viewstate
-				+ ", m_title=" + m_title + "]";
+				+ ", m_title=" + m_title + ", m_poster=" + m_poster + ", m_viewstate=" + m_viewstate + "]";
 	}
 
 
+	
 	
 	
 	

@@ -47,6 +47,10 @@ public class OpenNoticeController {
 		
 		List<OpenNoticeDTO> noticeList = opendao.getOpenNoticeList(paramMap);
 		setDY(noticeList);
+		
+		for(OpenNoticeDTO dto : noticeList) {
+			System.out.println(dto.toString());
+		}
 
 		int countNotice = opendao.countOpenNotice();
 		
@@ -105,6 +109,7 @@ public class OpenNoticeController {
 		
 		PartnerDTO pdto =  opendao.getPartnerByOpenNotice(on_code);
 		
+		System.out.println(ondto.toString());
 		
 		mav.addObject("ondto",ondto);
 		mav.addObject("pdto",pdto);
@@ -119,7 +124,9 @@ public class OpenNoticeController {
 	    // 처리할 수 있는 입력 날짜 형식들
 	    SimpleDateFormat[] parsers = {
 	        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss"),
-	        new SimpleDateFormat("yyyy/MM/dd HH:mm")
+	        new SimpleDateFormat("yyyy/MM/dd HH:mm"),
+	        new SimpleDateFormat("yyyy-MM-dd HH:mm")
+
 	    };
 	    
 	    // 출력 형식

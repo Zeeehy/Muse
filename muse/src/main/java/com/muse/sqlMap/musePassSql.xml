@@ -10,5 +10,16 @@
     <update id="updateMusePassOn" parameterType="String">
     	update users set u_mpass = 1 where u_id = #{u_id}
     </update>
+    
+    <select id="checkPassJoin" resultType="Integer" parameterType="String">
+    	select count(*)
+    	from mpass
+    	where u_id = #{u_id}
+    </select>
+    
+    <update id="updateMPassRange" parameterType="String">
+    	update mpass set mp_startdate = sysdate,  mp_enddate = ADD_MONTHS(SYSDATE, 12)
+    	where u_id = #{u_id}
+    </update>
 
 </mapper>

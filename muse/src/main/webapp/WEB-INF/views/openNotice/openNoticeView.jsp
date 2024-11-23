@@ -29,21 +29,24 @@
 				<h3>${ondto.m_title }</h3>
 				<ul>
 					<li class="open"><strong>티켓오픈일</strong>${ondto.on_open }  <!--2013년 6월 12일(수) 오후 8시--></li>
-					<c:if test="${!empty ondto.on_muse_open }">
-					<li class="tiki">
-						<strong>뮤즈패스 선예매</strong>${ondto.on_muse_open } 
-							<span>
-								<a href="musepass.do">뮤즈패스 가입</a>
-							</span>
-					</li>
+					<c:if test="${not empty ondto.on_muse_open and ondto.on_muse_open ne ' '}">
+						<li class="tiki">
+							<strong>뮤즈패스 선예매</strong>${ondto.on_muse_open } 
+								<span>
+									<a href="musepass.do">뮤즈패스 가입</a>
+								</span>
+						</li>
 					</c:if>
 				</ul>
 			</div>
 			<span class="count">조회수 : <span>${ondto.on_readnum }</span></span>
-			<div class="Pbtn">
-				
-				<a href="musicalDetail.do?m_code=${ondto.m_code }" class="btn_book">예매하기</a>
-			</div>
+			<c:if test="${ondto.m_viewstate==1}">
+			
+				<div class="Pbtn">
+						<a href="musicalDetail.do?m_code=${ondto.m_code }" class="btn_book">예매하기</a>
+					
+				</div>
+			</c:if>
 		</div>
 	</div>
 	<div class="desc">
