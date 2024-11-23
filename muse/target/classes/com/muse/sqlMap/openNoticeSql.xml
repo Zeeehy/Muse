@@ -9,7 +9,7 @@ SELECT *
 FROM (
   SELECT a.*, ROWNUM AS rnum 
   FROM (
-      SELECT o.on_code, o.on_info, o.on_open, o.on_viewstate, o.m_code, o.on_readnum, m.m_title
+      SELECT o.*, m.m_title
       FROM open_notice o
       JOIN musical m ON o.m_code = m.m_code 
       WHERE o.on_viewstate = 1

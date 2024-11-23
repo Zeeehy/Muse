@@ -18,7 +18,7 @@
 	<div class="content">
 	<div class="detail_top">
 		<h2>티켓 공지</h2>
-		<div class="btn_top"> <a>목록보기</a> </div>
+		<div class="btn_top"> <a href="openNotice.do?crpage=${crpage} ">목록보기</a> </div>
 	</div>
 	<div class="info">
 		<span class="poster bgMusical">
@@ -29,12 +29,14 @@
 				<h3>${ondto.m_title }</h3>
 				<ul>
 					<li class="open"><strong>티켓오픈일</strong>${ondto.on_open }  <!--2013년 6월 12일(수) 오후 8시--></li>
+					<c:if test="${!empty ondto.on_muse_open }">
 					<li class="tiki">
 						<strong>뮤즈패스 선예매</strong>${ondto.on_muse_open } 
 							<span>
-								<a href="http://ticket.interpark.com/Contents/Toping/JoinGrade">뮤즈패스 가입</a>
+								<a href="musepass.do">뮤즈패스 가입</a>
 							</span>
 					</li>
+					</c:if>
 				</ul>
 			</div>
 			<span class="count">조회수 : <span>${ondto.on_readnum }</span></span>

@@ -55,6 +55,7 @@ public class OpenNoticeController {
 		
 		mav.addObject("noticeList",noticeList);
 		mav.addObject("pagingStr",pagingStr);
+		mav.addObject("crpage",crpage);
 		
 		mav.setViewName("openNotice/openNoticeList");
 		
@@ -95,7 +96,7 @@ public class OpenNoticeController {
 	}
 	
 	@RequestMapping("/openNoticeView.do")
-	public ModelAndView openNoticeDetail(@RequestParam String on_code) {
+	public ModelAndView openNoticeDetail(@RequestParam String on_code, @RequestParam(value="crpage", defaultValue="1")int crpage) {
 		ModelAndView mav = new ModelAndView();
 		opendao.increaseReadNum(on_code);
 
@@ -107,6 +108,8 @@ public class OpenNoticeController {
 		
 		mav.addObject("ondto",ondto);
 		mav.addObject("pdto",pdto);
+		mav.addObject("crpage",crpage);
+		
 		mav.setViewName("openNotice/openNoticeView");
 		return mav;
 	}
