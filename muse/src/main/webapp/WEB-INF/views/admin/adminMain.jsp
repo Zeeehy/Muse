@@ -87,15 +87,15 @@ var countData = rankingStatsData.map(function(item) {
 <div class="main-content">
 
 	<div style="margin-top:30px; margin-left:30px;">
-		<strong style="font-size:30pt;">관리자님 안녕하세요😊<strong>
+		<strong style="font-size:25pt;">관리자님 안녕하세요😊<strong>
 	
-		<div style="margin-top:30px; font-size:15pt;">
+		<div style="margin-top:50px; font-size:14pt;">
 			<a href="addRequestList.do">공연등록 <b class="cnt">${insertCnt}</b></a> <a href="openRequestList.do">오픈공지 <b class="cnt">${openCnt}</b></a>
 			<a href="addApplyList.do">공연반영 <b class="cnt">${insertApply}</b></a> <a href="openApplyList.do">오픈공지반영 <b class="cnt">${openApply}</b></a> 
 		</div>
 
-		<div style="margin-top:10px; font-size:15pt;">
-			오늘하루 판매된 티켓은 <b class="cntUp" id="ticket-count">${cnt}</b>건, 티켓 판매 금액은 <b id="ticket-price" class="cntUp">${price}</b>원 입니다.
+		<div style="margin-top:10px; font-size:14pt;">
+			오늘하루 판매된 티켓은 <b class="cntUp" id="ticket-count">${cnt} </b>건, 티켓 판매 금액은 <b id="ticket-price" class="cntUp">${price}</b>원 입니다.
 		</div>
 		
 	</div>
@@ -219,9 +219,18 @@ showValues();
       const finalTicketCount = ${cnt}; // 최종 티켓 수
       const finalPrice = ${ticketPrice}; // 최종 금액
 
-      // 애니메이션 실행
-      animateNumber('ticket-count', 0, finalTicketCount, 3500); // 2초 동안 증가
-      animateNumber('ticket-price', 0, finalPrice, 3500, 1000); // 2초 동안 증가
+	  //티켓 갯수나 금액이 0이면 애니메이션 노노
+      if (finalTicketCount !== 0) {
+          animateNumber('ticket-count', 0, finalTicketCount, 3500); 
+      } else {
+          document.getElementById('ticket-count').textContent = finalTicketCount; 
+      }
+
+      if (finalPrice !== 0) {
+          animateNumber('ticket-price', 0, finalPrice, 3500, 1000); 
+      } else {
+          document.getElementById('ticket-price').textContent = finalPrice; 
+      }
     });
   </script>		
 		
