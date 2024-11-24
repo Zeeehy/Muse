@@ -11,16 +11,17 @@
 <style>
 
 /* 특정 테이블 스타일 */
+
+/* 특정 테이블 스타일 */
 #bannerListTable {
     width: 100%;
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
 }
 
 /* 테이블 헤더 스타일 */
 #bannerListTable th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #a5cfe3;
+    color: white;
     padding: 10px;
     text-align: center;
     font-weight: bold;
@@ -32,6 +33,7 @@
     padding: 8px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    height:30px;
 }
 
 /* 테이블에 호버 효과 추가 */
@@ -39,13 +41,45 @@
     background-color: #f9f9f9;
 }
 
+/* 버튼 스타일 삭제 */
+.redButton  {
+    background-color: #ff6666;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
+/* 버튼 호버 효과 삭제 */
+.redButton:hover {
+    background-color: #ff3333;
+}
+
+/* 버튼 스타일 삭제 */
+.blueButton  {
+    background-color: #66b7ff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 버튼 호버 효과 삭제 */
+.blueButton:hover {
+    background-color: #335dff;
+}
 
 /*배너 이미지*/
 .bannerImg{
 	width: 100px;
     height: 100px;
     border-radius: 5px;}
+    
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}   
 </style>
 
 
@@ -58,9 +92,8 @@
 
 	<div class="main-content">
 	
-		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 배너 등록 / 삭제</h1>
-		<hr class="hrLine">
-		<table id="bannerListTable" border="1" cellspacing="0">
+		<h1 style="margin-top: 40px; margin-bottom:50px;"> 배너 등록 / 삭제</h1>
+		<table id="bannerListTable" >
 			<tr >
 				<th>순서</th>
 				<th>포스터</th>
