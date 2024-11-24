@@ -22,7 +22,7 @@ body {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto;
 }
 
 /* 사이드바 스타일 */

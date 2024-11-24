@@ -180,16 +180,14 @@
 <script>
 //var count = 0;
 var gradeList = [];
-/* function addGrade(){
-	 count++;
-	 const table = document.getElementById("gradeTable");
-	 const gradePrice = document.getElementById("gradePrice").value;
-	 const gradeColor = document.getElementById("gradeColor").value;
-} 
+document.getElementById("insertMusical").onsubmit = function(event) {
+    var noticeValue = document.getElementById("m_notice").value;
 
-function addClickList(evnet){
-	
+    // 개행 문자를 <br>로 변환
+    noticeValue = noticeValue.replace(/\n/g, "<br>");
+
+    // textarea에 변환된 값을 다시 설정 (필요한 경우)
+    document.getElementById("m_notice").value = noticeValue;
 }
-*/
 </script>
 </html>

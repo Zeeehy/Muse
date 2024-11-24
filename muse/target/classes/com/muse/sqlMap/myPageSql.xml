@@ -283,4 +283,16 @@
 	where b.u_id=#{u_id}
 	order by sr_date desc
 	</select>
+	
+	<!-- 포인트 -->
+	<select id="selectMyPointList" parameterType="String" resultType="com.muse.myPage.model.MyPointDTO">
+	select * from point
+	where u_id=#{u_id}
+	order by pt_date desc
+  	</select>
+  	
+  	<select id="selectMyPointSum" parameterType="String" resultType="Integer">
+	select sum(pt_point) from point
+	where u_id=#{u_id}
+  	</select>
   </mapper>

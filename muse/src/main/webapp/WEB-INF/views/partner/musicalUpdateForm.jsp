@@ -205,5 +205,6 @@
 
         // textarea에 변환된 값을 다시 설정 (필요한 경우)
         document.getElementById("m_notice").value = noticeValue;
+	}
 </script>
 </html>
