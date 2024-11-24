@@ -722,4 +722,13 @@ public class AdminController {
 	
 	/* 통계 끝 */
 	
+	
+	
+	@RequestMapping("/ex.do")
+	public ModelAndView ex() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("admin/ex");
+		return mav;
+	}
 }
+
