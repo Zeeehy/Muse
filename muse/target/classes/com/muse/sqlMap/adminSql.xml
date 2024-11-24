@@ -251,7 +251,7 @@ and m_opendate <= SYSDATE + 7
   <select id="pReviewList" resultType="com.muse.admin.model.RequestListDTO" >
 	select bdr_code,bdr.pr_code,bdr_key as mr_code, bdr_reason,  mr_score, mr_title,mr_content, mr_date, m_title,p.u_id,pr_name
 	from BBS_DELETE_REQUEST bdr, musical_review mr, booking b, musical_option mo, musical m,partner p
-	where bdr_type=0 and bdr_state=0
+	where bdr_state=0
 	and bdr.bdr_key = mr.mr_code
 	and b.b_code = mr.b_code and b.mo_code = mo.mo_code and m.m_code = mo.m_code and bdr.pr_code = p.pr_code
   </select>
