@@ -174,7 +174,8 @@
 						<th>요청 유형</th>
 						<th>요청 명</th>
 						<th>요청일</th>
-						<th>상태</th>
+						<th>뮤지컬 상태</th>
+						<th>티켓 오픈 상태</th>
 						<th>요청</th>
 					</tr>
 
@@ -183,7 +184,6 @@
 							<td colspan="6" style="text-align: center">등록된 공연이 없습니다.</td>
 						</tr>
 					</c:if>
-
 					<c:forEach var="dto2" items="${statelist}">
 						<tr>
 							<td>${dto2.m_code}</td>
@@ -191,9 +191,19 @@
 							<td>${dto2.m_title}</td>
 							<td>${dto2.rs_date}</td>
 							<td class="status-cell">${dto2.rs_status}</td>
-							<td><input type="button" value="수정" onclick="window.location.href='musicalUpdateForm.do?m_code=${dto2.m_code}&pr_code=${s_pr_code }'"><input type="button" value="삭제"></td>
+							<td class="status-cell">${dto2.op_status}</td>
+
+							<td>
+								<!-- 'isFutureDate'가 true인 경우에도 버튼을 숨기기 --> <c:if
+									test="${isFutureDate == 1}">
+									<input type="button" value="수정"
+										onclick="window.location.href='musicalUpdateForm.do?m_code=${dto2.m_code}&pr_code=${s_pr_code }'">
+									<input type="button" value="삭제">
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
+
 				</table>
 			</fieldset>
 		</div>
