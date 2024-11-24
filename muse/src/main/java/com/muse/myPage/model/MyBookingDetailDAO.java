@@ -13,4 +13,5 @@ public interface MyBookingDetailDAO {
 	int updateBookingDetailState(String bd_code);
 	int updateBookingState(String b_code);
 	int getBookingStates(String b_code);
+	String getRefundDate(String bd_code);
 }

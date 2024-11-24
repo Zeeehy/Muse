@@ -1,5 +1,7 @@
 package com.muse.myPage.model;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,5 +36,11 @@ public class MPassDAOImpl implements MPassDAO{
 		}
 		
 		return mpRemainDays;
+	}
+	
+	@Override
+	public List<MuseMusicalDTO> getMuseMusical() {
+		List<MuseMusicalDTO> museMusical=sqlMap.selectList("selectMuseMusical");
+		return museMusical;
 	}
 }

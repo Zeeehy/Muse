@@ -89,11 +89,6 @@ body {
     padding: 8px;
     text-align: center;
 }
-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-}
 
 button {
     display: inline-block;

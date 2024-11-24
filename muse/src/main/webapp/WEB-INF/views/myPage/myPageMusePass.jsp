@@ -126,11 +126,6 @@ body {
     justify-content: center;
 }
 
-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-}
 </style>
 </head>
 <body>
@@ -164,7 +159,22 @@ footer {
         <div class="show-section">
             <h4>뮤즈패스 선예매</h4>
             <div class="show-list">
-                <div class="show-item">
+            		<c:if test="${empty museMusical }">
+							등록한 관심배우가 없습니다
+					</c:if>
+					<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+					    <c:forEach var="mlist" items="${museMusical}">
+	                	<div class="show-item" style="flex: 0 1 calc(33.333% - 10px); box-sizing: border-box;">
+		                    <img src="/muse/resources/img/musical/${mlist.m_poster}" alt="공연 포스터">
+		                    <div class="show-details">
+		                        <p>${mlist.m_title}</p>
+		                        <p style="color: red">뮤즈패스 ${mlist.on_muse_open} OPEN</p>
+		                        <p>일반 ${mlist.on_open} OPEN</p>
+		                    </div>
+		                </div>
+	                	</c:forEach>
+					</div>
+                <!-- <div class="show-item">
                     <img src="/muse/resources/img/musical/aladinPoster.PNG" alt="공연 포스터">
                     <div class="show-details">
                         <p>뮤지컬 지킬앤하이드 - 20주년</p>
@@ -179,7 +189,7 @@ footer {
                         <p>2024.11.05 13:00 OPEN</p>
                         <p>일반 2024.11.05 14:00 OPEN</p>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
