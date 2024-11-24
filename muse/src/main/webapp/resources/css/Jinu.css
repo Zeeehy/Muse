@@ -23,6 +23,7 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper {
+	padding: 70px 0;
     display: flex;
     gap: 15%; /* 아이템 간 간격을 설정 */
 }
@@ -35,7 +36,7 @@ li, label, input, tr, th, td {
 
 
 .navList {
-	    width: 800px;
+	    width: 900px;
 	display: flex;
     justify-content: space-around; /* 네비게이션 항목들 사이에 공간을 균등하게 배치 */
     gap: 10px; /* 네비게이션 항목들 간의 간격 */
@@ -136,7 +137,7 @@ li, label, input, tr, th, td {
     line-height: 160%;
     vertical-align: top;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .productWrapper .summary .info .infoDesc {
@@ -151,7 +152,7 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper .summary .info .infoDesc ul li {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 .productWrapper .productSide {
@@ -178,6 +179,15 @@ li, label, input, tr, th, td {
 .productWrapper .summary {
     position: relative;
     padding-bottom: 6.5rem;
+}
+
+.productWrapper .summary .prdSection .tagText span{
+    font-size: 16px;
+    padding: 5px 0;
+    color: #444;
+}
+.productWrapper .summary .prdSection .tagText span b{
+    color: #ff3e32;
 }
 
 .productWrapper .nav .navItem {
@@ -424,7 +434,7 @@ img.castingImage{
 
 /* 판매 정보 */
 .productWrapper .prdContents .moreInfoContainer {
-    padding-top: 30px;
+    padding-top: 50px;
 }
 .productWrapper .prdContents .moreInfoContainer h4 {
     padding: 20px 0;
@@ -818,6 +828,12 @@ img.castingImage{
 }
 .section_notice .list .table tr{
 	border-bottom: 0.5px solid #f0f0f0;
+}
+.section_notice .list .table tr .passText{
+	margin-left: 15px;
+}
+.section_notice .list .table tr .passText b{
+	color: #ff3e32;
 }
 .section_notice .list .table .content:hover {
 	background: #fafafa;
