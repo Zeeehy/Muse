@@ -26,6 +26,7 @@ public class MyBookingListDTO {
 	private Date mr_date;		//취소가능날짜
 	private int b_state;
 	private int review_state;	//리뷰버튼 생성여부
+	//private Date refund_date; 환불날짜추가예정 sql문도 date타입으로 고쳐야함
 
 	public MyBookingListDTO() {
 		// TODO Auto-generated constructor stub

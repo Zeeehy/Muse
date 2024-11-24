@@ -78,4 +78,10 @@ public class MyBookingDetailDAOImpl implements MyBookingDetailDAO{
 		}
 		return 0;
 	}
+	
+	@Override
+	public String getRefundDate(String bd_code) {
+		String refundDate=sqlMap.selectOne("selectRefundDate",bd_code);
+		return null;
+	}
 }
