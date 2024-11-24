@@ -24,7 +24,7 @@ body {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto;
 }
 
 /* 사이드바 스타일 */
@@ -188,7 +188,6 @@ function openMusicalDetail(m_code){
 function openRefund(bd_code){
 	
 	location.href='reservRefund.do?bd_code='+bd_code;
-	location.reload();
 }
 /* function openRefund(bd_code) {
     $.ajax({
