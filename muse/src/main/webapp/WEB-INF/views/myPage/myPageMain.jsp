@@ -23,7 +23,7 @@ body {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto;
 }
 
 /* 사이드바 스타일 */
@@ -107,6 +107,7 @@ button {
     margin-top: 10px;
 }
 
+
 </style>
 </head>
 <body>
@@ -156,22 +157,35 @@ button {
 	           		<c:if test="${empty bookingList }">
 						<tr>
 							<td colspan="7" align="center">
-								모든 리스트를 통합한 검색결과가 없습니다
+								설정된 기간에 맞는 예매내역이 존재하지 않습니다
 							</td>
 						</tr>
 					</c:if>
                 	<c:forEach var="blist" items="${bookingList}">
 	                	<tr>
 	                        <td>${blist.b_date}</td>
-	                        <td>${blist.b_code}</td>
+	                        <td><a href="myPageBookingDetail.do?b_code=${blist.b_code}">${blist.b_code}</a></td>
 	                        <td>${blist.m_title}</td>
-	                        <td>${blist.mo_date} | ${blist.mo_time}</td>
-	                        <td>${blist.b_count}</td>
-	                        <td>${blist.b_date}</td>
+	                        <td>${blist.mo_date} ${blist.mo_time}</td>
+	                        <td>${blist.b_count}매</td>
+	                        <td>${blist.mr_date} ${blist.mo_time}</td>
 	                        <td>
+	                        <c:choose>
+	                        <c:when test="${blist.b_state eq 0}">취소</c:when>
+                        	<c:when test="${blist.b_state eq 1}">
+	                        	예매                        	
+                        	</c:when>
+	                        </c:choose>	
+	                        <!--  
 	                        	<c:if test="${blist.b_state eq 0}">취소</c:if>
-	                        	<c:if test="${blist.b_state eq 1}">예매</c:if>
+	                        	<c:if test="${blist.b_state eq 1}">
+		                        	예매
+		                        	<button>리뷰쓰기</button>
+	                        	</c:if>
+	                        	<c:if test="${blist.b_state eq 2}">예매(일부취소)</c:if>
+	                        -->
 	                        </td>
+	                        
 	                    </tr>
                 	</c:forEach>
                     <!-- 반복행 -->
