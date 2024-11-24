@@ -6,9 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
         .calendar-container {
             max-width: 800px;
             margin: 20px auto;

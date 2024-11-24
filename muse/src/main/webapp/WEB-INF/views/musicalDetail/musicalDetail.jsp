@@ -43,7 +43,19 @@ td.selected {
     margin: 0 !important; 
 }
 .prdTitle {
+	font-size: 30px;
 	margin-bottom: 10px;
+}
+.infoPriceItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.infoPriceItem img {
+    width: 15px;
+    height: auto;
 }
 </style>
 </head>
@@ -74,7 +86,7 @@ td.selected {
 								<div class="prdSection">
 									<div class="tagText">
 										<span>뮤지컬&nbsp;</span>
-										<span> <c:if test="${!empty rank }">주간 ${rank }위</c:if> <c:if test="${!empty reviews}"> : </c:if> </span>
+										<span> <c:if test="${!empty rank }">주간 <b>${rank }</b>위</c:if> <c:if test="${!empty reviews}"> : </c:if> </span>
 										<span> 
 											<c:if test="${!empty reviews }">
 												<div class="reviewStarTotal">
@@ -165,18 +177,35 @@ td.selected {
 									<div class="infoDesc">
 											<p class="infoText">${mddto.m_age }</p>
 										</div></li>
-									<li class="infoItem infoPrice"><strong class="infoLabel">가격</strong>
-									<div class="infoDesc">
-											<ul class="infoPriceList">
-												
-												<c:forEach items="${priceList}" var="price">
-												        <li class="infoPriceItem">
-												        	<span class="name">${price.SG_NAME}</span>
-												        	<span class="price ">${price.SP_PRICE}원</span>
-												        </li>
-												</c:forEach>
-											</ul>
-										</div></li>
+									<li class="infoItem infoPrice">
+									    <strong class="infoLabel">가격</strong>
+									    <div class="infoDesc">
+									        <ul class="infoPriceList">
+									            <c:forEach items="${priceList}" var="price">
+									                <li class="infoPriceItem">
+									                    <div class="grade_img" style="display: flex; align-items: center; gap: 10px;">
+									                        <c:choose>
+									                            <c:when test="${price.SG_NAME eq 'VIP'}">
+									                                <img src="resources/img/reserv/seat_vip.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                            <c:when test="${price.SG_NAME eq 'R'}">
+									                                <img src="resources/img/reserv/seat_r.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                            <c:when test="${price.SG_NAME eq 'S'}">
+									                                <img src="resources/img/reserv/seat_s.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                            <c:when test="${price.SG_NAME eq 'A'}">
+									                                <img src="resources/img/reserv/seat_a.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                        </c:choose>
+									                        ${price.SG_NAME}석
+									                    </div>
+									                    <span class="price">${price.SP_PRICE}원</span>
+									                </li>
+									            </c:forEach>
+									        </ul>
+									    </div>
+									</li>
 								</ul>
 							</div>
 						</div>
