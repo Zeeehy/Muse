@@ -228,5 +228,12 @@
   	</select>
   	
   	
+  	<select id="getOpenTime" parameterType="String" resultType="com.muse.openNotice.model.OpenNoticeDTO">
+	  	SELECT on_open, on_muse_open
+		FROM open_notice
+		WHERE m_code = #{m_code}
+		AND on_code = (SELECT MAX(on_code) FROM open_notice WHERE m_code = #{m_code})
+  	</select>
+  	
   	
   </mapper>
