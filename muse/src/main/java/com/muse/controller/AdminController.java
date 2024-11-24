@@ -679,6 +679,32 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping("/partnerStatsTime.do")
+	@ResponseBody
+	public Map<String, Object> partnerStatsTime(@RequestParam String page) {
+	    
+		
+		List<StatsDTO> lists  =null; 
+
+		if(page.equals("oneday")) {
+			lists = adminDao.partnerStatsTime(1);
+		}else if(page.equals("oneweek")) {
+			lists = adminDao.partnerStatsTime(7);
+		}else if(page.equals("onemonth")) {
+			lists = adminDao.partnerStatsTime(30);
+		}else if(page.equals("all")) {
+			lists = adminDao.partnerStats();
+		}else {
+			
+		}
+	    
+	    // JSON 응답을 위한 Map 설정
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("lists", lists);
+	    
+	    return response; // 반환되는 객체는 자동으로 JSON 형태로 변환됨
+	}
+	
 	
 	// 공연 랭킹
 	@RequestMapping("/rankingStats.do")

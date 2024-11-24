@@ -39,7 +39,104 @@
 <script src="/muse/resources/Highcharts-10.3.1/code/modules/exporting.js"></script>
 <script src="/muse/resources/Highcharts-10.3.1/code/modules/export-data.js"></script>
 <script src="/muse/resources/Highcharts-10.3.1/code/modules/accessibility.js"></script>	
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+$(document).ready(function() {
+	var partnerStatsData = [];
+	
+	//JSTL로 데이터를 반복하여 Highcharts 데이터 배열에 추가
+	<c:forEach var="memberStats" items="${lists}">
+	partnerStatsData.push({
+	     pr_name: '${memberStats.pr_name}',  // 파트너 명
+	     count: ${memberStats.count} // 판매금액
+	 });
+	</c:forEach>
+	
+	
+	var prNameData = partnerStatsData.map(function(item) {
+	 return item.pr_name;
+	});
+	
+	var countData = partnerStatsData.map(function(item) {
+	 return item.count;
+	});
+	
+	
+	$(".time").on("click", function() {
+        var page = $(this).data("time");  // 현재 페이지 정보 가져오기
+        console.log(page);
+        
+        $.ajax({
+            url: "partnerStatsTime.do",  // Ajax 요청 URL
+            type: "GET",
+            data: { page: page },  // page 번호를 요청 파라미터로 전송
+            dataType: "json", // JSON 응답을 기대
+            success: function(response) {
+            	console.log("데이터 성공: ", response);
+            	
+            	
+                var partnerStatsData = [];
+
+                // 서버에서 받은 데이터(response)로 rankingStatsData 배열에 항목 추가
+                response.lists.forEach(function(memberStats) {
+                	partnerStatsData.push({
+                		pr_name: memberStats.pr_name,  // 파트너 이름
+			            count: memberStats.count      // 판매 티켓수
+			        });
+					 });	
+
+                // m_title 데이터만 추출하여 mTitleData 배열 생성
+                var prNameData = partnerStatsData.map(function(item) {
+                    return item.pr_name;
+                });
+
+                // count 데이터만 추출하여 countData 배열 생성
+                var countData = partnerStatsData.map(function(item) {
+                    return item.count;
+                });
+                
+                
+                chart.update({
+                    chart: {
+                        renderTo: 'container',
+                        type: 'column',
+                        options3d: {
+                            enabled: true,
+                            alpha: 45,
+                            beta: 15,
+                            depth: 50,
+                            viewDistance: 25
+                        }
+                    },
+                    xAxis: {
+                        categories: prNameData
+                    },
+                    series: [{
+                        data: countData,
+                        colorByPoint: true
+                    }]
+                });
+                
+              //애니메이션 적용
+                setTimeout(function() {
+                    chart.update({
+                        chart: {
+                            options3d: {
+                                alpha: 6  // 3초 동안 alpha 값이 6으로 변함
+                            }
+                        }
+                    }, 3000);  // 3초 후에 애니메이션 시작
+                }, 500);  // 1초 후에 애니메이션 시작
+             	
+            },
+            error: function(xhr, status, error) {
+                console.error("데이터 로딩 실패: ", error);
+            }
+        });
+    });
+});
+</script>
 
 <script>
 var partnerStatsData = [];
@@ -70,7 +167,16 @@ var countData = partnerStatsData.map(function(item) {
 
 
 <figure class="highcharts-figure">
-    <div id="container" style="margin-top: 200px;"></div>
+
+
+	<div style="margin-top: 200px;"> 
+	   	<input class="time blueButton" type="button" value="1일" data-time="oneday">
+	   	<input class="time blueButton" type="button" value="1주일" data-time="oneweek">
+	   	<input class="time blueButton" type="button" value="1달" data-time="onemonth">
+	   	<input class="time blueButton" type="button" value="전체" data-time="all">
+	</div>
+	
+    <div id="container" ></div>
     <p class="highcharts-description">
        파트너별 판매랭킹 순위입니다. 해당 통계는 티켓 가격을 합산해서 계산했습니다.
     </p>

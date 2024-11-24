@@ -285,6 +285,12 @@ public class AdminDAOImple implements AdminDAO {
 
 
 	@Override
+	public List<StatsDTO> partnerStatsTime(int time) {
+		List<StatsDTO> lists = sqlMap.selectList("partnerStatsTime",time);
+		return lists;
+	}
+
+	@Override
 	public List<StatsDTO> rankingStats() {
 		List<StatsDTO> lists = sqlMap.selectList("rankingStats");
 		return lists;
@@ -348,6 +354,8 @@ public class AdminDAOImple implements AdminDAO {
 		int count = sqlMap.selectOne("getInsertApply");
 		return count;
 	}
+
+
 
 	
 }
