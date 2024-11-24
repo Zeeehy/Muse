@@ -21,5 +21,9 @@
     	update mpass set mp_startdate = sysdate,  mp_enddate = ADD_MONTHS(SYSDATE, 12)
     	where u_id = #{u_id}
     </update>
+    
+    <insert id="insertPassPoint">
+    	insert into point values (point_pt_code.nextval, #{u_id},0,'0',15000,sysdate)
+    </insert>
 
 </mapper>

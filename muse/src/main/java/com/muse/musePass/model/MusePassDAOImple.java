@@ -39,4 +39,10 @@ public class MusePassDAOImple implements MusePassDAO {
 		// TODO Auto-generated method stub
 		return sqlMap.update("updateMPassRange",u_id);
 	}
+	
+	@Override
+	public int insertPassPoint(String u_id) {
+		return sqlMap.update("insertPassPoint",u_id);
+		
+	}
 }
