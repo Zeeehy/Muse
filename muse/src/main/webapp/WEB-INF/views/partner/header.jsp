@@ -13,6 +13,7 @@ display:flex;
 width:100%;
 text-align: center;
 font-size:20px;
+font-weight:bold;
 }
 </style>
 <body onload="onloadSession()">
@@ -35,7 +36,7 @@ font-size:20px;
 		
 		<div class="right-section">
 			<a href="partnerLogin.do">로그인</a>
-			<input type="text" value="${s_pr_code}" name="pr_code">
+			<input type="hidden" value="${s_pr_code}" name="pr_code">
 			<!-- <input type="hidden" value="${pr_code}" name="pr_code"> -->
 	</div>
 	</c:if>
@@ -50,12 +51,18 @@ font-size:20px;
             var u_id = "${p_s_id}";
             var s_rs_code = "${s_rs_code}";
 			var pr_name = '${pr_name}';
-           // alert("pr_code:" + pr_code);
+			var u_id ="";
+			var state = '${pr_name}';
+            //alert("pr_code:" + pr_code);
            // alert("u_id:" + u_id);
-          //  alert("s_rs_code:" + s_rs_code); 
-
+            //alert("s_rs_code:" + s_rs_code); 
             // 로그인 상태 및 파트너 신청 상태 체크
-             
+             if(state==null||state==""){
+            	 alert("세션값 만료");
+                 window.location.href = 'partnerLogin.do';
+            	 
+             }
+            
             if (s_rs_code == "4") {
             	window.location.href = 'partnerAddForm.do?u_id='+u_id;
                 return;
