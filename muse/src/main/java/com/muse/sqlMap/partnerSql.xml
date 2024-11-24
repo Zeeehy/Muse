@@ -18,8 +18,7 @@
 		AND EXISTS (
 		SELECT 1
 		FROM service_request sr
-		WHERE sr.m_code = m.m_code -- 외부 쿼리의 musical과
-		연결
+		WHERE sr.m_code = m.m_code -- 
 		AND sr.rs_code = 1 -- 승인된 것만
 		)
 		AND m.m_startdate <![CDATA[>]]>
@@ -525,11 +524,11 @@
 		open_notice op ON op.m_code = m.m_code
 		WHERE m.pr_code =
 		#{pr_code}
-		<if test="isFutureDate == 1">
+		<if test="isFutureDate == 0">
 			AND m.m_startdate <![CDATA[>=]]>
 			sysdate
 		</if>
-		<if test="isFutureDate == 0">
+		<if test="isFutureDate == 1">
 			AND m.m_startdate <![CDATA[<]]>
 			sysdate
 		</if>

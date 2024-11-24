@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
 <body>
    <div class="sidebar">
     <div class="sidebartop">
-      <a href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }'>   메인</a> | 
+      <a href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }'>메인</a><a> | </a>
       <span class="popup-container" style="position: relative;"> <!-- 팝업 위치를 상대적으로 설정 -->
         <a href="#" onclick="showPopup()">요청 현황</a>
         <!-- 레이어 팝업 -->
+        </span>
         <div id="popup" class="popup">
           		<div class="popupWrap">
           		<button class="close-btn" onclick="closePopup()">X</button>
@@ -46,7 +48,6 @@
           		</table>
           		</div>
         </div>
-      </span>
     </div>
     
 
@@ -65,7 +66,6 @@
     <div class="dropdown-container">
       <a href="musicalSeatAddForm.do">시트 등록</a>
       <a href="castAddForm.do">캐스팅 등록</a>
-      <!-- <a href="reviewDeleteForm.do?pr_code=${s_pr_code}">리뷰 삭제</a> -->
       <a href="reviewDeleteForm.do?pr_code=${s_pr_code }">리뷰 관리</a>
     </div>
 
@@ -78,13 +78,7 @@
       
     </div>
 
-    <button class="dropdown-btn">
-      판매 현황
-    </button>
-    <div class="dropdown-container">
-      <a href="#">티켓 판매</a>
-      <a href="#">수익 현황</a>
-    </div>
+    
   </div>
 </body>
 <script>

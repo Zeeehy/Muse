@@ -634,9 +634,23 @@ public class PartnerController {
 		@RequestParam(value="mr_code")String mr_code) {
 		dto.setBdr_key(mr_code);
 		int result = partnerDao.deleteReviewRe(dto);
-		System.out.println(result+"삭제 요청 결과");
 		ModelAndView mav =new ModelAndView();
-		mav.setViewName(mainUrl);
+	 	String msg ="";
+	 	String goUrl="";
+		if(result==1) {
+			msg="리뷰 삭제 요청 성공";
+
+		 	goUrl="reviewDeleteForm.do?pr_code="+dto.getPr_code();
+			mav.addObject("msg", msg);
+			mav.addObject("goUrl", goUrl);
+		}else {
+			msg="리뷰 삭제 요청 실패";
+
+		 	goUrl="reviewDeleteForm.do?pr_code="+dto.getPr_code();
+		 	mav.addObject("msg", msg);
+		 	mav.addObject("goUrl", goUrl);
+		}
+		mav.setViewName("/member/memberMsg");
 		return mav;
 	}
 	@RequestMapping(value = "/partnerLogin.do", method = RequestMethod.POST)
@@ -656,22 +670,38 @@ public class PartnerController {
 			} else if(loginResult==3) {
 				MemberDTO s_info=memberDao.getUserInfo(u_id);		
 				session.setAttribute("p_s_id", u_id);
-			//	session.setAttribute("s_name", s_info.getU_name());			
-			//	session.setAttribute("s_mpass", s_info.getU_mpass());
 				Dpr_code=s_info.getPr_code();
 				session.setAttribute("s_pr_code", s_info.getPr_code());
 				session.setAttribute("s_rs_code", s_info.getRs_code());
 				PartnerDTO DTO = partnerDao.getPartnerInfo(s_info.getPr_code());
+				String msg="";
+				String goUrl="";
 				if(DTO!=null) {
-					if(DTO.getRs_code()==1){
-
-					session.setAttribute("pr_name", DTO.getPr_name());
-
-					mav.addObject("dto", DTO);
+					if(DTO.getRs_code()==0){
+						msg="파트너 승인 대기중입니다.";
+						goUrl="index.do";
+					}else if(DTO.getRs_code()==2) {
+						msg="파트너 승인이 반려되었습니다.";
+						goUrl="index.do";
+					}else if(DTO.getRs_code()==1){
+						session.setAttribute("pr_name", DTO.getPr_name());
+						System.out.println("rscode상태"+DTO.getRs_code());
+						mav.addObject("dto", DTO);
+						msg=DTO.getPr_name()+"님 환영합니다.";
+						goUrl=mainUrl;
 					}
+
+
+					mav.addObject("msg", msg);
+					mav.addObject("goUrl", goUrl);
+					mav.setViewName("/member/memberMsg");
+				}else if(DTO==null){
+					MemberDTO MemberDto = partnerDao.getusersInfo(u_id);
+					mav.addObject("mdto", MemberDto);
+					mav.setViewName("/partner/partnerAddForm");
 				}
-				System.out.println(mainUrl);
-		        mav.setViewName("partner/partnerMainForm");
+				
+		        
 			}
 		return mav;
 	}

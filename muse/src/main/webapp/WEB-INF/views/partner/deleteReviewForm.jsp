@@ -8,6 +8,16 @@
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <title>Insert title here</title>
 </head>
+<Style>
+.textarea-style {
+	width: 100%;
+	height: 80px;
+	border-radius: 8px; /* 둥근 모서리 */
+	font-size: 20px;
+	background-color: #f9f9f9;
+	resize: none; /* 크기 조절 아이콘 제거 */
+}
+</Style>
 <%@include file="header.jsp"%>
 <%@include file="sidebar.jsp"%>
 <body>
@@ -34,7 +44,7 @@
 					</tr>
 					<tr>
 						<th>본문</th>
-						<td><input type="text" value="${dto.mr_content }" readonly></td>
+						<td colspan="4"><textarea class="textarea-style">${dto.mr_content }</textarea></td>
 					</tr>
 					<tr>
 						<th>사유 입력</th>

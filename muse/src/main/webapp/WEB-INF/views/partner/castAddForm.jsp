@@ -175,7 +175,7 @@ function show(){
 	var actorName = document.getElementsByName('ma_name')[0].value;
 	var param = 'ma_name=' + actorName
 	if(actorName==''){
-	alert('값입력');
+	alert('캐릭터를 입력해주세요');
 	}else{
 	sendRequest('seachActor.do',param,showResult,'GET');
 	}
@@ -570,13 +570,13 @@ function closeActorPopup() {
 
 //db인설트
 function insertMusicalDate(){
-	alert(dateList.length+"배열 길이 초기화 확이ㄴ");
-	alert(countDate+"데이트 카운터 크기");
+	//alert(dateList.length+"배열 길이 초기화 확이ㄴ");
+	//alert(countDate+"데이트 카운터 크기");
 	
 	
 	for(var i=0; i<dateList.length;i++){
 		const trId = dateList[i];  // 배열에서 id 값을 가져옴
-		alert(trId+"@@@@@@@@@@@@@@"+i+"번째 값");
+		//alert(trId+"@@@@@@@@@@@@@@"+i+"번째 값");
 	    const trElement = document.getElementById(trId);
 	    var dateListTr = trElement.innerHTML;
 	    console.log(dateListTr);
@@ -587,11 +587,11 @@ function insertMusicalDate(){
 	    
 	    var params = 'm_code='+ musical_code +'&mo_date='+insertMo_date +'&mo_time='+insertMo_time;
 		sendRequest('insertMusicalDateList.do',params,insertMusicalDateResult(),'GET'); 
+		
 	}
+	
 	dateList= [];
 	countDate = 0;
-	alert(dateList.length);
-	alert(countDate+"#####################");
 }
 	
 function insertMusicalDateResult(){
