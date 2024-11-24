@@ -62,6 +62,7 @@ public class MusePassController {
 		
 		if(result==0) {
 			mpdao.insertMusePass(paramMap);
+			mpdao.insertPassPoint(u_id);
 		} else {
 			mpdao.updateMPassRange(u_id);
 		}
