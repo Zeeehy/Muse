@@ -74,7 +74,8 @@ body {
 }
 
 .sidebar a:hover, .dropdown-btn:hover {
-	background-color: #BFD9E0; 
+	 font-size: 1.4em; /* 기존보다 20% 확대 */
+  	transition: font-size 0.3s; /* 부드러운 효과 */
 }
 
 .sidebartop {
@@ -95,7 +96,7 @@ body {
 }
 
 .sidebar .dropdown-btn:hover {
-	background-color: #B0DFFF;
+	/* background-color: #B0DFFF; */
 }
 
 .dropdown-container {
@@ -112,7 +113,7 @@ body {
 }
 
 .dropdown-container a:hover {
-	background-color: #575757;
+	/* background-color: #575757; */
 }
 
 input[type="text"], input[type="number"] {
