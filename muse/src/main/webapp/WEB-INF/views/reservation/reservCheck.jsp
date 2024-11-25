@@ -13,7 +13,6 @@
     </style>
 </head>
 <body>
-    <h1>예매자 확인 페이지</h1>
     <form id="reservationForm" action="reservCancle.do" method="post">
 	    <input type="hidden" name="mh_code" value="${mh_code}">
 	    <input type="hidden" name="m_code" value="${m_code}">
@@ -85,7 +84,7 @@
                             <h2>나의 예매 정보</h2>
                             <div class="reservmInfo">
                                 <div style="display: flex; gap: 15px; flex-direction: row; align-items: stretch;">
-                                    <img src="">
+                                    <img src="resources/img/musical/${musicalInfo.M_POSTER}" alt="${musicalInfo.M_TITLE} 포스터">
                                     <ul class="mInfoList">
                                         <li><span><c:out value="${musicalInfo.M_TITLE}"/></span></li>
                                         <li>
@@ -116,18 +115,18 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>티켓금액</th>
-                                            <td>
-                                                <c:set var="totalPrice" value="0"/>
-                                                <c:forEach items="${selectedSeats}" var="seat">
-                                                    <c:set var="totalPrice" value="${totalPrice + seat.price}"/>
-                                                </c:forEach>
-                                                <c:out value="${ticketPrice}"/>원
-                                            </td>
-                                        </tr>
+										    <th>티켓금액</th>
+										    <td>
+										        <c:set var="totalPrice" value="0"/>
+										        <c:forEach items="${selectedSeats}" var="seat">
+										            <c:set var="totalPrice" value="${totalPrice + seat.price}"/>
+										        </c:forEach>
+										        <fmt:formatNumber value="${ticketPrice}" pattern="#,###"/>원
+										    </td>
+										</tr>
                                         <tr>
 										    <th>포인트 사용</th>
-										    <td><b id="selectedPointAmount">${usePoint} P</b> 사용</td>
+										    <td><b id="selectedPointAmount"><c:out value="${usePoint != null ? usePoint : 0}"/> P</b> 사용</td>
 										</tr>
                                         <tr>
                                             <th>취소기한</th>
@@ -143,11 +142,11 @@
                         </div>
                         
                         <div class="s Choice">
-                            <h2>총 결제 금액</h2>
-                            <div>
-                                <span><b><c:out value="${ticketPrice - (usePoint != null ? usePoint : 0)}"/>원</b></span>
-                            </div>
-                        </div>
+						    <h2>총 결제 금액</h2>
+						    <div>
+						        <span><b><fmt:formatNumber value="${ticketPrice - (usePoint != null ? usePoint : 0)}" pattern="#,###"/>원</b></span>
+						    </div>
+						</div>
                         
                         <div class="s Button"> 
                             <div class="subBtList">

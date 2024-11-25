@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.muse.admin.model.PartnerDTO;
+import com.muse.openNotice.model.OpenNoticeDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.review.model.MusicalReviewDTO;
@@ -40,4 +41,5 @@ public interface MusicalDetailDAO {
 	public List<MusicalOptionDTO> getRecentMusicalOption (String m_code);
 	public List<MusicalOptionDTO> getNextMonthMusicalOption(Map paramMap);
 	public MusicalOptionDTO getMaxMusicalOption(String m_code);
+	public OpenNoticeDTO getOpenTime(String m_code);
 }

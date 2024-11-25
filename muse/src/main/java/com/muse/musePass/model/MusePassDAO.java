@@ -8,5 +8,6 @@ public interface MusePassDAO {
 	public int updateMusePassOn(String u_id);
 	public int checkPassJoin(String u_id);
 	public int updateMPassRange(String u_id);
+	public int insertPassPoint(String u_id);
 	
 }

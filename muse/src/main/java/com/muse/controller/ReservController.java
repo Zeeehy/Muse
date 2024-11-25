@@ -589,8 +589,7 @@ public class ReservController {
 	            	       String key = entry.getKey();
 	            	       Integer value = entry.getValue();
 	            	       
-	            	       System.out.println(key);
-	            	       System.out.println(key + " : " + value);
+	            	       System.out.println(grade+" - "+key + " : " + value);
 	            	       
 	            	       if(value > 0) {
 	            	           detailData.put("d_code", key);
@@ -603,13 +602,24 @@ public class ReservController {
 	            	           }
 	            	           
 	            	           // ! 사용된 할인 제거
-	            	           gradeDiscounts.put(key, 0);  // value를 0으로 변경
+	            	           if(gradeDiscounts.get(key)==1) {
+		            	           gradeDiscounts.put(key, 0);  // value를 0으로 변경
+	            	           } else {
+	            	        	   gradeDiscounts.put(key,gradeDiscounts.get(key)-1);
+	            	           }
 	            	           break;  // ! 첫 번째 할인 적용 후 종료
 	            	       }
 	            	   }
 	            	}
-	           
-	            
+	            System.out.println("------------------------------------------");
+	            for (Map.Entry<String, Object> entry : detailData.entrySet()) {
+	            	System.out.println("시작");
+	                System.out.println("키: " + entry.getKey() + ", 값: " + entry.getValue());
+	            	System.out.println("끝");
+		        System.out.println("------------------------------------------");
+
+	                
+	            }	            
 	            // 예매 상세 정보 저장
 	            reservDAO.insertBookingDetail(detailData);
 	        }

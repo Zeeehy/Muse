@@ -42,7 +42,7 @@
 								<a href="openNoticeView.do?on_code=${notice.on_code}&crpage=${crpage}">
 							        ${notice.m_title} ${notice.on_type}
 							        <c:if test="${not empty notice.on_muse_open and notice.on_muse_open ne ' '}">
-							            <span class="passText">MusePass 선예매</span>
+							            <span class="passText"><b>MUSEPASS</b> 선예매</span>
 							        </c:if>
 							    </a>
 							</td>
@@ -82,7 +82,7 @@ function showNotice(cr){
 
 	                    // MusePass 선예매 조건 추가
                         if (notice.on_muse_open && notice.on_muse_open.trim() !== '') {
-                            html += ' <span class="passText">MusePass 선예매</span>';
+                            html += ' <span class="passText"><b>MUSEPASS</b> 선예매</span>';
                         }
 
                     	html += '</a></td>';

@@ -23,7 +23,7 @@ body {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto;
 }
 
 /* 사이드바 스타일 */
@@ -154,12 +154,6 @@ body {
 }
 
 
-footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-}
-
 .main-content h2 {
     font-size: 16px;
     color: #0066cc;
@@ -191,7 +185,7 @@ footer {
 
         <div class="main-content">
              <h1>M-point</h1>
-        <div class="point-box">10000 P</div>
+        <div class="point-box">${pointSum} P</div>
         <h2>M포인트 내역</h2>
 		<div class="search-filter">	
 			<select id="point_type">
@@ -215,24 +209,40 @@ footer {
         <div class="table-container">
             <table class="table">
                 <thead>
-                    <tr>
-                        <th>발생일자</th>
+                    <tr>              
                         <th>구분</th>
-                        <th>내역</th>
-                        <th>적립</th>
-                        <th>사용</th>
-                        <th>잔액</th>
+                        <th>적립여부</th>
+                        <th>상세내역</th>
+                        <th>변동포인트</th>
+                        <th>발생일자</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
+                   <c:if test="${empty pointList }">
+						<tr>
+							<td colspan="5" align="center">
+								포인트내역이 존재하지 않습니다
+							</td>
+						</tr>
+					</c:if>
+                	<c:forEach var="ptlist" items="${pointList}">
+	                	<tr>
+	                        <td>
+	                        	<c:if test="${ptlist.pt_category eq 0}">뮤즈패스 가입</c:if>
+	                        	<c:if test="${ptlist.pt_category eq 1}">예매구매</c:if>
+	                        	<c:if test="${ptlist.pt_category eq 2}">좌석리뷰</c:if>
+	                        	<c:if test="${ptlist.pt_category eq 3}">공연리뷰</c:if>
+	                        	<c:if test="${ptlist.pt_category eq 3}">예매환불</c:if>
+	                        </td>
+	                        <td>
+								<c:if test="${ptlist.pt_point > 0}">적립</c:if>
+	                        	<c:if test="${ptlist.pt_point < 0}">사용</c:if>
+							</td>
+	                        <td>아직</td>
+	                        <td>${ptlist.pt_point}</td>
+	                        <td>${ptlist.pt_date}</td>
+	                    </tr>
+                	</c:forEach>
                 </tbody>
             </table>
         </div>

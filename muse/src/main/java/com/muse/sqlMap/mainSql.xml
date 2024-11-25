@@ -37,6 +37,7 @@
 			    JOIN users u ON u.u_id = b.u_id
 			    JOIN musical_review mr ON b.b_code = mr.b_code
 			    WHERE mr.mr_state = 1
+			    ORDER BY DBMS_RANDOM.VALUE
 			)
 			WHERE rn = 1 AND <![CDATA[ ROWNUM <= 4]]>
 	    </select>

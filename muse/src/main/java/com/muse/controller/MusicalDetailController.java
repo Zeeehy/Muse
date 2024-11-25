@@ -30,6 +30,7 @@ import com.muse.admin.model.PartnerDTO;
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
 import com.muse.musicalDetail.model.MusicalDetailDAO;
 import com.muse.musicalDetail.model.MusicalDetailDTO;
+import com.muse.openNotice.model.OpenNoticeDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
 import com.muse.rank.model.RankDAO;
@@ -145,7 +146,10 @@ public class MusicalDetailController {
 		if (mddto.getM_notice() != null && !mddto.getM_notice().isEmpty()) {
 		    mddto.setM_notice(mddto.getM_notice().replaceAll("\\\\n", "<br>"));
 		}
-		System.out.println(mddto.getM_notice());
+
+		
+		OpenNoticeDTO ondto = musicalDetaildao.getOpenTime(m_code);
+		
 		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
@@ -172,6 +176,8 @@ public class MusicalDetailController {
 			mav.addObject("rank",rank);
 
 		}
+		
+		mav.addObject("ondto",ondto);
 		
 		
 		mav.setViewName("musicalDetail/musicalDetail");

@@ -24,7 +24,7 @@ body {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto;
 }
 
 /* 사이드바 스타일 */
@@ -159,7 +159,7 @@ body {
 </style>
 <script>
 function openMuseCasting() {
-	window.open('museCasting.do','museCasting','width=650,height=350');
+	window.open('museCasting.do','museCasting','width=620,height=400');
 }
 
 function checkLikeActorAll(){
@@ -285,8 +285,8 @@ function deleteLikeMusical(){
                             <p>뮤지컬 배우</p>
                             <p>${lalist.la_date} 등록</p>
                         </div>
-                    </div>
-                	</c:forEach>
+	                    </div>
+	                	</c:forEach>
 					</div>
 					
                 	

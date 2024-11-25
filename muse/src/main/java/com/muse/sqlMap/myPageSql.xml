@@ -144,7 +144,20 @@
   <select id="selectMPass" resultType="com.muse.myPage.model.MPassDTO">
         select * from mpass where u_id = #{u_id}
   </select>  
-  
+  <select id="selectMuseMusical" resultType="com.muse.myPage.model.MuseMusicalDTO">
+	   <![CDATA[
+        select *
+        from (
+            select m.m_code, m.m_title, m.m_poster, opn.on_open, opn.on_muse_open
+            from musical m
+            join open_notice opn on opn.m_code = m.m_code
+            where opn.on_open != opn.on_muse_open
+              and sysdate - to_date(opn.on_muse_open, 'yyyy/mm/dd hh24:mi:ss') < 0
+            order by opn.on_muse_open desc
+        )
+        where rownum <= 6
+    	]]>
+  </select>
   <!-- 뮤즈캘린더 -->
   <select id="calendarList"  resultType="com.muse.myPage.model.MuseCalendarDTO">
   	select * from calendar 
@@ -220,7 +233,11 @@
   <select id="selectSeatReviewCount" parameterType="String" resultType="Integer">
 	select count(*) from seat_review where bd_code=#{bd_code}
   </select> 
-  
+  <!--
+  <select id="selectRefundDate" parameterType="String" resultType="String">
+  	select to_char(r_date, 'yyyy-mm-dd hh24:mi:ss') from refund where bd_code=#{bd_code}
+  </select> 
+    -->
   <!-- 환불 -->
   <select id="selectBookingDetail" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
 	select 
@@ -283,4 +300,16 @@
 	where b.u_id=#{u_id}
 	order by sr_date desc
 	</select>
+	
+	<!-- 포인트 -->
+	<select id="selectMyPointList" parameterType="String" resultType="com.muse.myPage.model.MyPointDTO">
+	select * from point
+	where u_id=#{u_id}
+	order by pt_date desc
+  	</select>
+  	
+  	<select id="selectMyPointSum" parameterType="String" resultType="Integer">
+	select sum(pt_point) from point
+	where u_id=#{u_id}
+  	</select>
   </mapper>

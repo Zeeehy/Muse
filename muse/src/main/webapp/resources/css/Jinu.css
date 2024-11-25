@@ -23,6 +23,7 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper {
+	padding: 70px 0;
     display: flex;
     gap: 15%; /* 아이템 간 간격을 설정 */
 }
@@ -35,7 +36,7 @@ li, label, input, tr, th, td {
 
 
 .navList {
-	    width: 800px;
+	    width: 900px;
 	display: flex;
     justify-content: space-around; /* 네비게이션 항목들 사이에 공간을 균등하게 배치 */
     gap: 10px; /* 네비게이션 항목들 간의 간격 */
@@ -136,7 +137,7 @@ li, label, input, tr, th, td {
     line-height: 160%;
     vertical-align: top;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .productWrapper .summary .info .infoDesc {
@@ -151,7 +152,7 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper .summary .info .infoDesc ul li {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 .productWrapper .productSide {
@@ -178,6 +179,15 @@ li, label, input, tr, th, td {
 .productWrapper .summary {
     position: relative;
     padding-bottom: 6.5rem;
+}
+
+.productWrapper .summary .prdSection .tagText span{
+    font-size: 16px;
+    padding: 5px 0;
+    color: #444;
+}
+.productWrapper .summary .prdSection .tagText span b{
+    color: #ff3e32;
 }
 
 .productWrapper .nav .navItem {
@@ -424,7 +434,7 @@ img.castingImage{
 
 /* 판매 정보 */
 .productWrapper .prdContents .moreInfoContainer {
-    padding-top: 30px;
+    padding-top: 50px;
 }
 .productWrapper .prdContents .moreInfoContainer h4 {
     padding: 20px 0;
@@ -762,6 +772,22 @@ img.castingImage{
 	
 }
 
+
+.noResult{
+	    padding-top: 20px;
+	
+}
+
+#pageNav{
+	display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+#pageNav span{
+	font-size : 15px;
+}
+
 /* ----------------- 오픈공지 리스트 ----------------- */
 .section_notice .list {
 	max-width: 1500px;
@@ -818,6 +844,12 @@ img.castingImage{
 }
 .section_notice .list .table tr{
 	border-bottom: 0.5px solid #f0f0f0;
+}
+.section_notice .list .table tr .passText{
+	margin-left: 15px;
+}
+.section_notice .list .table tr .passText b{
+	color: #ff3e32;
 }
 .section_notice .list .table .content:hover {
 	background: #fafafa;
@@ -964,15 +996,16 @@ h5 {
 }
 .joinBt {
 	width: 150px;
-    text-align: center;
+    text-align: center !important;
     padding: 20px;
-    background: #ff3e32;
+    background: #ff3e32 !important;
     margin: 0 auto;
-    color: #fff;
-    font-weight: 700;
+    color: #fff !important;
+        font-weight: 700;
     letter-spacing: 1px;
     font-size: 20px;
 }
+
 .joinClause ul {
 	display: flex;
 	flex-direction: column !important;
@@ -980,10 +1013,96 @@ h5 {
     gap: 10px !important;
     padding: 30px 0;
 }
-.musepass ul.next li {
-	width: 150px;
-	border-top: 2px solid #000;
-}
+
 .musepass ul.next li h5{
 	padding-top:10px;
+}
+.joinClause {
+    padding: 50px 0;
+    /* background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+}
+
+.joinClause ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.joinClause ul li {
+	width:100%;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.joinClause input[type="checkbox"] {
+    display: none;
+}
+
+.joinClause label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.joinClause label:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.joinClause input[type="checkbox"]:checked + label:before {
+    background-color: #ff3e32;
+    border-color: #ff3e32;
+    content: '✓';
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.joinClause div {
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    border: 1px solid #eee;
+    text-align: left;
+}
+
+/* 동의 항목들 사이 구분선 */
+.joinClause ul li:not(:last-child) {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+/* 스크롤바 스타일링 */
+.joinClause div::-webkit-scrollbar {
+    width: 8px;
+}
+
+.joinClause div::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.joinClause div::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.joinClause div::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }

@@ -372,6 +372,34 @@ and m_opendate <= SYSDATE + 7
   </select>
   
   
+    <select id="partnerStatsTime" resultType="com.muse.admin.model.StatsDTO">
+
+	select p.pr_code, p.pr_name, sum(bd_price) as count
+	from booking_detail bd, seat s ,musical m, partner p, booking b
+	where bd_state = 1 and 
+	bd.s_code = s.s_code and m.m_code = s.m_code and m.pr_code = p.pr_code and b.b_code = bd.b_code
+    <if test="time == 1">
+        <![CDATA[ 
+            AND b_date >= TRUNC(SYSDATE) 
+            AND b_date < TRUNC(SYSDATE) + 1
+        ]]>   
+    </if>
+    <if test="time == 7">
+        <![CDATA[ 
+            AND b_date >= TRUNC(SYSDATE) - 7 
+            AND b_date < TRUNC(SYSDATE) + 1
+        ]]>  
+    </if>
+    <if test="time == 30">
+        <![CDATA[ 
+            AND b_date >= TRUNC(SYSDATE) - 30
+            AND b_date < TRUNC(SYSDATE) + 1
+        ]]>  
+    </if>
+	group by p.pr_code, p.pr_name 
+	order by count desc
+  </select>
+  
   
   <select id="rankingStats" resultType="com.muse.admin.model.StatsDTO">
 	select m.m_code,m.m_title,count(*) as count

@@ -17,13 +17,12 @@
 #bannerListTable {
     width: 100%;
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
 }
 
 /* 테이블 헤더 스타일 */
 #bannerListTable th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #a5cfe3;
+    color: white;
     padding: 10px;
     text-align: center;
     font-weight: bold;
@@ -35,6 +34,7 @@
     padding: 8px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+   height:30px;
 }
 
 /* 테이블에 호버 효과 추가 */
@@ -104,6 +104,10 @@ color:white;
 .clickedButton{
 background:#5794bf;
 }
+
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}   
 </style>
 
 <style>
@@ -128,14 +132,13 @@ background:#5794bf;
 	<div class="main-content">
 	
 		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 불량 리뷰 관리</h1>
-		<hr id="hrLine">
 		
 		<div class="buttonContainer ">
 			<input type="button" class="tabButton clickedButton" value="전체보기" onclick="window.location.href='adminReviewList.do'">
 			<input type="button" class="tabButton" value="리뷰검색" onclick="window.location.href='adminSearchReviewList.do'">
 		</div>
 		
-		<table id="bannerListTable" border="1" cellspacing="0">
+		<table id="bannerListTable" >
 			<tr >
 				<th>제목</th>
 				<th>뮤지컬이름</th>

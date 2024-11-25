@@ -27,6 +27,7 @@ import com.muse.myPage.model.MPassDTO;
 import com.muse.myPage.model.MuseCalendarDAO;
 import com.muse.myPage.model.MuseCalendarDTO;
 import com.muse.myPage.model.MuseCastDAO;
+import com.muse.myPage.model.MuseMusicalDTO;
 import com.muse.myPage.model.MyBookingDetailDAO;
 import com.muse.myPage.model.MyBookingDetailDTO;
 import com.muse.myPage.model.MyBookingListDAO;
@@ -36,6 +37,8 @@ import com.muse.myPage.model.MyLikeMusicalDTO;
 import com.muse.myPage.model.MyMusicalReviewDTO;
 import com.muse.myPage.model.MyPageUserDAO;
 import com.muse.myPage.model.MyPageUserDTO;
+import com.muse.myPage.model.MyPointDAO;
+import com.muse.myPage.model.MyPointDTO;
 import com.muse.myPage.model.MyReviewListDAO;
 import com.muse.myPage.model.MySeatReviewDTO;
 import com.muse.partner.model.ActorDTO;
@@ -58,6 +61,8 @@ public class MyPageController {
 	private MyBookingDetailDAO mybookingDetailDao;
 	@Autowired
 	private MyReviewListDAO myReviewListDao;
+	@Autowired
+	private MyPointDAO mypointDao;
 	
 	/**메인페이지*/	
 	//메인페이지 폼
@@ -400,7 +405,8 @@ public class MyPageController {
 			//포인트돌려주기 일단 테이블고치고
 			System.out.println("포인트돌려줫어용");
 		}
-		mav.setViewName("redirect:/myPage/myPageBookingDetail.do?b_code="+b_code);
+		
+		mav.setViewName("redirect:/myPageBookingDetail.do?b_code="+b_code);
 		return mav;
 	}
 	
@@ -644,6 +650,8 @@ public class MyPageController {
 			mav.setViewName("/myPage/myPageMain");
 			return mav;
 		}
+		List<MuseMusicalDTO> museMusical = mPassDao.getMuseMusical();
+		mav.addObject("museMusical",museMusical);
 		mav.setViewName("/myPage/myPageMusePass");
 		return mav;
 	}
@@ -726,11 +734,28 @@ public class MyPageController {
 	
 	/**마이페이지 포인트*/
 	@RequestMapping("/myPagePoint.do")
-	public ModelAndView myPagePointForm() {
+	public ModelAndView myPagePointForm(HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav = new ModelAndView();
 
+		List<MyPointDTO> pointList = mypointDao.getPointList(u_id);
+		int pointSum = 0;
+		if(pointList!=null) {
+			pointSum = mypointDao.getPointSum(u_id);	
+		}
+		mav.addObject("pointList", pointList);
+		mav.addObject("pointSum",pointSum);
 		mav.setViewName("/myPage/myPagePoint");
 		return mav;
+//		String u_id = (String) session.getAttribute("s_id");
+//		ModelAndView mav = new ModelAndView();
+//
+//		List<MyPointDTO> pointList = mypointDao.getPointList(u_id);
+//		int pointSum = mypointDao.getPointSum(u_id);
+//		mav.addObject("pointSum", pointSum);
+//		mav.addObject("pointList", pointList);
+//		mav.setViewName("/myPage/myPagePoint");
+//		return mav;
 	}
 	
 	

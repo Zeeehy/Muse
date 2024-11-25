@@ -40,7 +40,7 @@
   </select>
   
   <insert id="addPoint" parameterType="map" >
-  insert into point(pt_code,u_id,pt_category,pt_categorycode,pt_point ) values(POINT_PT_CODE.nextval,#{u_id},0,#{mr_code},#{point})
+  insert into point(pt_code,u_id,pt_category,pt_categorycode,pt_point,pt_date ) values(POINT_PT_CODE.nextval,#{u_id},#{cat},#{mr_code},#{point},sysdate)
   </insert>
   
   <select id="getWriterIdByBdCode" parameterType="String" resultType="String">

@@ -58,12 +58,13 @@ public class ReviewDAOImple implements ReviewDAO {
 	}
 
 	@Override
-	public int addPoint(String s_id,String mr_code,int point) {
+	public int addPoint(String s_id,String mr_code,int point,int cat) {
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("u_id", s_id);
 		map.put("mr_code", mr_code);
 		map.put("point", point);
+		map.put("cat", cat);
 		
 		
 		int point2 =sqlMap.insert("addPoint",map);

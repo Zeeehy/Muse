@@ -5,6 +5,51 @@
 <head>
 <meta charset="UTF-8">
 <title>MUSEPASS</title>
+<style>
+
+.musepass ul {
+	max-width: 800px;
+    margin: 0 auto;
+   display: flex;
+   justify-content: space-between;
+   list-style: none;
+   padding: 0;
+   margin-bottom: 50px;
+   position: relative;
+}
+
+.musepass ul:after {
+   content: '';
+   position: absolute;
+   top: 25px;
+   left: 10%;
+   right: 10%;
+   height: 2px;
+   background: #eee;
+   z-index: 1;
+}
+
+.musepass ul li {
+   text-align: center;
+   position: relative;
+   z-index: 2;
+   background: white;
+   padding: 0 20px;
+}
+
+.musepass h5 {
+   color: #ff3e32;
+   margin: 0;
+   font-size: 14px;
+}
+
+.musepass h3 {
+   margin: 10px 0;
+   color: #333;
+   font-size: 18px;
+}
+
+</style>
 <link rel="stylesheet" type="text/css" href="resources/css/Jinu.css">
 </head>
 <body>
@@ -17,16 +62,16 @@
 				<ul class="next">
 					<li>
 						<h5>step1.</h5>
-						<h3>이용약관 동의 및 신청</h3>
+						<h3 >이용약관 동의 및 신청</h3>
 					</li>
 					<li>
 						<h5>step2.</h5>
-						<h3>결제하기</h3>
+						<h3 style="color:#b2b2b2;">결제하기</h3>
 					</li>
 					
 					<li>
 						<h5>step3.</h5>
-						<h3>가입완료</h3>
+						<h3 style="color:#b2b2b2;">가입완료</h3>
 					</li>
 				</ul>
 				

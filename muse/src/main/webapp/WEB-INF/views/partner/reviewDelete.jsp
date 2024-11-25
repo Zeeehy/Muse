@@ -11,27 +11,48 @@
 <link rel="stylesheet" href="/muse/resources/css/Phj.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <style>
-span .bestBadge{
-   display: inline-block;
-    width: 3rem;
-    height: 1.1rem;
-    margin-right: 0.6rem;
-    color: #666;
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #ccc;
-    border-radius: 0.4rem;
-    box-sizing: border-box;
+span .bestBadge {
+	display: inline-block;
+	width: 3rem;
+	height: 1.1rem;
+	margin-right: 0.6rem;
+	color: #666;
+	font-size: 0.8rem;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid #ccc;
+	border-radius: 0.4rem;
+	box-sizing: border-box;
 }
 
+.table-content input[value="검색"] {
+	width: 80px;
+	height: 40px;
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #4fa6fb;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.table-content input[value="삭제"] { /* 
+    width: 80px;
+    height: 40px; */
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #e73e47;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
 </style>
 <title>Insert title here</title>
 </head>
 <%@include file="header.jsp"%>
 <%@include file="sidebar.jsp"%>
-<%@include file="musicalNamePopup.jsp"%>
+<%@include file="musicalNamePopup2.jsp"%>
 <body>
 	<div class="main-content">
 		<div class="main-contenttop">
@@ -48,7 +69,7 @@ span .bestBadge{
 					<th>뮤지컬명</th>
 					<td colspan="3"><input type="text" name="m_title"
 						placeholder="뮤지컬을 선택하세요" readonly> <input type="hidden"
-						name="m_code"></td>
+						name="m_code" value="${m_title }"></td>
 					<td class="button-container" style="text-align: right;"><input
 						type="button" value="찾기" onclick="showMusicalNamePopup(event)">
 					</td>
@@ -61,36 +82,40 @@ span .bestBadge{
 					<th>작성자</th>
 					<th>작성일</th>
 					<th>상태</th>
-					<td>삭제 요청</td>
-					<td>베스트 리뷰 선정</td>
+					<th>삭제 요청</th>
+					<th>베스트 리뷰 선정</th>
 				</tr>
 				<c:forEach var="dto" items="${list}">
-    <tr>
-        <td name="mr_code" class="mr_code">${dto.mr_code}</td>
-        <td onclick="toggleContentRowFirst(this)">${dto.mr_title}</td>
-        <td>${dto.u_id}</td>
-        <td>${dto.mr_date}</td>
-        <td>
-            <c:choose>
-                <c:when test="${dto.mr_state == 1}">베스트 댓글</c:when>
-                <c:when test="${dto.mr_state == 2}">관리자 차단 댓글</c:when>
-                <c:when test="${dto.mr_state == 3}">삭제 요청 대기 댓글</c:when>
-                <c:otherwise></c:otherwise>
-            </c:choose>
-        </td>
-        <td>
-            <c:if test="${dto.mr_state != 3}">
-                <input type="button" value="삭제" onclick="deleteReviewAction()">
-            </c:if>
-        </td>
-        <td>
-            <input type="button" value="베스트 리뷰 설정" onclick="bestReviewAction(event)">
-        </td>
-    </tr>
-    <tr class="content-row" style="display: none; background-color: #f0f0f0; text-align: center;">
-        <th colspan="7" style="padding-left: 20px;">${dto.mr_content}</th>
-    </tr>
-</c:forEach>
+					<tr>
+						<td name="mr_code" class="mr_code">${dto.mr_code}</td>
+						<td onclick="toggleContentRowFirst(this)">${dto.mr_title}</td>
+						<td>${dto.u_id}</td>
+						<td>${dto.mr_date}</td>
+						<td><c:choose>
+								<c:when test="${dto.mr_state == 1}">
+									<a>베스트</a>
+								</c:when>
+								<c:when test="${dto.mr_state == 2}">
+									<a>관리자 차단</a>
+								</c:when>
+								<c:when test="${dto.mr_state == 3}">
+									<a>삭제 요청</a>
+								</c:when>
+								<c:otherwise></c:otherwise>
+							</c:choose></td>
+						<td><c:if test="${dto.mr_state != 3||dto.mr_state==1}">
+								<input type="button" value="삭제" onclick="deleteReviewAction()">
+							</c:if></td>
+						<td><input type="button" value="베스트 리뷰 설정"
+							onclick="bestReviewAction(event)"></td>
+					</tr>
+					<tr class="content-row"
+						style="display: none; background-color: #f0f0f0; text-align: center;">
+						<td></td>
+						<th colspan="5" style="padding-left: 20px;">${dto.mr_content}</th>
+						<td></td>
+					</tr>
+				</c:forEach>
 
 
 
@@ -113,10 +138,8 @@ function inputMusicalName(element) {
 
 function selectMusicalReview(){
 	const m_code = musical_code;
-	alert(m_code);
 	const pr_code = '${s_pr_code}';
 	const param = 'm_code=' + m_code + '&s_pr_code=' + pr_code;
-	alert(m_code+"@@@@@@@@@@@@@@@");
 	sendRequest('getmusicalReview.do',param,selectmusicalReviewResult,'GET');
 }
 
@@ -204,21 +227,20 @@ function selectmusicalReviewResult() {
             	    var td6 = document.createElement("td");
             	    var state = '';
             	    if(dto.mr_state==1){
-            	    	state = '베스트 댓글';
+            	    	state = '베스트';
             	    }else if(dto.mr_state==2){
-            	    	state = '관리자 차단 댓글';
+            	    	state = '관리자 차단';
             	    }else if(dto.mr_state==3){
-            	    	state = '삭제 요청 대기 댓글';
+            	    	state = '삭제 요청';
             	    }
             	    td6.textContent = state;
             	    row.appendChild(td6);
 
             	    // 일곱 번째 열 - 삭제 버튼
             	    
-            	    alert(state);
             	    var td7 = document.createElement("td");
 
-            	    if (state !== '삭제 요청 대기 댓글') {  // 삭제 요청 대기 댓글이 아닌 경우에만 삭제 버튼을 추가
+            	    if (state !== '삭제 요청') {  // 삭제 요청 대기 댓글이 아닌 경우에만 삭제 버튼을 추가
             	        var deleteButton = document.createElement("input");  // 삭제 버튼 생성
             	        deleteButton.type = "button";
             	        deleteButton.value = "삭제";
@@ -333,6 +355,16 @@ function bestReviewAction(event){
   	var selectedRow = event.target.closest('tr');  
     var mr_code = selectedRow.children[0].textContent; // mr_code 값
     var param = "mr_code="+mr_code;
+
+    var statusTd = selectedRow.querySelector('td:nth-child(5)');
+	var currentStatus = statusTd.textContent.trim();
+
+    
+    // 이미 차단되었거나 삭제 요청된 리뷰는 베스트 설정 불가
+    if (currentStatus === '관리자 차단' || currentStatus === '삭제 요청') {
+        alert('이 리뷰는 베스트 리뷰로 설정할 수 없습니다.');
+        return;
+    }
     sendRequest('bestViewOK.do', param, bestReviewActionResult,'GET');
 }
 
@@ -340,43 +372,55 @@ function bestReviewActionResult() {
     if (XHR.readyState === 4) {
         if (XHR.status === 200) {  
             var result = XHR.responseText;
-            var data = JSON.parse(result);  // JSON 응답을 파싱
-            var mr_code =  data.mr_code;
-            console.log("서버 응답:", result);  // 응답값 확인
-            console.log("파싱된 데이터:", data.mr_code);  // 파싱된 데이터 확인
-
-            // data.result가 1 이상인 경우
-            console.log("결과 값:", data.result);  // 실제 data.result 값 확인
-            if (data.result > 0) {  // data.result를 체크
-                // 모든 행에 대해 반복 처리
-                var rows = document.querySelectorAll('tr');  // tr 요소들을 모두 선택
+            var data = JSON.parse(result);
+            var mr_code = data.mr_code;
+            
+            console.log("서버 응답:", result);
+            console.log("파싱된 데이터:", data.mr_code);
+            console.log("결과 값:", data.result);
+            
+            if (data.result > 0) {
+                var rows = document.querySelectorAll('tr');
                 rows.forEach(function(row) {
-                    // 현재 행에서 mr_code를 가진 td를 찾음
                     var selectrow = row.querySelector('td[name="mr_code"]');
                     
-                    // selectrow가 존재하고, 그 텍스트 내용이 data.mr_code와 일치하면
                     if (selectrow && selectrow.textContent === data.mr_code) {
-                        // 일치하는 행에서 mr_title이 들어있는 td (3번째 칼럼) 찾기
-                        var td5 = row.querySelector('td:nth-child(5)');
+                        var statusTd = row.querySelector('td:nth-child(5)');
                         
-                        
-                        // td3가 존재하면
-                        if (td5.textContent === '베스트 댓글') {
-    // td5의 상태가 "베스트 댓글"이면 공백으로 변경
-    td5.innerHTML = '';
-} else {
-    // td5의 상태가 공백이면 "베스트 댓글"로 변경
-    var bestBadge = document.createElement("span");
-    td5.innerHTML = ''
-    bestBadge.id = "bestBadge";  // id 설정
-    bestBadge.textContent = "베스트 댓글";  // 배지 내용 설정
-    td5.appendChild(bestBadge);
-}
-                        
+                        if (statusTd) {
+                            var currentStatus = statusTd.textContent.trim();
+                            
+                            if (currentStatus === '베스트') {
+                                // 베스트 상태 해제
+                                statusTd.innerHTML = '';
+                                // 삭제 버튼 다시 표시
+                                var deleteButtonTd = row.querySelector('td:nth-child(6)');
+                                if (deleteButtonTd) {
+                                    deleteButtonTd.innerHTML = '<input type="button" value="삭제" onclick="deleteReviewAction()">';
+                                }
+                            } else {
+                                // 베스트 상태로 변경
+                                statusTd.innerHTML = '<a>베스트</a>';
+                                // 삭제 버튼 제거
+                                var deleteButtonTd = row.querySelector('td:nth-child(6)');
+                                if (deleteButtonTd) {
+                                    deleteButtonTd.innerHTML = '';
+                                }
+                            }
+                            
+                            // 베스트 리뷰 설정 버튼 텍스트 변경
+                            var bestButtonTd = row.querySelector('td:nth-child(7)');
+                            if (bestButtonTd) {
+                                var bestButton = bestButtonTd.querySelector('input[type="button"]');
+                                if (bestButton) {
+                                    bestButton.value = currentStatus === '베스트' ? 
+                                        "베스트 리뷰 설정" : "베스트 리뷰 해제";
+                                }
+                            }
+                        }
                     }
                 });
             }
-
         }
     }
 }

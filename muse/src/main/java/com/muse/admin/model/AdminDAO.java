@@ -62,6 +62,7 @@ public interface AdminDAO {
 	HashMap<String,BigDecimal> musePassStats();
 	List<MemberStatsDTO> memberStats();
 	List<StatsDTO> partnerStats();
+	List<StatsDTO> partnerStatsTime(int time);
 	List<StatsDTO> rankingStats();
 	List<StatsDTO> rankingStatsTime(int time);
 }
