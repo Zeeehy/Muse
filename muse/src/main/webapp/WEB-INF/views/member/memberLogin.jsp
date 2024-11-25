@@ -58,10 +58,12 @@ ul li input[type="text"]::placeholder, ul li input[type="password"]::placeholder
 	                <span style="color:rgb(142, 150, 157); font-size:14px; text-decoration: none;">회원이 아니신가요?</span>
 	                <a href="memberJoin.do" style="font-size:14px; text-decoration: none;"><span style="font-weight:bold; color:#656262; ">지금 가입하세요!</span></a>
 	            </div>
+	            <!--  
                 <div class="social_login">
                 	<div><a href="#"><img class="kakao" src="/muse/resources/img/member/KakaoTalk.png"></a></div>
                 	<div><a href="#"><img src="/muse/resources/img/member/naver.png"></a></div>
                 </div> 
+                -->
             </div>
             
             <!-- AOS 스크립트 시작 -->

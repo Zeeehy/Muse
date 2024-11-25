@@ -49,7 +49,7 @@
 			</div>
 			<div class="bene_res">
 				<h2 style="color: #000;">MUSEPASS 선예매</h2>
-				<div class="bene_list">
+				<div class="bene_list"> 
 				<c:forEach var="ms" items="${musepass}">
 					<div class="bene_res_inf">
 						<a href="openNoticeView.do?on_code=${ms.on_code}" class="ref_inf_img"><img src="resources/img/musical/${ms.m_poster}" width="300px" height="412.22px"></a>
@@ -60,7 +60,7 @@
 								<p class="musename">뮤즈패스</p>
 								<p class="muse_day">${ms.on_muse_open} OPEN</p>
 								<p class="origin">일반</p>
-								<p class="origin_day">${ms.on_open} 14:00 OPEN</p>
+								<p class="origin_day">${ms.on_open} OPEN</p>
 							</a>
 						</div>
 					</div>
