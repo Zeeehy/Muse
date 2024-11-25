@@ -253,19 +253,16 @@
 	
 	<!-- 사용자 포인트 조회하기 -->
 	<select id="getPoint" resultType="int">
-	SELECT
-	    NVL(SUM(CASE 
-	        WHEN p.PT_CATEGORY = 1 THEN p.PT_POINT  
-	        WHEN p.PT_CATEGORY = 2 THEN -p.PT_POINT
-	    END), 0) as POINT
-	FROM
-	    USERS u
-	LEFT JOIN
-	    POINT p
-	ON
-	    u.U_ID = p.U_ID
-	WHERE
-	    u.U_ID = #{s_id}
+		SELECT
+	       NVL(SUM(PT_POINT),0) as POINT
+	   FROM
+	       USERS u
+	   LEFT JOIN
+	       POINT p
+	   ON
+	       u.U_ID = p.U_ID
+	   WHERE
+	       u.U_ID = #{s_id}
 	</select>
 	
 	<!-- 사용한 포인트 인서트 -->
