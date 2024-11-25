@@ -233,7 +233,7 @@ function inputMusicalName(element) {
  	var MusicalM_code= element.id; 
     var param = 'm_code=' + MusicalM_code;
     musical_code = MusicalM_code; // 팝업의 뮤지컬 검색창에서 뮤지컬 이름 선택하면 전역변수에 뮤지컬 dix값 저장됌
-    alert('뮤지컬 idx'+musical_code);
+    
     sendRequest('MusicalDateSelect.do',param, MusicalDateSelectResult,'GET');
     resetTables();
 } 
@@ -299,9 +299,9 @@ function insertCastResult(){
 			var result =  parseInt(Jdata.result, 10);
 			console.log(Jdata.result+"@@@@@@@@@@@@@@@@@@@@@@");
 			if(result>=1){
-				alert('성공');
+				alert('저장에 성공셨습니다');
 			}else{
-				alert('실패');
+				alert('저장에 실패하셨습니다.');
 				 document.getElementById('roleTable').innerHTML = `
 				    	<tr>
 						<th colspan="4" style="text-align: center; width: 50%">배우 정보</th>

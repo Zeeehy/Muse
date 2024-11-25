@@ -15,10 +15,14 @@
 <style>
 #seatGrade {
 	display: flex;
-	transform: scale(0.5); /* 예: 80% 크기로 줄이기 */
+	transform: scale(0.55); /* 예: 80% 크기로 줄이기 */
 	transform-origin: center; /* 축소 기준을 좌측 상단으로 */
 	width: calc(100%/ 0.5); /* 부모 컨테이너의 가로 크기를 유지 */
 	overflow: hidden; /* 내부 내용이 넘치지 않도록 설정 */
+	
+    
+    justify-content: center;
+    margin-left: 180px;
 }
 
 #gradeTableDiv table {
@@ -26,6 +30,7 @@
 	font-weight: bold;
 	width: 100%;
 	border-collapse: collapse; /* 테이블 셀의 경계선 처리를 설정 */
+	display:none;
 }
 
 #GradeColor {
@@ -113,6 +118,9 @@
 .seatSelection{
 	width: 120px;
     font-size: 23px;
+}
+#gradeTableDiv{
+margin-right:80px;
 }
 </style>
 <body>
@@ -408,7 +416,9 @@ window.onload = function() {
     // musical_code가 빈 문자열일 경우 스타일을 변경
     if (musical_code !== '') {
         var seatGrade = document.getElementById('seatGrade');
-        seatGrade.style.marginTop = '-400px';
+        seatGrade.style.marginTop = '-300px';
+        var gradeTableDiv = document.getElementById('gradeTableDiv');
+        gradeTableDiv.style.display.flex;
     }
 };
 
