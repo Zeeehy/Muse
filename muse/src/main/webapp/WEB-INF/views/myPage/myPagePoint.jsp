@@ -130,26 +130,26 @@ body {
     overflow-x: auto;
 }
 
-.table {
+.point_table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 }
 
-.table th,
-.table td {
+.point_table th,
+.point_table td {
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
     font-size: 14px;
 }
 
-.table th {
+.point_table th {
     background-color: #f5f5f5;
     font-weight: bold;
 }
 
-.table td {
+.point_table td {
     color: #666;
 }
 
@@ -164,6 +164,58 @@ body {
 
 
 </style>
+<script>
+function getPointDay(param){
+	
+	var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'myPagePointDayList.do?point_day=' + param, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('point_table').innerHTML = JSON.parse(xhr.responseText);
+        }
+    };
+    xhr.send();
+}
+
+function getPointMonth(param){
+	
+	var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'myPagePointMonthList.do?point_month=' + param, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('point_table').innerHTML = JSON.parse(xhr.responseText);
+        }
+    };
+    xhr.send();
+
+   
+
+}
+
+function getPointDate(){
+	var point_startDate = document.getElementById('point_startDate').value;
+    var point_endDate = document.getElementById('point_endDate').value;
+    var point_type = document.getElementById('point_type').value;
+	if(point_startDate=='' || point_endDate=='' || !point_startDate || !point_endDate){
+		alert('날짜를 모두 선택해주세요');
+		return;
+	}
+	var xhr = new XMLHttpRequest();
+    if(point_type==0){    	 
+    	xhr.open('GET', 'myPagePointAddList.do?point_startDate='+point_startDate+'&point_endDate='+point_endDate, true);   	       	    
+    } else {
+	    xhr.open('GET', 'myPagePointUseList.do?point_startDate='+point_startDate+'&point_endDate='+point_endDate, true);
+    }
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('point_table').innerHTML = JSON.parse(xhr.responseText);
+        }
+    };
+    xhr.send();
+
+}
+
+</script>
 </head>
 <body>
     <%@include file="../header.jsp" %>
@@ -188,26 +240,26 @@ body {
         <div class="point-box">${pointSum} P</div>
         <h2>M포인트 내역</h2>
 		<div class="search-filter">	
-			<select id="point_type">
-                <option value="0">전체</option>
-                <option value="1">적립</option>
-                <option value="2">사용</option>
+            <button onclick="getPointDay(7)">7일</button>
+            <button onclick="getPointDay(15)">15일</button>
+            <button onclick="getPointMonth(1)">1개월</button>
+            <button onclick="getPointMonth(2)">2개월</button>
+            <button onclick="getPointMonth(3)">3개월</button>
+			|
+            <select id="point_type">
+                <option value="0">적립</option>
+                <option value="1">사용</option>
             </select>
-            <button onclick="">7일</button>
-            <button onclick="">15일</button>
-            <button onclick="">1개월</button>
-            <button onclick="">2개월</button>
-            <button onclick="">3개월</button>
             
-            <input type="date" />
-            <input type="date" />
+            <input id="point_startDate" type="date" />
+            <input id="point_endDate" type="date" />
             
-            <button onclick=")">검색</button>
+            <button onclick="getPointDate()">검색</button>
         </div>
 
         <!-- 테이블 -->
         <div class="table-container">
-            <table class="table">
+            <table class="point_table" id="point_table">
                 <thead>
                     <tr>              
                         <th>구분</th>
@@ -232,14 +284,14 @@ body {
 	                        	<c:if test="${ptlist.pt_category eq 1}">예매구매</c:if>
 	                        	<c:if test="${ptlist.pt_category eq 2}">좌석리뷰</c:if>
 	                        	<c:if test="${ptlist.pt_category eq 3}">공연리뷰</c:if>
-	                        	<c:if test="${ptlist.pt_category eq 3}">예매환불</c:if>
+	                        	<c:if test="${ptlist.pt_category eq 4}">예매환불</c:if>
 	                        </td>
 	                        <td>
 								<c:if test="${ptlist.pt_point > 0}">적립</c:if>
 	                        	<c:if test="${ptlist.pt_point < 0}">사용</c:if>
 							</td>
 	                        <td>아직</td>
-	                        <td>${ptlist.pt_point}</td>
+	                        <td>${ptlist.pt_point}P</td>
 	                        <td>${ptlist.pt_date}</td>
 	                    </tr>
                 	</c:forEach>

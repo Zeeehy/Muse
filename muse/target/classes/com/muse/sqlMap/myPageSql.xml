@@ -312,4 +312,36 @@
 	select sum(pt_point) from point
 	where u_id=#{u_id}
   	</select>
+  	
+  	<select id="selectPointDayList" parameterType="map" resultType="com.muse.myPage.model.MyPointDTO">
+	select *
+	from point
+	where u_id=#{u_id}
+	and pt_date >= sysdate-#{pointDay}
+	order by pt_date desc
+  	</select>
+  	
+  	<select id="selectPointMonthList" parameterType="map" resultType="com.muse.myPage.model.MyPointDTO">
+	select * from point
+	where u_id=#{u_id}
+	and pt_date >= add_months(sysdate, -#{pointMonth})
+	order by pt_date desc
+  	</select>
+  	
+  	<select id="selectPointAddList" parameterType="map" resultType="com.muse.myPage.model.MyPointDTO">
+	<![CDATA[
+	select * from point
+	where u_id=#{u_id}
+	and pt_date >= #{pointStartDate} and pt_date <= #{pointEndDate} and pt_point>0
+	order by pt_date desc
+  	]]>
+  	</select>
+  	<select id="selectPointUseList" parameterType="map" resultType="com.muse.myPage.model.MyPointDTO">
+	<![CDATA[
+	select * from point
+	where u_id=#{u_id}
+	and pt_date >= #{pointStartDate} and pt_date <= #{pointEndDate} and pt_point<0
+	order by pt_date desc
+  	]]>
+  	</select>
   </mapper>

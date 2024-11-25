@@ -171,13 +171,15 @@ function insertLikeActor(){
 	xhr.onload = function (){
 		if(xhr.status === 200){	
 			alert('관심배우 추가 성공');
-			location.reload();
+			window.close();
+			window.opener.location.reload();
 		} else{
 			alert('관심배우 추가 실패');
 		}
 	};
 	xhr.send(JSON.stringify({insertLikeActorList: checkedValues,
         user_id: user_id}));
+	
 	
 }
 
@@ -203,7 +205,8 @@ function insertLikeMusical(){
 	xhr.onload = function (){
 		if(xhr.status === 200){	
 			alert('관심공연 추가 성공');
-			location.reload();
+			window.close();
+			window.opener.location.reload();
 		} else{
 			alert('관심공연 추가 실패');
 		}
