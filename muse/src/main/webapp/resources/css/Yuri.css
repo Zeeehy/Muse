@@ -559,6 +559,7 @@ article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
         width: calc(100% - 250px);
 }
 .reservWrap .allSeat .seatL .seatReview{
+	position: relative;
 	width: 780px;
 	margin: 0 auto;
 	background: #fff;
@@ -568,10 +569,12 @@ article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
     justify-content: space-between;
 }
 .reservWrap .allSeat .seatL .seatReview p {
+	position: absolute;
+    bottom: 32%;
 	font-size: 14px;
 	float: left;
 }
-.reservWrap .allSeat .seatL .seatReview span {
+.reservWrap .allSeat .seatL .seatReview span.reviewTxt {
 	float: right;
 	opacity:0.7;
 }
@@ -782,9 +785,6 @@ article.musepass .bene_res .pos_inf .ref_inf_txt .origin_day {
 
 
 .pointContainer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
     background-color: #f8f8f8; 
     padding: 25px;
 }

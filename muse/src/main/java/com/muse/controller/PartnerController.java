@@ -309,8 +309,9 @@ public class PartnerController {
 	
 	@RequestMapping("/getMusicalList.do")
 	public ModelAndView getMusicalList(@RequestParam(defaultValue="") String pr_code, 
-			@RequestParam(defaultValue="")String seachMusical) {
-			List<MusicalDTO> list = partnerDao.SeachMusicalList(pr_code, seachMusical);
+			@RequestParam(defaultValue="")String seachMusical,
+			@RequestParam(defaultValue="")String state) {
+			List<MusicalDTO> list = partnerDao.SeachMusicalList(pr_code, seachMusical,state);
 			ModelAndView mav = new ModelAndView();
 			
 			System.out.println(list.size());

@@ -48,7 +48,6 @@
     </style>
 </head>
 <body>
-    <h1>취소수수료 페이지</h1>
     <form name="reservationForm" action="#" method="post">
    		<input type="hidden" name="mh_code" value="${mh_code}">
 	    <input type="hidden" name="m_code" value="${m_code}">
@@ -141,7 +140,7 @@
                             <h2>나의 예매 정보</h2>
                             <div class="reservmInfo">
                                 <div style="display: flex; gap: 15px; flex-direction: row; align-items: stretch;">
-                                    <img src="">
+                                    <img src="resources/img/musical/${musicalInfo.M_POSTER}" alt="${musicalInfo.M_TITLE} 포스터">
                                     <ul class="mInfoList">
 							            <li><span>${musicalInfo.M_TITLE}</span></li>
 							            <li>
@@ -176,13 +175,15 @@
 												</ul>
 										    </td>
                                         </tr>
-                                         <tr>
+                                          <tr>
 										    <th>티켓금액</th>
-										    <td id="ticketPrice">${ticketPrice}원</td>
+										    <td id="ticketPrice">
+										        <fmt:formatNumber value="${ticketPrice}" pattern="#,###"/>원
+										    </td>
 										</tr>
-										<tr>
+										 <tr>
 										    <th>포인트 사용</th>
-										    <td><b id="selectedPointAmount">${usePoint} P</b> 사용</td>
+										    <td><b id="selectedPointAmount"><c:out value="${usePoint != null ? usePoint : 0}"/> P</b> 사용</td>
 										</tr>
                                         <tr>
                                             <th>취소기한</th>
@@ -197,11 +198,14 @@
                             </div>
                         </div>
                         <div class="s Choice">
-                            <h2>총 결제 금액</h2>
-                            <div>
-                                <span><b id="totalPrice">${ticketPrice - (usePoint != null ? usePoint : 0)}</b></span>
-                            </div>
-                        </div>
+						    <h2>총 결제 금액</h2>
+						    <div>
+						        <span>
+						            <b id="totalPrice"><fmt:formatNumber value="${ticketPrice - (usePoint != null ? usePoint : 0)}" pattern="#,###"/></b>
+						            <b>원</b>
+						        </span>
+						    </div>
+						</div>
                         <div class="s Button"> 
                             <div class="subBtList">
                                 <button type="button" class="subBt" onclick="goBack()">이전단계</button>
@@ -218,6 +222,9 @@
 function goBack() {
     history.back();
 }
+
+// 총 결제금액
+const price = $("b#totalPrice").text().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
 
 // 취소 수수료 날짜
 function updateCancelDeadline() {
@@ -332,21 +339,19 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('input[name="selectedSeats"]').value = JSON.stringify(selectedSeats);
 });
 
-//결제해주러 가는 함수 //
+
+//결제해주러 가는 함수
 function goPurchase(){
+    // 가격에서 쉼표와 '원' 제거
+    let price = $("b#totalPrice").text().replace(/,/g, '').replace('원', '');
+    const user_id_pk = "${sessionScope.s_id}";
+    const musical_mtitle = "${musicalInfo.M_TITLE}";
+    
+    const url = 'reservPay.do?s_id='+user_id_pk+'&price='+price+'&m_title='+musical_mtitle; 
 
-	const price = $("b#totalPrice").text();
-	const user_id_pk = "${sessionScope.s_id}";
-	const musical_mtitle = "${musicalInfo.M_TITLE}";
-	
-	const url = 'reservPay.do?s_id='+user_id_pk+'&price='+price+'&m_title='+musical_mtitle; 
-
-     // 견적서번호 넘기기 
-     window.open(url, "reservPay",
-             "left=350px, top=100px, width=1000px height=600px");
-               
-} 
-
+    // 견적서번호 넘기기 
+    window.open(url, "reservPay", "left=350px, top=100px, width=1000px height=600px");
+}
 
 
 //결제하고나서 실행할 함수

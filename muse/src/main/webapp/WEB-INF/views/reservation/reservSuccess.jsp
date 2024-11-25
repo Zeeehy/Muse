@@ -86,7 +86,7 @@
                         <div class="reserv-container">
                             <p class="reserv-header">예약번호 | TJKDSKLF87 (총 ${seatList.size()}매)</p>
                             <div class="reservImg">
-                                <img src="#" alt="Musical Image">
+                                <img style="width: 100%;" src="resources/img/musical/${musicalInfo.M_POSTER}" alt="${musicalInfo.M_TITLE} 포스터">
                             </div>
                             <div class="reservTxt">
                                 <table class="reserv-table">
@@ -149,7 +149,18 @@
                                         </tr> -->
                                         <tr>
                                             <td class="label">포인트</td>
-                                            <td class="value"><b>${usePoint} P 사용</b></td>
+                                            <td class="value">
+                                            <b> 
+	                                            <c:choose>
+									                <c:when test="${empty usePoint || usePoint == 0}">
+									                    0 P 사용
+									                </c:when>
+									                <c:otherwise>
+									                    ${usePoint} P 사용
+									                </c:otherwise>
+									            </c:choose>
+									         </b>
+								            </td>
                                         </tr>
                                         <tr>
                                             <td class="label">총 결제금액</td>
@@ -181,7 +192,7 @@
                     <aside class="seatR">
                         <div class="s Button"> 
                             <div class="subBtList">
-                                <button class="subBt" style="width: 100%; background: #FF3D32; color: #fff;">예매내역 확인</button>
+                                <button  type="button"  class="subBt" style="width: 100%; background: #FF3D32; color: #fff;" onclick="goToMain()">메인으로 돌아가기</button>
                             </div>
                         </div>
                     </aside>
@@ -189,5 +200,11 @@
             </article>
         </section>
     </form>
+    <script>
+	function goToMain() {
+	    window.opener.location.href = '/muse/index.do';
+	    window.close(); 
+	}
+	</script>
 </body>
 </html>

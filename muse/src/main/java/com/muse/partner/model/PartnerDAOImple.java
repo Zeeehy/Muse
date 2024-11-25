@@ -32,9 +32,9 @@ public class PartnerDAOImple implements PartnerDAO {
 
 	@Override
 	public List<MusicalDTO> SeachMusicalList(@Param("pr_code") String pr_code,
-			@Param("seachMusical") String seachMusical) {
+			@Param("seachMusical") String seachMusical,@Param("state")String state) {
 		List<MusicalDTO> list = sqlMap.selectList("selectMusicalList",
-				Map.of("pr_code", pr_code, "seachMusical", seachMusical));
+				Map.of("pr_code", pr_code, "seachMusical", seachMusical,"state",state));
 		return list;
 	}
 

@@ -151,7 +151,7 @@ body {
 
         <div class="pass-info">
             <h4>MY MUSEPASS</h4>
-            <p>test님 가입중</p>
+            <p>${u_id}님 가입중</p>
             <p>남은 잔여일수: ${mpRemainDays}일</p>
             <p>${myMPass.mp_enddate}일까지</p>
         </div>

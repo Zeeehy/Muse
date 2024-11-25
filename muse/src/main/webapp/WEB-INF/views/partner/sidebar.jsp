@@ -74,7 +74,6 @@
     </button>
     <div class="dropdown-container">
    	  <a href="musicalUpdate.do">뮤지컬 등록 수정</a>
-      <a href="#">티켓 오픈 공지 수정(정리중)</a>
       
     </div>
 
