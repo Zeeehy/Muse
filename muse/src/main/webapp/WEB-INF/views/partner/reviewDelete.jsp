@@ -67,7 +67,7 @@ span .bestBadge{
 				<c:forEach var="dto" items="${list}">
     <tr>
         <td name="mr_code" class="mr_code">${dto.mr_code}</td>
-        <td onclick="toggleContentRowFirst(this, '${dto.mr_content}')">${dto.mr_title}</td>
+        <td onclick="toggleContentRowFirst(this)">${dto.mr_title}</td>
         <td>${dto.u_id}</td>
         <td>${dto.mr_date}</td>
         <td>
@@ -109,7 +109,6 @@ function inputMusicalName(element) {
 
     var MusicalM_code= element.id;
     musical_code = MusicalM_code; //선택한 뮤지컬 idx값
-    alert(musical_code);
 } 
 
 function selectMusicalReview(){
@@ -124,7 +123,6 @@ function selectMusicalReview(){
 function selectmusicalReviewResult() {
     if (XHR.readyState == 4) {
         if (XHR.status == 200) {
-        	alert('진입확인');
             var data = XHR.responseText;
             var MusicalList = JSON.parse(data); // 서버로부터 받은 JSON 데이터 파싱
             var list = MusicalList.list; // MusicalList에서 list 부분을 추출
@@ -266,19 +264,8 @@ function selectmusicalReviewResult() {
 }
 
 
-function toggleContentRow(row, content) {
-    // `mr_content`가 이미 아래 행에 있는지 확인
-    var contentRow = row.nextElementSibling;
-    if (contentRow && contentRow.classList.contains("content-row")) {
-        // `mr_content`를 숨기거나 보이게 하기
-        if (contentRow.style.display === "none") {
-            contentRow.style.display = "table-row"; // 보이게 하기
-        } else {
-            contentRow.style.display = "none"; // 숨기기
-        }
-    }
-}
-function toggleContentRowFirst(titleCell, content) {
+
+function toggleContentRowFirst(titleCell) {
 	  // titleCell은 클릭된 셀 (즉, 'mr_title' 셀)을 의미합니다.
 	  var row = titleCell.parentElement;  // 클릭된 셀에서 부모 요소인 <tr>을 찾습니다.
 	  var contentRow = row.nextElementSibling;  // 바로 아래 행을 찾습니다.
@@ -292,6 +279,7 @@ function toggleContentRowFirst(titleCell, content) {
 	    }
 	  }
 	}
+	
 function getTdValues(form) {
     // tr 요소를 찾습니다
     var row = form.querySelector('tr');
@@ -341,12 +329,10 @@ function deleteReviewAction(){
 }
 
 function bestReviewAction(event){
-	alert("클릭됨");
 	
   	var selectedRow = event.target.closest('tr');  
     var mr_code = selectedRow.children[0].textContent; // mr_code 값
     var param = "mr_code="+mr_code;
-    alert(mr_code);
     sendRequest('bestViewOK.do', param, bestReviewActionResult,'GET');
 }
 

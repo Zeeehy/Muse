@@ -24,7 +24,7 @@ body {
 .container {
     display: flex;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 100px auto;
 }
 
 /* 사이드바 스타일 */
@@ -74,14 +74,7 @@ body {
     margin-bottom: 20px;
 }
 
-.news-section {
-    background-color: #f7f7f7;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    font-size: 0.9em;
-    color: #777;
-}
+
 
 .interest-section h4 {
     font-size: 1.2em;
@@ -166,7 +159,7 @@ body {
 </style>
 <script>
 function openMuseCasting() {
-	window.open('museCasting.do','museCasting','width=650,height=350');
+	window.open('museCasting.do','museCasting','width=620,height=400');
 }
 
 function checkLikeActorAll(){
@@ -268,9 +261,6 @@ function deleteLikeMusical(){
     <!-- 메인 콘텐츠 -->
     <div class="main-content">
         <h2>나의 뮤즈캐스트</h2>
-        <div class="news-section">
-            <p>뮤즈캐스트에 등록된 공연/인물의 최근 업데이트 소식이 없습니다</p>
-        </div>
 
         <div class="interest-section">
             <h4>뮤즈캐스트 등록 / 수정</h4>
@@ -285,8 +275,9 @@ function deleteLikeMusical(){
                     <c:if test="${empty likeActorList }">
 							등록한 관심배우가 없습니다
 					</c:if>
-                	<c:forEach var="lalist" items="${likeActorList}">
-	                	<div class="item">
+					<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+					    <c:forEach var="lalist" items="${likeActorList}">
+	                	<div class="item" style="flex: 0 1 calc(33.333% - 10px); box-sizing: border-box;">
                         <input type="checkbox" name="actorCheck" id="${lalist.la_code}">
                         <img src=" /muse/resources/img/actor/${lalist.ma_img}" alt="Actor Image">
                         <div class="item-info">
@@ -294,8 +285,12 @@ function deleteLikeMusical(){
                             <p>뮤지컬 배우</p>
                             <p>${lalist.la_date} 등록</p>
                         </div>
-                    </div>
-                	</c:forEach>
+	                    </div>
+	                	</c:forEach>
+					</div>
+					
+                	
+                	
                 </div>
                
                 <div class="interest-category">
@@ -306,28 +301,19 @@ function deleteLikeMusical(){
                     <c:if test="${empty likeMusicalList }">
 						등록한 관심공연이 없습니다
 					</c:if>
-                	<c:forEach var="lmlist" items="${likeMusicalList}">
-	                	<div class="item">
-                        <input type="checkbox" name="musicalCheck" id="${lmlist.lm_code}">
-                        <img src="/muse/resources/img/musical/${lmlist.m_poster}" alt="Musical Image">
-                        <div class="item-info">
-                            <p>${lmlist.m_title}</p>
-                            <p>${lmlist.m_startdate}</p><p>~${lmlist.m_enddate}</p>
-                            <p>${lmlist.lm_date} 등록</p>
-                        </div>
-                    </div>
-                	</c:forEach>
-                    <!--
-                    <div class="item">
-                        <input type="checkbox">
-                        <div class="item-info">
-                            <p>뮤지컬 &lt;시카고&gt;</p>
-                            <p>2024.05.22 ~ 2024.06.22</p>
-                            <p>2024.10.28 등록</p>
-                        </div>
-                    </div>
-                    -->
-                    <!-- 관심 공연 항목을 반복해서 추가 -->
+					<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+					    <c:forEach var="lmlist" items="${likeMusicalList}">
+					        <div class="item" style="flex: 0 1 calc(33.333% - 10px); box-sizing: border-box;">
+					            <input type="checkbox" name="musicalCheck" id="${lmlist.lm_code}">
+					            <img src="/muse/resources/img/musical/${lmlist.m_poster}" alt="Musical Image">
+					            <div class="item-info">
+					                <p>${lmlist.m_title}</p>
+					                <p>${lmlist.m_startdate}</p><p>~${lmlist.m_enddate}</p>
+					                <p>${lmlist.lm_date} 등록</p>
+					            </div>
+					        </div>
+					    </c:forEach>
+					</div>
                 </div>
             </div>
         </div>

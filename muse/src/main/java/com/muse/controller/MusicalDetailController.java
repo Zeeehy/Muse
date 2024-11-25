@@ -30,8 +30,11 @@ import com.muse.admin.model.PartnerDTO;
 import com.muse.musicalDetail.model.MusicalDetailCastDTO;
 import com.muse.musicalDetail.model.MusicalDetailDAO;
 import com.muse.musicalDetail.model.MusicalDetailDTO;
+import com.muse.openNotice.model.OpenNoticeDTO;
 import com.muse.partner.model.MusicalHallDTO;
 import com.muse.partner.model.MusicalOptionDTO;
+import com.muse.rank.model.RankDAO;
+import com.muse.rank.model.RankDTO;
 import com.muse.reserv.model.ReservDAO;
 import com.muse.review.model.MusicalReviewDTO;
 
@@ -44,6 +47,9 @@ public class MusicalDetailController {
 	
 	@Autowired
 	private ReservDAO reservDAO;
+	
+	@Autowired
+	private RankDAO rankdao;
 	
 	private static final String[] DAY_NAMES = {
 	        "일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"
@@ -59,6 +65,7 @@ public class MusicalDetailController {
 		
 		
 		ModelAndView mav = new ModelAndView();
+		
 		
 		String s_id = (String) session.getAttribute("s_id")==null?"0":(String) session.getAttribute("s_id");
 		
@@ -120,6 +127,30 @@ public class MusicalDetailController {
 		
 		String pagingStr=com.muse.page.Paging.makePage("musicalDetail", countReview, listsize, pagesize, crpage);
 		
+		
+		List<RankDTO> rankList  = rankdao.getmonthlyRankList();
+		
+		int rank = 0;
+		if(rankList!=null) {
+			
+			for(RankDTO dto : rankList) {
+				
+				if(dto.getM_code().equals(m_code)) {
+					rank = dto.getRank();
+
+				}
+			}
+		}
+		
+		// 방법 2: 정규식을 사용한 변환
+		if (mddto.getM_notice() != null && !mddto.getM_notice().isEmpty()) {
+		    mddto.setM_notice(mddto.getM_notice().replaceAll("\\\\n", "<br>"));
+		}
+
+		
+		OpenNoticeDTO ondto = musicalDetaildao.getOpenTime(m_code);
+		
+		
 		mav.addObject("mddto",mddto);
 		mav.addObject("checkLikeMusical",checkLikeMusical);
 		mav.addObject("countLike",countLike);
@@ -140,6 +171,13 @@ public class MusicalDetailController {
 		mav.addObject("maxPerform",jmaxPerform);
 		
 		mav.addObject("pagingStr",pagingStr);
+		
+		if(rank!=0) {
+			mav.addObject("rank",rank);
+
+		}
+		
+		mav.addObject("ondto",ondto);
 		
 		
 		mav.setViewName("musicalDetail/musicalDetail");

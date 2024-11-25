@@ -109,6 +109,16 @@
 #main-contenttop-title h1 {
 	padding-left: 40px;
 }
+#filedsetdiv input[value="찾기"] {
+    width: 80px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 8px 20px;
+    background-color: #60c558;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -174,24 +184,36 @@
 						<th>요청 유형</th>
 						<th>요청 명</th>
 						<th>요청일</th>
-						<th>상태</th>
+						<th>뮤지컬 상태</th>
+						<th>티켓 오픈 상태</th>
+						<th>요청</th>
 					</tr>
 
 					<c:if test="${empty statelist}">
 						<tr>
-							<td colspan="5" style="text-align: center">등록된 공연이 없습니다.</td>
+							<td colspan="6" style="text-align: center">등록된 공연이 없습니다.</td>
 						</tr>
 					</c:if>
-
 					<c:forEach var="dto2" items="${statelist}">
 						<tr>
 							<td>${dto2.m_code}</td>
-							<td>${dto2.rt_name}</td>
+							<td class="status-type">${dto2.rt_name}</td>
 							<td>${dto2.m_title}</td>
 							<td>${dto2.rs_date}</td>
 							<td class="status-cell">${dto2.rs_status}</td>
+							<td class="status-cell">${dto2.op_status}</td>
+
+							<td>
+								<!-- 'isFutureDate'가 true인 경우에도 버튼을 숨기기 --> <c:if
+									test="${isFutureDate == 0}">
+									<input type="button" value="수정"
+										onclick="window.location.href='musicalUpdateForm.do?m_code=${dto2.m_code}&pr_code=${s_pr_code }'">
+									<input type="button" value="삭제">
+								</c:if>
+							</td>
 						</tr>
 					</c:forEach>
+
 				</table>
 			</fieldset>
 		</div>
@@ -200,12 +222,13 @@
 <script>
 function chageColor() {
     const statusCells = document.querySelectorAll('.status-cell'); // 클래스 선택
+    const stausType = document.querySelectorAll('.status-type');
     statusCells.forEach(cell => {
         const status = cell.textContent.trim(); // 텍스트 가져오기
         if (status === '승인') {
             cell.style.color = 'green'; // 글씨 색 초록색
             cell.style.fontWeight = 'bold'; // 글씨 굵게
-        } else if (status === '반려') {
+        } else if (status === '거절') {
             cell.style.color = 'red'; // 글씨 색 파란색
             cell.style.fontWeight = 'bold';
         } else {
@@ -213,6 +236,21 @@ function chageColor() {
             cell.style.fontWeight = 'bold';
         }
     });
+    stausType.forEach(cell => {
+        const status = cell.textContent.trim(); // 텍스트 가져오기
+        if (status === '신규등록') {
+            cell.style.color = 'blue'; // 글씨 색 초록색
+        } else if (status === '거절') {
+            cell.style.color = 'red'; // 글씨 색 파란색
+            cell.style.fontWeight = 'bold';
+        } else {
+            cell.style.color = 'gray'; // 기본값 회색
+            cell.style.fontWeight = 'bold';
+        }
+    });
+}
+function stateColor(){
+	
 }
 
 window.onload = chageColor;

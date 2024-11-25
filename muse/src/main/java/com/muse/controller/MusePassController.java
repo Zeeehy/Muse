@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.muse.member.model.MemberDAO;
 import com.muse.musePass.model.MusePassDAO;
+import com.muse.musePass.model.MusePassDTO;
 
 @Controller
 public class MusePassController {
@@ -56,9 +57,17 @@ public class MusePassController {
 		String u_id = (String) session.getAttribute("s_id");
 		paramMap.put("u_id",u_id);
 		
-		mpdao.insertMusePass(paramMap);
-		mpdao.updateMusePassOn(u_id);
 		
+		int result = mpdao.checkPassJoin(u_id);
+		
+		if(result==0) {
+			mpdao.insertMusePass(paramMap);
+			mpdao.insertPassPoint(u_id);
+		} else {
+			mpdao.updateMPassRange(u_id);
+		}
+		mpdao.updateMusePassOn(u_id);
+
 		session.setAttribute("s_mpass",1);
 		
 		mav.setViewName("musePass/musePassPayCheck");

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
 
@@ -451,6 +452,8 @@ public class ReservController {
 	        discountMap.put(keyValue[0], Integer.parseInt(keyValue[1]));
 	    }
 	    
+	    
+	    
 	    // 공연 옵션 코드 조회를 위한 파라미터 설정
 	    Map<String, Object> params = new HashMap<String, Object>();
 	    String dateOnly = selectedDate.split(" ")[0];
@@ -480,6 +483,8 @@ public class ReservController {
 	        
 	        gradePrice.put(gradeName, price);
 	    }
+	    
+
 
 	    
 	    Iterator<String> disir = discountMap.keySet().iterator();
@@ -494,6 +499,14 @@ public class ReservController {
 	        String discountType = parts[0];
 	        rootMap.get(grade).put(discountType, discountMap.get(key));
 	    }
+	    
+	    rootMap.forEach((outerKey, innerMap) -> {
+	        System.out.println("┌─ " + outerKey);
+	        innerMap.forEach((innerKey, value) -> {
+	            System.out.println("├──── " + innerKey + ": " + value);
+	        });
+	        System.out.println("└────────────");
+	    });
 	    
 	    try {
 	        // 예매 정보 저장
@@ -552,13 +565,15 @@ public class ReservController {
 	            
 	            // 할인 정보 설정
 	            Map<String, Integer> gradeDiscounts = rootMap.get(grade);
+	            /*
 	            if (gradeDiscounts != null) {
 	                gradeDiscounts.forEach((key, value) -> {
+	                	
+	                	System.out.println(key + " : " + value);
 	                    if(value > 0) {
 	                        detailData.put("d_code", key);
 	                        
 	                        if(!((String)key).equals("d_0")) {
-	                        	System.out.println("111");
 	                            double b = ((BigDecimal)gradePrice.get(grade)).doubleValue() / 2.0;
 		                        detailData.put("ticket_price",b);
 	                        } else {
@@ -567,6 +582,34 @@ public class ReservController {
 	                    }
 	                });
 	            }
+	            */
+	            if (gradeDiscounts != null) {
+	            	   // ! forEach를 일반 for문으로 변경하여 제거 로직 추가
+	            	   for (Map.Entry<String, Integer> entry : gradeDiscounts.entrySet()) {
+	            	       String key = entry.getKey();
+	            	       Integer value = entry.getValue();
+	            	       
+	            	       System.out.println(key);
+	            	       System.out.println(key + " : " + value);
+	            	       
+	            	       if(value > 0) {
+	            	           detailData.put("d_code", key);
+	            	           
+	            	           if(!key.equals("d_0")) {
+	            	               double b = ((BigDecimal)gradePrice.get(grade)).doubleValue() / 2.0;
+	            	               detailData.put("ticket_price",b);
+	            	           } else {
+	            	               detailData.put("ticket_price",gradePrice.get(grade));
+	            	           }
+	            	           
+	            	           // ! 사용된 할인 제거
+	            	           gradeDiscounts.put(key, 0);  // value를 0으로 변경
+	            	           break;  // ! 첫 번째 할인 적용 후 종료
+	            	       }
+	            	   }
+	            	}
+	           
+	            
 	            // 예매 상세 정보 저장
 	            reservDAO.insertBookingDetail(detailData);
 	        }

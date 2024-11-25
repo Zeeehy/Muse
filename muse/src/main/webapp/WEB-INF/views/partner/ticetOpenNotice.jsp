@@ -80,7 +80,7 @@ table tr, th, td { /*
 			<hr>
 		</div>
 
-		<div class="table-content">
+		<div class="table-content" id="table-content">
 			<form class="table-content">
 				<table style="border-collapse: collapse; margin-bottom: 20px;">
 					<tr>
@@ -146,7 +146,7 @@ table tr, th, td { /*
 					<tr>
 						<th>공연 정보</th>
 						<td colspan="4"><textarea name="performance_info"
-								class="textarea-style" name="123"></textarea></td>
+								class="textarea-style"></textarea></td>
 					</tr>
 					<tr>
 						<th>할인 정보</th>
@@ -227,6 +227,7 @@ function inputMusicalName(element) {
 		 alert('뮤지컬을 선택해주세요');
 		 return;
 	 }
+	 parseArea();
 	var m_code= musical_code; //뮤지컬 idx
 	var rs_code ='0'; //요청상태
 	var on_type = ''; //
@@ -286,5 +287,36 @@ function inputMusicalName(element) {
     '&on_etc=' + on_etc ;
     window.location.href='insertOpenNotice.do?' + param;
  }
+ function parseArea() {
+	    // 각 textarea를 name으로 가져오기
+	    var performance_info = document.getElementsByName("performance_info")[0];
+	    var discount_info = document.getElementsByName("discount_info")[0];
+	    var performance_intro = document.getElementsByName("performance_intro")[0];
+	    var casting = document.getElementsByName("casting")[0];
+	    var on_etc = document.getElementsByName("on_etc")[0];
+
+	    // 각 textarea의 값 가져오기
+	    var performance_infoValue = performance_info.value;
+	    var discount_infoValue = discount_info.value;
+	    var performance_introValue = performance_intro.value;
+	    var castingValue = casting.value;
+	    var on_etcValue = on_etc.value;
+
+	    // 개행 문자를 <br>로 변환
+	    performance_infoValue = performance_infoValue.replace(/\n/g, "<br>");
+	    discount_infoValue = discount_infoValue.replace(/\n/g, "<br>");
+	    performance_introValue = performance_introValue.replace(/\n/g, "<br>");
+	    castingValue = castingValue.replace(/\n/g, "<br>");
+	    on_etcValue = on_etcValue.replace(/\n/g, "<br>");
+
+	    // 변환된 값을 각각의 textarea에 다시 설정
+	    performance_info.value = performance_infoValue;
+	    discount_info.value = discount_infoValue;
+	    performance_intro.value = performance_introValue;
+	    casting.value = castingValue;
+	    on_etc.value = on_etcValue;
+	}
+
+
 </script>
 </html>

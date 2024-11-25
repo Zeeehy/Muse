@@ -13,6 +13,7 @@ display:flex;
 width:100%;
 text-align: center;
 font-size:20px;
+font-weight:bold;
 }
 </style>
 <body onload="onloadSession()">
@@ -20,7 +21,7 @@ font-size:20px;
 		<div class="left-section">
 			<input type="image" src="/muse/resources/img/museimage.png"
 				class="header-image"
-				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&u_id=${u_id }&getMusicalList=${getMusicalList }&isFutureDate=${isFutureDate }'">
+				onclick="window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&getMusicalList=${getMusicalList }&isFutureDate=${isFutureDate }'">
 
 		</div>
 		<c:if test="${!empty pr_name }">
@@ -35,7 +36,7 @@ font-size:20px;
 		
 		<div class="right-section">
 			<a href="partnerLogin.do">로그인</a>
-			<input type="text" value="${s_pr_code}" name="pr_code">
+			<input type="hidden" value="${s_pr_code}" name="pr_code">
 			<!-- <input type="hidden" value="${pr_code}" name="pr_code"> -->
 	</div>
 	</c:if>
@@ -47,15 +48,21 @@ font-size:20px;
 
         function onloadSession(){
             var pr_code = "${s_pr_code}";
-            var u_id = "${s_id}";
+            var u_id = "${p_s_id}";
             var s_rs_code = "${s_rs_code}";
 			var pr_name = '${pr_name}';
-           // alert("pr_code:" + pr_code);
+			var u_id ="";
+			var state = '${pr_name}';
+            //alert("pr_code:" + pr_code);
            // alert("u_id:" + u_id);
-          //  alert("s_rs_code:" + s_rs_code); 
-
+            //alert("s_rs_code:" + s_rs_code); 
             // 로그인 상태 및 파트너 신청 상태 체크
-             
+             if(state==null||state==""){
+            	 alert("세션값 만료");
+                 window.location.href = 'partnerLogin.do';
+            	 
+             }
+            
             if (s_rs_code == "4") {
             	window.location.href = 'partnerAddForm.do?u_id='+u_id;
                 return;
@@ -71,18 +78,18 @@ font-size:20px;
                 alert("다시 로그인해주세요");
                 window.location.href = 'memberLogout.do';
                 return;
-            }else if (pr_name == "" || pr_name == null) {
+            } else if (pr_name == "" || pr_name == null) {
                 alert("승인되지 않은 아이디입니다.");
                 window.location.href = 'partnerLogin.do';
                 return;
-            }
+            } 
             // rs_code가 1이고, 처음 접속 시에만 알림을 띄우기
             else if (s_rs_code == "1") {
                 var check = sessionStorage.getItem("check") || 0;  // 새로고침 후에는 check 값 초기화
                 if (check == 0) {
-                    alert(u_id + " 님 환영합니다.");
+                    alert(pr_name + " 님 환영합니다.");
                     sessionStorage.setItem("check", 1);  // check 값을 1로 설정하여 이후에는 알림이 뜨지 않도록 함
-                    window.location.href = 'partnerAddForm.do?pr_code=' + pr_code;
+                    window.location.href = 'partnerMainForm.do?pr_code=' + pr_code;
                 }
             }
         }

@@ -3,7 +3,6 @@ package com.muse.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import com.muse.myPage.model.MPassDTO;
 import com.muse.myPage.model.MuseCalendarDAO;
 import com.muse.myPage.model.MuseCalendarDTO;
 import com.muse.myPage.model.MuseCastDAO;
+import com.muse.myPage.model.MuseMusicalDTO;
 import com.muse.myPage.model.MyBookingDetailDAO;
 import com.muse.myPage.model.MyBookingDetailDTO;
 import com.muse.myPage.model.MyBookingListDAO;
@@ -37,6 +37,8 @@ import com.muse.myPage.model.MyLikeMusicalDTO;
 import com.muse.myPage.model.MyMusicalReviewDTO;
 import com.muse.myPage.model.MyPageUserDAO;
 import com.muse.myPage.model.MyPageUserDTO;
+import com.muse.myPage.model.MyPointDAO;
+import com.muse.myPage.model.MyPointDTO;
 import com.muse.myPage.model.MyReviewListDAO;
 import com.muse.myPage.model.MySeatReviewDTO;
 import com.muse.partner.model.ActorDTO;
@@ -59,6 +61,8 @@ public class MyPageController {
 	private MyBookingDetailDAO mybookingDetailDao;
 	@Autowired
 	private MyReviewListDAO myReviewListDao;
+	@Autowired
+	private MyPointDAO mypointDao;
 	
 	/**메인페이지*/	
 	//메인페이지 폼
@@ -350,6 +354,62 @@ public class MyPageController {
 		return mav;
 	}		
 	
+	/**예매취소*/
+	@RequestMapping("/reservRefund.do")
+	public ModelAndView reservRefund(@RequestParam String bd_code) {
+		ModelAndView mav = new ModelAndView();
+
+		MyBookingDetailDTO bookingDetail=mybookingDetailDao.getBookingDetail(bd_code);	//test와 마찬가지로 바꿔야함
+		
+		String b_code=bookingDetail.getB_code();
+		int selectRefundRemainDate=mybookingDetailDao.getRefundRemainDate(b_code);
+		int fee=0;
+		//System.out.println(bookingDetail.getSp_price());
+		//관람 이틀전
+		if(selectRefundRemainDate>-2) {
+			fee=bookingDetail.getSp_price()/30;
+		} else if(selectRefundRemainDate>-6){
+			System.out.println(bookingDetail.getSp_price()+"bookingDetail.getSp_price()");
+			fee=bookingDetail.getSp_price()/20;
+		} else if(selectRefundRemainDate>-9){
+			fee=bookingDetail.getSp_price()/10;
+		} else if(selectRefundRemainDate>-10) {
+			if(bookingDetail.getSp_price()/10<4000) {
+				fee=bookingDetail.getSp_price()/10;
+			} else {
+				fee=4000;
+			}
+		} 
+		
+		int rd_price=bookingDetail.getBd_price()-fee;
+		//환불
+		String r_code=mybookingDetailDao.insertBookingRefund(bd_code);
+		
+		//환불상세
+		Map<String, Object> params = new HashMap<>();
+		params.put("r_code", r_code);
+		params.put("rd_price", rd_price);
+		int rd_result=mybookingDetailDao.insertBookingRefundDetail(params);
+		if(rd_result<=0) {
+			System.out.println("환불상세X");
+		}
+		//예매상세
+		int bd_result=mybookingDetailDao.updateBookingDetailState(bd_code);
+		if(bd_result<=0) {
+			System.out.println("환불상세X");
+		}
+		
+		//예매+포인트
+		if(mybookingDetailDao.getBookingStates(b_code)==0) {
+			mybookingDetailDao.updateBookingState(b_code);
+			//포인트돌려주기 일단 테이블고치고
+			System.out.println("포인트돌려줫어용");
+		}
+		
+		mav.setViewName("redirect:/myPageBookingDetail.do?b_code="+b_code);
+		return mav;
+	}
+	
 	/**마이페이지 뮤즈캐스트*/
 	//뮤즈캐스트 폼
 	@RequestMapping("/myPageMuseCast.do")
@@ -590,6 +650,8 @@ public class MyPageController {
 			mav.setViewName("/myPage/myPageMain");
 			return mav;
 		}
+		List<MuseMusicalDTO> museMusical = mPassDao.getMuseMusical();
+		mav.addObject("museMusical",museMusical);
 		mav.setViewName("/myPage/myPageMusePass");
 		return mav;
 	}
@@ -672,10 +734,29 @@ public class MyPageController {
 	
 	/**마이페이지 포인트*/
 	@RequestMapping("/myPagePoint.do")
-	public ModelAndView myPagePointForm() {
+	public ModelAndView myPagePointForm(HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav = new ModelAndView();
 
+		List<MyPointDTO> pointList = mypointDao.getPointList(u_id);
+		int pointSum = 0;
+		if(pointList!=null) {
+			pointSum = mypointDao.getPointSum(u_id);	
+		}
+		mav.addObject("pointList", pointList);
+		mav.addObject("pointSum",pointSum);
 		mav.setViewName("/myPage/myPagePoint");
 		return mav;
+//		String u_id = (String) session.getAttribute("s_id");
+//		ModelAndView mav = new ModelAndView();
+//
+//		List<MyPointDTO> pointList = mypointDao.getPointList(u_id);
+//		int pointSum = mypointDao.getPointSum(u_id);
+//		mav.addObject("pointSum", pointSum);
+//		mav.addObject("pointList", pointList);
+//		mav.setViewName("/myPage/myPagePoint");
+//		return mav;
 	}
+	
+	
 }

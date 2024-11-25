@@ -18,17 +18,22 @@
 tr,th,td {
     font-size: 16px;
 }
-thead th {color:#ddd; background:none; border:none;     font-weight: 400;}
+thead th {color:#ddd; background:none; border:none;  font-weight: 400;}
 tbody td {
 	color:#3a3a3a; 
 	background:none; 
-	border:none;
     padding:20px;
     }
 td.selected {
 	color:#fff;
     background: #ff3d32 !important;
     border-radius: 100%;
+}
+.productMain{
+	width:900px;
+}
+.productSide {
+	width: 450px;	
 }
 .productWrapper .productSide {
     width: auto !important;
@@ -37,9 +42,24 @@ td.selected {
     width: 100%;
     margin: 0 !important; 
 }
+.prdTitle {
+	font-size: 30px;
+	margin-bottom: 10px;
+}
+.infoPriceItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.infoPriceItem img {
+    width: 15px;
+    height: auto;
+}
 </style>
 </head>
-<body style="    overflow-x: scroll;">
+<body>
 	<%@include file="../header.jsp"%>
 	<!-- main 시작 -->
 	<div id="container">
@@ -65,8 +85,8 @@ td.selected {
 								<h2 class="prdTitle">${mddto.m_title }</h2>
 								<div class="prdSection">
 									<div class="tagText">
-										<span>뮤지컬</span>
-										<span> 주간 1위 <c:if test="${!empty reviews }"> : </c:if> </span>
+										<span>뮤지컬&nbsp;</span>
+										<span> <c:if test="${!empty rank }">주간 <b>${rank }</b>위</c:if> <c:if test="${!empty reviews}"> : </c:if> </span>
 										<span> 
 											<c:if test="${!empty reviews }">
 												<div class="reviewStarTotal">
@@ -157,18 +177,35 @@ td.selected {
 									<div class="infoDesc">
 											<p class="infoText">${mddto.m_age }</p>
 										</div></li>
-									<li class="infoItem infoPrice"><strong class="infoLabel">가격</strong>
-									<div class="infoDesc">
-											<ul class="infoPriceList">
-												
-												<c:forEach items="${priceList}" var="price">
-												        <li class="infoPriceItem">
-												        	<span class="name">${price.SG_NAME}</span>
-												        	<span class="price ">${price.SP_PRICE}원</span>
-												        </li>
-												</c:forEach>
-											</ul>
-										</div></li>
+									<li class="infoItem infoPrice">
+									    <strong class="infoLabel">가격</strong>
+									    <div class="infoDesc">
+									        <ul class="infoPriceList">
+									            <c:forEach items="${priceList}" var="price">
+									                <li class="infoPriceItem">
+									                    <div class="grade_img" style="display: flex; align-items: center; gap: 10px;">
+									                        <c:choose>
+									                            <c:when test="${price.SG_NAME eq 'VIP'}">
+									                                <img src="resources/img/reserv/seat_vip.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                            <c:when test="${price.SG_NAME eq 'R'}">
+									                                <img src="resources/img/reserv/seat_r.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                            <c:when test="${price.SG_NAME eq 'S'}">
+									                                <img src="resources/img/reserv/seat_s.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                            <c:when test="${price.SG_NAME eq 'A'}">
+									                                <img src="resources/img/reserv/seat_a.png" style="width: 15px; height: auto;">
+									                            </c:when>
+									                        </c:choose>
+									                        ${price.SG_NAME}석
+									                    </div>
+									                    <span class="price">${price.SP_PRICE}원</span>
+									                </li>
+									            </c:forEach>
+									        </ul>
+									    </div>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -513,15 +550,15 @@ td.selected {
 <!-- 										<th>상호</th>
 										<td>클립서비스주식회사</td> -->
 										<th>대표자명</th>
-										<td>${pdto.pr_name }</td>
+										<td colspan="3">${pdto.pr_name }</td>
 									</tr>
 									<tr>
 										<th>사업자등록번호</th>
-										<td>${pdto.pr_num }</td>
+										<td colspan="3">${pdto.pr_num }</td>
 									</tr>
 									<tr>
 										<th>E-mail</th>
-										<td>${pdto.pr_email }</td>
+										<td colspan="3">${pdto.pr_email }</td>
 									</tr>
 									<tr>
 										<th>연락처</th>

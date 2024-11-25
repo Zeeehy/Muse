@@ -18,11 +18,11 @@
 		AND EXISTS (
 		SELECT 1
 		FROM service_request sr
-		WHERE sr.m_code = m.m_code -- 외부 쿼리의 musical과 연결
+		WHERE sr.m_code = m.m_code -- 
 		AND sr.rs_code = 1 -- 승인된 것만
 		)
 		AND m.m_startdate <![CDATA[>]]>
-		sysdate 
+		sysdate
 		<if test="seachMusical != null and seachMusical != ''">
 			AND m.m_title LIKE '%' || #{seachMusical} || '%'
 		</if>
@@ -177,7 +177,7 @@
 		#{m_calendar},
 		#{m_single},
 		0,
-		0
+		#{m_ref}
 		)
 
 	</insert>
@@ -253,10 +253,11 @@
 		#{rs_code},
 		#{m_code},
 		TRUNC(sysdate),
-		'0',
+		#{rs_etc},
 		'0'
 		)
 	</insert>
+
 
 	<select id="maxMcode" resultType="String">
     <![CDATA[
@@ -273,26 +274,30 @@
 		r.MR_TITLE,
 		r.MR_CONTENT,
 		r.MR_SCORE,
-		r.MR_DATE,
+		TO_CHAR(r.MR_DATE, 'YYYY-MM-DD') AS MR_DATE,
 		CASE
-		WHEN bdr.bdr_key IS NOT NULL THEN 3
+		WHEN bdr.bdr_key IS
+		NOT NULL THEN 3
 		ELSE r.mr_state
 		END AS
 		MR_STATE,
 		b.u_id
 		FROM
-		musical_review r
+		musical_review
+		r
 		JOIN
 		booking b ON r.B_CODE =
 		b.B_CODE
 		JOIN
-		musical_option mo ON b.MO_CODE = mo.MO_CODE
+		musical_option mo ON b.MO_CODE
+		= mo.MO_CODE
 		JOIN
 		musical m
 		ON mo.M_CODE = m.M_CODE
 		LEFT JOIN
 		bbs_delete_request bdr ON r.MR_CODE =
-		bdr.bdr_key AND bdr.pr_code = #{pr_code}
+		bdr.bdr_key AND bdr.pr_code =
+		#{pr_code}
 		WHERE
 		m.pr_code = #{pr_code}
 		AND m.m_code = #{m_code}
@@ -372,6 +377,7 @@
 			AND sysdate <![CDATA[<]]>
 			m.m_startdate
 		</if>
+
 		<if test="performanceStatus == null or performanceStatus == ''">
 			AND sysdate BETWEEN m.m_startdate AND m.m_enddate
 		</if>
@@ -498,28 +504,65 @@
 		END AS m_title,
 		TO_CHAR(sr.rs_date, 'YYYY-MM-DD') AS rs_date,
 		CASE
-		WHEN sr.rs_code = 0
-		THEN '대기중'
+		WHEN sr.rs_code = 0 THEN '대기'
 		WHEN sr.rs_code = 1 THEN '승인'
-		WHEN sr.rs_code = 2 THEN '반려'
+		WHEN sr.rs_code = 2 THEN '거절'
 		END AS rs_status,
-		op.on_code
-		FROM service_request sr
-		JOIN musical m ON
-		sr.m_code = m.m_code
-		JOIN request_type rt ON sr.rt_code = rt.rt_code
-		LEFT JOIN open_notice op ON op.m_code = m.m_code
+		op.on_code,
+		CASE
+		WHEN op.rs_code = 0 THEN '대기'
+		WHEN op.rs_code = 1 THEN '승인'
+		WHEN op.rs_code = 2 THEN '거절'
+		END AS op_status
+		FROM
+		service_request sr
+		JOIN
+		musical m ON sr.m_code = m.m_code
+		JOIN
+		request_type rt ON sr.rt_code = rt.rt_code
+		LEFT JOIN
+		open_notice op ON op.m_code = m.m_code
 		WHERE m.pr_code =
 		#{pr_code}
-		<if test="getMusicalList == 0">
-			AND <![CDATA[ m.m_startdate >= sysdate ]]>
+		<if test="isFutureDate == 0">
+			AND m.m_startdate <![CDATA[>=]]>
+			sysdate
 		</if>
-		<if test="getMusicalList == 1">
-			AND <![CDATA[ m.m_enddate < sysdate ]]>
+		<if test="isFutureDate == 1">
+			AND m.m_startdate <![CDATA[<]]>
+			sysdate
 		</if>
 	</select>
-	
-	<select id="selectAllMusical" resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
-	select * from musical where m_code = #{m_code}
+
+
+	<select id="selectAllMusical"
+		resultType="com.muse.partner.model.MusicalDTO" parameterType="String">
+		SELECT
+		m_code,
+		m_title,
+		TO_CHAR(m_startDate, 'YYYY-MM-DD') AS m_startDate,
+		TO_CHAR(m_endDate, 'YYYY-MM-DD') AS m_endDate,
+		m_time,
+		m_inTime,
+		m_maxTicket,
+		m_age,
+		TO_CHAR(m_openDate, 'YYYY-MM-DD') AS m_openDate,
+		m_openTime,
+		m_notice,
+		m_calendar,
+		m_single,
+		m_viewState,
+		m_ref,
+		m_poster,
+		m_detailImg
+		FROM musical
+		WHERE m_code = #{m_code}
+	</select>
+
+
+
+	<select id="selectAllmh"
+		resultType="com.muse.partner.model.MusicalDTO">
+		select * from musical_hall
 	</select>
 </mapper>

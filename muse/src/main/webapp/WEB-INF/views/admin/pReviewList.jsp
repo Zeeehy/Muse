@@ -17,13 +17,12 @@
 #bannerListTable {
     width: 100%;
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
 }
 
 /* 테이블 헤더 스타일 */
 #bannerListTable th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #a5cfe3;
+    color: white;
     padding: 10px;
     text-align: center;
     font-weight: bold;
@@ -35,6 +34,7 @@
     padding: 8px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    height:30px;
 }
 
 /* 테이블에 호버 효과 추가 */
@@ -95,6 +95,9 @@ align-self: flex-start;
     border: 0px;
     background: lightblue;
 }   
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}    
 </style>
 
 <style>
@@ -121,10 +124,9 @@ align-self: flex-start;
 	<div class="main-content">
 	
 		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 파트너 리뷰 관리</h1>
-		<hr id="hrLine">
+
 		
-		
-		<table id="bannerListTable" border="1" cellspacing="0">
+		<table id="bannerListTable">
 			<tr >
 				<th>리뷰 제목</th>
 				<th>뮤지컬이름</th>

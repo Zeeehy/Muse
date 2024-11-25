@@ -109,6 +109,11 @@
 .buttondiv {
 	margin-top:-350px;
 }
+
+.seatSelection{
+	width: 120px;
+    font-size: 23px;
+}
 </style>
 <body>
 <!-- 좌석 -->
@@ -167,6 +172,47 @@
 							<td><input type="text" name="agradePrice"></td>
 							<td><div id="GradeColor" style="background-color: #F2EA1C;"></div></td>
 							<td><input type="radio" name="selectGrade"></td>
+						</tr>
+					</table>
+					
+					<table>
+						<tr>
+							<td>층</td>
+							<td>
+								<select name="floorSelect" id="floorSelect" class="seatSelection">
+						            <option value="">층 선택</option>
+						            <option value="1">1층</option>
+						            <option value="2">2층</option>
+						            <option value="3">3층</option>
+						        </select>
+							</td>
+						</tr>
+						<tr>
+							<td>구역</td>
+							<td>
+								<select name="sectionSelect" id="sectionSelect" class="seatSelection">
+						            <option value="">구역 선택</option>
+						            <option value="A">A</option>
+						            <option value="B">B</option>
+						            <option value="C">C</option>
+						        </select>
+							</td>
+						</tr>
+						<tr>
+							<td>행</td>
+							<td>
+								 <input type="number" id="rowSelect" min="0" value="0" class="seatSelection">
+							</td>
+						</tr>
+						<tr>
+							<td>열</td>
+							<td>
+								 <input type="number" id="columnSelect" min="0" value="0" class="seatSelection">
+							</td>
+						</tr>
+						<tr>
+							<td> <input type="button" value="설정하기" class="seatSelection" onclick="setGradeBySelBox(true)"> </td>
+							<td> <input type="button" value="지우기" class="seatSelection" onclick="setGradeBySelBox(false)"> </td>
 						</tr>
 					</table>
 				</div>
@@ -368,5 +414,92 @@ window.onload = function() {
         seatGrade.style.marginTop = '-400px';
     }
 };
+
+function setGradeBySelBox(sw){
+	
+    const selectedColorElement =document.querySelector('input[name="selectGrade"]:checked');
+
+    if(!selectedColorElement){
+    	alert('등급을 선택해주세요');
+    	
+    	return;
+    }
+	
+	var floorSelect = document.querySelector('#floorSelect');
+	var sectionSelect = document.querySelector('#sectionSelect');
+	
+	var floor = floorSelect.value;
+	var section = sectionSelect.value;
+	
+	var row = document.querySelector('#rowSelect').value;
+	var column = document.querySelector('#columnSelect').value;
+	
+	if(!floor && !section && row == 0 && column == 0){
+	    alert('최소 하나의 조건을 선택해주세요');
+	    return;
+	}
+	
+	var str = '';
+	var count = false;
+	 
+	var selectors = [];
+	    
+	if(floor) {
+		selectors.push('[data-floor="' + floor + '"]');
+	}
+
+	if(section) {
+		selectors.push('[data-section="' + section + '"]');
+	}
+
+	if(row != 0) {
+		selectors.push('[data-row="' + row + '"]');
+	}
+
+	if(column != 0) {
+		selectors.push('[data-realcol="' + column + '"]');
+	}
+	    
+	var str = 'div' + selectors.join('');
+
+	 
+	
+	var seats = document.querySelectorAll(str);
+	
+    
+
+    
+	const tdElement = selectedColorElement.parentElement;//선택된 색의 td값
+	
+    const trElement = tdElement.closest('tr'); // td의 부모 tr 찾기
+    const gradeColorDiv = trElement.querySelector('#GradeColor'); //tr의 자식요소 중 div
+    
+    const currentBackgroundColor = gradeColorDiv.style.backgroundColor; //div의 배경색
+
+
+    if(sw){
+    	
+        seats.forEach(function(seat){
+        	seat.className='';//시트 초기화
+        	seat.classList.add('seat');//기존 시트 추가(시트인지 알아보기 위함)
+        	seat.classList.add(trElement.id);//좌석 이름
+        	seat.classList.add(seat.dataset.row); //몇열인지
+        	seat.classList.add('select'); //등급이 추가된적 있는지
+        	seat.style.backgroundColor = currentBackgroundColor;
+        });
+        
+    } else {
+    	
+    	seats.forEach(function(seat){
+        	seat.className='';//시트 초기화
+        	seat.classList.add('seat');//기존 시트 추가(시트인지 알아보기 위함)
+        	seat.style.backgroundColor = '';
+        });
+    	
+    }
+
+}
+
+
 </script>
 </html>

@@ -290,14 +290,15 @@ function setSeats(section_div,rowLayout){
 	
 	// seat table의 position 값과 비교하는데 사용되는 변수
 	var seatNum = 0;
+	var count = 0;
 	
 	seatsData.forEach((seat,index)=>{
+		count++;
 
 		if(seat === 's'){
 			
 			// 좌석을 설정할 때마다 증가
 			seatNum++;
-			
 			
 			var seat_div = document.createElement('div');
 			seat_div.classList.add('seats');
@@ -306,7 +307,7 @@ function setSeats(section_div,rowLayout){
 			// 현재는 seat의 position만 활용하였기때문에, 중복되는 id 발생 
 			// => ex) 층 섹션 행 열 을 활용하여 id 설정하면 좋을 듯
 			//seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(index+1)+'</p></div>';
-			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"data-floor='+rowLayout.sl_floor+' data-section='+rowLayout.sl_section+' data-row='+rowLayout.sl_row+' data-seatNum='+seatNum+'><p>'+(seatNum)+'</p></div>';
+			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"data-floor='+rowLayout.sl_floor+' data-section='+rowLayout.sl_section+' data-row='+rowLayout.sl_row+' data-seatNum='+seatNum+' data-realcol='+count+'><p>'+(count)+'</p></div>';
 			//seat_div.innerHTML = '<div class="seat"><p>'+(rowLayout.sl_code)+'</p></div>';
 			
 			
@@ -364,7 +365,7 @@ function setSeats(section_div,rowLayout){
 
 				 
 			
-		} else if (seat ==='e') {
+		} else if(seat==='e'){
 			var empty_seat_div = document.createElement('div');
 			empty_seat_div.classList.add('seat');
 			
@@ -395,6 +396,7 @@ function testClick(rowLayout, event,seatNum) {
     console.log('여기');
     console.log(gradeColorDiv);
     
+    
     const currentBackgroundColor = gradeColorDiv.style.backgroundColor; //div의 배경색
 	var str = '';
     // rowLayout 객체의 모든 키와 값을 출력
@@ -409,6 +411,13 @@ function testClick(rowLayout, event,seatNum) {
        // alert(str+'클릭된 요소 ID: ' + seatDiv.id);
     } else {
         console.log('클릭된 요소에 ID가 없습니다.');
+    }
+    
+    if(seatDiv.style.backgroundColor===currentBackgroundColor){
+    	seatDiv.className='';//시트 초기화
+    	seatDiv.style.backgroundColor ='';
+    	seatDiv.classList.add('seat');//기존 시트 추가(시트인지 알아보기 위함)
+		return;
     }
 
     seatDiv.style.backgroundColor = currentBackgroundColor; // 선택된 색상으로 변경
@@ -456,7 +465,13 @@ function makeDummy(){
 		console.log(list.classList+"!!!!!!!!!!!!!!!!!!!!");
 		  var lastClass = list.classList[list.classList.length - 3];
 	       //등급 코드, 뮤지컬 코드,뮤지컬 홀 레이아웃, 섹션,왼쪽 몇번째에서 시작하는지, 열번호, 층번호
+
 	     selectedSeats.push([lastClass, musical_code, musicalHLayoutCode, data.section, list.textContent, data.row, data.floor]);
+		
+		
+		 alert(musical_code);
+		
+		
 		
 	});
 	

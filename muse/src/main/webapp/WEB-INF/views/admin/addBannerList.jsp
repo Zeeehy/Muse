@@ -16,13 +16,12 @@
 #bannerListTable {
     width: 100%;
     border-collapse: collapse;
-    font-family: Arial, sans-serif;
 }
 
 /* 테이블 헤더 스타일 */
 #bannerListTable th {
-    background-color: #f2f2f2;
-    color: #333;
+    background-color: #a5cfe3;
+    color: white;
     padding: 10px;
     text-align: center;
     font-weight: bold;
@@ -34,6 +33,7 @@
     padding: 8px;
     text-align: center;
     border-bottom: 1px solid #ddd;
+    height:30px;
 }
 
 /* 테이블에 호버 효과 추가 */
@@ -76,6 +76,10 @@
 	width: 100px;
     height: 100px;
     border-radius: 5px;}
+    
+tbody tr {
+  border-bottom: 1px solid #ddd;
+}   
 </style>
 
 
@@ -85,8 +89,7 @@
 
 <div style="margin-left:20px;margin-right:20px;">
 		<h1 style="margin-top: 21px; margin-bottom: 21px;"> 배너 등록</h1>
-		<hr>
-		<table id="bannerListTable" border="1" cellspacing="0">
+		<table id="bannerListTable" >
 			<tr >
 				<th>순서</th>
 				<th>포스터</th>

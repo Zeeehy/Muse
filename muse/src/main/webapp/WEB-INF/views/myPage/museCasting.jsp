@@ -6,14 +6,15 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+ */
 .modal {
-    width: 600px;
+    width:100%;
+    height: 100%;
     background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
+    padding: 50px;
     position: relative;
     font-family: Arial, sans-serif;
+    margin: 50px;
 }
 
 .modal-header {
@@ -70,6 +71,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .item {
@@ -80,6 +83,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 0 1 calc(50% - 10px); 
+    box-sizing: border-box;"
 }
 
 .item img {
@@ -223,7 +228,6 @@ function insertLike(){
 <div class="modal">
     <div class="modal-header">
         <h2>뮤즈캐스트 설정하기</h2>
-        <button class="close-btn">×</button>
     </div>
     <div class="modal-tabs">
         <button class="tab">관심배우/공연</button>
@@ -234,9 +238,6 @@ function insertLike(){
             <label><input type="radio" name="filter"> 관심공연</label>
             <input type="text" placeholder="검색" class="search-bar" id="search_cast">
             <button class="search-btn" onclick="getSearchCast()">검색</button>
-        </div>
-        <div class="recommendation">
-            <span>뮤즈 추천 인물 정보가 총 0건 있습니다.</span>
         </div>
         <div class="items" id="items">
         </div>

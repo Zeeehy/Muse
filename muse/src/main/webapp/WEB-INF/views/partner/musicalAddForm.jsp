@@ -58,8 +58,10 @@
 				<tr>
 					<th style="width: 20%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
-					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***"></td>
-					<td><input type="button" value="검색"><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
+
+					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***" ></td>
+					<td><input type="hidden" value="${sessionScope.s_pr_code }" name="pr_code"></td>
+
 				</tr>
 
 				<tr>
@@ -178,16 +180,14 @@
 <script>
 //var count = 0;
 var gradeList = [];
-/* function addGrade(){
-	 count++;
-	 const table = document.getElementById("gradeTable");
-	 const gradePrice = document.getElementById("gradePrice").value;
-	 const gradeColor = document.getElementById("gradeColor").value;
-} 
+document.getElementById("insertMusical").onsubmit = function(event) {
+    var noticeValue = document.getElementById("m_notice").value;
 
-function addClickList(evnet){
-	
+    // 개행 문자를 <br>로 변환
+    noticeValue = noticeValue.replace(/\n/g, "<br>");
+
+    // textarea에 변환된 값을 다시 설정 (필요한 경우)
+    document.getElementById("m_notice").value = noticeValue;
 }
-*/
 </script>
 </html>

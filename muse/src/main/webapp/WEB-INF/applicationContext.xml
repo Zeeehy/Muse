@@ -68,6 +68,9 @@
 	<bean id="musePassDao" class="com.muse.musePass.model.MusePassDAOImple">
 		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
 	</bean>
+	<bean id="myPointDao" class="com.muse.myPage.model.MyPointDAOImpl">
+		<constructor-arg ref="sqlSessionTemplate"></constructor-arg>
+	</bean>
 	<!-- add dao here -->
 	
 	

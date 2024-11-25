@@ -23,6 +23,7 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper {
+	padding: 70px 0;
     display: flex;
     gap: 15%; /* 아이템 간 간격을 설정 */
 }
@@ -35,7 +36,7 @@ li, label, input, tr, th, td {
 
 
 .navList {
-	    width: 800px;
+	    width: 900px;
 	display: flex;
     justify-content: space-around; /* 네비게이션 항목들 사이에 공간을 균등하게 배치 */
     gap: 10px; /* 네비게이션 항목들 간의 간격 */
@@ -66,6 +67,11 @@ li, label, input, tr, th, td {
 .summaryBody {
     display: flex;
     flex-wrap: wrap; /* 콘텐츠가 필요에 따라 감싸도록 설정 */
+}
+.summaryBody .info {
+	display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 
@@ -123,14 +129,15 @@ li, label, input, tr, th, td {
 }
 
 .productWrapper .summary .info .infoLabel {
-    display: inline-block;
-    width: 6rem; /* 일정 너비를 주어 항목들이 맞춰서 정렬되도록 함 */
+   	display: inline-block;
+    width: 7rem;
     padding-right: 0.5rem;
     color: #000;
-    font-weight: normal;
+    font-weight: bold;
     line-height: 160%;
     vertical-align: top;
     box-sizing: border-box;
+    font-size: 18px;
 }
 
 .productWrapper .summary .info .infoDesc {
@@ -138,6 +145,14 @@ li, label, input, tr, th, td {
     max-width: 39rem;
     vertical-align: top;
     flex: 1; /* 남은 공간을 차지하도록 설정 */
+}
+
+.productWrapper .summary .info .infoDesc a , .infoDesc p, .infoDesc ul li span {
+    font-size: 17px;
+}
+
+.productWrapper .summary .info .infoDesc ul li {
+	margin-bottom: 20px;
 }
 
 .productWrapper .productSide {
@@ -166,6 +181,15 @@ li, label, input, tr, th, td {
     padding-bottom: 6.5rem;
 }
 
+.productWrapper .summary .prdSection .tagText span{
+    font-size: 16px;
+    padding: 5px 0;
+    color: #444;
+}
+.productWrapper .summary .prdSection .tagText span b{
+    color: #ff3e32;
+}
+
 .productWrapper .nav .navItem {
     color: #666;
     font-weight: bold;
@@ -177,7 +201,9 @@ li, label, input, tr, th, td {
 .productWrapper .nav .navItem.is-active {
     color: #000;
 }
-
+.productWrapper .nav .navItem a {
+    font-size: 18px;
+}
 .productWrapper .nav .navItem.is-active:before {
     display: block;
 }
@@ -313,6 +339,10 @@ img.castingImage{
     background: #f0f0f0;
     border-radius: 10px;
 }
+.castingDetailFilter .filterItem .filterSearchBtn span.blind{
+	font-size: 15px;
+	font-weight: normal;
+}
 .productWrapper .castingDetail .castingDetailFilter .filterTitle {
     display: inline-block;
     width: 150px;
@@ -404,7 +434,7 @@ img.castingImage{
 
 /* 판매 정보 */
 .productWrapper .prdContents .moreInfoContainer {
-    padding-top: 30px;
+    padding-top: 50px;
 }
 .productWrapper .prdContents .moreInfoContainer h4 {
     padding: 20px 0;
@@ -799,6 +829,12 @@ img.castingImage{
 .section_notice .list .table tr{
 	border-bottom: 0.5px solid #f0f0f0;
 }
+.section_notice .list .table tr .passText{
+	margin-left: 15px;
+}
+.section_notice .list .table tr .passText b{
+	color: #ff3e32;
+}
 .section_notice .list .table .content:hover {
 	background: #fafafa;
 }
@@ -909,7 +945,7 @@ img.castingImage{
 	font-size: 18px;
     padding-bottom: 30px;
 }
-.moreInfoTable tbody {
+.desc .moreInfoContainer .moreInfoTable tbody {
 	display: flex;
     flex-direction: column;
     gap: 10px;

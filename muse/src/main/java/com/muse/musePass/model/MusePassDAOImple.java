@@ -28,4 +28,21 @@ public class MusePassDAOImple implements MusePassDAO {
 		// TODO Auto-generated method stub
 		return sqlMap.update("updateMusePassOn",u_id);
 	}
+	
+	@Override
+	public int checkPassJoin(String u_id) {
+		// TODO Auto-generated method stub
+		return sqlMap.selectOne("checkPassJoin",u_id);
+	}
+	@Override
+	public int updateMPassRange(String u_id) {
+		// TODO Auto-generated method stub
+		return sqlMap.update("updateMPassRange",u_id);
+	}
+	
+	@Override
+	public int insertPassPoint(String u_id) {
+		return sqlMap.update("insertPassPoint",u_id);
+		
+	}
 }
