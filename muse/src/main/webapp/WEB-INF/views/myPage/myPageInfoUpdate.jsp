@@ -422,6 +422,65 @@ $(document).ready(function() {
 		});            
 		 
 	});
+////////////////////////////////////////////////////////////
+// 인증번호 받기 버튼 클릭 시
+    $("#get-auth-btn").click(function(event) {
+        event.preventDefault(); // 폼 제출 방지
+
+        var uName = $("input[name='u_name']").val().trim();
+        var uEmail = $("input[name='u_email']").val().trim();
+        var nameRegex = /^(?:(?:[b-df-hj-np-tv-zB-DF-HJ-NP-TV-Z][aeiouAEIOU])+(?:[b-df-hj-np-tv-zB-DF-HJ-NP-TV-Z])*)$|^[가-힣]{2,}$/;
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!nameRegex.test(uName) || !emailRegex.test(uEmail)) {
+            alert("이름과 이메일을 올바르게 입력해주세요.");
+            return;
+        }
+
+        // 서버로 AJAX 요청 보내기
+        $.ajax({
+            url: "idcheckNameAndEmail.do",  // 서버의 이름과 이메일을 확인하는 URL
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                u_name: uName,
+                u_email: uEmail
+            }),
+            dataType: "json",
+            success: function(response) {
+                if (response.exists == 1) {
+                    // 이메일이 일치하면, 인증번호 발송 페이지로 이동
+                    $.ajax({
+                        url: "find_email.do",  // 서버로 이메일을 보내는 URL
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            u_email: uEmail  // 이메일을 서버로 전송
+                        }),
+                        success: function() {
+                            alert("인증번호가 발송되었습니다!");
+                         	// 인증번호 입력창을 readonly로 설정
+                            $("input[name='u_name']").prop("readonly", true);  // readonly 속성 추가
+                            $("input[name='u_email']").prop("readonly", true);  // readonly 속성 추가
+                            
+                            // 인증번호 입력창 표시
+                            $("#auth-number-container").show();
+                            $("#get-auth-btn").hide();
+                            $("#auth-btn").show();
+                        },
+                        error: function() {
+                            alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+                        }
+                    });
+                } else {
+                    alert("해당 아이디의 이름과 이메일이 일치하지 않습니다.");
+                }
+            },
+            error: function() {
+                alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    });
 </script>
 </head>
 <body>
@@ -454,10 +513,10 @@ $(document).ready(function() {
 	                     <li class="join_input-container">
 	                     	<img src="/muse/resources/img/member/id.png">
 	                     	<label>아이디</label>
-	                        <input class="padding_label1" type="text" name="u_id" placeholder="6~15자 영문, 숫자">
+	                        <input class="padding_label1" type="text" name="u_id" value="${user.u_id}" readonly="readonly">
 	                     </li>
 	                     <li class="join_ajax1"><label></label></li>
-	                     
+
 	                      <li class="join_input-container">
 	                        <img src="/muse/resources/img/member/pwd.png">
 	                        <label>비밀번호</label>
@@ -470,36 +529,54 @@ $(document).ready(function() {
 	                     	<label>비밀번호 확인</label>
 	                        <input class="padding_label3" type="password" name="u_pwd2" placeholder="8~12자 영문, 숫자, 특수문자">
 	                     </li>
+
 	                     <li class="join_ajax3"><label></label></li> 
 	                     
 	                     <li class="join_input-container">
 	                     	<img src="/muse/resources/img/member/name.png">
 	                     	<label>이름</label>
-	                        <input class="padding_label0" type="text" name="u_name" placeholder="[예시] 홍길동">
+	                        <input class="padding_label0" type="text" name="u_name" value="${user.u_name}" >
 	                     </li>
 	                     <li class="join_ajax4"><label></label></li> 
 	                     
 	                     <li class="join_input-container">
 	                     	<img src="/muse/resources/img/member/email.png">
 	                     	<label>이메일</label>
-	                        <input class="padding_label1" type="text" name="u_email" placeholder="[예시] hello@naver.com">
+	                        <input class="padding_label1" type="text" name="u_email" value="${user.u_email}">
 	                     </li>
 	                     <li class="join_ajax5"><label></label></li> 
-	                     
+	                     <!-- 시작 -->
+	                     <li class="find_input-container-btn">
+						    <!-- 인증번호 받기 버튼 초기 상태로 보여짐 -->
+						    <input class="find_btn" type="button" value="인증번호 받기" id="get-auth-btn">         
+						</li>
+						<li class="find_input-container-btn">
+						    <!-- 인증하기 버튼, 처음에는 숨겨짐 -->
+						    <input class="find_btn" type="button" value="인증하기" id="auth-btn" style="display: none;">         
+						</li>
+	                     <!-- 끝 -->
 	                     <li class="join_input-container">
 	                     	<img src="/muse/resources/img/member/tel.png">
 	                     	<label>휴대폰</label>
-	                        <input class="padding_label1" type="text" name="u_pnum" placeholder="010-1234-5678">
+	                        <input class="padding_label1" type="text" name="u_pnum" value="${user.u_pnum}">
 	                     </li>
 	                     <li class="join_ajax6"><label></label></li> 
 	                     
+	                      <li class="join_input-container">
+	                     	<img src="/muse/resources/img/member/date.png">
+	                     	<label>가입날짜</label>
+	                        <input class="padding_label1" type="text" name="u_date" value="${user.u_date}" readonly="readonly">
+	                     </li>
+	                     <li class="join_ajax6"><label></label></li>
+	                     
+	                     <!--
 	                     <li class="join_input-container-check">
 	                     	<input type="checkbox" name="u_age">
 	                     	<label>14세 미만입니다.</label>
 	                     </li>
-	                     
+	                     -->
 	                      <li class="join_input-container-btn">  
-	                     	<input class="join_btn" type="submit" value="로그인">         
+	                     	<input class="join_btn" type="submit" value="회원정보수정">         
 	                     </li>
 	                     </ul>
 	                  </article>
