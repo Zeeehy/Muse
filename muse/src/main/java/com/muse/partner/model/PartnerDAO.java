@@ -11,7 +11,7 @@ public interface PartnerDAO {
 
 	public List<ActorDTO> SeachActorList(String ma_name);//actor팝업 배우검색
 	
-	public List<MusicalDTO> SeachMusicalList(String pr_code,String seachMusical);
+	public List<MusicalDTO> SeachMusicalList(String pr_code,String seachMusical,String state);
 	
 	public MusicalDTO getMusicalDateSelect(String m_code);
 	

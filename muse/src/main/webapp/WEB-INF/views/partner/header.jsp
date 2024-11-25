@@ -10,7 +10,7 @@
 display:flex;
 }
 .right-section a{
-width:100%;
+/* width:100%; */
 text-align: center;
 font-size:20px;
 font-weight:bold;
@@ -27,9 +27,9 @@ font-weight:bold;
 		<c:if test="${!empty pr_name }">
 		
 		<div class="right-section">
-			<a>${pr_name}</a>|<a href="memberLogout.do">로그아웃</a>
-			<input type="text" value="${s_pr_code}" name="pr_code">
-			 <input type="hidden" value="${pr_code}" name="pr_code"> 
+			<a>${pr_name}  </a>|<a href="memberLogout.do">  로그아웃</a><%-- 
+			<input type="text" value="${s_pr_code}" name="pr_code"> --%>
+			 <input type="hidden" value="${s_pr_code}" name="pr_code"> 
 	</div>
 	</c:if>
 	<c:if test="${empty pr_name }">
@@ -86,8 +86,8 @@ font-weight:bold;
             // rs_code가 1이고, 처음 접속 시에만 알림을 띄우기
             else if (s_rs_code == "1") {
                 var check = sessionStorage.getItem("check") || 0;  // 새로고침 후에는 check 값 초기화
-                if (check == 0) {
-                    alert(pr_name + " 님 환영합니다.");
+                if (check == 0) {/* 
+                    alert(pr_name + " 님 환영합니다."); */
                     sessionStorage.setItem("check", 1);  // check 값을 1로 설정하여 이후에는 알림이 뜨지 않도록 함
                     window.location.href = 'partnerMainForm.do?pr_code=' + pr_code;
                 }
