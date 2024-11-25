@@ -22,7 +22,6 @@
 </style>
 </head>
 <body>
-<h1>예매페이지</h1>
 <form id="reservationForm" action="reservSale.do" method="post">
 	<input type="hidden" name="mh_code" value="${mh_code}">
     <input type="hidden" name="m_code" value="${m_code}">
@@ -84,8 +83,8 @@
                 <aside class="seatL" style="display:none;">
 					<%@ include file="/WEB-INF/views/reservation/reservSeat.jsp" %>
 					<div class="seatReview" style="display: none;">
-						<p>선택하신 좌석 <b>[R석] 1층-C블록 5열 6</b>의 평균 평점은 (5.0) 입니다.</p>
-						<span>좌석 상세 리뷰  보기 ></span>
+						<p>선택하신 좌석 <b>[R석] 1층-C블록 5열 6</b>의 평균 평점은(5.0) 입니다.</p>
+						<span class="reviewTxt">좌석 상세 리뷰  보기 ></span>
 					</div>
                 </aside>
                 <aside class="seatR">
@@ -622,7 +621,7 @@ function validateAndSubmit() {
     
     console.log('히어');
     console.log(seatsArray);
-    alert(seatsArray);
+    //alert(seatsArray);
 
     
     // 폼 제출

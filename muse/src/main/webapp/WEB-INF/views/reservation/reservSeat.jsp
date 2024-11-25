@@ -507,8 +507,7 @@ function testClick(rowLayout, event) {
                 if (seatReviewDiv) {
                     seatReviewDiv.querySelector('p').innerHTML = 
                         //`선택하신 <b> [${grade}] 석 ${seatInfo.section} 구역 ${seatInfo.row} 열 ${seatInfo.number} 좌석의 평균은 (5.0) 입니다.</b>`;
-                    	'선택하신 <b> ['+grade+'] 석 '+seatInfo.section+' 구역 '+seatInfo.row+' 열 '+seatInfo.number+' 좌석의 평균은 ('+avgScore+') 입니다.</b>';
-                    seatReviewDiv.style.display = 'block';
+						'선택하신 <b> ['+grade+'] 석 '+seatInfo.section+' 구역 '+seatInfo.row+' 열 '+seatInfo.number+' 좌석의 평균은 <span><img src="resources/img/ystar.svg" alt="별" width="12px" height="12px"></span> ('+avgScore+') 입니다.</b>';                    seatReviewDiv.style.display = 'block';
                     currentReviewSeat = seatElement;
                 }
                 //updateSeatReview(avgScore, seatInfo);

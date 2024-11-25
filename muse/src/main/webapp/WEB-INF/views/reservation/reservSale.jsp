@@ -12,7 +12,6 @@
     <script src="/muse/resources/js/httpRequest.js"></script>
 </head>
 <body>
-    <h1>가격/할인 페이지</h1>
 	<form id="reservationForm" method="post" action="reservCheck.do">
 	    <input type="hidden" name="mh_code" value="${mh_code}">
 	    <input type="hidden" name="m_code" value="${m_code}">
@@ -42,7 +41,7 @@
 				</header>
                 <section class="allSeat">
                     <aside class="seatL" style="display: flex; flex-direction: column;">
-                    	<div class="priceTList" style="max-height: 470px; overflow-y: scroll;">
+                    	<div class="priceTList" style="max-height: 440px; overflow-y: scroll;">
 						    <c:set var="processedGrades" value=""/> <!--  이미 처리된 등급 저장 -->
 						    <c:forEach var="currentSeat" items="${selectedSeats}"> <!-- (1) 모든 좌석을 돌면서 각 등급별로 한번씩만 처리 -->
 						        <c:set var="currentGrade" value="${currentSeat.grade}"/> <!-- 처리중인 좌석등급을 변수에 저장 -->
@@ -128,19 +127,22 @@
                     	<div class="pointB">
 					    <p class="stit"><span>My Point</span></p>
 					    <div class="pointContainer">
-					        <div class="pointCheck">
-					            <label>나의 포인트 조회 :</label>
-					            <input type="text" id="myPoint" value="조회중..." readonly>
-					            <button type="button" onclick="checkMyPoint()"></button>
+					    	<div style="display: flex;justify-content: space-around;align-items: center;">
+						        <div class="pointCheck">
+						            <label>나의 포인트 조회 :</label>
+						            <input type="text" id="myPoint" value="조회중..." readonly>
+						            <button type="button" onclick="checkMyPoint()"></button>
+						             
+						        </div>
+						        <div class="pointUse">
+						            <label>포인트 사용하기 :</label>
+						            <input type="text" id="usePoint" value="0">
+						            <button type="button" onclick="useMyPoint()">사용하기</button>
+						        </div>
 					        </div>
-					        <div class="pointUse">
-					            <label>포인트 사용하기 :</label>
-					            <input type="text" id="usePoint" value="0">
-					            <button type="button" onclick="useMyPoint()">사용하기</button>
-					        </div>
-					        		
+					        	<p style="padding: 20px 70px 0px 70px; color:#bbb;">* 포인트 환불은 <b style="color:#ff3e32;">좌석 전체 취소시 </b> 에만 <b style="color:#ff3e32;">전체 환불</b> 이 가능합니다. (부분 포인트 환불X)</p>	
 					    </div>
-					    <p>* 포인트 환불은 좌석 전체 취소시에만 전체 환불이 가능합니다.(부분 포인트 환불X)</p>
+					   
 								
 					</div>
                     </aside>
@@ -149,7 +151,7 @@
                             <h2>나의 예매 정보</h2>
                             <div class="reservmInfo">
                                 <div style="display: flex; gap: 15px; flex-direction: row; align-items: stretch;">
-							        <img src="${musicalInfo.M_POSTER}">
+    								<img src="resources/img/musical/${musicalInfo.M_POSTER}" alt="${musicalInfo.M_TITLE} 포스터">
 							        <ul class="mInfoList">
 							            <li><span>${musicalInfo.M_TITLE}</span></li>
 							            <li>
@@ -191,7 +193,9 @@
 										</tr>
                                         <tr>
 										    <th>티켓금액</th>
-										    <td id="ticketPrice">0원</td>
+										    <td id="ticketPrice">
+										        <fmt:formatNumber value="${ticketPrice}" pattern="#,###"/>원
+										    </td>
 										</tr>
 										<tr>
 										    <th>포인트 사용</th>
@@ -308,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // 업데이트된 데이터를 폼에 설정
             formSeats.value = JSON.stringify(updatedSeatsData);
             
-            alert(updatedSeatsData);
+            //alert(updatedSeatsData);
             
             const usePoint = document.getElementById('jusePoint').value;
             const cancelDeadline = document.getElementById('jcancelDeadline').value;
@@ -319,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             console.log('전송될 포인트:', usePoint);
             console.log('전송될 취소기한:', cancelDeadline);
-            alert(jcancelDeadline);
+            //alert(jcancelDeadline);
             // 검증 통과시 폼 제출
             form.submit();
             
@@ -441,6 +445,13 @@ function handleDiscountTicketChange(select, gradeType, maxTickets) {
     let priceTable = select.closest('.priceT');
     let allSelects = priceTable.querySelectorAll('select[name*="Tickets_' + gradeType + '"]');
     let totalSelected = 0;
+    
+ 	// 선택한 할인 티켓의 value가 0보다 크면 알림 표시
+    if (select.name.includes('veteran') || select.name.includes('disability')) {
+        if (parseInt(select.value) > 0) {
+            alert('티켓은 현장에서 본인여부와 복지카드를 확인 후 수령 가능하며,\n예매한 본인이 아니거나 복지카드 미지참시 할인 혜택을 받을 수 없습니다.');
+        }
+    }
 
     // 전체 선택된 매수 계산
     allSelects.forEach(sel => {
