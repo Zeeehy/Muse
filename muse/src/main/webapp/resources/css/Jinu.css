@@ -772,6 +772,22 @@ img.castingImage{
 	
 }
 
+
+.noResult{
+	    padding-top: 20px;
+	
+}
+
+#pageNav{
+	display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+#pageNav span{
+	font-size : 15px;
+}
+
 /* ----------------- 오픈공지 리스트 ----------------- */
 .section_notice .list {
 	max-width: 1500px;

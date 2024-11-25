@@ -307,7 +307,7 @@ function setSeats(section_div,rowLayout){
 			// 현재는 seat의 position만 활용하였기때문에, 중복되는 id 발생 
 			// => ex) 층 섹션 행 열 을 활용하여 id 설정하면 좋을 듯
 			//seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"><p>'+(index+1)+'</p></div>';
-			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"data-floor='+rowLayout.sl_floor+' data-section='+rowLayout.sl_section+' data-row='+rowLayout.sl_row+' data-seatNum='+seatNum+' data-realcol='+count+'><p>'+(count)+'</p></div>';
+			seat_div.innerHTML = '<div class="seat" id="ps_'+(seatNum)+'"data-floor='+rowLayout.sl_floor+' data-section='+rowLayout.sl_section+' data-row='+rowLayout.sl_row+' data-seatNum='+seatNum+' data-realcol='+count+'><p>'+(seatNum)+'</p></div>';
 			//seat_div.innerHTML = '<div class="seat"><p>'+(rowLayout.sl_code)+'</p></div>';
 			
 			

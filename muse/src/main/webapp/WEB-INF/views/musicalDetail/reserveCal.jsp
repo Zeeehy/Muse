@@ -133,6 +133,11 @@
 		    flex-direction: column;
 		    gap: 50px;
 		}
+		
+		.time-option.selected span {
+			background-color: #ff3d32;
+   			 color: white;
+		}
     </style>
 </head>
 <body>
@@ -267,7 +272,6 @@
             canBook = (now >= openDate);
         }
         
-        alert(canBook);
         
         displayMessage(messages, canBook);
 
@@ -336,8 +340,7 @@
 	// 메시지 표시 함수도 수정하여 D-DAY 스타일 적용
 function displayMessage(messages, canBook) {
 		
-	alert(openDate);
-	alert(museOpenDate);
+
 	if(openDate==null && museOpenDate==null){
         const calendarContainer = document.querySelector('.calendar-container');
         calendarContainer.innerHTML = '';
@@ -415,7 +418,6 @@ function displayMessage(messages, canBook) {
 			    dDayText = 'D-' + days;
 			}
             
-            alert(dDayText);
             let messageHtml = '';
             messages.forEach(function(msg) {
                 messageHtml += '<p style="margin: 5px 0;">' + msg + '</p>';
@@ -841,7 +843,6 @@ function displayMessage(messages, canBook) {
         	var year = currentDate.getFullYear();
         	var month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 1자리 월을 2자리로
         	var dateString = year+'-'+month+'-01';
-        	alert(dateString);
         	var params = 'm_code=${mddto.m_code}&dateString='+ dateString;
         	sendRequest('moveMonthCalendar.do', params, function(){
         		if (XHR.readyState === 4) {
@@ -849,7 +850,6 @@ function displayMessage(messages, canBook) {
 	    				
 	    				console.log(XHR.responseText);
 	    				
-	    				alert(JSON.parse(XHR.responseText));
 	    				performList = JSON.parse(XHR.responseText);
 	    				
 	    				availableDates = performList.map(perform => {

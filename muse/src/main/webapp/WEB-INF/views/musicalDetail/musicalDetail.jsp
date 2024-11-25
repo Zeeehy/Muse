@@ -941,7 +941,6 @@ td.selected {
 	    cast.addEventListener("click", function() {
 	        
 	    	if (s_id) {
-	    		alert(cast.dataset.checkLike);
 				var params = 'mr_code='
 						+ cast.dataset.code;
 				params += "&checkLike="
@@ -1015,7 +1014,6 @@ td.selected {
 	    sendRequest('getCastingByRange.do', params, function() {
 	        if (XHR.readyState === 4 && XHR.status === 200) {
 	        	
-	        	alert(1);
 	            const response = JSON.parse(XHR.responseText);
 	            const castings = response.actorByRound;
 	            const allChars = response.allChar;

@@ -265,7 +265,6 @@ function insertTicketOpen(){
     var rgradePrice = document.getElementsByName("rgradePrice")[0].value;
     var sgradePrice = document.getElementsByName("sgradePrice")[0].value;
     var agradePrice = document.getElementsByName("agradePrice")[0].value;
-    alert(musical_code+"");
     // 입력값 검증
     if (vipgradePrice === "" || vipgradePrice === null) {
         alert("VIP 등급 가격을 입력해 주세요.");
@@ -292,9 +291,7 @@ function insertTicketOpen(){
                 '&sg_code4=sg_4&sp_price4=' + agradePrice;
                 
     window.location.href = 'insertSeatPriceSeat.do?' + param;
-    alert(2);
     makeDummy();
-    alert(3);
 }
 
 
