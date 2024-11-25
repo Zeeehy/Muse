@@ -70,6 +70,10 @@ public class MyPageController {
 	public ModelAndView myPageMainForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
 		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	
 		int u_mpass=mPassDao.getMyUMPass(u_id);
 		mav.addObject("u_mpass",u_mpass);
@@ -91,6 +95,10 @@ public class MyPageController {
 	public ModelAndView myPageInfoUpdateForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
 		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
 		MyPageUserDTO user = myPageUserDao.getUserInfo(u_id);
 		
 		mav.addObject("user", user);
@@ -139,6 +147,10 @@ public class MyPageController {
 		ModelAndView mav=new ModelAndView();
 
 		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
 		List<MyBookingListDTO> bookingList = myBookingListDao.getBookingList(u_id);	// 수정예정
 		mav.addObject("bookingList",bookingList);
 		//이떄 review_state한번씩 다 할당해주는건데 페이징일때는 전체만되나 부분만되나?진짜모름 페이징할때 다시 생각해보자 아닌가?할당안되나?sql문에서 해주는게 낫나 이러면 테이블고쳐야하는데 끼야악
@@ -414,8 +426,13 @@ public class MyPageController {
 	//뮤즈캐스트 폼
 	@RequestMapping("/myPageMuseCast.do")
 	public ModelAndView myPageMuseCastForm(HttpSession session) {
-		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
+		
 		int likeActorCount=museCastDao.getLikeActorCount(u_id);
 		int likeMusicalCount=museCastDao.getLikeMusicalCount(u_id);
 		List<MyLikeActorDTO> likeActorList=museCastDao.getLikeActorList(u_id);
@@ -431,9 +448,13 @@ public class MyPageController {
 	
 	//뮤즈캐스팅 폼
 	@RequestMapping("/museCasting.do")
-	public ModelAndView museCastingForm() {
+	public ModelAndView museCastingForm(HttpSession session) {
 		ModelAndView mav=new ModelAndView();
-		
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
 		mav.setViewName("/myPage/museCasting");
 		return mav;
 	}
@@ -636,8 +657,13 @@ public class MyPageController {
 	//뮤즈패스 폼
 	@RequestMapping("/myPageMusePass.do")
 	public ModelAndView myPageMusePassForm(HttpSession session) {
-		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
+		
 		int u_mpass=mPassDao.getMyUMPass(u_id);
 		mav.addObject("u_mpass",u_mpass);
 		if(u_mpass==1) {
@@ -647,10 +673,11 @@ public class MyPageController {
 			mav.addObject("myMPass",myMPass);
 		} else {
 			System.out.println("뮤즈패스 가입X");
-			mav.setViewName("/myPage/myPageMain");
+			mav.setViewName("/musepass");
 			return mav;
 		}
 		List<MuseMusicalDTO> museMusical = mPassDao.getMuseMusical();
+		mav.addObject("u_id",u_id);
 		mav.addObject("museMusical",museMusical);
 		mav.setViewName("/myPage/myPageMusePass");
 		return mav;
@@ -662,8 +689,12 @@ public class MyPageController {
 	/**마이페이지 뮤즈캘린더*/
 	@RequestMapping(value = "/myPageMuseCalendar.do", method = RequestMethod.GET)
 	public ModelAndView myPageMuseCalendarForm(HttpSession session) {
-		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav=new ModelAndView();
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
 		List<MuseCalendarDTO> calendarList = new ArrayList<>();
 		
 		List<MuseCalendarDTO> bookingList = museCalendarDao.getCalendarBooking(u_id);
@@ -716,8 +747,13 @@ public class MyPageController {
 	/**마이페이지 후기*/
 	@RequestMapping("/myPageReview.do")
 	public ModelAndView myPageReviewForm(HttpSession session,@RequestParam(defaultValue = "0") String seat_state) {
-		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav = new ModelAndView();
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
+		
 		if(seat_state.equals("0")) {
 			List<MyMusicalReviewDTO> musicalReviewList = myReviewListDao.getMusicalReviewList(u_id);
 			mav.addObject("musicalReviewList", musicalReviewList);
@@ -735,28 +771,207 @@ public class MyPageController {
 	/**마이페이지 포인트*/
 	@RequestMapping("/myPagePoint.do")
 	public ModelAndView myPagePointForm(HttpSession session) {
-		String u_id = (String) session.getAttribute("s_id");
 		ModelAndView mav = new ModelAndView();
-
-		List<MyPointDTO> pointList = mypointDao.getPointList(u_id);
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
+		
+		List<MyPointDTO> pointList = new ArrayList<>();
 		int pointSum = 0;
-		if(pointList!=null) {
+		if(mypointDao.getPointList(u_id)!=null && !mypointDao.getPointList(u_id).isEmpty()) {
+			pointList = mypointDao.getPointList(u_id);
 			pointSum = mypointDao.getPointSum(u_id);	
 		}
 		mav.addObject("pointList", pointList);
 		mav.addObject("pointSum",pointSum);
 		mav.setViewName("/myPage/myPagePoint");
 		return mav;
-//		String u_id = (String) session.getAttribute("s_id");
-//		ModelAndView mav = new ModelAndView();
-//
-//		List<MyPointDTO> pointList = mypointDao.getPointList(u_id);
-//		int pointSum = mypointDao.getPointSum(u_id);
-//		mav.addObject("pointSum", pointSum);
-//		mav.addObject("pointList", pointList);
-//		mav.setViewName("/myPage/myPagePoint");
-//		return mav;
 	}
 	
+	//포인트내역 기간별 검색(일)
+	@RequestMapping("/myPagePointDayList.do")
+	@ResponseBody
+	public String myPagePointDayList(@RequestParam("point_day") String pointDay, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", u_id);
+		params.put("pointDay", pointDay);
+		List<MyPointDTO> pointList = mypointDao.getPointDay(params);
+
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    if(pointList.isEmpty() || pointList==null) {
+	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
+	    }
+	    for (MyPointDTO point : pointList) {
+	    	String pt_category="";
+	    	String pt_point="";
+	    	//String pt_detail="";
+	    	if(point.getPt_category()==0) {
+	    		pt_category="뮤즈패스 가입";
+	    	} else if(point.getPt_category()==1) {
+	    		pt_category="예매구매";
+	    	} else if(point.getPt_category()==2) {
+	    		pt_category="좌석리뷰";
+	    	} else if(point.getPt_category()==3) {
+	    		pt_category="공연리뷰";
+	    	} else{
+	    		pt_category="예매환불";
+	    	}
+	    	if(point.getPt_point()>0){
+	    		pt_point="적립";
+	    	}else{
+	    		pt_point="사용";
+	    	}
+	    	responseHtml.append("<tr>")
+            .append("<td>").append(pt_category).append("</td>")
+            .append("<td>").append(pt_point).append("</td>")
+            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(point.getPt_point()).append("P</td>")
+            .append("<td>").append(point.getPt_date()).append("</td>")
+            .append("</tr>");
+	    }
+	    return responseHtml.toString();
+	}
+	
+	//포인트내역 기간별 검색(월)
+	@RequestMapping("/myPagePointMonthList.do")
+	@ResponseBody
+	public String myPagePointMonthList(@RequestParam("point_month") String pointMonth, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", u_id);
+		params.put("pointMonth", pointMonth);
+		List<MyPointDTO> pointList = mypointDao.getPointMonth(params);
+
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    if(pointList.isEmpty() || pointList==null) {
+	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
+	    }
+	    for (MyPointDTO point : pointList) {
+	    	String pt_category="";
+	    	String pt_point="";
+	    	//String pt_detail="";
+	    	if(point.getPt_category()==0) {
+	    		pt_category="뮤즈패스 가입";
+	    	} else if(point.getPt_category()==1) {
+	    		pt_category="예매구매";
+	    	} else if(point.getPt_category()==2) {
+	    		pt_category="좌석리뷰";
+	    	} else if(point.getPt_category()==3) {
+	    		pt_category="공연리뷰";
+	    	} else{
+	    		pt_category="예매환불";
+	    	}
+	    	if(point.getPt_point()>0){
+	    		pt_point="적립";
+	    	}else{
+	    		pt_point="사용";
+	    	}
+	    	responseHtml.append("<tr>")
+            .append("<td>").append(pt_category).append("</td>")
+            .append("<td>").append(pt_point).append("</td>")
+            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(point.getPt_point()).append("P</td>")
+            .append("<td>").append(point.getPt_date()).append("</td>")
+            .append("</tr>");
+	    }
+	    return responseHtml.toString();
+	}
+	
+	@RequestMapping("/myPagePointAddList.do")
+	@ResponseBody
+	public String myPagePointAddList(@RequestParam("point_startDate") String pointStartDate,@RequestParam("point_endDate") String pointEndDate, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", u_id);
+		params.put("pointStartDate", pointStartDate);
+		params.put("pointEndDate", pointEndDate);
+		List<MyPointDTO> pointList = mypointDao.getPointAdd(params);
+
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    if(pointList.isEmpty() || pointList==null) {
+	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
+	    }
+	    for (MyPointDTO point : pointList) {
+	    	String pt_category="";
+	    	String pt_point="";
+	    	//String pt_detail="";
+	    	if(point.getPt_category()==0) {
+	    		pt_category="뮤즈패스 가입";
+	    	} else if(point.getPt_category()==1) {
+	    		pt_category="예매구매";
+	    	} else if(point.getPt_category()==2) {
+	    		pt_category="좌석리뷰";
+	    	} else if(point.getPt_category()==3) {
+	    		pt_category="공연리뷰";
+	    	} else{
+	    		pt_category="예매환불";
+	    	}
+	    	if(point.getPt_point()>0){
+	    		pt_point="적립";
+	    	}else{
+	    		pt_point="사용";
+	    	}
+	    	responseHtml.append("<tr>")
+            .append("<td>").append(pt_category).append("</td>")
+            .append("<td>").append(pt_point).append("</td>")
+            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(point.getPt_point()).append("P</td>")
+            .append("<td>").append(point.getPt_date()).append("</td>")
+            .append("</tr>");
+	    }
+	    return responseHtml.toString();
+	}
+
+	@RequestMapping("/myPagePointUseList.do")
+	@ResponseBody
+	public String myPagePointUseList(@RequestParam("point_startDate") String pointStartDate,@RequestParam("point_endDate") String pointEndDate, HttpSession session) {
+		String u_id = (String) session.getAttribute("s_id");
+		Map<String, Object> params = new HashMap<>();
+		params.put("u_id", u_id);
+		params.put("pointStartDate", pointStartDate);
+		params.put("pointEndDate", pointEndDate);
+		List<MyPointDTO> pointList = mypointDao.getPointUse(params);
+
+	    StringBuilder responseHtml = new StringBuilder();
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    if(pointList.isEmpty() || pointList==null) {
+	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
+	    }
+	    for (MyPointDTO point : pointList) {
+	    	String pt_category="";
+	    	String pt_point="";
+	    	//String pt_detail="";
+	    	if(point.getPt_category()==0) {
+	    		pt_category="뮤즈패스 가입";
+	    	} else if(point.getPt_category()==1) {
+	    		pt_category="예매구매";
+	    	} else if(point.getPt_category()==2) {
+	    		pt_category="좌석리뷰";
+	    	} else if(point.getPt_category()==3) {
+	    		pt_category="공연리뷰";
+	    	} else{
+	    		pt_category="예매환불";
+	    	}
+	    	if(point.getPt_point()>0){
+	    		pt_point="적립";
+	    	}else{
+	    		pt_point="사용";
+	    	}
+	    	responseHtml.append("<tr>")
+            .append("<td>").append(pt_category).append("</td>")
+            .append("<td>").append(pt_point).append("</td>")
+            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(point.getPt_point()).append("P</td>")
+            .append("<td>").append(point.getPt_date()).append("</td>")
+            .append("</tr>");
+	    }
+	    return responseHtml.toString();
+	}
 	
 }

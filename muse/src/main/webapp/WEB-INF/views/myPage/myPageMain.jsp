@@ -104,6 +104,11 @@ button {
 
 
 </style>
+<script type="text/javascript">
+function goMusePass(){
+	window.location.href="musePassTermForm.do";
+}
+</script>
 </head>
 <body>
     <%@include file="../header.jsp" %>
@@ -127,7 +132,7 @@ button {
             <h2>MY MUSEPASS</h2>
             <div class="mypass-info">
             	<c:if test="${u_mpass eq 0}">
-            		<p><button>뮤즈패스 가입하기</button></p>
+            		<p><button onclick="goMusePass()">뮤즈패스 가입하기</button></p>
             	</c:if>
             	<c:if test="${u_mpass eq 1}">
                 	<p>카테고리: Original | 남은 잔여 일수: ${mpRemainDays}일 | 유효기간: ${myMPass.mp_enddate}</p>
@@ -171,14 +176,6 @@ button {
 	                        	예매                        	
                         	</c:when>
 	                        </c:choose>	
-	                        <!--  
-	                        	<c:if test="${blist.b_state eq 0}">취소</c:if>
-	                        	<c:if test="${blist.b_state eq 1}">
-		                        	예매
-		                        	<button>리뷰쓰기</button>
-	                        	</c:if>
-	                        	<c:if test="${blist.b_state eq 2}">예매(일부취소)</c:if>
-	                        -->
 	                        </td>
 	                        
 	                    </tr>
