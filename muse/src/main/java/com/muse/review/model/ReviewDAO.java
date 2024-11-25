@@ -14,7 +14,7 @@ public interface ReviewDAO {
 	MusicalReviewDTO mrWrite(String b_code);
 	int mrWriteEnd(MusicalReviewDTO dto);
 	int getMr_code();
-	int addPoint(String s_id,String mr_code,int point);
+	int addPoint(String s_id,String mr_code,int point,int cat);
 	
 	int srWriteEnd(SeatReviewDTO dto);
 	int getSr_code();

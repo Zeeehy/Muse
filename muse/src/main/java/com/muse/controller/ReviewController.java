@@ -264,10 +264,10 @@ public class ReviewController {
 			
 			//멤버쉽가입ok
 			if(s_mpass==1) {
-				result1 = reviewDao.addPoint(s_id,"sr_"+mr_code,600);
+				result1 = reviewDao.addPoint(s_id,"sr_"+mr_code,600,2);
 				mav.addObject("msg", "리뷰작성 완료! (멤버십회원 포인트 600점 적립)");
 			}else {
-				result1 = reviewDao.addPoint(s_id,"sr_"+mr_code,300);
+				result1 = reviewDao.addPoint(s_id,"sr_"+mr_code,300,2);
 				mav.addObject("msg", "리뷰작성 완료! (일반회원 포인트 300점 적립)");
 
 			}
@@ -362,10 +362,10 @@ public class ReviewController {
 			
 			//멤버쉽가입ok
 			if(s_mpass==1) {
-				result1 = reviewDao.addPoint(s_id,"mr_"+mr_code,600);
+				result1 = reviewDao.addPoint(s_id,"mr_"+mr_code,600,3);
 				mav.addObject("msg", "리뷰작성 완료! (멤버십회원 포인트 600점 적립)");
 			}else {
-				result1 = reviewDao.addPoint(s_id,"mr_"+mr_code,300);
+				result1 = reviewDao.addPoint(s_id,"mr_"+mr_code,300,3);
 				mav.addObject("msg", "리뷰작성 완료! (일반회원 포인트 300점 적립)");
 
 			}
