@@ -13,19 +13,23 @@
 	<select id="selectMusicalList" parameterType="map"
 		resultType="com.muse.partner.model.MusicalDTO">
 		SELECT *
-		FROM musical m
-		WHERE m.pr_code = #{pr_code}
-		AND EXISTS (
-		SELECT 1
-		FROM service_request sr
-		WHERE sr.m_code = m.m_code -- 
-		AND sr.rs_code = 1 -- 승인된 것만
-		)
-		AND m.m_startdate <![CDATA[>]]>
-		sysdate
+      FROM musical m
+      WHERE m.pr_code = #{pr_code}
+      AND EXISTS (
+      SELECT 1
+      FROM musical m join service_request sr on m.m_code = sr.m_code
+      join request_state rs on sr.rs_code = rs.rs_code 
+      WHERE sr.m_code = m.m_code 
+      AND sr.rs_code = 1 
+      )
+       <if test="state == null or state == ''">
+        AND m.m_startdate <![CDATA[>]]> sysdate
+    </if>
+		
 		<if test="seachMusical != null and seachMusical != ''">
 			AND m.m_title LIKE '%' || #{seachMusical} || '%'
 		</if>
+		
 	</select>
 
 	<select id="selectStartEndDate"
@@ -524,11 +528,11 @@
 		open_notice op ON op.m_code = m.m_code
 		WHERE m.pr_code =
 		#{pr_code}
-		<if test="isFutureDate == 0">
+		<if test="isFutureDate == 1">
 			AND m.m_startdate <![CDATA[>=]]>
 			sysdate
 		</if>
-		<if test="isFutureDate == 1">
+		<if test="isFutureDate == 0">
 			AND m.m_startdate <![CDATA[<]]>
 			sysdate
 		</if>

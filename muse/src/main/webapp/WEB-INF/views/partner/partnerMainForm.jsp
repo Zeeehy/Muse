@@ -32,6 +32,7 @@
 	margin: 20px;
 	padding: 20px;
 }
+.viewtable input
 /* 필드셋 스타일 */
 #product-fieldset {
 	border: 2px solid #ccc;
@@ -143,13 +144,13 @@
 				</legend>
 				<table id="viewtable">
 					<tr>
-						<th colspan="4">상품 정보</th>
+						<th colspan="4">뮤지컬 정보</th>
 						<th>일시</th>
 						<th>공연장</th>
 					</tr>
 					<c:if test="${empty list }">
 						<tr>
-							<th colspan="6" style="text-align: center">등록된 공연이 없습니다.</th>
+							<th colspan="6" style="text-align: center">등록된 뮤지컬이 없습니다.</th>
 						</tr>
 					</c:if>
 					<c:forEach var="dto" items="${list }">
@@ -191,14 +192,14 @@
 
 					<c:if test="${empty statelist}">
 						<tr>
-							<td colspan="6" style="text-align: center">등록된 공연이 없습니다.</td>
+							<td colspan="7" style="text-align: center">등록된 뮤지컬이 없습니다.</td>
 						</tr>
 					</c:if>
 					<c:forEach var="dto2" items="${statelist}">
 						<tr>
 							<td>${dto2.m_code}</td>
 							<td class="status-type">${dto2.rt_name}</td>
-							<td>${dto2.m_title}</td>
+							<td>뮤지컬 ${dto2.m_title}</td>
 							<td>${dto2.rs_date}</td>
 							<td class="status-cell">${dto2.rs_status}</td>
 							<td class="status-cell">${dto2.op_status}</td>
@@ -221,18 +222,74 @@
 </body>
 <script>
 function chageColor() {
-    const statusCells = document.querySelectorAll('.status-cell'); // 클래스 선택
+    var getMusicalList = '${getMusicalList}';
+    var isFutureDate = '${isFutureDate}';
+    const category = document.querySelectorAll('.category');
+    const statusCells = document.querySelectorAll('.status-cell');
     const stausType = document.querySelectorAll('.status-type');
+    
+    // 카테고리 스타일 적용
+    category.forEach(el => {
+        el.style.color = '#666';
+        el.style.fontWeight = 'normal';
+        el.style.backgroundColor = '#f0f0f0';
+        
+        // 호버 효과
+        el.addEventListener('mouseover', function() {
+            if (this.style.backgroundColor !== 'rgb(76, 175, 80)') {
+                this.style.backgroundColor = '#e0e0e0';
+            }
+        });
+        
+        el.addEventListener('mouseout', function() {
+            if (this.style.backgroundColor !== 'rgb(76, 175, 80)') {
+                this.style.backgroundColor = '#f0f0f0';
+            }
+        });
+    });
+    
+    // getMusicalList 값에 따라 직접 해당 카테고리 스타일 적용
+    switch(getMusicalList) {
+        case '0': // 공연중
+            category[0].style.color = 'white';
+            category[0].style.fontWeight = 'bold';
+            category[0].style.backgroundColor = '#4CAF50';
+            break;
+        case '2': // 공연 예정
+            category[1].style.color = 'white';
+            category[1].style.fontWeight = 'bold';
+            category[1].style.backgroundColor = '#4CAF50';
+            break;
+        case '1': // 공연 완료
+            category[2].style.color = 'white';
+            category[2].style.fontWeight = 'bold';
+            category[2].style.backgroundColor = '#4CAF50';
+            break;
+    }
+    switch(isFutureDate) {
+    case '0': // 공연중
+        category[3].style.color = 'white';
+        category[3].style.fontWeight = 'bold';
+        category[3].style.backgroundColor = '#4CAF50';
+        break;
+    case '1': // 공연 예정
+        category[4].style.color = 'white';
+        category[4].style.fontWeight = 'bold';
+        category[4].style.backgroundColor = '#4CAF50';
+        break;
+}
+    
+    // 상태 셀 스타일 적용
     statusCells.forEach(cell => {
-        const status = cell.textContent.trim(); // 텍스트 가져오기
+        const status = cell.textContent.trim();
         if (status === '승인') {
-            cell.style.color = 'green'; // 글씨 색 초록색
-            cell.style.fontWeight = 'bold'; // 글씨 굵게
+            cell.style.color = 'green';
+            cell.style.fontWeight = 'bold';
         } else if (status === '거절') {
-            cell.style.color = 'red'; // 글씨 색 파란색
+            cell.style.color = 'red';
             cell.style.fontWeight = 'bold';
         } else {
-            cell.style.color = 'gray'; // 기본값 회색
+            cell.style.color = 'gray';
             cell.style.fontWeight = 'bold';
         }
     });
@@ -240,6 +297,7 @@ function chageColor() {
         const status = cell.textContent.trim(); // 텍스트 가져오기
         if (status === '신규등록') {
             cell.style.color = 'blue'; // 글씨 색 초록색
+            cell.style.fontWeight = 'bold';
         } else if (status === '거절') {
             cell.style.color = 'red'; // 글씨 색 파란색
             cell.style.fontWeight = 'bold';
@@ -249,9 +307,10 @@ function chageColor() {
         }
     });
 }
-function stateColor(){
-	
-}
+    
+    
+    
+
 
 window.onload = chageColor;
 

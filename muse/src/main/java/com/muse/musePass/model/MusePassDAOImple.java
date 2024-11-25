@@ -42,7 +42,7 @@ public class MusePassDAOImple implements MusePassDAO {
 	
 	@Override
 	public int insertPassPoint(String u_id) {
-		return sqlMap.update("insertPassPoint",u_id);
+		return sqlMap.insert("insertPassPoint",u_id);
 		
 	}
 }

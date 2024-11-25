@@ -17,7 +17,7 @@ body {
 	position: fixed;
 	width: 100%;
 	top: 0;
-	z-index: 1;
+	z-index: 0;
 	padding: 10px 20px;
 }
 
@@ -40,10 +40,10 @@ body {
 }
 
 .right-section {
-	padding-right: 60px;
-	margin: 10px;
-	display: flex; /* 오른쪽 요소들 수평 정렬 */
-	align-items: center; /* 세로 중앙 정렬 */
+    padding-right: 200px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
 }
 
 
