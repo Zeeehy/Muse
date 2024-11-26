@@ -306,7 +306,7 @@ function insertTicketOpen(){
 } */
 
 function SeachMusicalName(){
-	var param = 'pr_code=${s_pr_code}';
+	var param = 'pr_code=${s_pr_code}&state=수정중';
 	var searchInputMusicalName = document.getElementById("searchInputMusicalName").value;
 
 // 입력값이 null이 아닌 경우에만 param 수정

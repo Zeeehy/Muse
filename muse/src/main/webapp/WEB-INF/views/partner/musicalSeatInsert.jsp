@@ -352,7 +352,7 @@ function setSeats(section_div,rowLayout){
 			                positionSeats.forEach((real_seat,index) => {
 			                    // 행, 열 확인
 			                        // class 부여 => 색 표시
-			                        alert(seatNum + ' : ' + real_seat.s_position);
+			                        //alert(seatNum + ' : ' + real_seat.s_position);
 			                        seat_div.classList.add('VIP');
 			                });
 			            }
@@ -456,8 +456,8 @@ function testClick(rowLayout, event,seatNum) {
 }
 
 function makeDummy(){
-	alert('makeDummy'+musical_code)
-	alert('mhl_code는 !!!!${result}');
+	//alert('makeDummy'+musical_code)
+	//alert('mhl_code는 !!!!${result}');
 	var lists = document.querySelectorAll('.select');
 	
 	lists.forEach(function(list){
@@ -469,7 +469,7 @@ function makeDummy(){
 	     selectedSeats.push([lastClass, musical_code, musicalHLayoutCode, data.section, list.textContent, data.row, data.floor]);
 		
 		
-		 alert(musical_code);
+		 //alert(musical_code);
 		
 		
 		
