@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/muse/resources/css/Phj.css">
+<link rel="stylesheet" href="/muse/resources/css/Phj2.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 </head>
 <%@include file="header.jsp"%>
@@ -45,6 +45,7 @@
 	background-color: #f9f9f9;
 	resize: none; /* 크기 조절 아이콘 제거 */
 }
+
 </style>
 <body>
 	<div class="main-content">
@@ -56,7 +57,7 @@
 		<div class="table-content">
 			<table>
 				<tr>
-					<th style="width: 20%;">뮤지컬명</th>
+					<th style="width: 40%;">뮤지컬명</th>
 					<td colspan="3" style="width: 40%;"></td>
 
 					<td colspan="4"><input type="text" name="m_title" placeholder="ex)뮤지컬 ***" ></td>

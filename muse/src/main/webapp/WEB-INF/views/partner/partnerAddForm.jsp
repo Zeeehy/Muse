@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>파트너 등록</title>
-<link rel="stylesheet" href="/muse/resources/css/Phj.css" type="text/css">
+<link rel="stylesheet" href="/muse/resources/css/Phj2.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 </head>
 <style>

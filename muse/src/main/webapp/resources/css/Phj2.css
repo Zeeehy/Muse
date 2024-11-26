@@ -1,0 +1,318 @@
+styles.css /* Body */ 
+
+body {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+/* Header */
+.header {
+	background-color: #D9D9D9;
+	height: 60px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 24px;
+	color: #333;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 0;
+	padding: 10px 20px;
+}
+
+.header-image {
+	width: 100px; /* 원하는 너비 */
+	height: 50px; /* 원하는 높이 */
+	margin-right: 40px; /* 이미지와 텍스트 사이의 간격 조정 */
+}
+
+.header select {
+	border: none; /* 테두리 제거 */
+	background-color: #f3f0f0; /* 배경색 변경 (예: 연한 하늘색) */
+	padding: 5px 10px;
+	border-radius: 5px; /* 모서리를 둥글게 */
+}
+
+.left-section {
+	display: flex; /* 왼쪽 요소들 수평 정렬 */
+	align-items: center; /* 세로 중앙 정렬 */
+}
+
+.right-section {
+    padding-right: 200px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+}
+
+
+.sidebar {
+	width: 250px;
+	color: #000;
+	position: fixed;
+	top: 60px;
+	left: 0;
+	height: calc(100% - 60px);
+	padding-top: 20px;
+	margin-left: 20px;
+    margin-top: 20px;
+    
+    border-right: 1px solid;
+}
+
+.sidebar .dropdown-btn {
+	border: none;
+	background: none;
+	width: 100%;
+	outline: none;
+}
+
+.sidebar a, .dropdown-btn {
+	padding: 10px;
+	text-decoration: none;
+	font-size: 18px;
+	color: #000;
+	display: block;
+	text-align: left;
+}
+
+.sidebar a:hover, .dropdown-btn:hover {
+	 font-size: 1.2em; /* 기존보다 20% 확대 */
+  	transition: font-size 0.4s; /* 부드러운 효과 */
+}
+
+.sidebartop {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+}
+
+.sidebar h3, .sidebar .dropdown-btn {
+	display: block;
+	color: #111111;
+	padding: 15px;
+	text-decoration: none;
+	text-align: left;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: 700;
+	margin-left:20px;
+}
+
+.sidebar .dropdown-btn:hover {
+	/* background-color: #B0DFFF; */
+}
+
+.dropdown-container {
+	display: none; 
+	padding-left: 10px;
+}
+
+.dropdown-container a {
+	color: #000000;
+	padding: 10px 15px;
+	text-decoration: none;
+	display: block;
+	text-align: left;
+}
+
+.dropdown-container a:hover {
+	/* background-color: #575757; */
+}
+
+input[type="text"], input[type="number"] {
+	border: none; /* 테두리 제거 */
+	background-color: #f3f0f0; /* 배경색 변경 (예: 연한 하늘색) */
+	padding: 10px; /* 패딩 추가 */
+	border-radius: 5px; /* 모서리를 둥글게 */
+	width: 100%; /* 너비 조정 (옵션) */
+	font-size: 16px; /* 글자 크기 조정 (옵션) */
+}
+
+input[type="text"]:focus {
+	outline: none; /* 포커스 시 테두리 제거 */
+	background-color: #dadada;
+	i /* 포커스 시 배경색 변경 (예: 연한 파란색) */
+}
+
+
+.popup-container {
+	position: relative;
+	display: inline-block;
+}
+
+.popup {
+	display: none; /* 기본적으로 숨김 */
+	position: absolute; /* 요청 현황 링크 바로 아래에 나타나도록 조정 */
+	top: 0px; /* 요청 현황 아래로 조정 */
+	left: 100%; /* 요청 현황의 오른쪽 위치 */
+	margin-left: 10px; /* 요청 현황과의 간격 */
+	padding: 10px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.2);
+	z-index: 100; /* 다른 요소보다 위에 표시 */
+	flex-direction: column;
+}
+
+.popupWrap {
+	display: flex;
+	white-space: nowrap;
+	position: relative;
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
+	align-items: flex-start;
+}
+
+.popupWrap table {
+	border: 1px solid #ccc;
+	border-collapse: collapse; 
+	margin: 10px;
+	background-color: #ececec;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.popupWrap th, td {
+	padding: 10px; /* 셀 내부 여백 */
+}
+
+/* 닫기 버튼 */
+.close-btn {
+	padding: 5px 10px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 30px;
+}
+/*메인컨텐츠*/
+.main-content {
+	display: flex;
+	flex-direction: column;
+	margin-left: 250px;
+	margin-top: 60px;
+	padding: 20px;
+	align-items: center;
+	width: calc(1000px-250px);
+}
+
+/*컨텐츠 테이블 레이아웃*/
+.main-content hr {
+	height: 1.3px;
+	background-color: #62D491;
+	margin: 20px;
+}
+
+.main-content h1 {
+	padding: 20px;
+}
+
+.table-content {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0; /* padding을 줄이거나 필요에 따라 0으로 설정 */
+	margin: 0; /* 필요 시 외부 여백도 제거 */
+}
+
+.table-content table {
+	border-collapse: collapse;
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+	border: none;
+}
+
+.table-content th, .table-content td {
+	padding: 20px;
+	text-align: left;
+}
+
+.table-content th {
+	font-weight: bold;
+}
+
+/* .table-content div {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+} */
+.table-content input[type="submit"], .table-content input[type="reset"]
+	{
+	border-radius: 10px;
+	padding: 8px 20px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.table-content input[type="reset"] {
+	border-radius: 10px;
+	background-color: #f44336;
+}
+
+.table-content input[type="submit"]:hover, .table-content input[type="reset"]:hover
+	{
+	opacity: 0.8;
+}
+
+.main-contenttop {
+	width: 100%;
+	margin-left: 250px;
+	margin-top: 35px;
+	padding-left: 20px;
+}
+
+/* 캐스트보드 팝업 css(건들지 말것) */
+#ActorPopup {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1000;
+}
+
+.popupActorWrap {
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+	border: 1px solid #ccc;
+	padding: 20px;
+	width: 300px;
+	position: relative;
+}
+
+.actorClose-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background: none;
+	border: none;
+	font-size: 1.2rem;
+	cursor: pointer;
+}
+
+.popupActorWrap table {
+	width: 100%;
+	margin: 10px 0;
+}
+
+.popupActorWrap input[type="button"], input[type="reset"], input[type="submit"]
+	{
+	width: 80px;
+	height: 40px;
+	font-size: 14px;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	cursor: pointer;
+	margin-left: 20px;
+}
