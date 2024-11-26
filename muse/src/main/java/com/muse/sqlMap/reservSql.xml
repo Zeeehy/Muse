@@ -272,13 +272,15 @@
         U_ID,        <!-- 사용자 ID -->
         PT_CATEGORY,      <!-- 구분유형 -->
         PT_CATEGORYCODE,<!-- 관련코드 (예매코드) -->
-        PT_POINT      <!-- 변동포인트 -->
+        PT_POINT,      <!-- 변동포인트 -->
+        PT_DATE
     ) VALUES (
         POINT_PT_CODE.NEXTVAL,
         #{u_id},
         #{pt_category},
         #{pt_categorycode},
-        #{pt_point}
+        #{pt_point},
+        sysdate
     )
 	</insert>
 	
