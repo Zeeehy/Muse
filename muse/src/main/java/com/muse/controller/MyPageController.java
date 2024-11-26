@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.muse.common.MailSendService;
 import com.muse.myPage.model.MPassDAO;
 import com.muse.myPage.model.MPassDTO;
 import com.muse.myPage.model.MuseCalendarDAO;
@@ -63,6 +65,8 @@ public class MyPageController {
 	private MyReviewListDAO myReviewListDao;
 	@Autowired
 	private MyPointDAO mypointDao;
+	@Autowired
+	private MailSendService mailSender;
 	
 	/**메인페이지*/	
 	//메인페이지 폼
@@ -107,6 +111,7 @@ public class MyPageController {
 	}
 	
 	//회원정보수정
+
 	@RequestMapping(value = "/myPageInfoUpdate.do", method=RequestMethod.POST)
 	public ModelAndView myPageInfoUpdate(MyPageUserDTO dto) {
 		ModelAndView mav=new ModelAndView();
@@ -114,9 +119,34 @@ public class MyPageController {
 		int result=myPageUserDao.updateUserInfo(dto);
 		String msg=result>0?"회원정보수정 성공":"회원정보수정 실패";
 		System.out.println(msg);
-		mav.setViewName("/myPage/myPageMain");
+		MyPageUserDTO user = myPageUserDao.getUserInfo(dto.getU_id());
+		
+		mav.addObject("user", user);
+		mav.setViewName("/myPage/myPageInfoUpdate");
 		return mav;
 	}
+
+    // I4. 아이디 찾기 - 이메일 인증번호 체크하기  ajax가 아니면 modelandview로 바꿔야할수도?
+    @RequestMapping(value = "/findID_emailcheck2.do",method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Map<String, Integer>> findID_emailcheck(@RequestBody Map<String, String> requestBody,HttpSession session) {
+    	String idfind_s_authNumber = (String) session.getAttribute("authNumber"); // 세션에 저장된 이메일 인증 번호 
+//    	String u_email = requestBody.get("u_email");  // 이메일 받아오기
+    	System.out.println(idfind_s_authNumber);   	
+    	int answer = 0;
+    	String u_emailnumber = requestBody.get("u_emailnumber");  // 입력받은 이메일 인증 번호
+        
+    	if (u_emailnumber.equals(idfind_s_authNumber)) {
+			answer = 1;
+			// 아이디 가져와서 세션에 저장 이부분은 내식대로 emailupdate등으로 바꾸기
+//			String findid_id = memberDao.find_id(u_email);
+//			session.setAttribute("idfind_s_id",findid_id);
+		}
+    	
+    	 Map<String, Integer> response = new HashMap<>();
+         response.put("exists", answer);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 	
 	
 	/**비밀번호수정*/
@@ -129,9 +159,10 @@ public class MyPageController {
 	
 	////비밀번호수정
 	@RequestMapping(value = "/myPagePwdUpdate.do", method=RequestMethod.POST)
-	public ModelAndView myPagePwdUpdate(MyPageUserDTO dto) {
+	public ModelAndView myPagePwdUpdate(MyPageUserDTO dto, HttpSession session) {
 		ModelAndView mav=new ModelAndView();
-		
+		String u_id = (String) session.getAttribute("s_id");
+		dto.setU_id(u_id);
 		int result=myPageUserDao.updateUserPwd(dto);
 		String msg=result>0?"비밀번호수정 성공":"비밀번호수정 실패";
 		System.out.println(msg);
@@ -1026,4 +1057,13 @@ public class MyPageController {
 	    return responseHtml.toString();
 	}
 	
+	
+	// I3, P5. 아이디 비밀번호 찾기 - 이메일 인증 보내기 
+    @RequestMapping(value = "/find_email2.do", method = RequestMethod.POST)
+    @ResponseBody
+    public void sendEmail(@RequestBody Map<String, String> requestBody) {
+        String u_email = requestBody.get("u_email");  // 이메일 받아오기
+        // 이메일을 처리하고 인증 이메일을 발송하는 로직
+        mailSender.joinIdEmail(u_email);
+    }
 }

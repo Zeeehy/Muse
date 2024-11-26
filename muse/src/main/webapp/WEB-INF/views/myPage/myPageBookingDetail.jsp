@@ -25,6 +25,8 @@ body {
     display: flex;
     max-width: 1200px;
     margin: 100px auto;
+    height: 100%;
+    min-height: 500px;
 }
 
 /* 사이드바 스타일 */
@@ -286,8 +288,8 @@ function openRefund(bd_code){
                 </table>
             </div>
             
-            <a href="#" class="button">(뮤즈캐스트 등록?)</a>
-            <a href="#" class="button cancel-button" onclick="">(뮤지컬 상세보기?)</a>
+            <!-- <a href="#" class="button">(뮤즈캐스트 등록?)</a>-->
+            <!-- <a href="/muse/musicalDetail.do?m_code=${m_code}" class="button cancel-button" onclick="">(뮤지컬 상세보기?)</a> -->
         </div>
 		 <h2>결제내역</h2>
 		<div class="ticket-info">

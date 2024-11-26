@@ -25,6 +25,8 @@ body {
     display: flex;
     max-width: 1200px;
     margin: 100px auto;
+    height: 100%;
+    min-height: 500px;
 }
 
 /* 사이드바 스타일 */
