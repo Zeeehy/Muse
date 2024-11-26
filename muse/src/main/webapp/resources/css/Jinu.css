@@ -640,6 +640,7 @@ img.castingImage{
 .prdStar{
 	display:flex;
 	    gap: 10px;
+	    align-items: center;
 }
 
 .tagText{

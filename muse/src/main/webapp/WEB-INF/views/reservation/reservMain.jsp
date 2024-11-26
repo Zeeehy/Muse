@@ -84,7 +84,7 @@
 					<%@ include file="/WEB-INF/views/reservation/reservSeat.jsp" %>
 					<div class="seatReview" style="display: none;">
 						<p>선택하신 좌석 <b>[R석] 1층-C블록 5열 6</b>의 평균 평점은(5.0) 입니다.</p>
-						<span class="reviewTxt">좌석 상세 리뷰  보기 ></span>
+    					<span class="reviewTxt"><a href="" target="_blank">좌석 상세 리뷰 보기 ></a></span>
 					</div>
                 </aside>
                 <aside class="seatR">
