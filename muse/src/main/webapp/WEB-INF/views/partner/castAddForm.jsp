@@ -592,6 +592,8 @@ function insertMusicalDate(){
 	
 	dateList= [];
 	countDate = 0;
+	
+	alert('스케줄 등록이 완료되었습니다.');
 }
 	
 function insertMusicalDateResult(){

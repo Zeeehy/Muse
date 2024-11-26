@@ -15,7 +15,7 @@
 <style>
 #seatGrade {
 	display: flex;
-	transform: scale(0.55); /* 예: 80% 크기로 줄이기 */
+	transform: scale(0.50); /* 예: 80% 크기로 줄이기 */
 	transform-origin: center; /* 축소 기준을 좌측 상단으로 */
 	width: calc(100%/ 0.5); /* 부모 컨테이너의 가로 크기를 유지 */
 	overflow: hidden; /* 내부 내용이 넘치지 않도록 설정 */
@@ -30,7 +30,6 @@
 	font-weight: bold;
 	width: 100%;
 	border-collapse: collapse; /* 테이블 셀의 경계선 처리를 설정 */
-	display:none;
 }
 
 #GradeColor {
@@ -121,6 +120,28 @@
 }
 #gradeTableDiv{
 margin-right:80px;
+
+	display:none;
+}
+.table-content input[value="설정하기"]{
+	 width: 120px;
+    height: 40px; 
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #2d92f5;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.table-content input[value="지우기"]{
+	 width: 120px;
+    height: 40px; 
+    border-radius: 10px; 
+    padding: 8px 20px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    cursor: pointer;
 }
 </style>
 <body>
@@ -387,6 +408,10 @@ function ResultSeachMusicalName(){
     window.location.href='musicalSeatAddForm.do?'+param;
     
 }
+ function closeMusicalNamePopup() {
+	    const popup = document.getElementById('musicalNamePopup');
+	    popup.style.display = 'none'; 
+	}
 
 function showMusicalNamePopup(button) {
 	SeachMusicalName();
@@ -405,20 +430,20 @@ function showMusicalNamePopup(button) {
     
 }
 
-function closeMusicalNamePopup() {
-    const popup = document.getElementById('musicalNamePopup');
-    popup.style.display = 'none'; 
-}
-
 window.onload = function() {
-   
-
-    // musical_code가 빈 문자열일 경우 스타일을 변경
-    if (musical_code !== '') {
+    var musical_codeInput = document.querySelector('input[name="m_code"]');
+    
+    if (musical_codeInput && musical_codeInput.value !== '') {
         var seatGrade = document.getElementById('seatGrade');
-        seatGrade.style.marginTop = '-300px';
         var gradeTableDiv = document.getElementById('gradeTableDiv');
-        gradeTableDiv.style.display.flex;
+        
+        if (seatGrade) {
+            seatGrade.style.marginTop = '-300px';
+        }
+        
+        if (gradeTableDiv) {
+            gradeTableDiv.style.display = 'block';  // 또는 'flex'
+        }
     }
 };
 

@@ -103,8 +103,10 @@ span .bestBadge {
 								</c:when>
 								<c:otherwise></c:otherwise>
 							</c:choose></td>
-						<td><c:if test="${dto.mr_state == 3||dto.mr_state==1||dto.mr_state==2}">
-								<input type="button" value="삭제" onclick="deleteReviewAction()">
+						<td><c:if
+								test="${dto.mr_state ne 1 and dto.mr_state ne 2 and dto.mr_state ne 3}">
+								<input type="button" value="삭제"
+									onclick="deleteReviewAction(event)">
 							</c:if></td>
 						<td><input type="button" value="베스트 리뷰 설정"
 							onclick="bestReviewAction(event)"></td>
@@ -116,9 +118,6 @@ span .bestBadge {
 						<td></td>
 					</tr>
 				</c:forEach>
-
-
-
 			</table>
 
 		</div>
@@ -200,16 +199,17 @@ function selectmusicalReviewResult() {
 
             	    // 두 번째 열 - mr_code 값
             	    var td2 = document.createElement("td");
-            	    td2.textContent = dto.mr_code;
-            	    td2.name = dto.mr_code;
-            	    row.appendChild(td2);
+					td2.textContent = dto.mr_code;
+					td2.setAttribute('name', 'mr_code');  // name 속성 추가
+					td2.classList.add('mr_code');         // class 추가
+					row.appendChild(td2);
 
             	    // 세 번째 열 - mr_title 값 (클릭 이벤트 추가)
             	    var td3 = document.createElement("td");
             	    td3.textContent = dto.mr_title;
             	    td3.style.cursor = "pointer"; // 클릭할 수 있도록 커서 변경
             	    td3.onclick = function() {
-            	        toggleContentRow(row, dto.mr_content); // 클릭 시 콘텐츠 보이기
+            	        toggleContentRowFirst(this); // 클릭 시 콘텐츠 보이기
             	    };
             	    row.appendChild(td3);
 
@@ -244,7 +244,7 @@ function selectmusicalReviewResult() {
             	        var deleteButton = document.createElement("input");  // 삭제 버튼 생성
             	        deleteButton.type = "button";
             	        deleteButton.value = "삭제";
-            	        deleteButton.onclick = function() { deleteReviewAction(); };  // 버튼 클릭 시 삭제 동작 실행
+            	        deleteButton.onclick = function(e) { deleteReviewAction(e); };  // 버튼 클릭 시 삭제 동작 실행
 
             	        td7.appendChild(deleteButton);  // 삭제 버튼을 td에 추가
             	    }
@@ -257,7 +257,7 @@ function selectmusicalReviewResult() {
             	    var reviewButton = document.createElement("input");
             	    reviewButton.type = "button";
             	    reviewButton.value = "베스트 리뷰 선정";
-            	    reviewButton.onclick = function() {bestReviewAction(event)};
+            	    reviewButton.onclick = function(e) {bestReviewAction(e)};
             	    
             	    td8.appendChild(reviewButton);
             	    row.appendChild(td8);
@@ -266,19 +266,29 @@ function selectmusicalReviewResult() {
 
             	    // 행을 테이블 본문에 추가
             	    tableBody.appendChild(row);
+// `mr_content`를 포함하는 숨겨진 행을 추가
+var contentRow = document.createElement("tr");
+contentRow.classList.add("content-row"); // 클래스 추가
+contentRow.style.display = "none";
+contentRow.style.backgroundColor = '#f0f0f0';
+contentRow.style.textAlign = 'center';
 
-            	    // `mr_content`를 포함하는 숨겨진 행을 추가
-            	    var contentRow = document.createElement("tr");
-            	    contentRow.classList.add("content-row"); // 클래스를 통해 구별
-					
-            	    var tdContent = document.createElement("td");
-            	    tdContent.colSpan = 7; // 모든 열을 차지
-            	    tdContent.textContent = dto.mr_content;
-            	    tdContent.style.textAlign = "center"; // 내용 중앙 정렬
-            	    tdContent.style.backgroundColor = '#f0f0f0';
-            	    contentRow.appendChild(tdContent);
-            	    contentRow.style.display = "none"; // 처음에는 숨겨둠
-            	    row.parentNode.insertBefore(contentRow, row.nextSibling); // 현재 행 바로 아래에 추가
+// 첫 번째 빈 td
+var emptyTd1 = document.createElement("td");
+contentRow.appendChild(emptyTd1);
+
+// 내용이 들어갈 th 
+var thContent = document.createElement("th");
+thContent.colSpan = 5;
+thContent.style.paddingLeft = "20px";
+thContent.textContent = dto.mr_content;
+contentRow.appendChild(thContent);
+
+// 마지막 빈 td
+var emptyTd2 = document.createElement("td");
+contentRow.appendChild(emptyTd2);
+
+row.parentNode.insertBefore(contentRow, row.nextSibling); // 현재 행 바로 아래에 추가
             	});
             }
         }
@@ -322,8 +332,8 @@ function getTdValues(form) {
     // 예시로 값을 콘솔에 출력 후, 폼 제출을 계속 진행하려면 true를 반환
     return true; 
 }
-function deleteReviewAction(){
-	   var selectedRow = event.target.closest('tr'); // event.target은 클릭한 버튼을 의미, closest('tr')은 부모 tr을 찾음
+function deleteReviewAction(event){
+		var selectedRow = event.target.closest('tr');  // event.target은 클릭한 버튼을 의미, closest('tr')은 부모 tr을 찾음
 
 	    // tr에서 각 td 값을 추출
 	    var mr_code = selectedRow.querySelector('td[name="mr_code"]').textContent; // mr_code 값
@@ -396,7 +406,7 @@ function bestReviewActionResult() {
                                 // 삭제 버튼 다시 표시
                                 var deleteButtonTd = row.querySelector('td:nth-child(6)');
                                 if (deleteButtonTd) {
-                                    deleteButtonTd.innerHTML = '<input type="button" value="삭제" onclick="deleteReviewAction()">';
+                                    deleteButtonTd.innerHTML = '<input type="button" value="삭제" onclick="deleteReviewAction(event)">';
                                 }
                             } else {
                                 // 베스트 상태로 변경
