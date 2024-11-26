@@ -137,8 +137,8 @@ var layoutData = ${layouts};
 var jfloor = ${floor};
 
 // 모든 좌석 ver json
-var seatList = ${seatList};
-
+//var seatList = ${seatList};
+var seatList = [];
 
 var seatGradeList = ${seatGradeList};
 console.log(seatList);
