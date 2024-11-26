@@ -91,7 +91,7 @@ td.selected {
 											<c:if test="${!empty reviews }">
 												<div class="reviewStarTotal">
 													<div class="prdStar">
-														<div class="prdStarBack">
+														<div class="prdStarBack" style="display: flex; align-items: center;">
 															<c:forEach begin="1" end="5" var="i">
 																<c:choose>
 														            <%-- 완전한 별 --%>
