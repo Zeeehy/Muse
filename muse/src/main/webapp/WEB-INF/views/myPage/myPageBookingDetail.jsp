@@ -84,13 +84,13 @@ body {
 }
 
 .ticket-info h3 {
-    font-size: 18px;
+    font-size: 20px;
     color: #d2322d;
     margin-bottom: 10px;
 }
 
 .ticket-info p {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
     margin-bottom: 8px;
 }
@@ -244,7 +244,7 @@ function openRefund(bd_code){
                         		${bookingDetailList[0].bd_code} (총 ${bookingDetailCount}매)
                         	</c:if>
                         	<c:if test="${bookingDetailCount != 1}">
-                        		${bookingDetailList[0].bd_code}~${bookingDetailList[bookingDetailCount-1].bd_code} (총 ${bookingDetailCount}매)
+                        		${bookingDetailList[bookingDetailCount-1].bd_code}~${bookingDetailList[0].bd_code} (총 ${bookingDetailCount}매)
                         	</c:if>
                         </td>
                         	
@@ -315,7 +315,7 @@ function openRefund(bd_code){
 	                        <td>${bdlist.bd_price}원</td>
 	                        
 
-                        	<c:if test="${bdlist.bd_state eq 0}"><td>취소됨</td><td>대충취소날짜</td></c:if>
+                        	<c:if test="${bdlist.bd_state eq 0}"><td>취소됨</td><td>${bdlist.r_date}</td></c:if>
                         	<c:if test="${bdlist.bd_state eq 1}">									
 								<c:if test="${bdlist.refund_state eq 0}">
 									<td>취소불가</td>

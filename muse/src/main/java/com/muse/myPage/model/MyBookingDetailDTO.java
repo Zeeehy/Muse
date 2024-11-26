@@ -24,6 +24,7 @@ public class MyBookingDetailDTO {
 	private String sg_name;
 	private int sp_price;
 	private String u_name;
+	private Date r_date;
 	private int refund_state;
 	private int review_state;
 
@@ -34,7 +35,7 @@ public class MyBookingDetailDTO {
 	public MyBookingDetailDTO(String b_code, Date b_date, String b_type, String b_state, Date mo_date, String m_poster,
 			String m_title, String mh_name, String mh_addr, String bd_code, int bd_state, int bd_price, int d_num,
 			String d_name, String s_section, int s_position, int s_row, int s_floor, String sg_name, int sp_price,
-			String u_name, int refund_state, int review_state) {
+			String u_name, Date r_date, int refund_state, int review_state) {
 		super();
 		this.b_code = b_code;
 		this.b_date = b_date;
@@ -57,6 +58,7 @@ public class MyBookingDetailDTO {
 		this.sg_name = sg_name;
 		this.sp_price = sp_price;
 		this.u_name = u_name;
+		this.r_date = r_date;
 		this.refund_state = refund_state;
 		this.review_state = review_state;
 	}
@@ -229,6 +231,14 @@ public class MyBookingDetailDTO {
 		this.u_name = u_name;
 	}
 
+	public Date getR_date() {
+		return r_date;
+	}
+
+	public void setR_date(Date r_date) {
+		this.r_date = r_date;
+	}
+
 	public int getRefund_state() {
 		return refund_state;
 	}
@@ -244,6 +254,6 @@ public class MyBookingDetailDTO {
 	public void setReview_state(int review_state) {
 		this.review_state = review_state;
 	}
-
-
+	
+	
 }

@@ -80,8 +80,18 @@ public class MyBookingDetailDAOImpl implements MyBookingDetailDAO{
 	}
 	
 	@Override
-	public String getRefundDate(String bd_code) {
-		String refundDate=sqlMap.selectOne("selectRefundDate",bd_code);
-		return null;
+	public int getBookingUsePoint(String b_code) {
+		int point=0;
+		if(sqlMap.selectOne("selectBookingUsePoint", b_code)!=null) {
+			point=sqlMap.selectOne("selectBookingUsePoint", b_code);
+		}
+		return -point;
+	}
+	
+	@Override
+	public int insertPointRefund(Map<String, Object> map) {
+		int result = sqlMap.insert("insertPointRefund",map);
+		
+		return result;
 	}
 }

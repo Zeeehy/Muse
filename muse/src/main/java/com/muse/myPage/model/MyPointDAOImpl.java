@@ -56,4 +56,20 @@ public class MyPointDAOImpl implements MyPointDAO{
 	    
 		return pointList;
 	}
+	
+	@Override
+	public String getPointDetail(int pt_code, String pt_categorycode) {
+		String point_detail="";
+		if(pt_code==1) {
+			point_detail=sqlMap.selectOne("selectPointDetailBooking",pt_categorycode);
+    	} else if(pt_code==2) {
+    		point_detail=sqlMap.selectOne("selectPointDetailSeat",pt_categorycode);
+    	} else if(pt_code==3) {
+    		point_detail=sqlMap.selectOne("selectPointDetailMusical",pt_categorycode);
+    	} else{
+    		point_detail=sqlMap.selectOne("selectPointDetailRefund",pt_categorycode);
+    	}
+		
+		return point_detail;
+	}
 }

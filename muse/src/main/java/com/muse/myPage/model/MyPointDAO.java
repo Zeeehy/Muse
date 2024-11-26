@@ -10,4 +10,5 @@ public interface MyPointDAO {
 	List<MyPointDTO> getPointMonth(Map<String, Object> map);
 	List<MyPointDTO> getPointAdd(Map<String, Object> map);
 	List<MyPointDTO> getPointUse(Map<String, Object> map);
+	String getPointDetail(int pt_code,String pt_categorycode);
 }

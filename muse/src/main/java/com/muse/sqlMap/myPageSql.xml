@@ -206,7 +206,8 @@
 	s.s_floor,
 	sg.sg_name,			
 	sp.sp_price,				
-	u.u_name
+	u.u_name,
+	r.r_date
 	from booking b
 	left join musical_option mo on mo.mo_code=b.mo_code
 	left join musical m on m.m_code=mo.m_code
@@ -217,8 +218,9 @@
 	left join seat_grade sg on sg.sg_code=s.sg_code
 	left join seat_price sp on sp.sg_code=s.sg_code and m.m_code=sp.m_code
 	left join users u on u.u_id=b.u_id
-	where b.b_code=#{b_code}
-	order by bd.bd_code
+	left join refund r on r.bd_code=bd.bd_code
+    where b.b_code=#{b_code}
+	order by b.b_date
   </select>
 
   <select id="selectRefundRemainDate" parameterType="String" resultType="Integer">
@@ -233,11 +235,6 @@
   <select id="selectSeatReviewCount" parameterType="String" resultType="Integer">
 	select count(*) from seat_review where bd_code=#{bd_code}
   </select> 
-  <!--
-  <select id="selectRefundDate" parameterType="String" resultType="String">
-  	select to_char(r_date, 'yyyy-mm-dd hh24:mi:ss') from refund where bd_code=#{bd_code}
-  </select> 
-    -->
   <!-- 환불 -->
   <select id="selectBookingDetail" parameterType="String" resultType="com.muse.myPage.model.MyBookingDetailDTO">
 	select 
@@ -278,6 +275,14 @@
   <select id="selectBookingStates" parameterType="String" resultType="Integer">
 	select bd_state from booking_detail where b_code=#{b_code}
   </select>
+  
+  <select id="selectBookingUsePoint" parameterType="String" resultType="Integer">
+  	select pt_point from point where pt_categorycode=#{b_code}
+  </select>
+  
+  <insert id="insertPointRefund" parameterType="map">
+  	insert into point values(POINT_PT_CODE.nextval, #{u_id}, 4, #{r_code}, #{pt_point}, sysdate)
+  </insert>
   <!-- 나의 후기 -->
   <select id="selectMusicalReviewList" parameterType="String" resultType="com.muse.myPage.model.MyMusicalReviewDTO">
   	select mr.mr_code,mr.b_code,mr.mr_score,mr.mr_title,mr.mr_content,to_char(mr.mr_date,'YYYY-MM-DD') as mr_date, m.m_title
@@ -343,5 +348,40 @@
 	and pt_date >= #{pointStartDate} and pt_date <= #{pointEndDate} and pt_point<0
 	order by pt_date desc
   	]]>
+  	</select>
+  	<select id="selectPointDetailBooking" parameterType="String" resultType="String">
+	select m.m_title || ' - 예매' as point_detail
+	from booking b
+	join musical_option mo on mo.mo_code=b.mo_code 
+	join musical m on m.m_code=mo.m_code
+	where b_code=#{pt_categorycode}  
+	
+  	</select>
+  	<select id="selectPointDetailSeat" parameterType="String" resultType="String">
+	select mh.mh_name || ' - 좌석리뷰' as point_detail
+	from seat_review sr
+	join booking_detail bd on bd.bd_code=sr.bd_code
+	join seat s on s.s_code=bd.s_code
+	join musical_hall_layout mhl on mhl.mhl_code=s.mhl_code
+	join musical_hall mh on mh.mh_code=mhl.mh_code
+	where sr.sr_code=#{pt_categorycode} 
+  	</select>
+  	<select id="selectPointDetailMusical" parameterType="String" resultType="String">
+	select m.m_title || ' - 공연리뷰' as point_detail
+	from musical_review mr 
+	join booking b on b.b_code=mr.b_code
+	join musical_option mo on mo.mo_code=b.mo_code
+	join musical m on m.m_code=mo.m_code
+	where mr.mr_code=#{pt_categorycode}  
+  	</select>
+  	<select id="selectPointDetailRefund" parameterType="String" resultType="String">
+	select m.m_title || ' - 환불' as point_detail
+	from refund r
+	join booking_detail bd on bd.bd_code=r.bd_code
+	join booking b on b.b_code=bd.b_code
+	join musical_option mo on mo.mo_code=b.mo_code
+	join musical m on m.m_code=mo.m_code
+	where r.r_code=#{pt_categorycode} 
+	
   	</select>
   </mapper>

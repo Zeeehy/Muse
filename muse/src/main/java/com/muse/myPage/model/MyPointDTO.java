@@ -9,13 +9,14 @@ public class MyPointDTO {
 	private String pt_categorycode;
 	private int pt_point;
 	private Date pt_date;
+	private String point_detail;
 	
 	public MyPointDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public MyPointDTO(String pt_code, String u_id, int pt_category, String pt_categorycode, int pt_point,
-			Date pt_date) {
+	public MyPointDTO(String pt_code, String u_id, int pt_category, String pt_categorycode, int pt_point, Date pt_date,
+			String point_detail) {
 		super();
 		this.pt_code = pt_code;
 		this.u_id = u_id;
@@ -23,6 +24,7 @@ public class MyPointDTO {
 		this.pt_categorycode = pt_categorycode;
 		this.pt_point = pt_point;
 		this.pt_date = pt_date;
+		this.point_detail = point_detail;
 	}
 
 	public String getPt_code() {
@@ -72,7 +74,14 @@ public class MyPointDTO {
 	public void setPt_date(Date pt_date) {
 		this.pt_date = pt_date;
 	}
-	
+
+	public String getPoint_detail() {
+		return point_detail;
+	}
+
+	public void setPoint_detail(String point_detail) {
+		this.point_detail = point_detail;
+	}
 	
 	
 }

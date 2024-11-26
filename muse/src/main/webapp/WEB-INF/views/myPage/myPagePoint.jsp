@@ -264,7 +264,7 @@ function getPointDate(){
                     <tr>              
                         <th>구분</th>
                         <th>적립여부</th>
-                        <th>상세내역</th>
+                        <th>내역</th>
                         <th>변동포인트</th>
                         <th>발생일자</th>
                     </tr>
@@ -290,7 +290,7 @@ function getPointDate(){
 								<c:if test="${ptlist.pt_point > 0}">적립</c:if>
 	                        	<c:if test="${ptlist.pt_point < 0}">사용</c:if>
 							</td>
-	                        <td>아직</td>
+	                        <td>${ptlist.point_detail}</td>
 	                        <td>${ptlist.pt_point}P</td>
 	                        <td>${ptlist.pt_date}</td>
 	                    </tr>

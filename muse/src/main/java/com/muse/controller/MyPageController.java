@@ -368,20 +368,23 @@ public class MyPageController {
 	
 	/**예매취소*/
 	@RequestMapping("/reservRefund.do")
-	public ModelAndView reservRefund(@RequestParam String bd_code) {
+	public ModelAndView reservRefund(@RequestParam String bd_code, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-
-		MyBookingDetailDTO bookingDetail=mybookingDetailDao.getBookingDetail(bd_code);	//test와 마찬가지로 바꿔야함
+		String u_id = (String) session.getAttribute("s_id");
+		if (u_id == null) {
+			System.out.println("세션 만료됨");
+            mav.setViewName("redirect:/memberLogin.do");
+            return mav;
+        }
+		MyBookingDetailDTO bookingDetail=mybookingDetailDao.getBookingDetail(bd_code);	
 		
 		String b_code=bookingDetail.getB_code();
 		int selectRefundRemainDate=mybookingDetailDao.getRefundRemainDate(b_code);
 		int fee=0;
-		//System.out.println(bookingDetail.getSp_price());
-		//관람 이틀전
+		
 		if(selectRefundRemainDate>-2) {
 			fee=bookingDetail.getSp_price()/30;
 		} else if(selectRefundRemainDate>-6){
-			System.out.println(bookingDetail.getSp_price()+"bookingDetail.getSp_price()");
 			fee=bookingDetail.getSp_price()/20;
 		} else if(selectRefundRemainDate>-9){
 			fee=bookingDetail.getSp_price()/10;
@@ -403,19 +406,30 @@ public class MyPageController {
 		params.put("rd_price", rd_price);
 		int rd_result=mybookingDetailDao.insertBookingRefundDetail(params);
 		if(rd_result<=0) {
-			System.out.println("환불상세X");
+			System.out.println("환불상세insertX");
 		}
 		//예매상세
 		int bd_result=mybookingDetailDao.updateBookingDetailState(bd_code);
 		if(bd_result<=0) {
-			System.out.println("환불상세X");
+			System.out.println("예매상세상태updateX");
 		}
 		
 		//예매+포인트
 		if(mybookingDetailDao.getBookingStates(b_code)==0) {
 			mybookingDetailDao.updateBookingState(b_code);
-			//포인트돌려주기 일단 테이블고치고
-			System.out.println("포인트돌려줫어용");
+			//포인트돌려주기
+			if(mybookingDetailDao.getBookingUsePoint(b_code)!=0) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("u_id", u_id);
+				map.put("r_code", r_code);
+				map.put("pt_point", mybookingDetailDao.getBookingUsePoint(b_code));
+				int pr_result=mybookingDetailDao.insertPointRefund(map);
+				if(pr_result<=0) {
+					System.out.println("환불포인트재적립X");
+				} else {
+					System.out.println("포인트돌려줫어용");
+				}
+			}
 		}
 		
 		mav.setViewName("redirect:/myPageBookingDetail.do?b_code="+b_code);
@@ -783,6 +797,24 @@ public class MyPageController {
 		if(mypointDao.getPointList(u_id)!=null && !mypointDao.getPointList(u_id).isEmpty()) {
 			pointList = mypointDao.getPointList(u_id);
 			pointSum = mypointDao.getPointSum(u_id);	
+			for (MyPointDTO point : pointList) {
+		    	String pt_detail="";
+		    	if(point.getPt_category()==0) {
+		    		point.setPoint_detail("첫 가입 15000P");
+		    	} else if(point.getPt_category()==1) {
+		    		pt_detail=mypointDao.getPointDetail(1, point.getPt_categorycode());
+		    		point.setPoint_detail(pt_detail);
+		    	} else if(point.getPt_category()==2) {
+		    		pt_detail=mypointDao.getPointDetail(2, point.getPt_categorycode());
+		    		point.setPoint_detail(pt_detail);
+		    	} else if(point.getPt_category()==3) {
+		    		pt_detail=mypointDao.getPointDetail(3, point.getPt_categorycode());
+		    		point.setPoint_detail(pt_detail);
+		    	} else{
+		    		pt_detail=mypointDao.getPointDetail(4, point.getPt_categorycode());
+		    		point.setPoint_detail(pt_detail);
+		    	}
+		    }
 		}
 		mav.addObject("pointList", pointList);
 		mav.addObject("pointSum",pointSum);
@@ -801,24 +833,29 @@ public class MyPageController {
 		List<MyPointDTO> pointList = mypointDao.getPointDay(params);
 
 	    StringBuilder responseHtml = new StringBuilder();
-	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
 	    if(pointList.isEmpty() || pointList==null) {
 	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
 	    }
 	    for (MyPointDTO point : pointList) {
 	    	String pt_category="";
 	    	String pt_point="";
-	    	//String pt_detail="";
+	    	String pt_detail="";
 	    	if(point.getPt_category()==0) {
 	    		pt_category="뮤즈패스 가입";
+	    		point.setPoint_detail("첫 가입 15000P");
 	    	} else if(point.getPt_category()==1) {
 	    		pt_category="예매구매";
+	    		pt_detail=mypointDao.getPointDetail(1, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==2) {
 	    		pt_category="좌석리뷰";
+	    		pt_detail=mypointDao.getPointDetail(2, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==3) {
 	    		pt_category="공연리뷰";
+	    		pt_detail=mypointDao.getPointDetail(3, point.getPt_categorycode());
 	    	} else{
 	    		pt_category="예매환불";
+	    		pt_detail=mypointDao.getPointDetail(4, point.getPt_categorycode());
 	    	}
 	    	if(point.getPt_point()>0){
 	    		pt_point="적립";
@@ -828,7 +865,7 @@ public class MyPageController {
 	    	responseHtml.append("<tr>")
             .append("<td>").append(pt_category).append("</td>")
             .append("<td>").append(pt_point).append("</td>")
-            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(pt_detail).append("</td>")
             .append("<td>").append(point.getPt_point()).append("P</td>")
             .append("<td>").append(point.getPt_date()).append("</td>")
             .append("</tr>");
@@ -847,24 +884,29 @@ public class MyPageController {
 		List<MyPointDTO> pointList = mypointDao.getPointMonth(params);
 
 	    StringBuilder responseHtml = new StringBuilder();
-	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
 	    if(pointList.isEmpty() || pointList==null) {
 	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
 	    }
 	    for (MyPointDTO point : pointList) {
 	    	String pt_category="";
 	    	String pt_point="";
-	    	//String pt_detail="";
+	    	String pt_detail="";
 	    	if(point.getPt_category()==0) {
 	    		pt_category="뮤즈패스 가입";
+	    		point.setPoint_detail("첫 가입 15000P");
 	    	} else if(point.getPt_category()==1) {
 	    		pt_category="예매구매";
+	    		pt_detail=mypointDao.getPointDetail(1, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==2) {
 	    		pt_category="좌석리뷰";
+	    		pt_detail=mypointDao.getPointDetail(2, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==3) {
 	    		pt_category="공연리뷰";
+	    		pt_detail=mypointDao.getPointDetail(3, point.getPt_categorycode());
 	    	} else{
 	    		pt_category="예매환불";
+	    		pt_detail=mypointDao.getPointDetail(4, point.getPt_categorycode());
 	    	}
 	    	if(point.getPt_point()>0){
 	    		pt_point="적립";
@@ -874,7 +916,7 @@ public class MyPageController {
 	    	responseHtml.append("<tr>")
             .append("<td>").append(pt_category).append("</td>")
             .append("<td>").append(pt_point).append("</td>")
-            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(pt_detail).append("</td>")
             .append("<td>").append(point.getPt_point()).append("P</td>")
             .append("<td>").append(point.getPt_date()).append("</td>")
             .append("</tr>");
@@ -893,24 +935,29 @@ public class MyPageController {
 		List<MyPointDTO> pointList = mypointDao.getPointAdd(params);
 
 	    StringBuilder responseHtml = new StringBuilder();
-	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
 	    if(pointList.isEmpty() || pointList==null) {
 	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
 	    }
 	    for (MyPointDTO point : pointList) {
 	    	String pt_category="";
 	    	String pt_point="";
-	    	//String pt_detail="";
+	    	String pt_detail="";
 	    	if(point.getPt_category()==0) {
 	    		pt_category="뮤즈패스 가입";
+	    		point.setPoint_detail("첫 가입 15000P");
 	    	} else if(point.getPt_category()==1) {
 	    		pt_category="예매구매";
+	    		pt_detail=mypointDao.getPointDetail(1, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==2) {
 	    		pt_category="좌석리뷰";
+	    		pt_detail=mypointDao.getPointDetail(2, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==3) {
 	    		pt_category="공연리뷰";
+	    		pt_detail=mypointDao.getPointDetail(3, point.getPt_categorycode());
 	    	} else{
 	    		pt_category="예매환불";
+	    		pt_detail=mypointDao.getPointDetail(4, point.getPt_categorycode());
 	    	}
 	    	if(point.getPt_point()>0){
 	    		pt_point="적립";
@@ -920,7 +967,7 @@ public class MyPageController {
 	    	responseHtml.append("<tr>")
             .append("<td>").append(pt_category).append("</td>")
             .append("<td>").append(pt_point).append("</td>")
-            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(pt_detail).append("</td>")
             .append("<td>").append(point.getPt_point()).append("P</td>")
             .append("<td>").append(point.getPt_date()).append("</td>")
             .append("</tr>");
@@ -939,24 +986,29 @@ public class MyPageController {
 		List<MyPointDTO> pointList = mypointDao.getPointUse(params);
 
 	    StringBuilder responseHtml = new StringBuilder();
-	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>상세내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
+	    responseHtml.append("<thead><tr><th>구분</th><th>적립여부</th><th>내역</th><th>변동포인트</th><th>발생일자</th></tr></thead>");
 	    if(pointList.isEmpty() || pointList==null) {
 	    	responseHtml.append("<tr><td colspan='5' align='center'>포인트내역이 존재하지 않습니다</td></tr>");
 	    }
 	    for (MyPointDTO point : pointList) {
 	    	String pt_category="";
 	    	String pt_point="";
-	    	//String pt_detail="";
+	    	String pt_detail="";
 	    	if(point.getPt_category()==0) {
 	    		pt_category="뮤즈패스 가입";
+	    		point.setPoint_detail("첫 가입 15000P");
 	    	} else if(point.getPt_category()==1) {
 	    		pt_category="예매구매";
+	    		pt_detail=mypointDao.getPointDetail(1, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==2) {
 	    		pt_category="좌석리뷰";
+	    		pt_detail=mypointDao.getPointDetail(2, point.getPt_categorycode());
 	    	} else if(point.getPt_category()==3) {
 	    		pt_category="공연리뷰";
+	    		pt_detail=mypointDao.getPointDetail(3, point.getPt_categorycode());
 	    	} else{
 	    		pt_category="예매환불";
+	    		pt_detail=mypointDao.getPointDetail(4, point.getPt_categorycode());
 	    	}
 	    	if(point.getPt_point()>0){
 	    		pt_point="적립";
@@ -966,7 +1018,7 @@ public class MyPageController {
 	    	responseHtml.append("<tr>")
             .append("<td>").append(pt_category).append("</td>")
             .append("<td>").append(pt_point).append("</td>")
-            .append("<td>").append("아직").append("</td>")
+            .append("<td>").append(pt_detail).append("</td>")
             .append("<td>").append(point.getPt_point()).append("P</td>")
             .append("<td>").append(point.getPt_date()).append("</td>")
             .append("</tr>");
