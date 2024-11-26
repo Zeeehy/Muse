@@ -55,6 +55,10 @@ body {
 	left: 0;
 	height: calc(100% - 60px);
 	padding-top: 20px;
+	margin-left: 20px;
+    margin-top: 20px;
+    
+    border-right: 1px solid;
 }
 
 .sidebar .dropdown-btn {
@@ -74,7 +78,8 @@ body {
 }
 
 .sidebar a:hover, .dropdown-btn:hover {
-	background-color: #BFD9E0; 
+	 font-size: 1.2em; /* 기존보다 20% 확대 */
+  	transition: font-size 0.4s; /* 부드러운 효과 */
 }
 
 .sidebartop {
@@ -92,10 +97,11 @@ body {
 	cursor: pointer;
 	font-size: 18px;
 	font-weight: 700;
+	margin-left:20px;
 }
 
 .sidebar .dropdown-btn:hover {
-	background-color: #B0DFFF;
+	/* background-color: #B0DFFF; */
 }
 
 .dropdown-container {
@@ -112,7 +118,7 @@ body {
 }
 
 .dropdown-container a:hover {
-	background-color: #575757;
+	/* background-color: #575757; */
 }
 
 input[type="text"], input[type="number"] {

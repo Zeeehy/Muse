@@ -7,7 +7,7 @@
 
 <script src="/muse/resources/js/httpRequest.js"></script>
 <title>Insert title here</title>
-<link rel="stylesheet" href="/muse/resources/css/Phj.css">
+<link rel="stylesheet" href="/muse/resources/css/Phj2.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 
 </head>

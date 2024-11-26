@@ -184,6 +184,7 @@ public class PartnerController {
 		System.out.println(pr_code);
 		System.out.println(list.size());
 		ModelAndView mav = new ModelAndView();
+		
 		mav.addObject("list", list);
 		mav.setViewName("/partner/reviewDelete");
 		return mav;

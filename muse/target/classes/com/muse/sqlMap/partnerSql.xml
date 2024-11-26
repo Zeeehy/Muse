@@ -341,32 +341,31 @@
 	<select id="getMusicalList" parameterType="map"
 		resultType="com.muse.partner.model.MusicalDTO">
 		SELECT DISTINCT
-		m.m_title,
-		m.m_poster,
-		m.m_time,
-		m.m_age,
-		m.m_notice,
-		TO_CHAR(m.m_startdate, 'YYYY-MM-DD') AS m_startdate,
-		TO_CHAR(m.m_enddate, 'YYYY-MM-DD') AS m_enddate,
-		mh.mh_name,
-		NVL(LISTAGG(ma.ma_name, ', ') WITHIN GROUP (ORDER BY ma.ma_name), '배우
-		정보 없음') AS ma_name
-		FROM musical m
-		LEFT JOIN musical_option mo
-		ON m.m_code
-		= mo.m_code
-		LEFT JOIN musical_casting mc
-		ON mc.mo_code = mo.mo_code
-		LEFT
-		JOIN musical_actor ma
-		ON mc.ma_code = ma.ma_code
-		JOIN musical_hall mh
-		ON
-		m.mh_code = mh.mh_code
-		JOIN service_request sr
-		ON m.m_code = sr.m_code
-		WHERE m.pr_code = #{pr_code}
-		AND sr.rs_code = 1
+    m.m_title,
+    m.m_poster,
+    m.m_time,
+    m.m_age,
+    m.m_notice,
+    TO_CHAR(m.m_startdate, 'YYYY-MM-DD') AS m_startdate,
+    TO_CHAR(m.m_enddate, 'YYYY-MM-DD') AS m_enddate,
+    mh.mh_name,
+    NVL((
+        SELECT LISTAGG(ma_name, ', ') WITHIN GROUP (ORDER BY ma_name)
+        FROM (
+            SELECT DISTINCT ma.ma_name
+            FROM musical_casting mc2
+            JOIN musical_actor ma ON mc2.ma_code = ma.ma_code
+            JOIN musical_option mo2 ON mc2.mo_code = mo2.mo_code
+        )
+    ), '배우 정보 없음') AS ma_name
+FROM musical m
+LEFT JOIN musical_option mo ON m.m_code = mo.m_code
+LEFT JOIN musical_casting mc ON mc.mo_code = mo.mo_code
+LEFT JOIN musical_actor ma ON mc.ma_code = ma.ma_code
+JOIN musical_hall mh ON m.mh_code = mh.mh_code
+JOIN service_request sr ON m.m_code = sr.m_code
+WHERE m.pr_code = #{pr_code}
+    AND sr.rs_code = 1
 
 		<if test="performanceStatus == 0">
 			AND sysdate BETWEEN m.m_startdate AND m.m_enddate
@@ -528,11 +527,11 @@
 		open_notice op ON op.m_code = m.m_code
 		WHERE m.pr_code =
 		#{pr_code}
-		<if test="isFutureDate == 1">
+		<if test="isFutureDate == 0">
 			AND m.m_startdate <![CDATA[>=]]>
 			sysdate
 		</if>
-		<if test="isFutureDate == 0">
+		<if test="isFutureDate == 1">
 			AND m.m_startdate <![CDATA[<]]>
 			sysdate
 		</if>

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 
 <script src="/muse/resources/js/httpRequest.js"></script>
-<link rel="stylesheet" href="/muse/resources/css/Phj.css">
+<link rel="stylesheet" href="/muse/resources/css/Phj2.css">
 <link rel="stylesheet" type="text/css" href="resources/css/Main.css">
 <style>
 span .bestBadge {
@@ -103,7 +103,7 @@ span .bestBadge {
 								</c:when>
 								<c:otherwise></c:otherwise>
 							</c:choose></td>
-						<td><c:if test="${dto.mr_state != 3||dto.mr_state==1}">
+						<td><c:if test="${dto.mr_state == 3||dto.mr_state==1||dto.mr_state==2}">
 								<input type="button" value="삭제" onclick="deleteReviewAction()">
 							</c:if></td>
 						<td><input type="button" value="베스트 리뷰 설정"
