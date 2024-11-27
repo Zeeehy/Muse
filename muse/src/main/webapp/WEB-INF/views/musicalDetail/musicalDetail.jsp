@@ -698,7 +698,6 @@ td.selected {
 										<strong class="bbsTotal">총 <span class="num">${countReview }</span>개의 관람후기가 등록되었습니다.</strong>
 									</div>
 									<div class="rightSide">
-    									<a class="bbsWriteBtn" role="button" href="#">관람후기 작성</a>
 									</div>
 								</div>
 								<c:if test="${empty reviews }">
