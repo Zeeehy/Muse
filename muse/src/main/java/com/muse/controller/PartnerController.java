@@ -180,11 +180,8 @@ public class PartnerController {
 	@RequestMapping("/reviewDeleteForm.do")
 	public ModelAndView reviewDelete(@RequestParam(value="pr_code") String pr_code) {
 		List<MusicalReviewDTO> list = partnerDao.seachReview(pr_code);
-		System.out.println("123");
-		System.out.println(pr_code);
-		System.out.println(list.size());
+		
 		ModelAndView mav = new ModelAndView();
-		System.out.println(list.get(0).getMr_state()+"@@@@@@@@@@@@@@@@");
 		
 		mav.addObject("list", list);
 		mav.setViewName("/partner/reviewDelete");

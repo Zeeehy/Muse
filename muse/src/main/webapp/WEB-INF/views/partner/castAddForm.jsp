@@ -287,8 +287,11 @@ function insertCast(){
 	    	    alert('값을 모두 입력해주세요');
 	    	}else{
 	    		sendRequest('insertCast.do',params,insertCastResult,'GET');
+	    		
 	    	}
 	}
+	alert('배우 저장이 완료되었습니다.');
+	window.location.href='partnerMainForm.do?pr_code=${s_pr_code}&getMusicalList=0&isFutureDate=0';
 }
 //저장 isert문
 function insertCastResult(){
@@ -298,8 +301,8 @@ function insertCastResult(){
 			var Jdata = JSON.parse(data);
 			var result =  parseInt(Jdata.result, 10);
 			console.log(Jdata.result+"@@@@@@@@@@@@@@@@@@@@@@");
-			if(result>=1){
-				alert('저장에 성공셨습니다');
+			if(result>=1){/* 
+				 alert('저장에 성공셨습니다');  */
 			}else{
 				alert('저장에 실패하셨습니다.');
 				 document.getElementById('roleTable').innerHTML = `

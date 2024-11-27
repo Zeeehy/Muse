@@ -47,6 +47,45 @@ span .bestBadge {
 	border: none;
 	cursor: pointer;
 }
+td a.status-best {
+    color: #DAA520;  /* 진한 골드색 - 베스트의 특별함을 나타내면서도 눈에 피로하지 않음 */
+}
+
+td a.status-blocked {
+    color: #DC3545;  /* 부드러운 빨간색 - 경고의 의미를 담되 과하지 않음 */
+}
+
+td a.status-delete {
+    color: #0D6EFD;  /* 차분한 파란색 - 정보 전달의 의미로 자주 사용되는 색상 */
+}
+
+/* 베스트 리뷰 설정 버튼 */
+input[type="button"][value="베스트 리뷰 설정"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="button"][value="베스트 리뷰 설정"]:hover {
+    background-color: #45a049;
+}
+input[type="button"][value="베스트 리뷰 해제"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="button"][value="베스트 리뷰 해제"]:hover {
+    background-color: #45a049;
+}
 </style>
 <title>Insert title here</title>
 </head>
@@ -83,7 +122,7 @@ span .bestBadge {
 					<th>작성일</th>
 					<th>상태</th>
 					<th>삭제 요청</th>
-					<th>베스트 리뷰 선정</th>
+					<th>베스트 리뷰</th>
 				</tr>
 				<c:forEach var="dto" items="${list}">
 					<tr>
@@ -93,13 +132,13 @@ span .bestBadge {
 						<td>${dto.mr_date}</td>
 						<td><c:choose>
 								<c:when test="${dto.mr_state == 1}">
-									<a>베스트</a>
+									<a  class="status-best">베스트</a>
 								</c:when>
 								<c:when test="${dto.mr_state == 2}">
-									<a>관리자 차단</a>
+									<a  class="status-blocked">관리자 차단</a>
 								</c:when>
 								<c:when test="${dto.mr_state == 3}">
-									<a>삭제 요청</a>
+									<a  class="status-delete">삭제 요청</a>
 								</c:when>
 								<c:otherwise></c:otherwise>
 							</c:choose></td>
@@ -226,27 +265,36 @@ function selectmusicalReviewResult() {
             	    // 여섯 번째 열 - 상태 (삭제 대기)
             	    var td6 = document.createElement("td");
             	    var state = '';
-            	    if(dto.mr_state==1){
-            	    	state = '베스트';
-            	    }else if(dto.mr_state==2){
-            	    	state = '관리자 차단';
-            	    }else if(dto.mr_state==3){
-            	    	state = '삭제 요청';
+            	    var stateLink = document.createElement("a"); // a 태그 생성
+            	    
+            	    if(dto.mr_state == 1) {
+            	        var stateLink = document.createElement("a");
+            	        stateLink.textContent = '베스트';
+            	        stateLink.classList.add('status-best');
+            	        td6.appendChild(stateLink);
+            	    } else if(dto.mr_state == 2) {
+            	        var stateLink = document.createElement("a");
+            	        stateLink.textContent = '관리자 차단';
+            	        stateLink.classList.add('status-blocked');
+            	        td6.appendChild(stateLink);
+            	    } else if(dto.mr_state == 3) {
+            	        var stateLink = document.createElement("a");
+            	        stateLink.textContent = '삭제 요청';
+            	        stateLink.classList.add('status-delete');
+            	        td6.appendChild(stateLink);
             	    }
-            	    td6.textContent = state;
             	    row.appendChild(td6);
 
             	    // 일곱 번째 열 - 삭제 버튼
             	    
             	    var td7 = document.createElement("td");
 
-            	    if (state !== '삭제 요청') {  // 삭제 요청 대기 댓글이 아닌 경우에만 삭제 버튼을 추가
-            	        var deleteButton = document.createElement("input");  // 삭제 버튼 생성
+            	    if (dto.mr_state != 1 && dto.mr_state != 2 && dto.mr_state != 3) {
+            	        var deleteButton = document.createElement("input");
             	        deleteButton.type = "button";
             	        deleteButton.value = "삭제";
-            	        deleteButton.onclick = function(e) { deleteReviewAction(e); };  // 버튼 클릭 시 삭제 동작 실행
-
-            	        td7.appendChild(deleteButton);  // 삭제 버튼을 td에 추가
+            	        deleteButton.onclick = function(e) { deleteReviewAction(e); };
+            	        td7.appendChild(deleteButton);
             	    }
 
             	    row.appendChild(td7);  // td7을 row에 추가
@@ -256,7 +304,7 @@ function selectmusicalReviewResult() {
 
             	    var reviewButton = document.createElement("input");
             	    reviewButton.type = "button";
-            	    reviewButton.value = "베스트 리뷰 선정";
+            	    reviewButton.value = "베스트 리뷰 설정";
             	    reviewButton.onclick = function(e) {bestReviewAction(e)};
             	    
             	    td8.appendChild(reviewButton);
@@ -410,7 +458,7 @@ function bestReviewActionResult() {
                                 }
                             } else {
                                 // 베스트 상태로 변경
-                                statusTd.innerHTML = '<a>베스트</a>';
+                                statusTd.innerHTML = '<a  class="status-best">베스트</a>';
                                 // 삭제 버튼 제거
                                 var deleteButtonTd = row.querySelector('td:nth-child(6)');
                                 if (deleteButtonTd) {
