@@ -43,7 +43,7 @@
             </form>
       	</div>
       	<c:if test="${!empty sessionScope.s_name}">
-      	<a href="myPageMuseCalendar.do" class="calender"><img src="resources/img/main/calender.png">공연일정 전체보기</a>
+      	<a href="myPageMuseCalendar.do" class="calender"><img src="resources/img/main/calender.png">나의 뮤즈캘린더</a>
       	</c:if>
 </body>
 </html>
