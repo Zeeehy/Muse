@@ -27,7 +27,7 @@ font-weight:bold;
 		<c:if test="${!empty pr_name }">
 		
 		<div class="right-section">
-			<a>${pr_name}  </a>|<a href="memberLogout.do">  로그아웃</a><%-- 
+			<a style="color: #3D93DC;">${pr_name}  </a>&nbsp; | &nbsp; <a href="memberLogout.do">  로그아웃</a><%-- 
 			<input type="text" value="${s_pr_code}" name="pr_code"> --%>
 			 <input type="hidden" value="${s_pr_code}" name="pr_code"> 
 	</div>

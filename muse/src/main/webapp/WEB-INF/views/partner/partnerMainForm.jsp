@@ -47,7 +47,7 @@
 	justify-content: space-between;
 	font-weight: bold;
 	padding-bottom: 10px;
-	border-bottom: 2px solid #ddd;
+	/*border-bottom: 2px solid #ddd;*/
 	margin-bottom: 15px;
 }
 

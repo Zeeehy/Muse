@@ -10,7 +10,7 @@
 /* Header */
 
 .header {
-    background-color: #D9D9D9;
+    background-color: #fff;
     height: 60px;
     display: flex;
     align-items: center;
@@ -22,6 +22,7 @@
     top: 0;
     z-index: 1;
     padding: 10px 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .header-image {

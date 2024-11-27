@@ -94,7 +94,7 @@
 <div class="sidebar">
         
         <!-- 드롭다운 버튼과 하위 메뉴들 -->
-        <a class="hovA" href="adminMain.do">메인</a>
+        <a class="hovA" href="adminMain.do" style="text-align:left; font-weight:700; padding: 15px !important;">메인</a>
         <button class="dropdown-btn">공연관리
             <i class="fa fa-caret-down"></i>
         </button>
